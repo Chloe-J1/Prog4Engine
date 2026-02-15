@@ -13,7 +13,8 @@ namespace dae
 	public:
 		Scene& CreateScene();
 
-		void Update();
+		void Update(float elapsedSec);
+		void FixedUpdate();
 		void Render();
 	private:
 		friend class Singleton<SceneManager>;
