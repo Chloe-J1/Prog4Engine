@@ -10,6 +10,7 @@ void dae::RenderComponent::SetTexture(const std::string& filename)
 
 void dae::RenderComponent::Render() const
 {
+	Component::Render();
 	Transform transform = m_gameObject->GetTransform();
 	glm::vec3 pos = transform.GetPosition();
 

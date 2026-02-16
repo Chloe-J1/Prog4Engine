@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "Scene.h"
+#include "RenderComponent.h"
 
 using namespace dae;
 
@@ -39,6 +40,21 @@ void dae::Scene::FixedUpdate()
 	for (auto& object : m_objects)
 	{
 		object->FixedUpdate();
+	}
+}
+
+void dae::Scene::LateUpdate(float elapsedSec)
+{
+	for (int index{0}; index < m_objects.size(); ++index)
+	{
+		if (not m_objects[index]->GetIsAlive())
+		{
+			m_objects.erase(m_objects.begin() + index);
+		}
+		else
+		{
+			m_objects[index]->LateUpdate(elapsedSec);
+		}
 	}
 }
 

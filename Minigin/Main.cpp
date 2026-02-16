@@ -11,6 +11,7 @@
 #include "TextObject.h"
 #include "Scene.h"
 #include "RenderComponent.h"
+#include "FPSComponent.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -59,12 +60,22 @@ static void load()
 	to->SetPosition(292, 20);
 	scene.Add(std::move(to));
 	// FPS
-	go = std::make_unique<dae::GameObject>();
-	renderComp = new dae::RenderComponent();
-	renderComp->SetTexture("logo.png");
-	go->AddComponent(renderComp);
-	go->SetPosition(10, 10);
-	scene.Add(std::move(go));
+	
+
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	auto textGO = std::make_unique<dae::TextObject>("FPS: 0", font);
+	textGO->SetColor({ 255, 255, 0, 255 });
+	textGO->SetPosition(10, 10);
+
+	auto fpsGO = std::make_unique<dae::GameObject>();
+	fpsGO->SetPosition(10, 10);
+	auto fpsComp = new dae::FPSComponent();
+	fpsComp->SetTextObject(textGO.get()); // Bind textobject to fps object
+	fpsGO->AddComponent(fpsComp);
+
+	scene.Add(std::move(fpsGO));
+	scene.Add(std::move(textGO));
+	
 }
 
 int main(int, char*[]) {

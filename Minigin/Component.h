@@ -1,17 +1,19 @@
 #pragma once
-// Pure virtual base class for components
+// Base class for all components
 namespace dae
 {
 	class GameObject;
 	class Component
 	{
 	public:
-		virtual void Update(float elapsedSec) = 0;
-		virtual void FixedUpdate() = 0;
-		virtual void Render() const = 0;
+		virtual void Update(float) { if (not m_isAlive) return; };
+		virtual void FixedUpdate() { if (not m_isAlive) return; };
+		virtual void LateUpdate(float) { if (not m_isAlive) return; };
+		virtual void Render() const { if (not m_isAlive) return; };
 
-		bool GetIsAlive();
-		void SetIsAlive(bool isAlive);
+		bool GetIsAlive() { return m_isAlive; };
+		void SetIsAlive(bool isAlive) { m_isAlive = isAlive; };
+		GameObject* GetGameObject() { return m_gameObject; };
 
 		Component() = default;
 		virtual ~Component() = default;

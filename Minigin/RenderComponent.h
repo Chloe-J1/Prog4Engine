@@ -13,8 +13,6 @@ namespace dae
 
 		void SetTexture(const std::string& filename);
 		virtual void Render() const override;
-		virtual void FixedUpdate() override {};
-		virtual void Update(float) override {};
 
 		RenderComponent() = default;
 		virtual ~RenderComponent() = default;

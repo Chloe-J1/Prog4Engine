@@ -79,6 +79,14 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 
 	Renderer::GetInstance().Init(g_window);
 	ResourceManager::GetInstance().Init(dataPath);
+
+
+	// CONSOL WINDOW
+	AllocConsole();
+	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+	freopen_s((FILE**)stderr, "CONOUT$", "w", stderr);
+	std::ios::sync_with_stdio(true);
+	std::cout.clear();
 }
 
 dae::Minigin::~Minigin()
@@ -93,45 +101,44 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 #ifndef __EMSCRIPTEN__
+	// Game loop
+	m_lastTime = std::chrono::high_resolution_clock::now();
+	m_lag = 0.f;
 	while (!m_quit)
+	{
 		RunOneFrame();
+	}
 #else
 	emscripten_set_main_loop_arg(&LoopCallback, this, 0, true);
 #endif
 
-	// Game loop
-	auto last_time = std::chrono::high_resolution_clock::now();
-	float lag = 0.f;
+	
 
-	while (!m_quit)
-	{
-		using namespace std::chrono_literals;
-
-		const auto current_time = std::chrono::high_resolution_clock::now();
-		const float delta_time = std::chrono::duration<float>(current_time - last_time).count();
-		last_time = current_time;
-		lag += delta_time;
-
-		float fixed_time_step = 0.02f;
-		m_quit = !InputManager::GetInstance().ProcessInput();;
-		while (lag >= fixed_time_step)
-		{
-			SceneManager::GetInstance().FixedUpdate();
-			lag -= fixed_time_step;
-		}
-		SceneManager::GetInstance().Update(delta_time);
-		Renderer::GetInstance().Render();
-
-		const int ms_per_frame = 16;
-		const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
-
-		std::this_thread::sleep_for(sleep_time);
-	}
+	
 }
 
 void dae::Minigin::RunOneFrame()
 {
+	using namespace std::chrono_literals;
+	const auto current_time = std::chrono::high_resolution_clock::now();
+	const float delta_time = std::chrono::duration<float>(current_time - m_lastTime).count();
+	m_lastTime = current_time;
+	m_lag += delta_time;
+
+	const float fixed_time_step = 0.02f;
 	m_quit = !InputManager::GetInstance().ProcessInput();
-	SceneManager::GetInstance().Update(0.f);
+	while (m_lag >= fixed_time_step)
+	{
+		SceneManager::GetInstance().FixedUpdate();
+		m_lag -= fixed_time_step;
+	}
+	SceneManager::GetInstance().Update(delta_time);
+	SceneManager::GetInstance().LateUpdate(delta_time);
 	Renderer::GetInstance().Render();
+
+	const int ms_per_frame = 16;
+	const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
+	std::this_thread::sleep_for(sleep_time);
+	
+	
 }

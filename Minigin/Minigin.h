@@ -8,6 +8,8 @@ namespace dae
 	class Minigin final
 	{
 		bool m_quit{};
+		float m_lag{ 0.f };
+		std::chrono::high_resolution_clock::time_point m_lastTime{};
 	public:
 		explicit Minigin(const std::filesystem::path& dataPath);
 		~Minigin();

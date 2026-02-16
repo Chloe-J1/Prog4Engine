@@ -14,14 +14,21 @@ namespace dae
 	public:
 		virtual void Update(float elapsedSec);
 		virtual void FixedUpdate();
+		virtual void LateUpdate(float elapsedSec);
 		virtual void Render() const;
 
+		// Transform
 		void SetPosition(float x, float y);
 		Transform GetTransform() const;
 
+		// Components
 		void AddComponent(Component* component);
 		template<typename T>
 		void RemoveComponent(const T* component);
+
+		void SetIsAlive(bool isAlive);
+		bool GetIsAlive();
+		
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -32,6 +39,7 @@ namespace dae
 	private:
 		Transform m_transform{};
 		std::vector<Component*> m_components;
+		bool m_isAlive{ true };
 	};
 	
 }
