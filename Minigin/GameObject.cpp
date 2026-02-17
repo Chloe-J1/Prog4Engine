@@ -98,23 +98,5 @@ bool dae::GameObject::GetIsAlive()
 }
 
 
-template<typename T>
-void dae::GameObject::RemoveComponent(const T* component)
-{
-	if (m_isAlive)
-	{
-		for (auto& comp : m_components) {
-			if (comp == component)
-			{
-				Component* removeComp = dynamic_cast<T&>(*comp);
-				removeComp->SetIsAlive(false);
-				return;
-			}
-		}
-	}
-
-}
-
-
 
 

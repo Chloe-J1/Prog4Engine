@@ -38,7 +38,6 @@ namespace dae
                 m_cumulatedTime -= 1.0f;
                 m_frameCount = 0;
             }
-
             
         }
 
@@ -47,6 +46,6 @@ namespace dae
         float m_cumulatedTime{ 0.0f };
         int m_frameCount{ 0 };
         std::shared_ptr<Font> m_font{};
-        TextComponent* m_textComponent;
+        TextComponent* m_textComponent{};
     };
 }

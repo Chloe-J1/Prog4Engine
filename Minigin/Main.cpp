@@ -35,37 +35,24 @@ static void load()
 	scene.Add(std::move(go));
 	// Title
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto tc = new dae::TextComponent("Programming 4 Assignment", font);
-	tc->SetColor({ 255, 255, 0, 255 });
+	auto textComp = new dae::TextComponent("Programming 4 Assignment", font);
+	textComp->SetColor({ 255, 255, 0, 255 });
 	go = std::make_unique<dae::GameObject>();
 	go->SetPosition(292, 20);
-	go->AddComponent(tc);
+	go->AddComponent(textComp);
 	scene.Add(std::move(go));
-	//// FPS
-	//font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//auto textGO = std::make_unique<dae::TextObject>("FPS: 0", font);
-	//textGO->SetColor({ 255, 255, 0, 255 });
-	//textGO->SetPosition(10, 10);
-
-	//auto fpsGO = std::make_unique<dae::GameObject>();
-	//fpsGO->SetPosition(10, 10);
-	//auto fpsComp = new dae::FPSComponent();
-	//fpsComp->SetTextObject(textGO.get()); // Bind textobject to fps object
-	//fpsGO->AddComponent(fpsComp);
-
-	//scene.Add(std::move(fpsGO));
-	//scene.Add(std::move(textGO));
-	
+	// FPS
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	tc = new dae::TextComponent("FPS: 0", font);
-	tc->SetColor({ 255, 255, 0, 255 });
+	textComp = new dae::TextComponent("FPS: 0", font);
+	textComp->SetColor({ 255, 255, 0, 255 });
 
-	auto fpsc = new dae::FPSComponent();
+	auto fpsComp = new dae::FPSComponent();
 
 	go = std::make_unique<dae::GameObject>();
 	go->SetPosition(10, 10);
-	go->AddComponent(fpsc);
-	go->AddComponent(tc);
+	go->AddComponent(fpsComp);
+	go->AddComponent(textComp);
+
 	scene.Add(std::move(go));
 
 }

@@ -2,11 +2,11 @@
 #include "Transform.h"
 #include <vector>
 #include <memory>
+#include "Component.h"
 
 namespace dae
 {
 	class Texture2D;
-	class Component;
 	
 	class GameObject final
 	{
@@ -24,7 +24,16 @@ namespace dae
 		// Components
 		void AddComponent(Component* component);
 		template<typename T>
-		void RemoveComponent(const T* component);
+		void RemoveComponent()
+		{
+			for (int index{0}; index < m_components.size(); ++index)
+			{
+				if (T* removeComp = dynamic_cast<T*>(m_components[index]))
+				{
+					m_components[index]->SetIsAlive(false);
+				}
+			}
+		}
 		template<typename T>
 		T* GetComponent() const
 		{
@@ -36,6 +45,18 @@ namespace dae
 				}
 			}
 			return nullptr;
+		}
+		template<typename T>
+		bool HasComponent() const
+		{
+			for (const auto& comp : m_components)
+			{
+				if (T* castedComp = dynamic_cast<T*>(comp))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		void SetIsAlive(bool isAlive);
