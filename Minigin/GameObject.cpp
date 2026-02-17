@@ -104,7 +104,7 @@ void dae::GameObject::RemoveComponent(const T* component)
 	if (m_isAlive)
 	{
 		for (auto& comp : m_components) {
-			if (comp == component) // Mss components een naam geven en op basis daarvan removen?
+			if (comp == component)
 			{
 				Component* removeComp = dynamic_cast<T&>(*comp);
 				removeComp->SetIsAlive(false);
@@ -114,5 +114,7 @@ void dae::GameObject::RemoveComponent(const T* component)
 	}
 
 }
+
+
 
 

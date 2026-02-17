@@ -13,7 +13,7 @@ namespace dae
 
 		bool GetIsAlive() { return m_isAlive; };
 		void SetIsAlive(bool isAlive) { m_isAlive = isAlive; };
-		GameObject* GetGameObject() { return m_gameObject; };
+		GameObject* GetGameObject() const { return m_gameObject; };
 
 		Component() = default;
 		virtual ~Component() = default;

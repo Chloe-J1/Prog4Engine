@@ -2,7 +2,7 @@
 #include "Component.h"
 #include <memory>
 #include "ResourceManager.h"
-#include "TextObject.h"
+#include "TextComponent.h"
 #include <SDL3/SDL_pixels.h> // used for color
 #include <iostream>
 namespace dae
@@ -15,12 +15,17 @@ namespace dae
     public:
         FPSComponent()
         {
+            
         }
         void Update(float elapsedSec) override
         {
             Component::Update(elapsedSec);
 
-            //std::cout << elapsedSec << " " << m_cumulatedTime << "\n";
+            // TODO: make a Start() function where i can initialize these members
+            m_textComponent = GetGameObject()->GetComponent<TextComponent>();
+            if (m_textComponent == nullptr)
+                std::cout << "TextComponent is nullptr\n";
+
             m_cumulatedTime += elapsedSec;
             m_frameCount++;
 
@@ -28,22 +33,20 @@ namespace dae
             {
                 m_FPS = m_frameCount / m_cumulatedTime;
                 std::string fpsText = "FPS: " + std::to_string((int)m_FPS);
-                if (m_textObject)
-                    m_textObject->SetText(fpsText);
+                if (m_textComponent)
+                    m_textComponent->SetText(fpsText);
                 m_cumulatedTime -= 1.0f;
                 m_frameCount = 0;
             }
-        }
 
-        
-        void SetTextObject(TextObject* textObj) { m_textObject = textObj; }
+            
+        }
 
     private:
         float m_FPS{ 0.0f };
         float m_cumulatedTime{ 0.0f };
         int m_frameCount{ 0 };
         std::shared_ptr<Font> m_font{};
-        TextObject* m_textObject{nullptr};
-        
+        TextComponent* m_textComponent;
     };
 }

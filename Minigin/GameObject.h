@@ -8,7 +8,7 @@ namespace dae
 	class Texture2D;
 	class Component;
 	
-	class GameObject 
+	class GameObject final
 	{
 
 	public:
@@ -25,6 +25,18 @@ namespace dae
 		void AddComponent(Component* component);
 		template<typename T>
 		void RemoveComponent(const T* component);
+		template<typename T>
+		T* GetComponent() const
+		{
+			for (const auto& comp : m_components)
+			{
+				if (T* castedComp = dynamic_cast<T*>(comp))
+				{
+					return castedComp;
+				}
+			}
+			return nullptr;
+		}
 
 		void SetIsAlive(bool isAlive);
 		bool GetIsAlive();
