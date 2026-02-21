@@ -10,7 +10,17 @@ namespace dae
 	{
 	public:
 		void Add(std::unique_ptr<GameObject> object);
-		void Remove(const GameObject& object);
+		template<typename T>
+		void Remove()
+		{
+			for (auto&& object : m_objects)
+			{
+				if (T* removeObject = dynamic_cast<T*>(object.get()))
+				{
+					object->SetIsAlive(false);
+				}
+			}
+		}
 		void RemoveAll();
 
 		void Update(float elapsedSec);

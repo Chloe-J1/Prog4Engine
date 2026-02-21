@@ -5,10 +5,13 @@
 #include "Transform.h"
 #include "Component.h"
 
+
+
 namespace dae
 {
 	class Font;
 	class Texture2D;
+	class RenderComponent;
 	class TextComponent final : public Component
 	{
 	public:
@@ -30,5 +33,6 @@ namespace dae
 		SDL_Color m_color{ 255, 255, 255, 255 };
 		std::shared_ptr<Font> m_font{};
 		std::shared_ptr<Texture2D> m_textTexture{};
+		RenderComponent* m_renderComp;
 	};
 }

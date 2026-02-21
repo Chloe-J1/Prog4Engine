@@ -10,18 +10,6 @@ void Scene::Add(std::unique_ptr<GameObject> object)
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(const GameObject& object)
-{
-	m_objects.erase(
-		std::remove_if(
-			m_objects.begin(),
-			m_objects.end(),
-			[&object](const auto& ptr) { return ptr.get() == &object; }
-		),
-		m_objects.end()
-	);
-}
-
 void Scene::RemoveAll()
 {
 	m_objects.clear();
@@ -45,17 +33,26 @@ void dae::Scene::FixedUpdate()
 
 void dae::Scene::LateUpdate(float elapsedSec)
 {
-	for (int index{0}; index < m_objects.size(); ++index)
+	for (auto& object : m_objects)
 	{
-		if (not m_objects[index]->GetIsAlive())
-		{
-			m_objects.erase(m_objects.begin() + index);
-		}
-		else
-		{
-			m_objects[index]->LateUpdate(elapsedSec);
-		}
+		object->LateUpdate(elapsedSec);
 	}
+}
+
+void dae::Scene::Cleanup()
+{
+	for (auto& object : m_objects)
+	{
+		object->Cleanup();
+	}
+	// Remove death gameObjects
+	m_objects.erase(
+		std::remove_if(m_objects.begin(), m_objects.end(),
+			[](std::unique_ptr<GameObject>& go) {
+				return !go->GetIsAlive();
+			}),
+		m_objects.end()
+	);
 }
 
 void Scene::Render() const

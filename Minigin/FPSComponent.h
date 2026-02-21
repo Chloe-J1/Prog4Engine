@@ -17,6 +17,12 @@ namespace dae
             Component(owner)
         {
         }
+        virtual ~FPSComponent() = default;
+        FPSComponent(const FPSComponent& other) = delete;
+        FPSComponent(FPSComponent&& other) = delete;
+        Component& operator=(const FPSComponent& other) = delete;
+        FPSComponent& operator=(FPSComponent&& other) = delete;
+
         void Update(float elapsedSec) override
         {
             Component::Update(elapsedSec);

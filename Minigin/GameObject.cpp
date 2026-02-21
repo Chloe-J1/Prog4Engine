@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Component.h"
+#include <algorithm>
 #include <iostream>
 
 dae::GameObject::~GameObject()
@@ -50,14 +51,9 @@ void dae::GameObject::Cleanup()
 {
 	if (m_isAlive)
 	{
-		for (int index{ 0 }; index < m_components.size(); index++)
-		{
-			if (not m_components[index]->dae::Component::GetIsAlive())
-			{
-				m_components.erase(m_components.begin() + index);
-			}
-		}
+		auto lastAlive = std::partition(m_components.begin(), m_components.end(), [](Component* comp) { return comp->GetIsAlive(); });
 
+		m_components.erase(lastAlive, m_components.end());
 	}
 }
 

@@ -72,7 +72,8 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 	private:
 		Transform m_transform{};
-		std::vector<Component*> m_components;
+		std::vector<Component*> m_components; // Make this unique ptr
+		std::vector<Component*> m_aliveComponents;
 		bool m_isAlive{ true };
 	};
 	

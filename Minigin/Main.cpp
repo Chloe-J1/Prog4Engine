@@ -38,20 +38,25 @@ static void load()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto textComp = new dae::TextComponent(go.get(),"Programming 4 Assignment", font);
 	textComp->SetColor({ 255, 255, 0, 255 });
+	renderComp = new dae::RenderComponent(go.get());
+
 	go->SetPosition(292, 20);
 	go->AddComponent(textComp);
+	go->AddComponent(renderComp);
 	scene.Add(std::move(go));
 	// FPS
 	go = std::make_unique<dae::GameObject>();
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	textComp = new dae::TextComponent(go.get(),"FPS: 0", font);
 	textComp->SetColor({ 255, 255, 0, 255 });
+	renderComp = new dae::RenderComponent(go.get());
 
 	auto fpsComp = new dae::FPSComponent(go.get());
 
 	go->SetPosition(10, 10);
 	go->AddComponent(fpsComp);
 	go->AddComponent(textComp);
+	go->AddComponent(renderComp);
 
 	scene.Add(std::move(go));
 

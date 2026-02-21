@@ -23,7 +23,7 @@ namespace dae
 		Component& operator=(Component&& other) = delete;
 
 
-	protected:
+	private:
 		GameObject* m_gameObject{};
 		bool m_isAlive{ true };
 	};

@@ -5,6 +5,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include "Transform.h"
+#include "RenderComponent.h"
 
 #include <iostream>
 dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
@@ -29,16 +30,18 @@ void dae::TextComponent::Update(float)
 		m_textTexture = std::make_shared<Texture2D>(texture);
 		m_needsUpdate = false;
 	}
+	// Move to Start() func
+	m_renderComp = GetGameObject()->GetComponent<RenderComponent>();
+	if (m_renderComp == nullptr)
+	{
+		std::cout << "GameObject needs a renderComponent for the textComponent to work\n";
+	}
 }
 
 void dae::TextComponent::Render() const
 {
-	if (m_textTexture != nullptr)
-	{
-		const Transform& transform = GetGameObject()->GetTransform() ;
-		auto pos = transform.GetPosition();
-		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
-	}
+	m_renderComp->SetTexture(m_textTexture); // Put this in a Start() func
+	m_renderComp->Render();
 }
 
 void dae::TextComponent::SetText(const std::string& text)

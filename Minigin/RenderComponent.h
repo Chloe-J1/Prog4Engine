@@ -9,9 +9,9 @@ namespace dae
 	{
 		std::shared_ptr<Texture2D> m_texture{};
 	public:
-		
 
 		void SetTexture(const std::string& filename);
+		void SetTexture(std::shared_ptr<Texture2D> texture);
 		virtual void Render() const override;
 
 		RenderComponent(GameObject* owner);
