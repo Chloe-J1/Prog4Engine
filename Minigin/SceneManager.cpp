@@ -25,6 +25,14 @@ void dae::SceneManager::LateUpdate(float elapsedSec)
 	}
 }
 
+void dae::SceneManager::Cleanup()
+{
+	for (auto& scene : m_scenes)
+	{
+		scene->Cleanup();
+	}
+}
+
 void dae::SceneManager::Render()
 {
 	for (const auto& scene : m_scenes)

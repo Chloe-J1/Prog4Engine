@@ -13,9 +13,9 @@ namespace dae
     class FPSComponent final : public Component
     {
     public:
-        FPSComponent()
+        FPSComponent(dae::GameObject* owner):
+            Component(owner)
         {
-            
         }
         void Update(float elapsedSec) override
         {
@@ -35,7 +35,7 @@ namespace dae
                 std::string fpsText = "FPS: " + std::to_string((int)m_FPS);
                 if (m_textComponent)
                     m_textComponent->SetText(fpsText);
-                m_cumulatedTime -= 1.0f;
+                m_cumulatedTime = 0.0f;
                 m_frameCount = 0;
             }
             

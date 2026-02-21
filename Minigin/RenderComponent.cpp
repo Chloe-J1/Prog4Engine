@@ -16,3 +16,8 @@ void dae::RenderComponent::Render() const
 
 	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 }
+
+dae::RenderComponent::RenderComponent(GameObject* owner):
+	Component(owner)
+{
+}

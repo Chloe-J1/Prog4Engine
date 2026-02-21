@@ -134,6 +134,9 @@ void dae::Minigin::RunOneFrame()
 	}
 	SceneManager::GetInstance().Update(delta_time);
 	SceneManager::GetInstance().LateUpdate(delta_time);
+
+
+
 	Renderer::GetInstance().Render();
 
 	const int ms_per_frame = 16;
@@ -142,3 +145,5 @@ void dae::Minigin::RunOneFrame()
 	
 	
 }
+
+

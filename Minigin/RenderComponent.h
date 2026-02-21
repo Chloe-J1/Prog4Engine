@@ -14,7 +14,7 @@ namespace dae
 		void SetTexture(const std::string& filename);
 		virtual void Render() const override;
 
-		RenderComponent() = default;
+		RenderComponent(GameObject* owner);
 		virtual ~RenderComponent() = default;
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;

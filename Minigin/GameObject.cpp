@@ -32,7 +32,6 @@ void dae::GameObject::FixedUpdate()
 		{
 			comp->FixedUpdate();
 		}
-
 	}
 }
 
@@ -40,15 +39,22 @@ void dae::GameObject::LateUpdate(float elapsedSec)
 {
 	if (m_isAlive)
 	{
-		for (int index{0}; index < m_components.size(); index++)
+		for (const auto& comp : m_components)
+		{
+			comp->LateUpdate(elapsedSec);
+		}
+	}
+}
+
+void dae::GameObject::Cleanup()
+{
+	if (m_isAlive)
+	{
+		for (int index{ 0 }; index < m_components.size(); index++)
 		{
 			if (not m_components[index]->dae::Component::GetIsAlive())
 			{
 				m_components.erase(m_components.begin() + index);
-			}
-			else
-			{
-				m_components[index]->LateUpdate(elapsedSec);
 			}
 		}
 
@@ -81,7 +87,6 @@ void dae::GameObject::AddComponent(Component* component)
 {
 	if (m_isAlive)
 	{
-		component->m_gameObject = this;
 		m_components.emplace_back(component);
 
 	}

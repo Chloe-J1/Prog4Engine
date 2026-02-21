@@ -12,10 +12,11 @@ namespace dae
 	{
 
 	public:
-		virtual void Update(float elapsedSec);
-		virtual void FixedUpdate();
-		virtual void LateUpdate(float elapsedSec);
-		virtual void Render() const;
+		void Update(float elapsedSec);
+		void FixedUpdate();
+		void LateUpdate(float elapsedSec);
+		void Cleanup();
+		void Render() const;
 
 		// Transform
 		void SetPosition(float x, float y);
