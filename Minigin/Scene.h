@@ -10,14 +10,14 @@ namespace dae
 	{
 	public:
 		void Add(std::unique_ptr<GameObject> object);
-		template<typename T>
-		void Remove()
+		void Remove(const GameObject& object)
 		{
-			for (auto&& object : m_objects)
+			for (auto& obj : m_objects)
 			{
-				if (T* removeObject = dynamic_cast<T*>(object.get()))
+				if (obj.get() == &object)
 				{
-					object->SetIsAlive(false);
+					obj->SetIsAlive(false);
+					return;
 				}
 			}
 		}
@@ -40,6 +40,7 @@ namespace dae
 		explicit Scene() = default;
 
 		std::vector < std::unique_ptr<GameObject>> m_objects{};
+
 	};
 
 }

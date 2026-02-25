@@ -60,6 +60,17 @@ namespace dae
 			return false;
 		}
 
+		// Parenting
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		bool IsChild(GameObject* parent);
+		void SetLocalPosition(const glm::vec3& newPos);
+		const glm::vec3& GetWorldPosition();
+		void SetPositionDirty();
+		void RemoveChild(GameObject* child);
+		void AddChild(GameObject* child);
+		void UpdateWorldPosition();
+
+		// Destroy
 		void SetIsAlive(bool isAlive);
 		bool GetIsAlive();
 		
@@ -75,6 +86,12 @@ namespace dae
 		std::vector<Component*> m_components; // Make this unique ptr
 		std::vector<Component*> m_aliveComponents;
 		bool m_isAlive{ true };
+
+		GameObject* m_parent{}; // not owner
+		glm::vec3 m_localPosition{};
+		glm::vec3 m_worldPosition{};
+		bool m_isPositionDirty{ false };
+		std::vector<GameObject*> m_childObjects;
 	};
 	
 }
