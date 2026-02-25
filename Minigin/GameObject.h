@@ -27,7 +27,7 @@ namespace dae
 		template<typename T>
 		void RemoveComponent()
 		{
-			for (int index{0}; index < m_components.size(); ++index)
+			for (int index{0}; index < (int)m_components.size(); ++index)
 			{
 				if (T* removeComp = dynamic_cast<T*>(m_components[index]))
 				{
