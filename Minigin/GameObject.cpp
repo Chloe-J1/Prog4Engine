@@ -38,7 +38,6 @@ void dae::GameObject::LateUpdate(float elapsedSec)
 {
 	if (m_isAlive)
 	{
-		UpdateWorldPosition(); //
 		for (const auto& comp : m_components)
 		{
 			comp->LateUpdate(elapsedSec);
