@@ -11,9 +11,11 @@
 #include "TextComponent.h"
 #include "Scene.h"
 #include "RenderComponent.h"
+#include "RotationComponent.h"
 #include "FPSComponent.h"
 
 #include <filesystem>
+#include <glm/glm.hpp>
 namespace fs = std::filesystem;
 
 static void load()
@@ -22,18 +24,24 @@ static void load()
 
 	// Pacman
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	go->SetLocalPosition(glm::vec3{ 300.f, 300.f,0 });
+
 	dae::RenderComponent* renderComp = new dae::RenderComponent(go.get());
 	renderComp->SetTexture("Pacman.png");
 	go->AddComponent(renderComp);
-	go->SetPosition(300.f, 300.f);
+	dae::RotationComponent* rotComp = new dae::RotationComponent(go.get(), 2.f);
+	go->AddComponent(rotComp);
+	
 
 	// Mrs pacman
 	std::unique_ptr<dae::GameObject> cGo = std::make_unique<dae::GameObject>();
+	cGo->SetLocalPosition(glm::vec3{ 50.f, 50.f,0 });
 	renderComp = new dae::RenderComponent(cGo.get());
 	renderComp->SetTexture("Female_pacman.png");
 	cGo->AddComponent(renderComp);
-	cGo->SetParent(go.get(), true);
-	go->AddChild(cGo.get());
+	cGo->SetParent(go.get(), false);
+	rotComp = new dae::RotationComponent(cGo.get(), 20.f, false);
+	cGo->AddComponent(rotComp);
 
 	scene.Add(std::move(go));
 	scene.Add(std::move(cGo));

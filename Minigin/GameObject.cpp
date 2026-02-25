@@ -21,8 +21,6 @@ void dae::GameObject::Update(float elapsedSec)
 			comp->Update(elapsedSec);
 		}
 	}
-
-	
 }
 
 void dae::GameObject::FixedUpdate()
@@ -40,6 +38,7 @@ void dae::GameObject::LateUpdate(float elapsedSec)
 {
 	if (m_isAlive)
 	{
+		UpdateWorldPosition(); //
 		for (const auto& comp : m_components)
 		{
 			comp->LateUpdate(elapsedSec);
@@ -65,11 +64,6 @@ void dae::GameObject::Render() const
 		{
 			comp->Render();
 		}
-		for (const auto& child : m_childObjects)
-		{
-			if(child != nullptr)
-				child->Render();
-		}
 	}
 	
 }
@@ -77,6 +71,7 @@ void dae::GameObject::Render() const
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
+	SetPositionDirty();
 }
 
 dae::Transform dae::GameObject::GetTransform() const
@@ -133,6 +128,10 @@ const glm::vec3& dae::GameObject::GetWorldPosition()
 void dae::GameObject::SetPositionDirty()
 {
 	m_isPositionDirty = true;
+	for (auto& child : m_childObjects)
+	{
+		child->SetPositionDirty();
+	}
 }
 
 void dae::GameObject::RemoveChild(GameObject* child)
@@ -150,19 +149,30 @@ void dae::GameObject::AddChild(GameObject* child)
 	if (child != nullptr && child != this)
 	{
 		m_childObjects.emplace_back(child);
+
+		child->SetPositionDirty();
 	}
 }
 
 void dae::GameObject::UpdateWorldPosition()
 {
+
 	if (m_isPositionDirty)
 	{
 		if (m_parent == nullptr)
 			m_worldPosition = m_localPosition;
 		else
+		{
 			m_worldPosition = m_parent->GetWorldPosition() + m_localPosition;
+		}
 	}
+	m_transform.SetPosition(m_worldPosition.x, m_worldPosition.y, m_worldPosition.z); // draw on correct pos
 	m_isPositionDirty = false;
+}
+
+dae::GameObject* dae::GameObject::GetParent()
+{
+	return m_parent;
 }
 
 void dae::GameObject::SetIsAlive(bool isAlive)

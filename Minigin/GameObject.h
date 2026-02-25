@@ -67,8 +67,9 @@ namespace dae
 		const glm::vec3& GetWorldPosition();
 		void SetPositionDirty();
 		void RemoveChild(GameObject* child);
-		void AddChild(GameObject* child);
 		void UpdateWorldPosition();
+		GameObject* GetParent();
+		void AddChild(GameObject* child);
 
 		// Destroy
 		void SetIsAlive(bool isAlive);
