@@ -84,7 +84,6 @@ void dae::GameObject::AddComponent(Component* component)
 	if (m_isAlive)
 	{
 		m_components.emplace_back(component);
-
 	}
 }
 
@@ -136,12 +135,16 @@ void dae::GameObject::SetPositionDirty()
 
 void dae::GameObject::RemoveChild(GameObject* child)
 {
-	if (child == this || child == nullptr) return;
-	for (auto& c : m_childObjects)
-	{
-		if (c == child)
-			c->SetIsAlive(false);
-	}
+	if (child == nullptr) return;
+
+	auto it = std::find(m_childObjects.begin(), m_childObjects.end(), child);
+	if (it == m_childObjects.end()) return; // child not in container
+
+
+	// no longer child object of this parent
+	m_childObjects.erase(it);
+	child->SetParent(nullptr, false);
+
 }
 
 void dae::GameObject::AddChild(GameObject* child)
