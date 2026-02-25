@@ -17,11 +17,13 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include <cstdio>
 
 SDL_Window* g_window{};
 
 void LogSDLVersion(const std::string& message, int major, int minor, int patch)
 {
+
 #if WIN32
 	std::stringstream ss;
 	ss << message << major << "." << minor << "." << patch << "\n";
@@ -80,13 +82,14 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 	Renderer::GetInstance().Init(g_window);
 	ResourceManager::GetInstance().Init(dataPath);
 
-
+#ifndef __EMSCRIPTEN__
 	// CONSOL WINDOW
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 	freopen_s((FILE**)stderr, "CONOUT$", "w", stderr);
 	std::ios::sync_with_stdio(true);
 	std::cout.clear();
+#endif
 }
 
 dae::Minigin::~Minigin()
