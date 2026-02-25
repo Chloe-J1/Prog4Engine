@@ -21,7 +21,8 @@ void dae::RotationComponent::Update(float elapsedSec)
 
     
     glm::vec3 center{ GetGameObject()->GetWorldPosition() };
-    if (GameObject* parent = GetGameObject()->GetParent())
+    GameObject* parent = GetGameObject()->GetParent();
+    if (parent != nullptr)
     {
         // Child object pos is already relative to parent
         offsetX = cos(m_currAngle) * m_radius;
