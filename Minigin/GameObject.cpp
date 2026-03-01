@@ -9,6 +9,10 @@ dae::GameObject::~GameObject()
 	{
 		delete comp;
 	}
+	for (const auto& child : m_childObjects)
+	{
+		child->SetIsAlive(false);
+	}
 }
 
 void dae::GameObject::Update(float elapsedSec)
@@ -103,7 +107,7 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 	if (m_parent) m_parent->AddChild(this);
 }
 
-bool dae::GameObject::IsChild(GameObject* parent)
+bool dae::GameObject::IsChild(GameObject* parent) // fout
 {
 	if(parent == m_parent)
 		return true;
@@ -136,12 +140,14 @@ void dae::GameObject::RemoveChild(GameObject* child)
 {
 	if (child == nullptr) return;
 
-	auto it = std::find(m_childObjects.begin(), m_childObjects.end(), child);
-	if (it == m_childObjects.end()) return; // child not in container
+	auto itr = std::find(m_childObjects.begin(), m_childObjects.end(), child);
+
+	
+	if (itr == m_childObjects.end()) return; // child not in container
 
 
 	// no longer child object of this parent
-	m_childObjects.erase(it);
+	m_childObjects.erase(itr);
 	child->SetParent(nullptr, false);
 
 }

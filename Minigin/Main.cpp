@@ -46,6 +46,8 @@ static void load()
 	scene.Add(std::move(go));
 	scene.Add(std::move(cGo));
 
+	
+
 
 }
 

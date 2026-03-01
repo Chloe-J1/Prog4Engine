@@ -66,10 +66,8 @@ namespace dae
 		void SetLocalPosition(const glm::vec3& newPos);
 		const glm::vec3& GetWorldPosition();
 		void SetPositionDirty();
-		void RemoveChild(GameObject* child);
 		void UpdateWorldPosition();
 		GameObject* GetParent();
-		void AddChild(GameObject* child);
 
 		// Destroy
 		void SetIsAlive(bool isAlive);
@@ -93,6 +91,9 @@ namespace dae
 		glm::vec3 m_worldPosition{};
 		bool m_isPositionDirty{ false };
 		std::vector<GameObject*> m_childObjects;
+
+		void RemoveChild(GameObject* child);
+		void AddChild(GameObject* child);
 	};
 	
 }

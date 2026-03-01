@@ -37,5 +37,4 @@ void dae::RotationComponent::Update(float elapsedSec)
     
 
     GetGameObject()->SetLocalPosition({ offsetX, offsetY, 0.f });
-    GetGameObject()->UpdateWorldPosition();
 }
