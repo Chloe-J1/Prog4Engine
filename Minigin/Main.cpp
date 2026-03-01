@@ -24,7 +24,7 @@ static void load()
 
 	// Pacman
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->SetLocalPosition(glm::vec3{ 300.f, 300.f,0 });
+	go->SetLocalPosition( 300.f, 300.f);
 
 	dae::RenderComponent* renderComp = new dae::RenderComponent(go.get());
 	renderComp->SetTexture("Pacman.png");
@@ -35,7 +35,7 @@ static void load()
 
 	// Mrs pacman
 	std::unique_ptr<dae::GameObject> cGo = std::make_unique<dae::GameObject>();
-	cGo->SetLocalPosition(glm::vec3{ 50.f, 50.f,0 });
+	cGo->SetLocalPosition( 50.f, 50.f);
 	renderComp = new dae::RenderComponent(cGo.get());
 	renderComp->SetTexture("Female_pacman.png");
 	cGo->AddComponent(renderComp);

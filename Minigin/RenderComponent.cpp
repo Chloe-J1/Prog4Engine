@@ -18,7 +18,7 @@ void dae::RenderComponent::Render() const
 	if (m_texture == nullptr) return;
 	Component::Render();
 	Transform transform = GetGameObject()->GetTransform();
-	glm::vec3 pos = transform.GetPosition();
+	glm::vec3 pos = transform.GetWorldPosition();
 
 	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 }
