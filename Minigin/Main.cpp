@@ -13,6 +13,7 @@
 #include "RenderComponent.h"
 #include "RotationComponent.h"
 #include "FPSComponent.h"
+#include "GraphComponent.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -22,33 +23,47 @@ static void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene();
 
-	// Pacman
+	//// Pacman
+	//std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	//go->SetLocalPosition( 300.f, 300.f);
+
+	//dae::RenderComponent* renderComp = new dae::RenderComponent(go.get());
+	//renderComp->SetTexture("Pacman.png");
+	//go->AddComponent(renderComp);
+	//dae::RotationComponent* rotComp = new dae::RotationComponent(go.get(), 2.f);
+	//go->AddComponent(rotComp);
+	//
+
+	//// Mrs pacman
+	//std::unique_ptr<dae::GameObject> cGo = std::make_unique<dae::GameObject>();
+	//cGo->SetLocalPosition( 50.f, 50.f);
+	//renderComp = new dae::RenderComponent(cGo.get());
+	//renderComp->SetTexture("Female_pacman.png");
+	//cGo->AddComponent(renderComp);
+	//cGo->SetParent(go.get(), false);
+	//rotComp = new dae::RotationComponent(cGo.get(), 20.f, false);
+	//cGo->AddComponent(rotComp);
+
+	//scene.Add(std::move(go));
+	//scene.Add(std::move(cGo));
+
+	// FPS
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->SetLocalPosition( 300.f, 300.f);
-
+	go->SetLocalPosition(20, 20);
+	dae::FPSComponent* fpsComp = new dae::FPSComponent(go.get());
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	dae::TextComponent* textComp = new dae::TextComponent(go.get(), "FPS: ",  font);
 	dae::RenderComponent* renderComp = new dae::RenderComponent(go.get());
-	renderComp->SetTexture("Pacman.png");
+	go->AddComponent(fpsComp);
+	go->AddComponent(textComp);
 	go->AddComponent(renderComp);
-	dae::RotationComponent* rotComp = new dae::RotationComponent(go.get(), 2.f);
-	go->AddComponent(rotComp);
-	
-
-	// Mrs pacman
-	std::unique_ptr<dae::GameObject> cGo = std::make_unique<dae::GameObject>();
-	cGo->SetLocalPosition( 50.f, 50.f);
-	renderComp = new dae::RenderComponent(cGo.get());
-	renderComp->SetTexture("Female_pacman.png");
-	cGo->AddComponent(renderComp);
-	cGo->SetParent(go.get(), false);
-	rotComp = new dae::RotationComponent(cGo.get(), 20.f, false);
-	cGo->AddComponent(rotComp);
-
 	scene.Add(std::move(go));
-	scene.Add(std::move(cGo));
 
-	
-
-
+	// UI
+	go = std::make_unique<dae::GameObject>();
+	dae::GraphComponent* graphComp = new dae::GraphComponent(go.get());
+	go->AddComponent(graphComp);
+	scene.Add(std::move(go));
 }
 
 int main(int, char*[]) {

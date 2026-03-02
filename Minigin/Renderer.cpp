@@ -45,19 +45,11 @@ void dae::Renderer::Init(SDL_Window* window)
 
 void dae::Renderer::Render() const
 {
-	/*const auto& color = GetBackgroundColor();
-	SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, color.a);
-	SDL_RenderClear(m_renderer);
-
-	SceneManager::GetInstance().Render();
-
-	SDL_RenderPresent(m_renderer);*/
-
 	ImGui_ImplSDLRenderer3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow(); // For demonstration purposes, do not keep this in your engine
+	SceneManager::GetInstance().RenderUI();
 
 	ImGui::Render();
 
@@ -80,7 +72,7 @@ void dae::Renderer::Destroy()
 	}
 }
 
-void dae::Renderer::ShutDown() // CALL DEZE FUNC
+void dae::Renderer::ShutDown()
 {
 	ImGui_ImplSDLRenderer3_Shutdown();
 	ImGui_ImplSDL3_Shutdown();

@@ -76,6 +76,18 @@ void dae::GameObject::Render() const
 	
 }
 
+void dae::GameObject::RenderUI() const
+{
+	if (m_isAlive)
+	{
+		for (const auto& comp : m_components)
+		{
+			comp->RenderUI();
+		}
+	}
+
+}
+
 void dae::GameObject::SetLocalPosition(float x, float y)
 {
 	m_transform.SetLocalPosition(glm::vec3(x, y, 0.0f));
