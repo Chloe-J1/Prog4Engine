@@ -89,7 +89,6 @@ namespace dae
 
 		GameObject* m_parent{}; // not owner
 		
-		bool m_isPositionDirty{ false };
 		std::vector<GameObject*> m_childObjects;
 
 		void RemoveChild(GameObject* child);
