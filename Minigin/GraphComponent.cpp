@@ -30,10 +30,10 @@ void dae::GraphComponent::ShowExOneWindow(bool* p_open)
     {
         m_vectFirstEx.resize(nrElements);
         m_timesFirstEx.clear();
-        for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
+        for (size_t stepsize = 1; stepsize <= (size_t)1024; stepsize *= 2)
         {
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i = 0; i < m_vectFirstEx.size(); i += stepsize)
+            for (size_t i = 0; i < m_vectFirstEx.size(); i += stepsize)
             {
                 m_vectFirstEx[i] *= 2;
             }
@@ -66,10 +66,10 @@ void dae::GraphComponent::ShowExTwoWindow(bool* p_open)
     {
         m_vectGO.resize(nrElements);
         m_timesGO.clear();
-        for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
+        for (size_t stepsize = 1; stepsize <= (size_t)1024; stepsize *= 2)
         {
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i = 0; i < m_vectGO.size(); i += stepsize)
+            for (size_t i = 0; i < m_vectGO.size(); i += stepsize)
             {
                 m_vectGO[i].id *= 2;
             }
@@ -88,10 +88,10 @@ void dae::GraphComponent::ShowExTwoWindow(bool* p_open)
     {
         m_vectGOAlt.resize(nrElements);
         m_timesGOAlt.clear();
-        for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
+        for (size_t stepsize = 1; stepsize <= (size_t)1024; stepsize *= 2)
         {
             auto start = std::chrono::high_resolution_clock::now();
-            for (int i = 0; i < m_vectGOAlt.size(); i += stepsize)
+            for (size_t i = 0; i < m_vectGOAlt.size(); i += stepsize)
             {
                 if (m_vectGOAlt[i] != nullptr)
                     m_vectGOAlt[i]->id *= 2;

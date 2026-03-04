@@ -102,6 +102,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.w = width;
 	dst.h = height;
 	SDL_RenderTexture(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
