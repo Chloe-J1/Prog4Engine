@@ -45,11 +45,7 @@ void dae::GraphComponent::ShowExOneWindow(bool* p_open)
     }
     
     if(m_isTrashCachePressed)
-        ImGui::PlotLines("", m_timesFirstEx.data(), int(m_timesFirstEx.size()),0,nullptr,0,FLT_MAX,ImVec2(330,200));
-
-   
-
-
+        ImGui::PlotLines("##", m_timesFirstEx.data(), int(m_timesFirstEx.size()),0,nullptr,0,FLT_MAX,ImVec2(330,200));
 
     ImGui::End();
 }
@@ -84,7 +80,7 @@ void dae::GraphComponent::ShowExTwoWindow(bool* p_open)
         m_isTrashCacheGoPressed = true;
     }
     if(m_isTrashCacheGoPressed)
-        ImGui::PlotLines("", m_timesGO.data(), int(m_timesGO.size()), 0, nullptr, 0, FLT_MAX, ImVec2(330, 200));
+        ImGui::PlotLines("##", m_timesGO.data(), int(m_timesGO.size()), 0, nullptr, 0, FLT_MAX, ImVec2(330, 200));
 
     // Ptr GO
 
@@ -97,8 +93,8 @@ void dae::GraphComponent::ShowExTwoWindow(bool* p_open)
             auto start = std::chrono::high_resolution_clock::now();
             for (int i = 0; i < m_vectGOAlt.size(); i += stepsize)
             {
-                if (m_vectGOAlt[i] == nullptr) continue;
-                m_vectGOAlt[i]->id *= 2;
+                if (m_vectGOAlt[i] != nullptr)
+                    m_vectGOAlt[i]->id *= 2;
             }
             auto end = std::chrono::high_resolution_clock::now();
             auto elapsedTimeAlt = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
@@ -108,7 +104,7 @@ void dae::GraphComponent::ShowExTwoWindow(bool* p_open)
     }
 
     if (m_isTrashCacheGoAltPressed)
-        ImGui::PlotLines("", m_timesGOAlt.data(), int(m_timesGOAlt.size()), 0, nullptr, 0, FLT_MAX, ImVec2(330, 200));
+        ImGui::PlotLines("##", m_timesGOAlt.data(), int(m_timesGOAlt.size()), 0, nullptr, 0, FLT_MAX, ImVec2(330, 200));
 
     
     

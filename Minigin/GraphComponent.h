@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <vector>
+#include <memory>
 struct transform
 {
 	float matrix[16] = {
@@ -46,6 +47,6 @@ namespace dae
 		const int m_samplesStep{ 10000 };
 		std::vector<float> m_vectFirstEx;
 		std::vector<gameobject> m_vectGO;
-		std::vector<gameobject*> m_vectGOAlt;
+		std::vector<std::unique_ptr<gameobject>> m_vectGOAlt;
 	};
 }
