@@ -10,7 +10,7 @@ namespace dae
 		virtual void FixedUpdate() { };
 		virtual void LateUpdate(float) {  };
 		virtual void Render() const { };
-		virtual void RenderUI() const {};
+		virtual void RenderUI() {};
 
 		bool GetIsAlive() { return m_isAlive; };
 		void SetIsAlive(bool isAlive) { m_isAlive = isAlive; };

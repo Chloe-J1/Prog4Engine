@@ -63,7 +63,7 @@ void Scene::Render() const
 	}
 }
 
-void dae::Scene::RenderUI() const
+void dae::Scene::RenderUI()
 {
 	for (const auto& object : m_objects)
 	{

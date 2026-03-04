@@ -18,7 +18,7 @@ namespace dae
 		void LateUpdate(float elapsedSec);
 		void Cleanup();
 		void Render() const;
-		void RenderUI() const;
+		void RenderUI();
 
 		// Transform
 		void SetLocalPosition(float x, float y);

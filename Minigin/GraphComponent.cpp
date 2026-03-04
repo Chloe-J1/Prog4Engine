@@ -1,7 +1,30 @@
 #include "GraphComponent.h"
 #include "imgui.h"
-#include <cmath>
-#include <cstdio>
+
+#include <chrono>
+
+struct transform
+{
+    float matrix[16] = {
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1
+    };
+};
+
+class gameobject
+{
+public:
+    transform local;
+    int id;
+};
+class gameobjectAlt
+{
+public:
+    transform* local;
+    int id;
+};
 
 dae::GraphComponent::GraphComponent(GameObject* owner):
 	Component::Component(owner)
@@ -13,65 +36,126 @@ struct WindowData
 	bool ShowMainMenuBar = false;
 };
 
-void dae::GraphComponent::ShowWindow(bool* p_open) const
+void dae::GraphComponent::ShowExOneWindow(bool* p_open)
 {
-	/*static WindowData wd;
-
-    if (!ImGui::Begin("Graph one", p_open))
+    if (!ImGui::Begin("Exercise 1", p_open))
     {
         ImGui::End();
         return;
     }
+    static int nrElements{ 100000000 };
+    std::vector<float> vect(nrElements);
 
-    if (wd.ShowMainMenuBar)
-        ImGui::ShowDebugLogWindow(&wd.ShowMainMenuBar);
+    ImGui::InputInt("#samples", &nrElements, m_samplesStep);
     
-
+    if (ImGui::Button("Trash the cache"))
+    {
+        if (m_isFirstValuesCalc == false)
+        {
+            for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
+            {
+                auto start = std::chrono::high_resolution_clock::now();
+                for (int i = 0; i < vect.size(); i += stepsize)
+                {
+                    vect[i] *= 2;
+                }
+                auto end = std::chrono::high_resolution_clock::now();
+                auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+                m_timesFirstEx.push_back(float(elapsedTime));
+            }
+            m_isFirstValuesCalc = true;
+        }
+        m_isTrashCachePressed = true;
+    }
     
-    ImGui::End();*/
+    if(m_isTrashCachePressed)
+        ImGui::PlotLines("", m_timesFirstEx.data(), int(m_timesFirstEx.size()),0,nullptr,0,FLT_MAX,ImVec2(330,200));
 
-    if (!ImGui::Begin("Graph", p_open))
-    {
-        ImGui::End();
-        return;
-    }
+   
 
-    static float arr[] = { 0.6f, 0.1f, 1.0f, 0.5f, 0.92f, 0.1f, 0.2f };
-    ImGui::PlotLines("Frame Times", arr, IM_ARRAYSIZE(arr)); 
 
-    ImGui::PlotHistogram("Histogram", arr, IM_ARRAYSIZE(arr), 0, NULL, 0.0f, 1.0f, ImVec2(0, 80.0f));
-
-    static float values[90] = {};
-    static int values_offset = 0;
-    static double refresh_time = 0.0;
-
-    if (refresh_time == 0.0)
-        refresh_time = ImGui::GetTime();
-
-    while (refresh_time < ImGui::GetTime())
-    {
-        static float phase = 0.0f;
-        values[values_offset] = sinf(phase);
-        values_offset = (values_offset + 1) % IM_ARRAYSIZE(values);
-        phase += 0.10f;
-        refresh_time += 1.0f / 60.0f;
-    }
-
-    float average = 0.0f;
-    for (int n = 0; n < IM_ARRAYSIZE(values); n++)
-        average += values[n];
-    average /= (float)IM_ARRAYSIZE(values);
-
-    char overlay[32];
-    sprintf_s(overlay, "avg %.3f", average);
-    ImGui::PlotLines("Live Values", values, IM_ARRAYSIZE(values), values_offset, overlay, -1.0f, 1.0f, ImVec2(0, 80.0f));
 
     ImGui::End();
 }
 
+void dae::GraphComponent::ShowExTwoWindow(bool* p_open)
+{
+    if (!ImGui::Begin("Exercise 2", p_open))
+    {
+        ImGui::End();
+        return;
+    }
+    static int nrElementsGO{ 1000000 };
+    std::vector<gameobject> vect(nrElementsGO);
 
-void dae::GraphComponent::RenderUI() const
+    ImGui::InputInt("#samples", &nrElementsGO, m_samplesStep);
+
+    // Non-ptr GO
+    if (ImGui::Button("Trash the cache with GameObject3D"))
+    {
+        
+        if (m_isGOValuesCalc == false)
+        {
+
+            for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
+            {
+                auto start = std::chrono::high_resolution_clock::now();
+                for (int i = 0; i < vect.size(); i += stepsize)
+                {
+                    vect[i].id *= 2;
+                }
+                auto end = std::chrono::high_resolution_clock::now();
+                auto elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+                m_timesGO.push_back(float(elapsedTime));
+            }
+            m_isGOValuesCalc = true;
+        }
+        m_isTrashCacheGoPressed = true;
+    }
+    if(m_isTrashCacheGoPressed)
+        ImGui::PlotLines("", m_timesGO.data(), int(m_timesGO.size()), 0, nullptr, 0, FLT_MAX, ImVec2(330, 200));
+
+    // Ptr GO
+    static int nrElementsGOAlt{ 1000000 };
+    std::vector<gameobjectAlt> vectAlt(nrElementsGOAlt);
+
+    ImGui::InputInt("#samples", &nrElementsGOAlt, m_samplesStep);
+
+    if (ImGui::Button("Trash the cache with GameObject3DAlt"))
+    {
+
+        if (m_isGOAltValuesCalc == false)
+        {
+
+            for (int stepsize = 1; stepsize <= 1024; stepsize *= 2)
+            {
+                auto start = std::chrono::high_resolution_clock::now();
+                for (int i = 0; i < vectAlt.size(); i += stepsize)
+                {
+                    vectAlt[i].id *= 2;
+                }
+                auto end = std::chrono::high_resolution_clock::now();
+                auto elapsedTimeAlt = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+                m_timesGOAlt.push_back(float(elapsedTimeAlt));
+            }
+            m_isGOAltValuesCalc = true;
+        }
+        m_isTrashCacheGoAltPressed = true;
+    }
+
+    if (m_isTrashCacheGoAltPressed)
+        ImGui::PlotLines("", m_timesGOAlt.data(), int(m_timesGOAlt.size()), 0, nullptr, 0, FLT_MAX, ImVec2(330, 200));
+
+    
+    
+    ImGui::End();
+}
+
+
+
+void dae::GraphComponent::RenderUI()
 {
 	static bool open = true;
-	ShowWindow(&open);
+	ShowExOneWindow(&open);
+    ShowExTwoWindow(&open);
 }

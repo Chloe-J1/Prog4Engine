@@ -76,7 +76,7 @@ void dae::GameObject::Render() const
 	
 }
 
-void dae::GameObject::RenderUI() const
+void dae::GameObject::RenderUI()
 {
 	if (m_isAlive)
 	{
