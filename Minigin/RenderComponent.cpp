@@ -2,6 +2,13 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "GameObject.h"
+#include "Texture2D.h"
+
+dae::RenderComponent::RenderComponent(GameObject* owner):
+	Component(owner)
+{
+
+}
 
 void dae::RenderComponent::SetTexture(const std::string& filename)
 {
@@ -23,7 +30,3 @@ void dae::RenderComponent::Render() const
 	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
 }
 
-dae::RenderComponent::RenderComponent(GameObject* owner):
-	Component(owner)
-{
-}

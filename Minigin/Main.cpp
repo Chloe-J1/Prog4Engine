@@ -64,6 +64,13 @@ static void load()
 	dae::GraphComponent* graphComp = new dae::GraphComponent(go.get());
 	go->AddComponent(graphComp);
 	scene.Add(std::move(go));
+
+	/*go = std::make_unique<dae::GameObject>();
+	renderComp = new dae::RenderComponent(go.get());
+	renderComp->SetTexture("MrsPacman.png");
+	go->AddComponent(renderComp);
+	go->SetLocalPosition(200, 200);
+	scene.Add(std::move(go));*/
 }
 
 int main(int, char*[]) {

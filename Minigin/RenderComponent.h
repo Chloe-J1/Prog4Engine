@@ -7,7 +7,6 @@ namespace dae
 	class Texture2D;
 	class RenderComponent : public Component
 	{
-		std::shared_ptr<Texture2D> m_texture{};
 	public:
 
 		void SetTexture(const std::string& filename);
@@ -20,6 +19,8 @@ namespace dae
 		RenderComponent(RenderComponent&& other) = delete;
 		RenderComponent& operator=(const RenderComponent& other) = delete;
 		RenderComponent& operator=(RenderComponent&& other) = delete;
+	private:
+		std::shared_ptr<Texture2D> m_texture{};
 	};
 	
 }

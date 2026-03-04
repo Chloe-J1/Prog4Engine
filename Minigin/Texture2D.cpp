@@ -15,6 +15,20 @@ glm::vec2 dae::Texture2D::GetSize() const
     return { w, h };
 }
 
+float dae::Texture2D::GetWidth() const
+{
+    float w{}, h{};
+    SDL_GetTextureSize(m_texture, &w, &h);
+    return w;
+}
+
+float dae::Texture2D::GetHeight() const
+{
+    float w{}, h{};
+    SDL_GetTextureSize(m_texture, &w, &h);
+    return h;
+}
+
 SDL_Texture* dae::Texture2D::GetSDLTexture() const
 {
 	return m_texture;
