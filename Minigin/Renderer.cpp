@@ -67,22 +67,17 @@ void dae::Renderer::Destroy()
 {
 	if (m_renderer != nullptr)
 	{
+		ShutDownImgui();
 		SDL_DestroyRenderer(m_renderer);
 		m_renderer = nullptr;
 	}
 }
 
-void dae::Renderer::ShutDown()
+void dae::Renderer::ShutDownImgui()
 {
 	ImGui_ImplSDLRenderer3_Shutdown();
 	ImGui_ImplSDL3_Shutdown();
 	ImGui::DestroyContext();
-
-	if (m_renderer != nullptr)
-	{
-		SDL_DestroyRenderer(m_renderer);
-		m_renderer = nullptr;
-	}
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
@@ -103,6 +98,11 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.h = height;
 	SDL_RenderTexture(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 	
+}
+
+void dae::Renderer::RenderTexture(const Texture2D& texture, const SDL_FRect& srcRect, const SDL_FRect& dstRect) const
+{
+	SDL_RenderTexture(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &dstRect);
 }
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

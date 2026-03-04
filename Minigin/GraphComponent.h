@@ -48,5 +48,6 @@ namespace dae
 		std::vector<float> m_vectFirstEx;
 		std::vector<gameobject> m_vectGO;
 		std::vector<std::unique_ptr<gameobject>> m_vectGOAlt;
+
 	};
 }

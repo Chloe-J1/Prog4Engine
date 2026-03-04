@@ -47,30 +47,30 @@ static void load()
 	//scene.Add(std::move(go));
 	//scene.Add(std::move(cGo));
 
-	// FPS
-	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->SetLocalPosition(20, 20);
-	dae::FPSComponent* fpsComp = new dae::FPSComponent(go.get());
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	dae::TextComponent* textComp = new dae::TextComponent(go.get(), "FPS: ",  font);
-	dae::RenderComponent* renderComp = new dae::RenderComponent(go.get());
-	go->AddComponent(fpsComp);
-	go->AddComponent(textComp);
-	go->AddComponent(renderComp);
-	scene.Add(std::move(go));
+	//// FPS
+	//std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	//go->SetLocalPosition(20, 20);
+	//dae::FPSComponent* fpsComp = new dae::FPSComponent(go.get());
+	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	//dae::TextComponent* textComp = new dae::TextComponent(go.get(), "FPS: ",  font);
+	//dae::RenderComponent* renderComp = new dae::RenderComponent(go.get());
+	//go->AddComponent(fpsComp);
+	//go->AddComponent(textComp);
+	//go->AddComponent(renderComp);
+	//scene.Add(std::move(go));
 
 	// UI
-	go = std::make_unique<dae::GameObject>();
+	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	dae::GraphComponent* graphComp = new dae::GraphComponent(go.get());
 	go->AddComponent(graphComp);
 	scene.Add(std::move(go));
 
-	/*go = std::make_unique<dae::GameObject>();
-	renderComp = new dae::RenderComponent(go.get());
-	renderComp->SetTexture("MrsPacman.png");
+	/*std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	dae::RenderComponent* renderComp = new dae::RenderComponent(go.get(), "MrsPacman.png", 3, 1, 0.2f);
 	go->AddComponent(renderComp);
 	go->SetLocalPosition(200, 200);
 	scene.Add(std::move(go));*/
+	scene;
 }
 
 int main(int, char*[]) {

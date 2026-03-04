@@ -130,6 +130,7 @@ target_compile_features(imgui PUBLIC cxx_std_20)
 
 if (WIN32)
   # Add VLD (Visual Leak Detector) for memory leak detection on Windows
+  list(APPEND CMAKE_PREFIX_PATH "C:/Program Files (x86)/Visual Leak Detector")
   find_package(VLD CONFIG)
 endif()
 
@@ -140,7 +141,7 @@ find_package(Steamworks QUIET)
 target_include_directories("${TARGET_NAME}" PUBLIC
   ${CMAKE_SOURCE_DIR}/Minigin/
   ${imgui_SOURCE_DIR}
-  ${VLD_INCLUDE_DIR}
+  $<$<CONFIG:Debug>:${VLD_INCLUDE_DIRS}>
 )
 
 target_link_libraries("${TARGET_NAME}" PUBLIC
@@ -148,7 +149,7 @@ target_link_libraries("${TARGET_NAME}" PUBLIC
   SDL3_ttf::SDL3_ttf
   glm::glm
   imgui
-  ${VLD_LIBRARIES}
+  $<$<CONFIG:Debug>:${VLD_LIBRARIES}>
 )
 
 if(MSVC)
