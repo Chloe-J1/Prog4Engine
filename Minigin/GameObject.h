@@ -4,6 +4,7 @@
 #include "Component.h"
 #include <glm/glm.hpp>
 #include "Transform.h"
+#include <memory>
 
 namespace dae
 {
@@ -30,11 +31,11 @@ namespace dae
 		template<typename T>
 		void RemoveComponent()
 		{
-			for (int index{0}; index < (int)m_components.size(); ++index)
+			for (const auto& comp : m_components)
 			{
-				if (T* removeComp = dynamic_cast<T*>(m_components[index]))
+				if (dynamic_cast<T*>(comp.get()))
 				{
-					m_components[index]->SetIsAlive(false);
+					comp->SetIsAlive(false);
 				}
 			}
 		}
@@ -43,7 +44,7 @@ namespace dae
 		{
 			for (const auto& comp : m_components)
 			{
-				if (T* castedComp = dynamic_cast<T*>(comp))
+				if (T* castedComp = dynamic_cast<T*>(comp.get()))
 				{
 					return castedComp;
 				}
@@ -55,7 +56,7 @@ namespace dae
 		{
 			for (const auto& comp : m_components)
 			{
-				if (T* castedComp = dynamic_cast<T*>(comp))
+				if (T* castedComp = dynamic_cast<T*>(comp.get()))
 				{
 					return true;
 				}
@@ -83,8 +84,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 	private:
 		Transform m_transform;
-		std::vector<Component*> m_components; // Make this unique ptr
-		std::vector<Component*> m_aliveComponents;
+		std::vector<std::unique_ptr<Component>> m_components; // Make this unique ptr
 		bool m_isAlive{ true };
 
 		GameObject* m_parent{}; // not owner

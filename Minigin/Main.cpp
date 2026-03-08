@@ -59,18 +59,20 @@ static void load()
 	//go->AddComponent(renderComp);
 	//scene.Add(std::move(go));
 
-	// UI
-	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	dae::GraphComponent* graphComp = new dae::GraphComponent(go.get());
-	go->AddComponent(graphComp);
-	scene.Add(std::move(go));
+	//// UI
+	//std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	//dae::GraphComponent* graphComp = new dae::GraphComponent(go.get());
+	//go->AddComponent(graphComp);
+	//scene.Add(std::move(go));
 
-	/*std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	dae::RenderComponent* renderComp = new dae::RenderComponent(go.get(), "MrsPacman.png", 3, 1, 0.2f);
 	go->AddComponent(renderComp);
 	go->SetLocalPosition(200, 200);
-	scene.Add(std::move(go));*/
-	scene;
+
+	go->RemoveComponent<dae::RenderComponent>();
+	scene.Add(std::move(go));
+	
 }
 
 int main(int, char*[]) {

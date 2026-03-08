@@ -10,10 +10,6 @@ dae::GameObject::GameObject():
 
 dae::GameObject::~GameObject()
 {
-	for (const auto& comp : m_components)
-	{
-		delete comp;
-	}
 	for (const auto& child : m_childObjects)
 	{
 		child->SetIsAlive(false);
@@ -58,7 +54,7 @@ void dae::GameObject::Cleanup()
 {
 	if (m_isAlive)
 	{
-		auto lastAlive = std::partition(m_components.begin(), m_components.end(), [](Component* comp) { return comp->GetIsAlive(); });
+		auto lastAlive = std::partition(m_components.begin(), m_components.end(), [](const std::unique_ptr<Component>& comp) { return comp->GetIsAlive(); });
 
 		m_components.erase(lastAlive, m_components.end());
 	}
