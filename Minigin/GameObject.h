@@ -27,7 +27,14 @@ namespace dae
 		const glm::vec3& GetWorldPosition();
 
 		// Components
-		void AddComponent(Component* component);
+		//void AddComponent(Component* component);
+		template<typename T, typename... Args>
+		// Variadic template so that the user is forced to instantiate the component on the right owner
+		void AddComponent(Args&&... args)
+		{
+			auto newComp = std::make_unique<T>(this, std::forward<Args>(args)...);
+			m_components.emplace_back(std::move(newComp));
+		}
 		template<typename T>
 		void RemoveComponent()
 		{
@@ -84,7 +91,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 	private:
 		Transform m_transform;
-		std::vector<std::unique_ptr<Component>> m_components; // Make this unique ptr
+		std::vector<std::unique_ptr<Component>> m_components;
 		bool m_isAlive{ true };
 
 		GameObject* m_parent{}; // not owner

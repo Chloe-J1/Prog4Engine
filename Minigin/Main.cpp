@@ -66,11 +66,10 @@ static void load()
 	//scene.Add(std::move(go));
 
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	dae::RenderComponent* renderComp = new dae::RenderComponent(go.get(), "MrsPacman.png", 3, 1, 0.2f);
-	go->AddComponent(renderComp);
+	go->AddComponent<dae::RenderComponent>("MrsPacman.png", 3, 1, 0.2f);
+	
 	go->SetLocalPosition(200, 200);
 
-	go->RemoveComponent<dae::RenderComponent>();
 	scene.Add(std::move(go));
 	
 }

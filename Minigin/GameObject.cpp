@@ -99,13 +99,13 @@ const glm::vec3& dae::GameObject::GetWorldPosition()
 	return m_transform.GetWorldPosition();
 }
 
-void dae::GameObject::AddComponent(Component* component)
-{
-	if (m_isAlive)
-	{
-		m_components.emplace_back(component);
-	}
-}
+//void dae::GameObject::AddComponent(Component* component)
+//{
+//	if (m_isAlive)
+//	{
+//		m_components.emplace_back(component);
+//	}
+//}
 
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
