@@ -20,6 +20,13 @@ void dae::Transform::SetLocalPosition(const glm::vec3& newPos)
 	SetPositionDirty();
 }
 
+void dae::Transform::AddLocalPosition(const glm::vec2& deltaMovement)
+{
+	m_localPosition.x += deltaMovement.x;
+	m_localPosition.y += deltaMovement.y;
+	SetPositionDirty();
+}
+
 void dae::Transform::SetPositionDirty()
 {
 	m_isPositionDirty = true;

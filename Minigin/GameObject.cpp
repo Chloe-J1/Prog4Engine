@@ -89,6 +89,11 @@ void dae::GameObject::SetLocalPosition(float x, float y)
 	m_transform.SetLocalPosition(glm::vec3(x, y, 0.0f));
 }
 
+void dae::GameObject::AddLocalPosition(const glm::vec2& deltaMovement)
+{
+	m_transform.AddLocalPosition(deltaMovement);
+}
+
 dae::Transform dae::GameObject::GetTransform() const
 {
 	return m_transform;

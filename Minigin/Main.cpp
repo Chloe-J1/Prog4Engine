@@ -73,7 +73,7 @@ static void load()
 	
 	go->SetLocalPosition(200, 200);
 
-	go->AddComponent<dae::MoveComponent>();
+	go->AddComponent<dae::MoveComponent>(5.f);
 	dae::InputManager::GetInstance().BindCommand(4096, std::make_unique<dae::Jump>(go.get()));
 
 	scene.Add(std::move(go));

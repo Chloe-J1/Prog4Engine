@@ -2,12 +2,13 @@
 #include "GameObject.h"
 #include <iostream>
 
-dae::MoveComponent::MoveComponent(GameObject* owner):
-	Component(owner)
+dae::MoveComponent::MoveComponent(GameObject* owner, float speed):
+	Component(owner),
+	m_speed{speed}
 {
 }
 
-void dae::MoveComponent::Move(float speed, glm::vec3 direction)
+void dae::MoveComponent::Move(const glm::vec2& direction)
 {
-	std::cout << "JUMP\n";
+	GetGameObject()->AddLocalPosition(direction * m_speed);
 }

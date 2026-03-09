@@ -7,16 +7,16 @@ namespace dae
 	class MoveComponent final : public Component
 	{
 	public:
-		MoveComponent(GameObject* owner);
+		MoveComponent(GameObject* owner, float speed);
 		virtual ~MoveComponent() = default;
 		MoveComponent(const MoveComponent& other) = delete;
 		MoveComponent(MoveComponent&& other) = delete;
 		MoveComponent& operator=(const MoveComponent& other) = delete;
 		MoveComponent& operator=(MoveComponent&& other) = delete;
 
-		void Move(float speed, glm::vec3 direction);
+		void Move(const glm::vec2& direction);
 
 	private:
-
+		float m_speed;
 	};
 }
