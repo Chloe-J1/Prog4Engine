@@ -25,7 +25,7 @@ bool dae::InputManager::ProcessInput()
 	// Execute commands
 	for (const auto& commands : m_buttonsMap)
 	{
-		if (IsDownThisFrame(commands.first))
+		if (IsPressed(commands.first))
 			commands.second->Execute();
 	}
 
@@ -54,6 +54,11 @@ bool dae::InputManager::IsDownThisFrame(unsigned int button) const
 bool dae::InputManager::IsReleasedThisFrame(unsigned int button) const
 {
 	return m_buttonsReleasedThisFrame & button;
+}
+
+bool dae::InputManager::IsPressed(unsigned int button) const
+{
+	return m_currentState.Gamepad.wButtons & button;
 }
 
 void dae::InputManager::BindCommand(unsigned int button, std::unique_ptr<Command> command)

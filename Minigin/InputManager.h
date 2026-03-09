@@ -15,13 +15,15 @@ namespace dae
 		void Cleanup();
 
 		bool ProcessInput();
-		bool IsDownThisFrame(unsigned int button) const;
-		bool IsReleasedThisFrame(unsigned int button) const;
 
 		void BindCommand(unsigned int button, std::unique_ptr<Command> command);
 		void UnbindCommand(unsigned int button);
 
 	private:
+		bool IsDownThisFrame(unsigned int button) const;
+		bool IsReleasedThisFrame(unsigned int button) const;
+		bool IsPressed(unsigned int button) const;
+
 		int m_controllerIndex{ 0 }; // up to 4
 		XINPUT_STATE m_currentState{};
 		XINPUT_STATE m_previousState{};

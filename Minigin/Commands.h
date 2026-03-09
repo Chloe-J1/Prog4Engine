@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/glm.hpp>
 namespace dae
 {
 	class GameObject;
@@ -22,11 +23,17 @@ namespace dae
 	};
 
 
-	class Jump final : public GameObjectCommand
+	class Move final : public GameObjectCommand
 	{
 	public:
-		Jump(GameObject* gameObject) : GameObjectCommand(gameObject) {}
+		Move(GameObject* gameObject, const glm::vec2& direction) :
+			GameObjectCommand(gameObject),
+			m_direction{direction}
+		{}
 
 		virtual void Execute() override;
+
+	private:
+		glm::vec2 m_direction;
 	};
 }

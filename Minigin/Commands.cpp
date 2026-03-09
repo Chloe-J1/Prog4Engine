@@ -2,9 +2,10 @@
 #include "GameObject.h"
 #include "MoveComponent.h"
 
-void dae::Jump::Execute()
+
+void dae::Move::Execute()
 {
 	MoveComponent* move = GetGameObject()->GetComponent<MoveComponent>();
 	if (move)
-		move->Move(glm::vec3(1,0,0));
+		move->Move(m_direction);
 }
