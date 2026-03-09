@@ -18,6 +18,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <cstdio>
+#include <vld.h>
 
 SDL_Window* g_window{};
 
@@ -94,6 +95,7 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 
 dae::Minigin::~Minigin()
 {
+	InputManager::GetInstance().Cleanup();
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;

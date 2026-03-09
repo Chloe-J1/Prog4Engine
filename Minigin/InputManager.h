@@ -11,12 +11,14 @@ namespace dae
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
-		bool ProcessInput();
+		void Cleanup();
 
+		bool ProcessInput();
 		bool IsDownThisFrame(unsigned int button) const;
 		bool IsReleasedThisFrame(unsigned int button) const;
 
 		void BindCommand(unsigned int button, std::unique_ptr<Command> command);
+		void UnbindCommand(unsigned int button);
 
 	private:
 		int m_controllerIndex{ 0 }; // up to 4

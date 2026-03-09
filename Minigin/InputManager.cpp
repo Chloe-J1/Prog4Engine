@@ -5,6 +5,11 @@
 
 #include <iostream>
 
+void dae::InputManager::Cleanup()
+{
+	m_buttonsMap.clear();
+}
+
 bool dae::InputManager::ProcessInput()
 {
 	// XINPUT -> controller
@@ -54,4 +59,9 @@ bool dae::InputManager::IsReleasedThisFrame(unsigned int button) const
 void dae::InputManager::BindCommand(unsigned int button, std::unique_ptr<Command> command)
 {
 	m_buttonsMap[button] = std::move(command);
+}
+
+void dae::InputManager::UnbindCommand(unsigned int button)
+{
+	m_buttonsMap.erase(button);
 }
