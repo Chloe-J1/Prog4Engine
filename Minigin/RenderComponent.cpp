@@ -30,6 +30,8 @@ dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& file
 void dae::RenderComponent::SetTexture(const std::string& filename)
 {
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+	if (m_texture == nullptr)
+		std::cout << "Couldn't load " << filename << "\n";
 }
 
 void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture)
@@ -71,5 +73,10 @@ void dae::RenderComponent::Update(float elapsedSec)
 	m_srcRect.h = m_texture->GetHeight() / m_Rows;
 	m_srcRect.x = m_ActFrame % m_Cols * m_Width;
 	m_srcRect.y = m_ActFrame / m_Cols * m_Height + m_Height * m_Row;
+
+	// Update dstRect position to the position of the player
+	glm::vec3 pos{ GetGameObject()->GetWorldPosition() };
+	m_dstRect.x = pos.x;
+	m_dstRect.y = pos.y;
 }
 

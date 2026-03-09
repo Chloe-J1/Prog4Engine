@@ -18,7 +18,6 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <cstdio>
-#include <vld.h>
 
 SDL_Window* g_window{};
 

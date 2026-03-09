@@ -1,8 +1,8 @@
 #pragma once
-#include "GameObject.h"
-#include "MoveComponent.h"
 namespace dae
 {
+	class GameObject;
+	class MoveComponent;
 	class Command
 	{
 	public:
@@ -27,11 +27,6 @@ namespace dae
 	public:
 		Jump(GameObject* gameObject) : GameObjectCommand(gameObject) {}
 
-		void Execute() override
-		{
-			MoveComponent* move = GetGameObject()->GetComponent<MoveComponent>();
-			if (move)
-				move->Jump();
-		}
+		virtual void Execute() override;
 	};
 }

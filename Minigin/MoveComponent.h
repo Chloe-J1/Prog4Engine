@@ -1,5 +1,7 @@
 #pragma once
 #include "Component.h"
+#include <glm/glm.hpp>
+
 namespace dae
 {
 	class MoveComponent final : public Component
@@ -12,7 +14,7 @@ namespace dae
 		MoveComponent& operator=(const MoveComponent& other) = delete;
 		MoveComponent& operator=(MoveComponent&& other) = delete;
 
-		void Jump();
+		void Move(float speed, glm::vec3 direction);
 
 	private:
 

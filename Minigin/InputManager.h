@@ -5,6 +5,7 @@
 #include <XInput.h>
 #include "Commands.h"
 #include <map>
+#include <memory>
 
 namespace dae
 {
