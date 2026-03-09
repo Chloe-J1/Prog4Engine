@@ -27,7 +27,6 @@ namespace dae
 		const glm::vec3& GetWorldPosition();
 
 		// Components
-		//void AddComponent(Component* component);
 		template<typename T, typename... Args>
 		// Variadic template so that the user is forced to instantiate the component on the right owner
 		void AddComponent(Args&&... args)

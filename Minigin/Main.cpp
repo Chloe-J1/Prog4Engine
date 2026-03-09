@@ -14,10 +14,15 @@
 #include "RotationComponent.h"
 #include "FPSComponent.h"
 #include "GraphComponent.h"
+#include "MoveComponent.h"
+#include "Commands.h"
+#include "InputManager.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
 namespace fs = std::filesystem;
+
+#pragma comment(lib, "xinput.lib")
 
 static void load()
 {
@@ -50,13 +55,11 @@ static void load()
 	//// FPS
 	//std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	//go->SetLocalPosition(20, 20);
-	//dae::FPSComponent* fpsComp = new dae::FPSComponent(go.get());
+	//go->AddComponent<dae::FPSComponent>();
 	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//dae::TextComponent* textComp = new dae::TextComponent(go.get(), "FPS: ",  font);
-	//dae::RenderComponent* renderComp = new dae::RenderComponent(go.get());
-	//go->AddComponent(fpsComp);
-	//go->AddComponent(textComp);
-	//go->AddComponent(renderComp);
+	//go->AddComponent<dae::TextComponent>("FPS: ",  font);
+	//go->AddComponent<dae::RenderComponent>();
+
 	//scene.Add(std::move(go));
 
 	//// UI
@@ -69,6 +72,9 @@ static void load()
 	go->AddComponent<dae::RenderComponent>("MrsPacman.png", 3, 1, 0.2f);
 	
 	go->SetLocalPosition(200, 200);
+
+	go->AddComponent<dae::MoveComponent>();
+	dae::InputManager::GetInstance().BindCommand(4096, std::make_unique<dae::Jump>(go.get()));
 
 	scene.Add(std::move(go));
 	
