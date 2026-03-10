@@ -47,7 +47,19 @@ bool dae::InputManager::ProcessInput()
 		m_keyboardState = SDL_GetKeyboardState(nullptr);
 
 	memcpy(m_previousKeyboardState, m_keyboardState, SDL_SCANCODE_COUNT);
+
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		if (e.type == SDL_EVENT_QUIT) {
+			return false;
+		}
+
+		//process event for IMGUI
+		ImGui_ImplSDL3_ProcessEvent(&e);
+	}
+
 	m_keyboardState = SDL_GetKeyboardState(nullptr);
+	
 
 	for (const auto& commands : m_keyboardMap)
 	{
@@ -68,16 +80,7 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 
-	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_EVENT_QUIT) {
-			return false;
-		}
-		
-		//process event for IMGUI
-		ImGui_ImplSDL3_ProcessEvent(&e);
-	}
-
+	
 	return true;
 }
 
