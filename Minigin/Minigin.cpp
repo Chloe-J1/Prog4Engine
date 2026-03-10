@@ -83,12 +83,12 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 	ResourceManager::GetInstance().Init(dataPath);
 
 #ifndef __EMSCRIPTEN__
-	//// CONSOL WINDOW
-	//AllocConsole();
-	//freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-	//freopen_s((FILE**)stderr, "CONOUT$", "w", stderr);
-	//std::ios::sync_with_stdio(true);
-	//std::cout.clear();
+	// CONSOL WINDOW
+	AllocConsole();
+	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+	freopen_s((FILE**)stderr, "CONOUT$", "w", stderr);
+	std::ios::sync_with_stdio(true);
+	std::cout.clear();
 #endif
 }
 

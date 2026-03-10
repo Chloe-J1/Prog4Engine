@@ -16,11 +16,15 @@ namespace dae
 
 		void BindCommand(unsigned int button, std::unique_ptr<Command> command);
 		void UnbindCommand(unsigned int button);
-
+		void BindCommand(SDL_Scancode button, std::unique_ptr<Command> command);
+		void UnbindCommand(SDL_Scancode button);
 	private:
 		bool IsDownThisFrame(unsigned int button) const;
+		bool IsDownThisFrame(SDL_Scancode button) const;
 		bool IsReleasedThisFrame(unsigned int button) const;
+		bool IsReleasedThisFrame(SDL_Scancode button) const;
 		bool IsHold(unsigned int button) const;
+		bool IsHold(SDL_Scancode button) const;
 
 		int m_controllerIndex{ 0 }; // up to 4
 		XINPUT_STATE m_currentState{};
@@ -28,7 +32,11 @@ namespace dae
 		WORD m_buttonsPressedThisFrame{};
 		WORD m_buttonsReleasedThisFrame{};
 
-		std::map<unsigned int, std::unique_ptr<Command>> m_buttonsMap;
+		const bool* m_keyboardState{ nullptr };
+		bool m_previousKeyboardState[SDL_SCANCODE_COUNT]{};
+
+		std::map<unsigned int, std::unique_ptr<Command>> m_controllerMap;
+		std::map<SDL_Scancode, std::unique_ptr<Command>> m_keyboardMap;
 	};
 
 }

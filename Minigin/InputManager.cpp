@@ -20,7 +20,7 @@ bool dae::InputManager::ProcessInput()
 	// Execute commands
 
 
-	for (const auto& commands : m_buttonsMap)
+	for (const auto& commands : m_controllerMap)
 	{
 		switch (commands.second->GetEventType())
 		{
@@ -43,14 +43,37 @@ bool dae::InputManager::ProcessInput()
 
 	// SDL -> keyboard
 	//********
+	if(m_keyboardState == nullptr)
+		m_keyboardState = SDL_GetKeyboardState(nullptr);
+
+	memcpy(m_previousKeyboardState, m_keyboardState, SDL_SCANCODE_COUNT);
+	m_keyboardState = SDL_GetKeyboardState(nullptr);
+
+	for (const auto& commands : m_keyboardMap)
+	{
+		switch (commands.second->GetEventType())
+		{
+		case dae::TriggerEvent::Hold:
+			if (IsHold(commands.first))
+				commands.second->Execute();
+			break;
+		case dae::TriggerEvent::PressedThisFrame:
+			if (IsDownThisFrame(commands.first))
+				commands.second->Execute();
+			break;
+		case dae::TriggerEvent::ReleasedThisFrame:
+			if (IsReleasedThisFrame(commands.first))
+				commands.second->Execute();
+			break;
+		}
+	}
+
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_EVENT_QUIT) {
 			return false;
 		}
 		
-		
-
 		//process event for IMGUI
 		ImGui_ImplSDL3_ProcessEvent(&e);
 	}
@@ -63,9 +86,19 @@ bool dae::InputManager::IsDownThisFrame(unsigned int button) const
 	return m_buttonsPressedThisFrame & button;
 }
 
+bool dae::InputManager::IsDownThisFrame(SDL_Scancode button) const
+{
+	return m_keyboardState[button] && !m_previousKeyboardState[button];
+}
+
 bool dae::InputManager::IsReleasedThisFrame(unsigned int button) const
 {
 	return m_buttonsReleasedThisFrame & button;
+}
+
+bool dae::InputManager::IsReleasedThisFrame(SDL_Scancode button) const
+{
+	return !m_keyboardState[button] && m_previousKeyboardState[button];
 }
 
 bool dae::InputManager::IsHold(unsigned int button) const
@@ -73,12 +106,27 @@ bool dae::InputManager::IsHold(unsigned int button) const
 	return m_currentState.Gamepad.wButtons & button;
 }
 
+bool dae::InputManager::IsHold(SDL_Scancode button) const
+{
+	return m_keyboardState[button] && m_previousKeyboardState[button];
+}
+
 void dae::InputManager::BindCommand(unsigned int button, std::unique_ptr<Command> command)
 {
-	m_buttonsMap[button] = std::move(command);
+	m_controllerMap[button] = std::move(command);
 }
 
 void dae::InputManager::UnbindCommand(unsigned int button)
 {
-	m_buttonsMap.erase(button);
+	m_controllerMap.erase(button);
+}
+
+void dae::InputManager::BindCommand(SDL_Scancode button, std::unique_ptr<Command> command)
+{
+	m_keyboardMap[button] = std::move(command);
+}
+
+void dae::InputManager::UnbindCommand(SDL_Scancode button)
+{
+	m_keyboardMap.erase(button);
 }
