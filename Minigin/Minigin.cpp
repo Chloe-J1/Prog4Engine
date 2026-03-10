@@ -68,7 +68,7 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
-	g_window = SDL_CreateWindow(
+	g_window = SDL_CreateWindow( // Memory leak?
 		"Programming 4 assignment",
 		1024,
 		576,
@@ -83,18 +83,17 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 	ResourceManager::GetInstance().Init(dataPath);
 
 #ifndef __EMSCRIPTEN__
-	// CONSOL WINDOW
-	AllocConsole();
-	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-	freopen_s((FILE**)stderr, "CONOUT$", "w", stderr);
-	std::ios::sync_with_stdio(true);
-	std::cout.clear();
+	//// CONSOL WINDOW
+	//AllocConsole();
+	//freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+	//freopen_s((FILE**)stderr, "CONOUT$", "w", stderr);
+	//std::ios::sync_with_stdio(true);
+	//std::cout.clear();
 #endif
 }
 
 dae::Minigin::~Minigin()
 {
-	InputManager::GetInstance().Cleanup();
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;

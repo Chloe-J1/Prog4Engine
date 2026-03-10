@@ -5,11 +5,6 @@
 
 #include <iostream>
 
-void dae::InputManager::Cleanup()
-{
-	m_buttonsMap.clear();
-}
-
 bool dae::InputManager::ProcessInput()
 {
 	// XINPUT -> controller
@@ -23,10 +18,27 @@ bool dae::InputManager::ProcessInput()
 	m_buttonsReleasedThisFrame = buttonChanges & (~m_currentState.Gamepad.wButtons);
 
 	// Execute commands
+
+
 	for (const auto& commands : m_buttonsMap)
 	{
-		if (IsPressed(commands.first))
-			commands.second->Execute();
+		switch (commands.second->GetEventType())
+		{
+		case dae::TriggerEvent::Hold:
+			if (IsHold(commands.first))
+				commands.second->Execute();
+			break;
+		case dae::TriggerEvent::PressedThisFrame:
+			if (IsDownThisFrame(commands.first))
+				commands.second->Execute();
+			break;
+		case dae::TriggerEvent::ReleasedThisFrame:
+			if (IsReleasedThisFrame(commands.first))
+				commands.second->Execute();
+			break;
+		}
+
+		
 	}
 
 	// SDL -> keyboard
@@ -56,7 +68,7 @@ bool dae::InputManager::IsReleasedThisFrame(unsigned int button) const
 	return m_buttonsReleasedThisFrame & button;
 }
 
-bool dae::InputManager::IsPressed(unsigned int button) const
+bool dae::InputManager::IsHold(unsigned int button) const
 {
 	return m_currentState.Gamepad.wButtons & button;
 }
