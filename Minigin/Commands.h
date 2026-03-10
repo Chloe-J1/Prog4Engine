@@ -16,7 +16,11 @@ namespace dae
 	{
 	public:
 		Command(TriggerEvent eventType);
-		virtual ~Command() = default; // rule of 5
+		virtual ~Command() = default;
+		Command(const Command& other) = delete;
+		Command(Command&& other) = delete;
+		Command& operator=(const Command& other) = delete;
+		Command& operator=(Command&& other) = delete;
 
 		virtual void Execute() = 0;
 		TriggerEvent GetEventType();
@@ -36,6 +40,10 @@ namespace dae
 		}
 		
 		virtual ~GameObjectCommand() = default;
+		GameObjectCommand(const GameObjectCommand& other) = delete;
+		GameObjectCommand(GameObjectCommand&& other) = delete;
+		GameObjectCommand& operator=(const GameObjectCommand& other) = delete;
+		GameObjectCommand& operator=(GameObjectCommand&& other) = delete;
 	protected:
 		GameObject* GetGameObject() const { return m_gameObject; }
 	private:
