@@ -23,7 +23,6 @@
 namespace fs = std::filesystem;
 
 
-//#pragma comment(lib, "xinput.lib")
 
 static void load()
 {
