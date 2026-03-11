@@ -8,13 +8,21 @@ namespace dae
 	class Controller
 	{
 	public:
+		enum class Input
+		{
+			DPad_Up = 1,
+			DPad_Down = 2,
+			DPad_Left = 4,
+			DPad_Right = 8
+		};
+
 		Controller(int index);
 
 		void ProcessInput();
 
-		bool IsDownThisFrame(unsigned int button) const;
-		bool IsReleasedThisFrame(unsigned int button) const;
-		bool IsHold(unsigned int button) const;
+		bool IsDownThisFrame(Input button) const;
+		bool IsReleasedThisFrame(Input button) const;
+		bool IsHold(Input button) const;
 		glm::vec2 GetRightStickValues() const;
 		glm::vec2 GetLeftStickValues() const;
 	private:

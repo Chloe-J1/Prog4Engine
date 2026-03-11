@@ -34,7 +34,6 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 	
-	std::cout << m_controllers[0].GetLeftStickValues().x << "       " << m_controllers[0].GetLeftStickValues().y << "\n";
 
 	// SDL -> keyboard
 	//********
@@ -96,12 +95,12 @@ bool dae::InputManager::IsHold(SDL_Scancode button) const
 	return m_keyboardState[button] && m_previousKeyboardState[button];
 }
 
-void dae::InputManager::BindCommand(unsigned int button, std::unique_ptr<Command> command)
+void dae::InputManager::BindCommand(Controller::Input button, std::unique_ptr<Command> command)
 {
 	m_controllerMap[button] = std::move(command);
 }
 
-void dae::InputManager::UnbindCommand(unsigned int button)
+void dae::InputManager::UnbindCommand(Controller::Input button)
 {
 	m_controllerMap.erase(button);
 }

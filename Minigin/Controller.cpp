@@ -18,19 +18,19 @@ void dae::Controller::ProcessInput()
 	
 }
 
-bool dae::Controller::IsDownThisFrame(unsigned int button) const
+bool dae::Controller::IsDownThisFrame(Input button) const
 {
-	return m_buttonsPressedThisFrame & button;
+	return m_buttonsPressedThisFrame & (unsigned int)button;
 }
 
-bool dae::Controller::IsReleasedThisFrame(unsigned int button) const
+bool dae::Controller::IsReleasedThisFrame(Input button) const
 {
-	return m_buttonsReleasedThisFrame & button;
+	return m_buttonsReleasedThisFrame & (unsigned int)button;
 }
 
-bool dae::Controller::IsHold(unsigned int button) const
+bool dae::Controller::IsHold(Input button) const
 {
-	return m_currentState.Gamepad.wButtons & button;
+	return m_currentState.Gamepad.wButtons & (unsigned int)button;
 }
 
 glm::vec2 dae::Controller::GetRightStickValues() const

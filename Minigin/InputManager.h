@@ -15,8 +15,8 @@ namespace dae
 
 		bool ProcessInput();
 
-		void BindCommand(unsigned int button, std::unique_ptr<Command> command);
-		void UnbindCommand(unsigned int button);
+		void BindCommand(Controller::Input button, std::unique_ptr<Command> command);
+		void UnbindCommand(Controller::Input button);
 		void BindCommand(SDL_Scancode button, std::unique_ptr<Command> command);
 		void UnbindCommand(SDL_Scancode button);
 
@@ -32,7 +32,7 @@ namespace dae
 		bool m_previousKeyboardState[SDL_SCANCODE_COUNT]{};
 
 		std::map<SDL_Scancode, std::unique_ptr<Command>> m_keyboardMap;
-		std::map<unsigned int, std::unique_ptr<Command>> m_controllerMap;
+		std::map<Controller::Input, std::unique_ptr<Command>> m_controllerMap;
 		std::vector<Controller> m_controllers;
 
 		int m_nrCtrlrs{ 0 };

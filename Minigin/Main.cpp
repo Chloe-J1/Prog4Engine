@@ -78,10 +78,10 @@ static void load()
 	
 	dae::InputManager::GetInstance().AddController();
 
-	dae::InputManager::GetInstance().BindCommand(8, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(1,0))); // right
-	dae::InputManager::GetInstance().BindCommand(4, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(-1, 0))); // left
-	dae::InputManager::GetInstance().BindCommand(1, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, -1))); // up
-	dae::InputManager::GetInstance().BindCommand(2, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, 1))); // down
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Right, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(1,0))); // right
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Left, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(-1, 0))); // left
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Up, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, -1))); // up
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Down, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, 1))); // down
 
 	scene.Add(std::move(go));
 
