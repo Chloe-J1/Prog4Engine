@@ -43,7 +43,6 @@ void dae::RenderComponent::Render() const
 {
 	if (m_texture == nullptr) return;
 	Component::Render();
-	Transform transform = GetGameObject()->GetTransform();
 
 	Renderer::GetInstance().RenderTexture(*m_texture, m_srcRect, m_dstRect);
 }
