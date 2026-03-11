@@ -129,7 +129,7 @@ void dae::Minigin::RunOneFrame()
 	m_lag += delta_time;
 
 	const float fixed_time_step = 0.02f;
-	m_quit = !InputManager::GetInstance().ProcessInput();
+	m_quit = !InputManager::GetInstance().ProcessInput(delta_time);
 	while (m_lag >= fixed_time_step)
 	{
 		SceneManager::GetInstance().FixedUpdate();

@@ -14,7 +14,7 @@ namespace dae
 		MoveComponent& operator=(const MoveComponent& other) = delete;
 		MoveComponent& operator=(MoveComponent&& other) = delete;
 
-		void Move(const glm::vec2& direction);
+		void Move(const glm::vec2& direction, float elapsedSec);
 
 	private:
 		float m_speed;

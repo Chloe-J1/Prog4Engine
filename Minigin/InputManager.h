@@ -13,7 +13,7 @@ namespace dae
 	{
 	public:
 
-		bool ProcessInput();
+		bool ProcessInput(float elapsedSec);
 
 		void BindCommand(Controller::Input button, std::unique_ptr<Command> command);
 		void UnbindCommand(Controller::Input button);

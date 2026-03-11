@@ -8,7 +8,7 @@ dae::MoveComponent::MoveComponent(GameObject* owner, float speed):
 {
 }
 
-void dae::MoveComponent::Move(const glm::vec2& direction)
+void dae::MoveComponent::Move(const glm::vec2& direction, float elapsedSec)
 {
-	GetGameObject()->AddLocalPosition(direction * m_speed);
+	GetGameObject()->AddLocalPosition(direction * m_speed * elapsedSec);
 }

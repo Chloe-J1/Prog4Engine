@@ -67,7 +67,7 @@ static void load()
 	//dae::GraphComponent* graphComp = new dae::GraphComponent(go.get());
 	//go->AddComponent(graphComp);
 	//scene.Add(std::move(go));
-	const float speed{ 2.f };
+	const float speed{ 50.f };
 
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("MrsPacman.png", 3, 1, 0.2f);
@@ -90,7 +90,7 @@ static void load()
 
 	go->SetLocalPosition(300, 200);
 
-	go->AddComponent<dae::MoveComponent>(speed);
+	go->AddComponent<dae::MoveComponent>(speed * 2);
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(1, 0))); // right
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(-1, 0))); // left
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, -1))); // up

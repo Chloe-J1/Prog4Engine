@@ -3,11 +3,9 @@
 #include "backends/imgui_impl_sdl3.h"
 
 
-#include <iostream>
 
 
-
-bool dae::InputManager::ProcessInput()
+bool dae::InputManager::ProcessInput(float elapsedSec)
 {
 	// XINPUT -> controller
 	//********
@@ -20,15 +18,15 @@ bool dae::InputManager::ProcessInput()
 			{
 			case dae::TriggerEvent::Hold:
 				if (controller.IsHold(commands.first))
-					commands.second->Execute();
+					commands.second->Execute(elapsedSec);
 				break;
 			case dae::TriggerEvent::PressedThisFrame:
 				if (controller.IsDownThisFrame(commands.first))
-					commands.second->Execute();
+					commands.second->Execute(elapsedSec);
 				break;
 			case dae::TriggerEvent::ReleasedThisFrame:
 				if (controller.IsReleasedThisFrame(commands.first))
-					commands.second->Execute();
+					commands.second->Execute(elapsedSec);
 				break;
 			}
 		}
@@ -61,15 +59,15 @@ bool dae::InputManager::ProcessInput()
 		{
 		case dae::TriggerEvent::Hold:
 			if (IsHold(commands.first))
-				commands.second->Execute();
+				commands.second->Execute(elapsedSec);
 			break;
 		case dae::TriggerEvent::PressedThisFrame:
 			if (IsDownThisFrame(commands.first))
-				commands.second->Execute();
+				commands.second->Execute(elapsedSec);
 			break;
 		case dae::TriggerEvent::ReleasedThisFrame:
 			if (IsReleasedThisFrame(commands.first))
-				commands.second->Execute();
+				commands.second->Execute(elapsedSec);
 			break;
 		}
 	}

@@ -22,7 +22,7 @@ namespace dae
 		Command& operator=(const Command& other) = delete;
 		Command& operator=(Command&& other) = delete;
 
-		virtual void Execute() = 0;
+		virtual void Execute(float elapsedSec) = 0;
 		TriggerEvent GetEventType();
 
 	private:
@@ -60,7 +60,7 @@ namespace dae
 			m_direction{direction}
 		{}
 
-		virtual void Execute() override;
+		virtual void Execute(float elapsedSec) override;
 		
 	private:
 		glm::vec2 m_direction;

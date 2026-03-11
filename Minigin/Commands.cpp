@@ -16,10 +16,10 @@ dae::TriggerEvent dae::Command::GetEventType()
 
 // MOVE
 //********
-void dae::Move::Execute()
+void dae::Move::Execute(float elapsedSec)
 {
 	MoveComponent* move = GetGameObject()->GetComponent<MoveComponent>();
 	if (move)
-		move->Move(m_direction);
+		move->Move(m_direction, elapsedSec);
 }
 
