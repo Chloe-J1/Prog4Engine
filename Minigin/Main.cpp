@@ -22,7 +22,8 @@
 #include <glm/glm.hpp>
 namespace fs = std::filesystem;
 
-#pragma comment(lib, "xinput.lib")
+
+//#pragma comment(lib, "xinput.lib")
 
 static void load()
 {
