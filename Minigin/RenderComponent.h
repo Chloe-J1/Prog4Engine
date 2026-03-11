@@ -27,9 +27,9 @@ namespace dae
 		int m_Cols;
 		int m_Rows;
 		int m_Row;
+		float m_FrameSec;
 		float m_Width;
 		float m_Height;
-		float m_FrameSec;
 		float m_AccuSec;
 		int   m_ActFrame;
 		int m_NrFrames;

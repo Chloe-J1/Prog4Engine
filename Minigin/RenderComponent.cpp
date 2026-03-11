@@ -9,8 +9,8 @@ dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& file
 	Component(owner),
 	m_Cols{nrCols},
 	m_Rows{nrRows},
-	m_FrameSec{frameSec},
 	m_Row{row},
+	m_FrameSec{frameSec},
 	m_AccuSec{0},
 	m_ActFrame{0},
 	m_NrFrames{nrCols}
@@ -44,7 +44,6 @@ void dae::RenderComponent::Render() const
 	if (m_texture == nullptr) return;
 	Component::Render();
 	Transform transform = GetGameObject()->GetTransform();
-	glm::vec3 pos = transform.GetWorldPosition();
 
 	Renderer::GetInstance().RenderTexture(*m_texture, m_srcRect, m_dstRect);
 }
