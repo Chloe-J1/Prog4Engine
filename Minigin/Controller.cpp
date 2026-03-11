@@ -67,9 +67,9 @@ class dae::Controller::ControllerImpl
 public:
 	ControllerImpl(int index){}
 	void ProcessInput() {}
-	bool IsDownThisFrame(Controller::Input button) const { return false; }
-	bool IsReleasedThisFrame(Controller::Input button) const { return false; }
-	bool IsHold(Controller::Input button) const { return false; }
+	bool IsDownThisFrame(Controller::Input) const { return false; }
+	bool IsReleasedThisFrame(Controller::Input) const { return false; }
+	bool IsHold(Controller::Input) const { return false; }
 	glm::vec2 GetLeftStickValues() const { return {}; }
 	glm::vec2 GetRightStickValues() const { return {}; }
 };
