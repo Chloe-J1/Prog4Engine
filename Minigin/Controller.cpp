@@ -65,7 +65,7 @@ private:
 class dae::Controller::ControllerImpl
 {
 public:
-	ControllerImpl(int index){}
+	ControllerImpl(int){}
 	void ProcessInput() {}
 	bool IsDownThisFrame(Controller::Input) const { return false; }
 	bool IsReleasedThisFrame(Controller::Input) const { return false; }
