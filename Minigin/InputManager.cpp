@@ -11,21 +11,21 @@ bool dae::InputManager::ProcessInput(float elapsedSec)
 	//********
 	for (auto& controller : m_controllers)
 	{
-		controller.ProcessInput();
-		for (const auto& commands : m_controllerMap)
+		controller->ProcessInput();
+		for (auto& commands : m_controllerMap)
 		{
 			switch (commands.second->GetEventType())
 			{
 			case dae::TriggerEvent::Hold:
-				if (controller.IsHold(commands.first))
+				if (controller->IsHold(commands.first))
 					commands.second->Execute(elapsedSec);
 				break;
 			case dae::TriggerEvent::PressedThisFrame:
-				if (controller.IsDownThisFrame(commands.first))
+				if (controller->IsDownThisFrame(commands.first))
 					commands.second->Execute(elapsedSec);
 				break;
 			case dae::TriggerEvent::ReleasedThisFrame:
-				if (controller.IsReleasedThisFrame(commands.first))
+				if (controller->IsReleasedThisFrame(commands.first))
 					commands.second->Execute(elapsedSec);
 				break;
 			}
@@ -117,7 +117,7 @@ void dae::InputManager::AddController()
 {
 	if (m_nrCtrlrs < m_maxCtrlrs)
 	{
-		m_controllers.push_back(Controller(m_nrCtrlrs));
+		m_controllers.emplace_back(std::make_unique<Controller>(m_nrCtrlrs));
 		m_nrCtrlrs++;
 	}
 }

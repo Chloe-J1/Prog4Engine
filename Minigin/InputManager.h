@@ -33,7 +33,7 @@ namespace dae
 
 		std::map<SDL_Scancode, std::unique_ptr<Command>> m_keyboardMap;
 		std::map<Controller::Input, std::unique_ptr<Command>> m_controllerMap;
-		std::vector<Controller> m_controllers;
+		std::vector<std::unique_ptr<Controller>> m_controllers;
 
 		int m_nrCtrlrs{ 0 };
 		const int m_maxCtrlrs{ 4 };
