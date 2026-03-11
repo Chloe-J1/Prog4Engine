@@ -32,3 +32,13 @@ bool dae::Controller::IsHold(unsigned int button) const
 {
 	return m_currentState.Gamepad.wButtons & button;
 }
+
+glm::vec2 dae::Controller::GetRightStickValues() const
+{
+	return glm::vec2(m_currentState.Gamepad.sThumbRX, m_currentState.Gamepad.sThumbRY);
+}
+
+glm::vec2 dae::Controller::GetLeftStickValues() const
+{
+	return glm::vec2(m_currentState.Gamepad.sThumbLX, m_currentState.Gamepad.sThumbLY);
+}

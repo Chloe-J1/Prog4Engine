@@ -11,7 +11,7 @@ bool dae::InputManager::ProcessInput()
 {
 	// XINPUT -> controller
 	//********
-	for (auto controller : m_controllers)
+	for (auto& controller : m_controllers)
 	{
 		controller.ProcessInput();
 		for (const auto& commands : m_controllerMap)
@@ -34,6 +34,7 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 	
+	std::cout << m_controllers[0].GetLeftStickValues().x << "       " << m_controllers[0].GetLeftStickValues().y << "\n";
 
 	// SDL -> keyboard
 	//********
