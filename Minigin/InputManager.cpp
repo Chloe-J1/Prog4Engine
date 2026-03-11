@@ -5,41 +5,35 @@
 
 #include <iostream>
 
+
+
 bool dae::InputManager::ProcessInput()
 {
 	// XINPUT -> controller
 	//********
-	CopyMemory(&m_previousState, &m_currentState, sizeof(XINPUT_STATE));
-	ZeroMemory(&m_currentState, sizeof(XINPUT_STATE));
-	XInputGetState(m_controllerIndex, &m_currentState);
-
-	auto buttonChanges = m_currentState.Gamepad.wButtons ^ m_previousState.Gamepad.wButtons;
-	m_buttonsPressedThisFrame = buttonChanges & m_currentState.Gamepad.wButtons;
-	m_buttonsReleasedThisFrame = buttonChanges & (~m_currentState.Gamepad.wButtons);
-
-	// Execute commands
-
-
-	for (const auto& commands : m_controllerMap)
+	for (auto controller : m_controllers)
 	{
-		switch (commands.second->GetEventType())
+		controller.ProcessInput();
+		for (const auto& commands : m_controllerMap)
 		{
-		case dae::TriggerEvent::Hold:
-			if (IsHold(commands.first))
-				commands.second->Execute();
-			break;
-		case dae::TriggerEvent::PressedThisFrame:
-			if (IsDownThisFrame(commands.first))
-				commands.second->Execute();
-			break;
-		case dae::TriggerEvent::ReleasedThisFrame:
-			if (IsReleasedThisFrame(commands.first))
-				commands.second->Execute();
-			break;
+			switch (commands.second->GetEventType())
+			{
+			case dae::TriggerEvent::Hold:
+				if (controller.IsHold(commands.first))
+					commands.second->Execute();
+				break;
+			case dae::TriggerEvent::PressedThisFrame:
+				if (controller.IsDownThisFrame(commands.first))
+					commands.second->Execute();
+				break;
+			case dae::TriggerEvent::ReleasedThisFrame:
+				if (controller.IsReleasedThisFrame(commands.first))
+					commands.second->Execute();
+				break;
+			}
 		}
-
-		
 	}
+	
 
 	// SDL -> keyboard
 	//********
@@ -84,29 +78,16 @@ bool dae::InputManager::ProcessInput()
 	return true;
 }
 
-bool dae::InputManager::IsDownThisFrame(unsigned int button) const
-{
-	return m_buttonsPressedThisFrame & button;
-}
+
 
 bool dae::InputManager::IsDownThisFrame(SDL_Scancode button) const
 {
 	return m_keyboardState[button] && !m_previousKeyboardState[button];
 }
 
-bool dae::InputManager::IsReleasedThisFrame(unsigned int button) const
-{
-	return m_buttonsReleasedThisFrame & button;
-}
-
 bool dae::InputManager::IsReleasedThisFrame(SDL_Scancode button) const
 {
 	return !m_keyboardState[button] && m_previousKeyboardState[button];
-}
-
-bool dae::InputManager::IsHold(unsigned int button) const
-{
-	return m_currentState.Gamepad.wButtons & button;
 }
 
 bool dae::InputManager::IsHold(SDL_Scancode button) const
@@ -132,4 +113,13 @@ void dae::InputManager::BindCommand(SDL_Scancode button, std::unique_ptr<Command
 void dae::InputManager::UnbindCommand(SDL_Scancode button)
 {
 	m_keyboardMap.erase(button);
+}
+
+void dae::InputManager::AddController()
+{
+	if (m_nrCtrlrs < m_maxCtrlrs)
+	{
+		m_controllers.push_back(Controller(m_nrCtrlrs));
+		m_nrCtrlrs++;
+	}
 }
