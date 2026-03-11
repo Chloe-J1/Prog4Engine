@@ -1,7 +1,9 @@
 #pragma once
+#if WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <XInput.h>
+#endif
 #include <glm/vec2.hpp>
 namespace dae
 {
