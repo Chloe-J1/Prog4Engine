@@ -63,21 +63,21 @@ private:
     WORD m_buttonsReleasedThisFrame{};
 };
 	// Emscripten
-#else
+//#else
 #include <SDL3/SDL.h>
 #include <iostream>
 class dae::Controller::ControllerImpl
 {
 	
 public:
-	ControllerImpl(int):
+	ControllerImpl(int index):
 	{
 		int count = 0;
 		SDL_JoystickID* ids = SDL_GetGamepads(&count);
 
-		if (ids == nullptr || index >= count)
+		if (ids == nullptr)
 		{
-			std::cout << "no controller at index " << index << "\n";
+			std::cout << "no controller at index" << index << "\n";
 			return;
 		}
 
