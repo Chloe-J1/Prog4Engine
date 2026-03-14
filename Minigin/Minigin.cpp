@@ -68,14 +68,14 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 
-//#ifdef __EMSCRIPTEN
+#ifdef __EMSCRIPTEN
 	if (!SDL_Init(SDL_INIT_GAMEPAD))
 	{
 		SDL_Log("Gamepad error: %s", SDL_GetError());
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 	
-//#endif
+#endif
 
 
 	g_window = SDL_CreateWindow( 
