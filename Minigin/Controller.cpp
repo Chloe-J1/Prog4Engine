@@ -70,8 +70,7 @@ class dae::Controller::ControllerImpl
 {
 	
 public:
-	ControllerImpl(int index):
-		m_controllerIndex{index}
+	ControllerImpl(int):
 	{
 		int count = 0;
 		SDL_JoystickID* ids = SDL_GetGamepads(&count);
@@ -113,7 +112,6 @@ public:
 
 
 private:
-	int m_controllerIndex{ 0 };
 	bool m_prevState[SDL_GAMEPAD_BUTTON_COUNT] = {};
 	bool m_currState[SDL_GAMEPAD_BUTTON_COUNT] = {};
 	SDL_Gamepad* m_gamepad{};
