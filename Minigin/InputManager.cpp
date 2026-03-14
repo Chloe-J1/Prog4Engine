@@ -5,6 +5,11 @@
 
 
 
+dae::InputManager::InputManager()
+{
+	m_keyboardState = SDL_GetKeyboardState(nullptr);
+}
+
 bool dae::InputManager::ProcessInput(float elapsedSec)
 {
 	// XINPUT -> controller
@@ -35,9 +40,6 @@ bool dae::InputManager::ProcessInput(float elapsedSec)
 
 	// SDL -> keyboard
 	//********
-	if(m_keyboardState == nullptr)
-		m_keyboardState = SDL_GetKeyboardState(nullptr);
-
 	memcpy(m_previousKeyboardState, m_keyboardState, SDL_SCANCODE_COUNT);
 
 	SDL_Event e;

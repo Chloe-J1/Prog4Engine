@@ -6,6 +6,28 @@ namespace dae
 	class Controller
 	{
 	public:
+#ifdef __EMSCRIPTEN__
+		// SDL3
+		enum class Input
+		{
+			DPad_Up = 11,
+			DPad_Down = 12,
+			DPad_Left = 13,
+			DPad_Right = 14,
+
+			//XBOX
+			Button_A = 0,
+			Button_B = 1,
+			Button_Y = 3,
+			Button_X = 2,
+
+			Button_R1 = 10,
+			Button_L1 = 9,
+			Button_R = 8,
+			Button_L = 7,
+		};
+#else	
+		// XInput
 		enum class Input
 		{
 			DPad_Up = 1,
@@ -24,6 +46,8 @@ namespace dae
 			Button_R = 128,
 			Button_L = 64
 		};
+#endif
+		
 	
 		Controller(int index);
 		~Controller();

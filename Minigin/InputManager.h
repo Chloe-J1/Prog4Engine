@@ -18,7 +18,7 @@ namespace dae
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
-
+		InputManager();
 		bool ProcessInput(float elapsedSec);
 
 		void BindCommand(Controller::Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
