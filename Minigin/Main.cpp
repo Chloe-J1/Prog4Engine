@@ -52,12 +52,12 @@ static void load()
 	//scene.Add(std::move(cGo));
 
 	//// FPS
-	//std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	//go->SetLocalPosition(20, 20);
-	//go->AddComponent<dae::FPSComponent>();
+	//std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
+	//fpsgo->SetLocalPosition(20, 20);
+	//fpsgo->AddComponent<dae::FPSComponent>();
 	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//go->AddComponent<dae::TextComponent>("FPS: ",  font);
-	//go->AddComponent<dae::RenderComponent>();
+	//fpsgo->AddComponent<dae::TextComponent>("FPS: ",  font);
+	//fpsgo->AddComponent<dae::RenderComponent>();
 
 	//scene.Add(std::move(go));
 
@@ -66,7 +66,7 @@ static void load()
 	//dae::GraphComponent* graphComp = new dae::GraphComponent(go.get());
 	//go->AddComponent(graphComp);
 	//scene.Add(std::move(go));
-	const float speed{ 50.f };
+	const float speed{ 70.f };
 
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("MrsPacman.png", 3, 1, 0.2f);
@@ -76,12 +76,24 @@ static void load()
 
 	dae::InputManager::GetInstance().AddController();
 
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1,0), speed)); // right
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed)); // left
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed)); // up
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed)); // down
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1,0), speed), 0); // right
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 0); // left
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 0); // up
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 0); // down
 
 	scene.Add(std::move(go));
+	//TEMP
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent<dae::RenderComponent>("Pacman.png");
+	dae::InputManager::GetInstance().AddController();
+
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1, 0), speed), 1); // right
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 1); // left
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 1); // up
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 1); // down
+
+	scene.Add(std::move(go));
+
 
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("Pacman.png");

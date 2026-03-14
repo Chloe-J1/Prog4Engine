@@ -2,12 +2,7 @@
 #include <glm/glm.hpp>
 namespace dae
 {
-	enum class TriggerEvent
-	{
-		PressedThisFrame,
-		ReleasedThisFrame,
-		Hold
-	};
+	
 	class GameObject;
 	class MoveComponent;
 	// BASE COMMAND

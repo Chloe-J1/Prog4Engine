@@ -4,7 +4,6 @@
 
 
 
-
 dae::InputManager::InputManager()
 {
 	m_keyboardState = SDL_GetKeyboardState(nullptr);
@@ -14,29 +13,11 @@ bool dae::InputManager::ProcessInput(float elapsedSec)
 {
 	// XINPUT -> controller
 	//********
-	for (auto& controller : m_controllers)
-	{
-		controller->ProcessInput();
-		for (auto& commands : m_controllerMap)
-		{
-			switch (commands.second.triggerEvent)
-			{
-			case dae::TriggerEvent::Hold:
-				if (controller->IsHold(commands.first))
-					commands.second.command->Execute(elapsedSec);
-				break;
-			case dae::TriggerEvent::PressedThisFrame:
-				if (controller->IsDownThisFrame(commands.first))
-					commands.second.command ->Execute(elapsedSec);
-				break;
-			case dae::TriggerEvent::ReleasedThisFrame:
-				if (controller->IsReleasedThisFrame(commands.first))
-					commands.second.command ->Execute(elapsedSec);
-				break;
-			}
-		}
-	}
 	
+	for (const auto& controller : m_controllers)
+	{
+		controller->ProcessInput(elapsedSec);
+	}
 
 	// SDL -> keyboard
 	//********
@@ -78,7 +59,15 @@ bool dae::InputManager::ProcessInput(float elapsedSec)
 	return true;
 }
 
+void dae::InputManager::BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command, int controllerIdx)
+{
+	m_controllers[controllerIdx]->BindCommand(button, triggerEvent, std::move(command));
+}
 
+void dae::InputManager::UnbindCommand(Input button, int controllerIdx)
+{
+	m_controllers[controllerIdx]->UnbindCommand(button);
+}
 
 bool dae::InputManager::IsDownThisFrame(SDL_Scancode button) const
 {
@@ -93,16 +82,6 @@ bool dae::InputManager::IsReleasedThisFrame(SDL_Scancode button) const
 bool dae::InputManager::IsHold(SDL_Scancode button) const
 {
 	return m_keyboardState[button] && m_previousKeyboardState[button];
-}
-
-void dae::InputManager::BindCommand(Controller::Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command)
-{
-	m_controllerMap[button] = Bindings(triggerEvent, std::move(command));
-}
-
-void dae::InputManager::UnbindCommand(Controller::Input button)
-{
-	m_controllerMap.erase(button);
 }
 
 void dae::InputManager::BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command)

@@ -1,19 +1,16 @@
 #pragma once
 #include "Singleton.h"
 
-#include "Commands.h"
 #include <map>
 #include <memory>
 #include <vector>
 #include "Controller.h"
+#include <SDL3/SDL.h>
+#include "InputData.h"
 
 namespace dae
 {
-	struct Bindings
-	{
-		TriggerEvent triggerEvent;
-		std::unique_ptr<Command> command;
-	};
+	
 
 	class InputManager final : public Singleton<InputManager>
 	{
@@ -21,8 +18,8 @@ namespace dae
 		InputManager();
 		bool ProcessInput(float elapsedSec);
 
-		void BindCommand(Controller::Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
-		void UnbindCommand(Controller::Input button);
+		void BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command, int controllerIdx);
+		void UnbindCommand(Input button, int controllerIdx);
 		void BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
 		void UnbindCommand(SDL_Scancode button);
 
@@ -38,7 +35,7 @@ namespace dae
 		bool m_previousKeyboardState[SDL_SCANCODE_COUNT]{};
 
 		std::map<SDL_Scancode, Bindings> m_keyboardMap;
-		std::map<Controller::Input, Bindings> m_controllerMap;
+		
 		std::vector<std::unique_ptr<Controller>> m_controllers;
 
 		int m_nrCtrlrs{ 0 };
