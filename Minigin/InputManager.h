@@ -9,15 +9,21 @@
 
 namespace dae
 {
+	struct Bindings
+	{
+		TriggerEvent triggerEvent;
+		std::unique_ptr<Command> command;
+	};
+
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
 
 		bool ProcessInput(float elapsedSec);
 
-		void BindCommand(Controller::Input button, std::unique_ptr<Command> command);
+		void BindCommand(Controller::Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
 		void UnbindCommand(Controller::Input button);
-		void BindCommand(SDL_Scancode button, std::unique_ptr<Command> command);
+		void BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
 		void UnbindCommand(SDL_Scancode button);
 
 		void AddController();
@@ -31,8 +37,8 @@ namespace dae
 		const bool* m_keyboardState{ nullptr };
 		bool m_previousKeyboardState[SDL_SCANCODE_COUNT]{};
 
-		std::map<SDL_Scancode, std::unique_ptr<Command>> m_keyboardMap;
-		std::map<Controller::Input, std::unique_ptr<Command>> m_controllerMap;
+		std::map<SDL_Scancode, Bindings> m_keyboardMap;
+		std::map<Controller::Input, Bindings> m_controllerMap;
 		std::vector<std::unique_ptr<Controller>> m_controllers;
 
 		int m_nrCtrlrs{ 0 };

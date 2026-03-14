@@ -78,10 +78,10 @@ static void load()
 	
 	dae::InputManager::GetInstance().AddController();
 
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Right, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(1,0))); // right
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Left, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(-1, 0))); // left
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Up, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, -1))); // up
-	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Down, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, 1))); // down
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1,0))); // right
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0))); // left
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1))); // up
+	dae::InputManager::GetInstance().BindCommand(dae::Controller::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1))); // down
 
 	scene.Add(std::move(go));
 
@@ -91,10 +91,10 @@ static void load()
 	go->SetLocalPosition(300, 200);
 
 	go->AddComponent<dae::MoveComponent>(speed * 2);
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(1, 0))); // right
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(-1, 0))); // left
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, -1))); // up
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, std::make_unique<dae::Move>(dae::TriggerEvent::Hold, go.get(), glm::vec2(0, 1))); // down
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1, 0))); // right
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0))); // left
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1))); // up
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1))); // down
 
 	scene.Add(std::move(go));
 	

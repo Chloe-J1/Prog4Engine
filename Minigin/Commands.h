@@ -15,7 +15,7 @@ namespace dae
 	class Command
 	{
 	public:
-		Command(TriggerEvent eventType);
+		Command() = default;
 		virtual ~Command() = default;
 		Command(const Command& other) = delete;
 		Command(Command&& other) = delete;
@@ -23,18 +23,13 @@ namespace dae
 		Command& operator=(Command&& other) = delete;
 
 		virtual void Execute(float elapsedSec) = 0;
-		TriggerEvent GetEventType();
-
-	private:
-		TriggerEvent m_eventType;
 	};
 	// GAME OBJ COMMAND
 	//********
 	class GameObjectCommand : public Command
 	{
 	public:
-		GameObjectCommand(TriggerEvent eventType, GameObject* gameObject):
-			Command(eventType)
+		GameObjectCommand(GameObject* gameObject)
 		{ 
 			m_gameObject = gameObject; 
 		}
@@ -55,8 +50,8 @@ namespace dae
 	class Move final : public GameObjectCommand
 	{
 	public:
-		Move(TriggerEvent eventType, GameObject* gameObject, const glm::vec2& direction) :
-			GameObjectCommand(eventType, gameObject),
+		Move(GameObject* gameObject, const glm::vec2& direction) :
+			GameObjectCommand(gameObject),
 			m_direction{direction}
 		{}
 
