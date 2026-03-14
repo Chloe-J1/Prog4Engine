@@ -11,7 +11,18 @@ namespace dae
 			DPad_Up = 1,
 			DPad_Down = 2,
 			DPad_Left = 4,
-			DPad_Right = 8
+			DPad_Right = 8,
+
+			//XBOX
+			Button_A = 4096,
+			Button_B = 8192,
+			Button_Y = 32768,
+			Button_X = 16384,
+
+			Button_R1 = 512,
+			Button_L1 = 256,
+			Button_R = 128,
+			Button_L = 64
 		};
 	
 		Controller(int index);

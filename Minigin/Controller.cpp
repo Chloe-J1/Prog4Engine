@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <XInput.h>
 
-
+#include <iostream>
 
 
 
@@ -26,7 +26,8 @@ public:
 		auto buttonChanges = m_currentState.Gamepad.wButtons ^ m_previousState.Gamepad.wButtons;
 		m_buttonsPressedThisFrame = buttonChanges & m_currentState.Gamepad.wButtons;
 		m_buttonsReleasedThisFrame = buttonChanges & (~m_currentState.Gamepad.wButtons);
-
+		
+		std::cout << m_currentState.Gamepad.wButtons << "\n";
 	}
 
 	bool IsDownThisFrame(Controller::Input button) const

@@ -36,6 +36,13 @@ std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& fil
 	return m_loadedFonts.at(key);
 }
 
+void dae::ResourceManager::Destroy()
+{
+	m_loadedFonts.clear();
+	m_loadedTextures.clear();
+	TTF_Quit();
+}
+
 void dae::ResourceManager::UnloadUnusedResources()
 {
 	for (auto it = m_loadedTextures.begin(); it != m_loadedTextures.end();)

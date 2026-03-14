@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 namespace dae
 {
-	enum TriggerEvent
+	enum class TriggerEvent
 	{
 		PressedThisFrame,
 		ReleasedThisFrame,
