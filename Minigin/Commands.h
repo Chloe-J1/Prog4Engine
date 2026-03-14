@@ -50,14 +50,16 @@ namespace dae
 	class Move final : public GameObjectCommand
 	{
 	public:
-		Move(GameObject* gameObject, const glm::vec2& direction) :
+		Move(GameObject* gameObject, const glm::vec2& direction, float speed) :
 			GameObjectCommand(gameObject),
-			m_direction{direction}
+			m_direction{direction},
+			m_speed{speed}
 		{}
 
 		virtual void Execute(float elapsedSec) override;
 		
 	private:
 		glm::vec2 m_direction;
+		float m_speed;
 	};
 }
