@@ -1,11 +1,11 @@
 #include "Controller.h"
 
+
 #if WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <XInput.h>
 
-#include <iostream>
 
 
 
@@ -65,6 +65,7 @@ private:
 	// Emscripten
 #else
 #include <SDL3/SDL.h>
+#include <iostream>
 class dae::Controller::ControllerImpl
 {
 	
