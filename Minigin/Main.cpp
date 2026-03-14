@@ -73,8 +73,7 @@ static void load()
 	
 	go->SetLocalPosition(200, 200);
 
-
-	dae::InputManager::GetInstance().AddController();
+	dae::InputManager::GetInstance().InitializeControllers(2);
 
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1,0), speed), 0); // right
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 0); // left
@@ -85,7 +84,7 @@ static void load()
 	//TEMP
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("Pacman.png");
-	dae::InputManager::GetInstance().AddController();
+
 
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1, 0), speed), 1); // right
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 1); // left

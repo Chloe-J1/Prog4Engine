@@ -1,12 +1,13 @@
 #include <SDL3/SDL.h>
 #include "InputManager.h"
 #include "backends/imgui_impl_sdl3.h"
-
+#include <iostream>
 
 
 dae::InputManager::InputManager()
 {
 	m_keyboardState = SDL_GetKeyboardState(nullptr);
+	
 }
 
 bool dae::InputManager::ProcessInput(float elapsedSec)
@@ -94,11 +95,13 @@ void dae::InputManager::UnbindCommand(SDL_Scancode button)
 	m_keyboardMap.erase(button);
 }
 
-void dae::InputManager::AddController()
+void dae::InputManager::InitializeControllers(int amountOfControllers)
 {
-	if (m_nrCtrlrs < m_maxCtrlrs)
+	if (amountOfControllers > m_maxControllers)
+		throw std::invalid_argument("Error: Don't initialize more than 4 controllers!\n");
+		
+	for (int index = 0; index < amountOfControllers; index++)
 	{
-		m_controllers.emplace_back(std::make_unique<Controller>(m_nrCtrlrs));
-		m_nrCtrlrs++;
+		m_controllers.emplace_back(std::make_unique<Controller>(index));
 	}
 }

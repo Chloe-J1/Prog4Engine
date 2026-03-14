@@ -23,7 +23,7 @@ namespace dae
 		void BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
 		void UnbindCommand(SDL_Scancode button);
 
-		void AddController();
+		void InitializeControllers(int amountOfControllers);
 	private:
 		
 		bool IsDownThisFrame(SDL_Scancode button) const;
@@ -37,9 +37,7 @@ namespace dae
 		std::map<SDL_Scancode, Bindings> m_keyboardMap;
 		
 		std::vector<std::unique_ptr<Controller>> m_controllers;
-
-		int m_nrCtrlrs{ 0 };
-		const int m_maxCtrlrs{ 4 };
+		const int m_maxControllers{ 4 };
 	};
 
 }
