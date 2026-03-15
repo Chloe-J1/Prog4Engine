@@ -20,11 +20,20 @@ dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& file
 	m_owner = owner;
 }
 
+dae::RenderComponent::RenderComponent(GameObject* owner):
+	Component(owner)
+{
+	m_useSrcRect = false;
+	m_owner = owner;
+}
+
 void dae::RenderComponent::SetTexture(const std::string& filename)
 {
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 	if (m_texture == nullptr)
 		std::cout << "Couldn't load " << filename << "\n";
+
+	
 }
 
 void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture)
@@ -37,7 +46,10 @@ void dae::RenderComponent::Render() const
 	if (m_texture == nullptr) return;
 	Component::Render();
 
-	Renderer::GetInstance().RenderTexture(*m_texture, m_srcRect, m_dstRect);
+	if (m_useSrcRect)
+		Renderer::GetInstance().RenderTexture(*m_texture, m_srcRect, m_dstRect);
+	else
+		Renderer::GetInstance().RenderTexture(*m_texture, m_owner->GetWorldPosition().x, m_owner->GetWorldPosition().y);
 }
 
 void dae::RenderComponent::Update(float)

@@ -24,6 +24,7 @@ namespace dae
 		void SetDstSize(float width, float height);
 
 		RenderComponent(GameObject* owner, const std::string& filepath);
+		RenderComponent(GameObject* owner);
 		virtual ~RenderComponent() = default;
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
@@ -36,6 +37,7 @@ namespace dae
 		SDL_FRect m_dstRect;
 
 		GameObject* m_owner;
+		bool m_useSrcRect{ true };
 	};
 	
 }

@@ -52,15 +52,15 @@ static void load()
 	//scene.Add(std::move(go));
 	//scene.Add(std::move(cGo));
 
-	//// FPS
-	//std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
-	//fpsgo->SetLocalPosition(20, 20);
-	//fpsgo->AddComponent<dae::FPSComponent>();
-	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//fpsgo->AddComponent<dae::TextComponent>("FPS: ",  font);
-	//fpsgo->AddComponent<dae::RenderComponent>();
+	// FPS
+	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
+	fpsgo->SetLocalPosition(20, 20);
+	fpsgo->AddComponent<dae::RenderComponent>();
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	fpsgo->AddComponent<dae::TextComponent>("FPS: ",  font);
+	fpsgo->AddComponent<dae::FPSComponent>();
 
-	//scene.Add(std::move(fpsgo));
+	scene.Add(std::move(fpsgo));
 
 	//// UI
 	//std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();

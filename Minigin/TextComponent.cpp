@@ -14,6 +14,11 @@ dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, st
 
 void dae::TextComponent::Update(float)
 {
+	m_renderComp = GetGameObject()->GetComponent<RenderComponent>();
+	if (m_renderComp == nullptr)
+	{
+		std::cout << "GameObject needs a renderComponent for the textComponent to work\n";
+	}
 	if (m_needsUpdate)
 	{
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), m_text.length(), m_color);
@@ -28,19 +33,15 @@ void dae::TextComponent::Update(float)
 		}
 		SDL_DestroySurface(surf);
 		m_textTexture = std::make_shared<Texture2D>(texture);
+		m_renderComp->SetTexture(m_textTexture);
 		m_needsUpdate = false;
 	}
-	// Move to Start() func
-	m_renderComp = GetGameObject()->GetComponent<RenderComponent>();
-	if (m_renderComp == nullptr)
-	{
-		std::cout << "GameObject needs a renderComponent for the textComponent to work\n";
-	}
+
+	
 }
 
 void dae::TextComponent::Render() const
 {
-	m_renderComp->SetTexture(m_textTexture); // Put this in a Start() func
 	m_renderComp->Render();
 }
 
