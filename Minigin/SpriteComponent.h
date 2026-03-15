@@ -11,6 +11,7 @@ namespace dae
 
 		virtual void Update(float elapsedSec) override;
 
+		void SetRow(int rowNr);
 	private:
 		int m_cols;
 		int m_rows;

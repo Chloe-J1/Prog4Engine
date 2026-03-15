@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <XInput.h>
 
-
+#include <iostream>
 
 
 class dae::Controller::ControllerImpl
@@ -24,6 +24,7 @@ public:
 		CopyMemory(&m_previousState, &m_currentState, sizeof(XINPUT_STATE));
 		ZeroMemory(&m_currentState, sizeof(XINPUT_STATE));
 		XInputGetState(m_controllerIndex, &m_currentState);
+
 
 		auto buttonChanges = m_currentState.Gamepad.wButtons ^ m_previousState.Gamepad.wButtons;
 		m_buttonsPressedThisFrame = buttonChanges & m_currentState.Gamepad.wButtons;
@@ -96,7 +97,7 @@ public:
 	}
 	bool IsHold(Input button) const
 	{
-		return m_currState[(SDL_GamepadButton)button] && m_prevState[(SDL_GamepadButton)button];
+		return m_currState[(SDL_GamepadButton)button];
 	}
 	glm::vec2 GetLeftStickValues() const { return {}; }
 	glm::vec2 GetRightStickValues() const { return {}; }
@@ -119,7 +120,7 @@ namespace dae
     Controller::~Controller() = default;
 
 	void Controller::ProcessInput(float elapsedSec)
-	{ 
+	{
 		m_pImpl->ProcessInput();
 
 		for (auto& commands : m_controllerMap)

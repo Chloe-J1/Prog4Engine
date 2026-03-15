@@ -46,3 +46,8 @@ void dae::SpriteComponent::Update(float elapsedSec)
 	m_renderComp->SetSrcRect(m_srcRect);
 	
 }
+
+void dae::SpriteComponent::SetRow(int rowNr)
+{
+	m_row = rowNr;
+}

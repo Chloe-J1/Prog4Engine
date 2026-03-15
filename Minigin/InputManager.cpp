@@ -82,7 +82,7 @@ bool dae::InputManager::IsReleasedThisFrame(SDL_Scancode button) const
 
 bool dae::InputManager::IsHold(SDL_Scancode button) const
 {
-	return m_keyboardState[button] && m_previousKeyboardState[button];
+	return m_keyboardState[button];
 }
 
 void dae::InputManager::BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command)

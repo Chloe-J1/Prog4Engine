@@ -57,4 +57,16 @@ namespace dae
 		glm::vec2 m_direction;
 		float m_speed;
 	};
+
+	// DAMAGE
+	//*********
+	class Damage final : public GameObjectCommand
+	{
+	public:
+		Damage(GameObject* gameObject) :
+			GameObjectCommand(gameObject)
+		{}
+
+		virtual void Execute(float elapsedSec) override;
+	};
 }
