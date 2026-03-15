@@ -68,6 +68,15 @@ static void load()
 
 	healthUIGo->SetLocalPosition(480, 555);
 
+	std::unique_ptr<dae::GameObject> goText = std::make_unique<dae::GameObject>();
+	goText->SetParent(healthUIGo.get(), false);
+
+	goText->AddComponent<dae::RenderComponent>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+	goText->AddComponent<dae::TextComponent>("Health:", font);
+
+	goText->SetLocalPosition(-55.f, -3);
+	scene.Add(std::move(goText));
 
 	// Pacman
 	go = std::make_unique<dae::GameObject>();
@@ -94,7 +103,6 @@ static void load()
 	scene.Add(std::move(go));
 	
 	
-
 }
 
 int main(int, char*[]) {

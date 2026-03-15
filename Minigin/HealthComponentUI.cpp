@@ -16,8 +16,13 @@ void dae::HealthComponentUI::Notify(GameObject* gameObject, Event event)
 	switch (event)
 	{
 	case dae::Event::PLAYER_TAKES_DAMAGE:
-		int health{ gameObject->GetComponent<HealthComponent>()->GetHealth() };
-		m_spriteComp->SetRow(health);
+	{
+		int health{ gameObject->GetComponent<HealthComponent>()->GetHealth()  };
+		m_spriteComp->SetRow(health - 1);
+		break;
+	}
+	case dae::Event::PLAYER_DIED:
+		std::cout << "dead\n";
 		break;
 	}
 }
