@@ -17,17 +17,12 @@ namespace dae
             Component(owner)
         {
         }
-        virtual ~FPSComponent() = default;
-        FPSComponent(const FPSComponent& other) = delete;
-        FPSComponent(FPSComponent&& other) = delete;
-        Component& operator=(const FPSComponent& other) = delete;
-        FPSComponent& operator=(FPSComponent&& other) = delete;
+
 
         void Update(float elapsedSec) override
         {
             Component::Update(elapsedSec);
 
-            // TODO: make a Start() function where i can initialize these members
             m_textComponent = GetGameObject()->GetComponent<TextComponent>();
             if (m_textComponent == nullptr)
                 std::cout << "TextComponent is nullptr\n";
@@ -51,7 +46,6 @@ namespace dae
         float m_FPS{ 0.0f };
         float m_cumulatedTime{ 0.0f };
         int m_frameCount{ 0 };
-        std::shared_ptr<Font> m_font{};
         TextComponent* m_textComponent{};
     };
 }

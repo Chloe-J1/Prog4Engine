@@ -4,7 +4,9 @@ namespace dae
 	enum class Event
 	{
 		PLAYER_DIED,
-		PLAYER_TAKES_DAMAGE
+		PLAYER_TAKES_DAMAGE,
+		ADD_SCORE,
+		GAME_WON
 	};
 	class GameObject;
 	class Observer

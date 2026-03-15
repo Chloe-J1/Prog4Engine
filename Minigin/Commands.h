@@ -69,4 +69,17 @@ namespace dae
 
 		virtual void Execute(float elapsedSec) override;
 	};
+
+	// SCORE
+	//*********
+	class Score final : public GameObjectCommand
+	{
+	public:
+		Score(GameObject* gameObject) :
+			GameObjectCommand(gameObject)
+		{
+		}
+
+		virtual void Execute(float elapsedSec) override;
+	};
 }

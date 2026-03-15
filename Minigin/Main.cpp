@@ -20,6 +20,8 @@
 #include "HealthComponent.h"
 #include "HealthComponentUI.h"
 #include "Subject.h"
+#include "ScoreComponent.h"
+#include "ScoreComponentUI.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -59,7 +61,7 @@ static void load()
 
 	scene.Add(std::move(go));
 
-	// Health
+	// Health UI
 	std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
 	healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
 	healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
@@ -78,6 +80,17 @@ static void load()
 	goText->SetLocalPosition(-55.f, -3);
 	scene.Add(std::move(goText));
 
+	// Score UI
+	std::unique_ptr<dae::GameObject> scoreGo = std::make_unique<dae::GameObject>();
+	scoreGo->AddComponent<dae::RenderComponent>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+	scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
+	scoreGo->AddComponent<dae::ScoreComponentUI>();
+
+	scoreGo->SetLocalPosition(800, 10);
+
+	
+
 	// Pacman
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("Pacman.png");
@@ -85,6 +98,11 @@ static void load()
 		// add observer
 	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
 		healthUIGo->GetComponent<dae::HealthComponentUI>()
+	);
+	go->AddComponent<dae::ScoreComponent>();
+		// add observer
+	go->GetComponent<dae::ScoreComponent>()->GetAddScoreEvent()->AddObserver(
+		scoreGo->GetComponent<dae::ScoreComponentUI>()
 	);
 
 
@@ -96,12 +114,15 @@ static void load()
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 1); // up
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 1); // down
 
+	// trigger events
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Damage>(go.get()), 0);
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Damage>(go.get()), 1);
+	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_B, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Score>(go.get()), 0);
+	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_B, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Score>(go.get()), 1);
 
 	scene.Add(std::move(healthUIGo));
+	scene.Add(std::move(scoreGo));
 	scene.Add(std::move(go));
-	
 	
 }
 
