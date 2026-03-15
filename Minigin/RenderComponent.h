@@ -3,10 +3,11 @@
 #include <string>
 #include "Component.h"
 #include <SDL3/SDL.h>
-#include <string>
+#include <glm/fwd.hpp>
 namespace dae
 {
 	class Texture2D;
+	class GameObject;
 	class RenderComponent : public Component
 	{
 	public:
@@ -16,7 +17,13 @@ namespace dae
 		virtual void Render() const override;
 		virtual void Update(float elapsedSec) override;
 
-		RenderComponent(GameObject* owner, const std::string& filepath, int nrCols = 1, int nrRows = 1, float frameSec = 0, int row = 0);
+		float GetWidth() const;
+		float GetHeight() const;
+		
+		void SetSrcRect(const SDL_FRect& srcRect);
+		void SetDstSize(float width, float height);
+
+		RenderComponent(GameObject* owner, const std::string& filepath);
 		virtual ~RenderComponent() = default;
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
@@ -24,17 +31,11 @@ namespace dae
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 	private:
 		std::shared_ptr<Texture2D> m_texture{};
-		int m_Cols;
-		int m_Rows;
-		int m_Row;
-		float m_FrameSec;
-		float m_Width;
-		float m_Height;
-		float m_AccuSec;
-		int   m_ActFrame;
-		int m_NrFrames;
+		
 		SDL_FRect m_srcRect;
 		SDL_FRect m_dstRect;
+
+		GameObject* m_owner;
 	};
 	
 }

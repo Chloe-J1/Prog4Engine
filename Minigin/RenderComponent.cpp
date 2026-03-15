@@ -5,26 +5,19 @@
 #include "Texture2D.h"
 #include <iostream>
 
-dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& filepath, int nrCols, int nrRows, float frameSec, int row):
-	Component(owner),
-	m_Cols{nrCols},
-	m_Rows{nrRows},
-	m_Row{row},
-	m_FrameSec{frameSec},
-	m_AccuSec{0},
-	m_ActFrame{0},
-	m_NrFrames{nrCols}
+
+dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& filepath):
+	Component(owner)
 {
 	m_texture = ResourceManager::GetInstance().LoadTexture(filepath);
 	if (m_texture == nullptr)
 		std::cout << "Couldn't load " << filepath << "\n";
 
+	m_dstRect.x = m_dstRect.y = m_srcRect.x = m_srcRect.y = 0;
+	m_dstRect.w = m_srcRect.w = m_texture->GetWidth();
+	m_dstRect.h = m_srcRect.h = m_texture->GetHeight();
 
-	m_Width = m_texture->GetWidth() / m_Cols;
-	m_Height = m_texture->GetHeight() / m_Rows;
-	m_dstRect.x = m_dstRect.y = 0;
-	m_dstRect.w = m_Width;
-	m_dstRect.h = m_Height;
+	m_owner = owner;
 }
 
 void dae::RenderComponent::SetTexture(const std::string& filename)
@@ -47,34 +40,33 @@ void dae::RenderComponent::Render() const
 	Renderer::GetInstance().RenderTexture(*m_texture, m_srcRect, m_dstRect);
 }
 
-void dae::RenderComponent::Update(float elapsedSec)
+void dae::RenderComponent::Update(float)
 {
-	if (m_texture == nullptr) return;
-	// Calculate frame
-	m_AccuSec += elapsedSec;
-	if (m_AccuSec > m_FrameSec)
-	{
-		if (m_ActFrame >= m_NrFrames)
-		{
-			m_ActFrame = 0;
-		}
-		++m_ActFrame;
-		m_AccuSec -= m_FrameSec;
-	}
-	if (m_ActFrame >= m_NrFrames)
-	{
-		m_ActFrame = 0;
-	}
+	// Update dstRect position to the position of the Go
+	glm::vec3 pos{ m_owner->GetWorldPosition()};
 
-	// Update srcRect
-	m_srcRect.w = m_texture->GetWidth() / m_Cols;
-	m_srcRect.h = m_texture->GetHeight() / m_Rows;
-	m_srcRect.x = m_ActFrame % m_Cols * m_Width;
-	m_srcRect.y = m_ActFrame / m_Cols * m_Height + m_Height * m_Row;
-
-	// Update dstRect position to the position of the player
-	glm::vec3 pos{ GetGameObject()->GetWorldPosition() };
 	m_dstRect.x = pos.x;
 	m_dstRect.y = pos.y;
+}
+
+float dae::RenderComponent::GetWidth() const
+{
+	return m_texture->GetWidth();
+}
+
+float dae::RenderComponent::GetHeight() const
+{
+	return m_texture->GetHeight();
+}
+
+void dae::RenderComponent::SetSrcRect(const SDL_FRect& srcRect)
+{
+	m_srcRect = srcRect;
+}
+
+void dae::RenderComponent::SetDstSize(float width, float height)
+{
+	m_dstRect.w = width;
+	m_dstRect.h = height;
 }
 

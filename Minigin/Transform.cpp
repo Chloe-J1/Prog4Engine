@@ -1,6 +1,8 @@
 #include "Transform.h"
 #include "GameObject.h"
 
+#include <iostream>
+
 
 dae::Transform::Transform(GameObject* parent):
 	m_gameObject{parent}
@@ -10,7 +12,9 @@ dae::Transform::Transform(GameObject* parent):
 const glm::vec3& dae::Transform::GetWorldPosition()
 {
 	if (m_isPositionDirty)
+	{
 		UpdateWorldPosition();
+	}
 	return m_worldPosition;
 }
 

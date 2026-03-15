@@ -16,6 +16,7 @@
 #include "GraphComponent.h"
 #include "Commands.h"
 #include "InputManager.h"
+#include "SpriteComponent.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -59,7 +60,7 @@ static void load()
 	//fpsgo->AddComponent<dae::TextComponent>("FPS: ",  font);
 	//fpsgo->AddComponent<dae::RenderComponent>();
 
-	//scene.Add(std::move(go));
+	//scene.Add(std::move(fpsgo));
 
 	//// UI
 	//std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
@@ -69,8 +70,9 @@ static void load()
 	const float speed{ 70.f };
 
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->AddComponent<dae::RenderComponent>("MrsPacman.png", 3, 1, 0.2f);
-	
+	go->AddComponent<dae::RenderComponent>("MrsPacman.png");
+	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
+
 	go->SetLocalPosition(200, 200);
 
 	dae::InputManager::GetInstance().InitializeControllers(2);
