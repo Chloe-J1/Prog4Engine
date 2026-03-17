@@ -20,7 +20,6 @@ namespace dae
 				m_observers.erase(itr);
 		}
 
-	//protected:
 		void NotifyObservers(GameObject* gameObject, Event event)
 		{
 			for (auto observer : m_observers)
