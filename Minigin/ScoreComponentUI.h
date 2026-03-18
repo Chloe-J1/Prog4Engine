@@ -31,7 +31,9 @@ namespace dae
 				break;
 			}
 			case dae::Event::GAME_WON:
+#ifdef USE_STEAMWORKS
 				UnlockSteamAchievement("ACH_WIN_ONE_GAME");
+#endif
 				break;
 			}
 		}
@@ -39,12 +41,13 @@ namespace dae
 
 	private:
 		TextComponent* m_textComponent;
-
+#ifdef USE_STEAMWORKS
 		void UnlockSteamAchievement(const char* achievementID)
 		{
 			if (!SteamUserStats()) return;
 			SteamUserStats()->SetAchievement(achievementID);
 			SteamUserStats()->StoreStats();
 		}
+#endif
 	};
 }
