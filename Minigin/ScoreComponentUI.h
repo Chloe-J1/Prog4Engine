@@ -5,9 +5,9 @@
 #include "ScoreComponent.h"
 #include <string>
 
-
+#ifdef USE_STEAMWORKS
 #include <steam_api.h>
-
+#endif
 
 namespace dae
 {
