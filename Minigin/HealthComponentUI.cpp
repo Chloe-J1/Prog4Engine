@@ -25,7 +25,9 @@ void dae::HealthComponentUI::Notify(GameObject* gameObject, Event event)
 
 		std::cout << "dead\n";
 		GetGameObject()->SetIsAlive(false);
-
+		// TODO: Remove observer from subject list
+		break;
+	default:
 		break;
 	}
 }

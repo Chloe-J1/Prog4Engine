@@ -11,6 +11,6 @@ namespace dae
 
 		virtual void Notify(GameObject* gameObject, Event event) override;
 	private:
-		SpriteComponent* m_spriteComp;
+		SpriteComponent* m_spriteComp; // weakptr better?
 	};
 }

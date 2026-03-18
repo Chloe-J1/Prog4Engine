@@ -35,6 +35,8 @@ namespace dae
 				UnlockSteamAchievement("ACH_WIN_ONE_GAME");
 #endif
 				break;
+			default:
+				break;
 			}
 		}
 		
