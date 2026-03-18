@@ -123,7 +123,12 @@ static void load()
 	scene.Add(std::move(healthUIGo));
 	scene.Add(std::move(scoreGo));
 	scene.Add(std::move(go));
-	
+
+	// Explanation
+	std::unique_ptr<dae::GameObject> expl = std::make_unique<dae::GameObject>();
+	expl->AddComponent<dae::RenderComponent>();
+	expl->AddComponent<dae::TextComponent>("Use D-pad to move players     Use A to lose lives     Use B to gain points", font);
+	scene.Add(std::move(expl));
 }
 
 int main(int, char*[]) {

@@ -16,7 +16,7 @@ dae::SpriteComponent::SpriteComponent(GameObject* owner, int nrCols, int nrRows,
 	m_textureWidth = m_renderComp->GetWidth();
 	m_textureHeight = m_renderComp->GetHeight();
 	m_width = m_renderComp->GetWidth() / nrCols;
-	m_height = m_renderComp->GetHeight() / nrRows;
+	m_height = m_renderComp->GetHeight() / m_rows;
 	m_renderComp->SetDstSize(m_width, m_height);
 }
 

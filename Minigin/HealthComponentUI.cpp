@@ -23,6 +23,7 @@ void dae::HealthComponentUI::Notify(GameObject* gameObject, Event event)
 	}
 	case dae::Event::PLAYER_DIED:
 		std::cout << "dead\n";
+		GetGameObject()->SetIsAlive(false);
 		break;
 	}
 }
