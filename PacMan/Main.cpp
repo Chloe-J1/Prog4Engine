@@ -22,6 +22,7 @@
 #include "Subject.h"
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
+#include "Hitbox.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -129,6 +130,21 @@ static void load()
 	expl->AddComponent<dae::RenderComponent>();
 	expl->AddComponent<dae::TextComponent>("Use D-pad to move players     Use A to lose lives     Use B to gain points", font);
 	scene.Add(std::move(expl));
+
+
+	// TEST HITBOX
+	std::unique_ptr<dae::GameObject> hitbox1 = std::make_unique<dae::GameObject>();
+	hitbox1->AddComponent<dae::Hitbox>(16, 16);
+	std::unique_ptr<dae::GameObject> hitbox2 = std::make_unique<dae::GameObject>();
+	hitbox2->AddComponent<dae::Hitbox>(16, 16);
+
+	dae::Hitbox* hitComp1 = hitbox1->GetComponent<dae::Hitbox>();
+	dae::Hitbox* hitComp2 = hitbox2->GetComponent<dae::Hitbox>();
+
+	std::cout << hitComp1->IsHit(*hitComp2);
+
+	scene.Add(std::move(hitbox1));
+	scene.Add(std::move(hitbox2));
 }
 
 int main(int, char*[]) {

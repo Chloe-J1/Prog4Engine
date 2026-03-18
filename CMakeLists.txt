@@ -28,7 +28,7 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   Minigin/Transform.cpp
  "Minigin/Component.h" "Minigin/RenderComponent.h" "Minigin/RenderComponent.cpp" "Minigin/FPSComponent.h" "Minigin/RotationComponent.h" "Minigin/RotationComponent.cpp" "Minigin/GraphComponent.h" "Minigin/GraphComponent.cpp" "Minigin/Commands.h"  "Minigin/Commands.cpp" "Minigin/Controller.h" "Minigin/Controller.cpp" "Minigin/InputData.h" "Minigin/SpriteComponent.h" "Minigin/SpriteComponent.cpp" "Minigin/InputData.h" "Minigin/SpriteComponent.h" "Minigin/SpriteComponent.cpp" "Minigin/Observer.h" "Minigin/HealthComponentUI.h" "Minigin/HealthComponentUI.cpp" "Minigin/Subject.h" "Minigin/Observer.h" "Minigin/HealthComponentUI.h" "Minigin/HealthComponentUI.cpp" "Minigin/Subject.h" "Minigin/HealthComponentUI.h" "Minigin/HealthComponentUI.cpp" "Minigin/HealthComponent.h" "Minigin/HealthComponent.cpp" "Minigin/ScoreComponentUI.h"
   PacMan/Main.cpp
-)
+ "Minigin/Hitbox.h" "Minigin/Hitbox.cpp")
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
 
@@ -121,7 +121,7 @@ add_library(imgui STATIC
   ${imgui_SOURCE_DIR}/imgui_demo.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
-  "Minigin/ScoreComponentUI.h")
+  )
 
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${sdl3_SOURCE_DIR}/include)
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
