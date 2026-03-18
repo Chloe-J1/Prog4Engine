@@ -50,6 +50,7 @@ static void load()
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("MrsPacman.png");
 	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
+	go->AddComponent<dae::Hitbox>(16, 16);
 
 	go->SetLocalPosition(200, 200);
 
@@ -95,6 +96,8 @@ static void load()
 	// Pacman
 	go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("Pacman.png");
+	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
+	go->AddComponent<dae::Hitbox>(16, 16);
 	go->AddComponent<dae::HealthComponent>();
 		// add observer
 	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
@@ -132,19 +135,13 @@ static void load()
 	scene.Add(std::move(expl));
 
 
-	// TEST HITBOX
-	std::unique_ptr<dae::GameObject> hitbox1 = std::make_unique<dae::GameObject>();
-	hitbox1->AddComponent<dae::Hitbox>(16, 16);
-	std::unique_ptr<dae::GameObject> hitbox2 = std::make_unique<dae::GameObject>();
-	hitbox2->AddComponent<dae::Hitbox>(16, 16);
+	// Pellet
+	std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
+	pellet->AddComponent<dae::Hitbox>(4, 4);
+	pellet->AddComponent<dae::RenderComponent>("Pellet_small.png");
+	pellet->SetLocalPosition(100, 500);
 
-	dae::Hitbox* hitComp1 = hitbox1->GetComponent<dae::Hitbox>();
-	dae::Hitbox* hitComp2 = hitbox2->GetComponent<dae::Hitbox>();
-
-	std::cout << hitComp1->IsHit(*hitComp2);
-
-	scene.Add(std::move(hitbox1));
-	scene.Add(std::move(hitbox2));
+	scene.Add(std::move(pellet));
 }
 
 int main(int, char*[]) {
