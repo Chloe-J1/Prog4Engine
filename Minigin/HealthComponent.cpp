@@ -14,8 +14,7 @@ void dae::HealthComponent::TakeDamage(int amount)
 {
 	m_health -= amount;
 
-	// Notify observers
-	m_takeDamageEvent->NotifyObservers(GetGameObject(), Event::PLAYER_TAKES_DAMAGE);
+	// Notify death
 	if (m_health <= 0)
 	{
 		m_takeDamageEvent->NotifyObservers(GetGameObject(), Event::PLAYER_DIED);

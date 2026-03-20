@@ -17,7 +17,9 @@ void dae::Move::Execute(float elapsedSec)
 void dae::Damage::Execute(float)
 {
 	const int amount{ 1 };
-	GetGameObject()->GetComponent<dae::HealthComponent>()->TakeDamage(amount);
+	GameObject* go{ GetGameObject() };
+	go->GetComponent<dae::HealthComponent>()->TakeDamage(amount);
+	go->GetComponent <dae::HealthComponent>()->GetTakeDamageEvent()->NotifyObservers(go, Event::PLAYER_TAKES_DAMAGE);
 }
 
 // SCORE
@@ -26,4 +28,5 @@ void dae::Score::Execute(float)
 {
 	const int amount{ 100 };
 	GetGameObject()->GetComponent<dae::ScoreComponent>()->AddScore(amount);
+	
 }
