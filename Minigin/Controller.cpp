@@ -1,21 +1,21 @@
 #include "Controller.h"
 
-#if WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <XInput.h>
-#include <algorithm>
+//#if WIN32
+//#define WIN32_LEAN_AND_MEAN
+//#include <windows.h>
+//#include <XInput.h>
+//#include <algorithm>
+//
+//#include <iostream>
 
-#include <iostream>
 
-
-class dae::Controller::ControllerImpl
-{
-public:
+//class dae::Controller::ControllerImpl
+//{
+//public:
 	// XInput	
  
  
-    ControllerImpl(int index): 
+    /*ControllerImpl(int index): 
 		m_controllerIndex(index) 
 	{}
 
@@ -62,9 +62,9 @@ private:
     XINPUT_STATE m_previousState{};
     WORD m_buttonsPressedThisFrame{};
     WORD m_buttonsReleasedThisFrame{};
-};
+};*/
 	// Emscripten
-#else
+//#else
 #include <SDL3/SDL.h>
 #include <iostream>
 class dae::Controller::ControllerImpl
@@ -83,35 +83,42 @@ public:
 
 	void ProcessInput() 
 	{
-		memcpy(m_prevState, m_currState, sizeof(m_currState));
+		if (m_gamepad == nullptr) return;
+		memcpy(m_previousState, m_currentState, sizeof(m_currentState));
 
 		for (int i = 0; i < SDL_GAMEPAD_BUTTON_COUNT; i++)
-			m_currState[i] = SDL_GetGamepadButton(m_gamepad, (SDL_GamepadButton)i);
+			m_currentState[i] = SDL_GetGamepadButton(m_gamepad, (SDL_GamepadButton)i);
 	}
 	bool IsDownThisFrame(Input button) const
 	{ 
-		return m_currState[(SDL_GamepadButton)button] && !m_prevState[(SDL_GamepadButton)button];
+		return m_currentState[(SDL_GamepadButton)button] && !m_previousState[(SDL_GamepadButton)button];
 	}
 	bool IsReleasedThisFrame(Input button) const 
 	{
-		return !m_currState[(SDL_GamepadButton)button] && m_prevState[(SDL_GamepadButton)button];
+		return !m_currentState[(SDL_GamepadButton)button] && m_previousState[(SDL_GamepadButton)button];
 	}
 	bool IsHold(Input button) const
 	{
-		return m_currState[(SDL_GamepadButton)button];
+		return m_currentState[(SDL_GamepadButton)button];
 	}
-	glm::vec2 GetLeftStickValues() const { return {}; }
-	glm::vec2 GetRightStickValues() const { return {}; }
+	glm::vec2 GetLeftStickValues() const 
+	{  
+		return glm::vec2{ SDL_GetGamepadAxis(m_gamepad, SDL_GAMEPAD_AXIS_LEFTX) / (float)SDL_JOYSTICK_AXIS_MAX, SDL_GetGamepadAxis(m_gamepad, SDL_GAMEPAD_AXIS_LEFTY) / (float)SDL_JOYSTICK_AXIS_MAX };
+	}
+	glm::vec2 GetRightStickValues() const 
+	{
+		return glm::vec2{ SDL_GetGamepadAxis(m_gamepad, SDL_GAMEPAD_AXIS_RIGHTX) / (float)SDL_JOYSTICK_AXIS_MAX, SDL_GetGamepadAxis(m_gamepad, SDL_GAMEPAD_AXIS_RIGHTY) / (float)SDL_JOYSTICK_AXIS_MAX };
+	}
 
 
 private:
 	int m_controllerIndex;
-	bool m_prevState[SDL_GAMEPAD_BUTTON_COUNT] = {};
-	bool m_currState[SDL_GAMEPAD_BUTTON_COUNT] = {};
+	bool m_previousState[SDL_GAMEPAD_BUTTON_COUNT] = {};
+	bool m_currentState[SDL_GAMEPAD_BUTTON_COUNT] = {};
 	SDL_Gamepad* m_gamepad{};
 };
 
-#endif
+//#endif
 	// Shared
 namespace dae
 {

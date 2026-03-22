@@ -121,11 +121,11 @@ static void load()
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 1); // up
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 1); // down
 
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 1); // down
+
 	// trigger events
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Damage>(go.get()), 1);
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_B, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Score>(go.get()), 1);
-
-	dae::InputManager::GetInstance().UnbindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, 0);
 
 	scene.Add(std::move(healthUIGo));
 	scene.Add(std::move(scoreGo));

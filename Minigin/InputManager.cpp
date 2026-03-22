@@ -21,6 +21,8 @@ bool dae::InputManager::ProcessInput(float elapsedSec)
 		controller->ProcessInput(elapsedSec);
 	}
 
+	std::cout << m_controllers[0]->GetLeftStickValues().x << " " << m_controllers[0]->GetLeftStickValues().y << "\n";
+
 	// SDL -> keyboard
 	//********
 	memcpy(m_previousKeyboardState, m_keyboardState, SDL_SCANCODE_COUNT);
