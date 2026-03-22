@@ -9,13 +9,6 @@
 #include <windows.h>
 #endif
 
-#if USE_STEAMWORKS
-#pragma warning (push)
-#pragma warning (disable:4996)
-#include <steam_api.h>
-#pragma warning (pop)
-#endif
-
 #include <SDL3/SDL.h>
 //#include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -75,14 +68,14 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 //
-//#ifdef __EMSCRIPTEN
+#ifdef __EMSCRIPTEN
 	if (!SDL_Init(SDL_INIT_GAMEPAD | SDL_INIT_JOYSTICK))
 	{
 		SDL_Log("SDL error: %s", SDL_GetError());
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
 	
-//#endif
+#endif
 
 
 	g_window = SDL_CreateWindow( 
@@ -107,12 +100,6 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 	std::ios::sync_with_stdio(true);
 	std::cout.clear();
 #endif
-
-	// Init steam
-#if USE_STEAMWORKS
-	if (!SteamAPI_Init())
-		throw std::runtime_error(std::string("Fatal Error - Steam must be running to play this game (SteamAPI_Init() failed)."));
-#endif
 }
 
 dae::Minigin::~Minigin()
@@ -120,10 +107,6 @@ dae::Minigin::~Minigin()
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
-
-#if USE_STEAMWORKS
-	SteamAPI_Shutdown();
-#endif
 
 	SDL_Quit();
 }
@@ -165,10 +148,6 @@ void dae::Minigin::RunOneFrame()
 	}
 	SceneManager::GetInstance().Update(delta_time);
 	SceneManager::GetInstance().LateUpdate(delta_time);
-
-#if USE_STEAMWORKS
-	SteamAPI_RunCallbacks();
-#endif 
 
 	SceneManager::GetInstance().Cleanup();
 

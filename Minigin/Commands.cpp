@@ -24,11 +24,11 @@ void dae::Damage::Execute(float)
 	healthComp->TakeDamage(amount);
 
 	// Notify observers
-	subject->NotifyObservers(go, Event::PLAYER_TAKES_DAMAGE);
+	subject->NotifyObservers(go, Event{ EventId::PLAYER_TAKES_DAMAGE });
 
 	if (healthComp->GetHealth() <= 0)
 	{
-		subject->NotifyObservers(go, Event::PLAYER_DIED);
+		subject->NotifyObservers(go, Event{ EventId::PLAYER_DIED });
 	}
 }
 

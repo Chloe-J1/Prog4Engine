@@ -3,6 +3,7 @@
 #include "HealthComponent.h"
 #include "Subject.h"
 #include <memory>
+#include "Event.h"
 namespace dae
 {
 	class ScoreComponent : public Component
@@ -22,10 +23,10 @@ namespace dae
 			
 
 			// Notify observers
-			m_addScoreEvent->NotifyObservers(GetGameObject(), Event::ADD_SCORE);
+			m_addScoreEvent->NotifyObservers(GetGameObject(), Event{ EventId::ADD_SCORE });
 
 			if (m_score >= m_neededScore)
-				m_addScoreEvent->NotifyObservers(GetGameObject(), Event::GAME_WON);
+				m_addScoreEvent->NotifyObservers(GetGameObject(), Event{ EventId::GAME_WON });
 		}
 		int GetScore() const
 		{

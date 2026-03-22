@@ -5,10 +5,6 @@
 #include "ScoreComponent.h"
 #include <string>
 
-#ifdef USE_STEAMWORKS
-#include <steam_api.h>
-#endif
-
 namespace dae
 {
 	class ScoreComponentUI : public Component, public Observer
@@ -22,18 +18,16 @@ namespace dae
 
 		virtual void Notify(GameObject* gameObject, Event event) override
 		{
-			switch (event)
+			switch (event.id)
 			{
-			case dae::Event::ADD_SCORE:
+			case EventId::ADD_SCORE:
 			{
 				int score{ gameObject->GetComponent<ScoreComponent>()->GetScore() };
 				m_textComponent->SetText("Score: " + std::to_string(score));
 				break;
 			}
-			case dae::Event::GAME_WON:
-#ifdef USE_STEAMWORKS
-				UnlockSteamAchievement("ACH_WIN_ONE_GAME");
-#endif
+			case EventId::GAME_WON:
+
 				break;
 			default:
 				break;
@@ -43,13 +37,5 @@ namespace dae
 
 	private:
 		TextComponent* m_textComponent;
-#ifdef USE_STEAMWORKS
-		void UnlockSteamAchievement(const char* achievementID)
-		{
-			if (!SteamUserStats()) return;
-			SteamUserStats()->SetAchievement(achievementID);
-			SteamUserStats()->StoreStats();
-		}
-#endif
 	};
 }

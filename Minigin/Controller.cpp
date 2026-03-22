@@ -1,21 +1,21 @@
 #include "Controller.h"
 
-//#if WIN32
-//#define WIN32_LEAN_AND_MEAN
-//#include <windows.h>
-//#include <XInput.h>
-//#include <algorithm>
-//
-//#include <iostream>
+#if WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <XInput.h>
+#include <algorithm>
+
+#include <iostream>
 
 
-//class dae::Controller::ControllerImpl
-//{
-//public:
-	// XInput	
+class dae::Controller::ControllerImpl
+{
+public:
+	//XInput	
  
  
-    /*ControllerImpl(int index): 
+    ControllerImpl(int index): 
 		m_controllerIndex(index) 
 	{}
 
@@ -62,9 +62,9 @@ private:
     XINPUT_STATE m_previousState{};
     WORD m_buttonsPressedThisFrame{};
     WORD m_buttonsReleasedThisFrame{};
-};*/
+};
 	// Emscripten
-//#else
+#else
 #include <SDL3/SDL.h>
 #include <iostream>
 class dae::Controller::ControllerImpl
@@ -83,7 +83,6 @@ public:
 
 	void ProcessInput() 
 	{
-		if (m_gamepad == nullptr) return;
 		memcpy(m_previousState, m_currentState, sizeof(m_currentState));
 
 		for (int i = 0; i < SDL_GAMEPAD_BUTTON_COUNT; i++)
@@ -118,7 +117,7 @@ private:
 	SDL_Gamepad* m_gamepad{};
 };
 
-//#endif
+#endif
 	// Shared
 namespace dae
 {
