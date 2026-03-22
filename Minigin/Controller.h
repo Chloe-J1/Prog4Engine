@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "InputData.h"
-#include <map>
+#include <vector>
 
 namespace dae
 {
@@ -20,7 +20,7 @@ namespace dae
 		void ProcessInput(float elapsedSec);
 
 		void BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
-		void UnbindCommand(Input button);
+		void UnbindCommand(Input button, TriggerEvent triggerEvent);
 	
 		bool IsDownThisFrame(Input button) const;
 		bool IsReleasedThisFrame(Input button) const;
@@ -30,7 +30,7 @@ namespace dae
 	private:
 		class ControllerImpl;
 		std::unique_ptr<ControllerImpl> m_pImpl;
-		std::map<Input, Bindings> m_controllerMap;
+		std::vector<Bindings> m_controllerBindings;
 	};
 }
 	

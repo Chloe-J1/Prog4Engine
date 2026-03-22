@@ -18,8 +18,18 @@ void dae::Damage::Execute(float)
 {
 	const int amount{ 1 };
 	GameObject* go{ GetGameObject() };
-	go->GetComponent<dae::HealthComponent>()->TakeDamage(amount);
-	go->GetComponent <dae::HealthComponent>()->GetTakeDamageEvent()->NotifyObservers(go, Event::PLAYER_TAKES_DAMAGE);
+	HealthComponent* healthComp{ go->GetComponent<HealthComponent>() };
+	Subject* subject{ healthComp->GetTakeDamageEvent() };
+
+	healthComp->TakeDamage(amount);
+
+	// Notify observers
+	subject->NotifyObservers(go, Event::PLAYER_TAKES_DAMAGE);
+
+	if (healthComp->GetHealth() <= 0)
+	{
+		subject->NotifyObservers(go, Event::PLAYER_DIED);
+	}
 }
 
 // SCORE

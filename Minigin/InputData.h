@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "Commands.h"
+#include <SDL3/SDL.h>
 namespace dae
 {
 	enum class TriggerEvent
@@ -9,11 +10,7 @@ namespace dae
 		ReleasedThisFrame,
 		Hold
 	};
-	struct Bindings
-	{
-		TriggerEvent triggerEvent;
-		std::unique_ptr<Command> command;
-	};
+	
 
 
 	#ifdef __EMSCRIPTEN__
@@ -57,4 +54,25 @@ namespace dae
 		Button_L = 64
 	};
 	#endif
+
+	struct Bindings
+	{
+		Bindings(SDL_Scancode sdlScancode, TriggerEvent _triggerEvent, std::unique_ptr<Command> _command) :
+			keyboardInput(sdlScancode),
+			triggerEvent(_triggerEvent),
+			command(std::move(_command))
+		{
+		}
+		Bindings(Input controllerInput, TriggerEvent _triggerEvent, std::unique_ptr<Command> _command) :
+			ctrlInput(controllerInput),
+			triggerEvent(_triggerEvent),
+			command(std::move(_command))
+		{
+		}
+
+		SDL_Scancode keyboardInput{}; // keyboard input
+		Input ctrlInput{}; // controller input
+		TriggerEvent triggerEvent;
+		std::unique_ptr<Command> command;
+	};
 }

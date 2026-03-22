@@ -13,12 +13,6 @@ dae::HealthComponent::HealthComponent(GameObject* owner, int health):
 void dae::HealthComponent::TakeDamage(int amount)
 {
 	m_health -= amount;
-
-	// Notify death
-	if (m_health <= 0)
-	{
-		m_takeDamageEvent->NotifyObservers(GetGameObject(), Event::PLAYER_DIED);
-	}
 }
 
 int dae::HealthComponent::GetHealth() const

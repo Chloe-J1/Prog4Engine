@@ -4,6 +4,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <XInput.h>
+#include <algorithm>
 
 #include <iostream>
 
@@ -123,32 +124,34 @@ namespace dae
 	{
 		m_pImpl->ProcessInput();
 
-		for (auto& commands : m_controllerMap)
+		for (auto& commands : m_controllerBindings)
 		{
-			switch (commands.second.triggerEvent)
+			switch (commands.triggerEvent)
 			{
 			case dae::TriggerEvent::Hold:
-				if (IsHold(commands.first))
-					commands.second.command->Execute(elapsedSec);
+				if (IsHold(commands.ctrlInput))
+					commands.command->Execute(elapsedSec);
 				break;
 			case dae::TriggerEvent::PressedThisFrame:
-				if (IsDownThisFrame(commands.first))
-					commands.second.command->Execute(elapsedSec);
+				if (IsDownThisFrame(commands.ctrlInput))
+					commands.command->Execute(elapsedSec);
 				break;
 			case dae::TriggerEvent::ReleasedThisFrame:
-				if (IsReleasedThisFrame(commands.first))
-					commands.second.command->Execute(elapsedSec);
+				if (IsReleasedThisFrame(commands.ctrlInput))
+					commands.command->Execute(elapsedSec);
 				break;
 			}
 		}
 	}
 	void Controller::BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command)
 	{
-		m_controllerMap[button] = Bindings(triggerEvent, std::move(command));
+		m_controllerBindings.emplace_back(Bindings(button, triggerEvent, std::move(command)));
 	}
-	void Controller::UnbindCommand(Input button)
+	void Controller::UnbindCommand(Input button, TriggerEvent triggerEvent)
 	{
-		m_controllerMap.erase(button);
+		auto itr = std::find_if(m_controllerBindings.begin(), m_controllerBindings.end(), [=](const Bindings& bindings) {return bindings.ctrlInput == button && bindings.triggerEvent == triggerEvent; });
+		if (itr == m_controllerBindings.end()) return; // no such bindings found
+		m_controllerBindings.erase(itr);
 	}
 	bool Controller::IsDownThisFrame(Input button) const 
 	{ 

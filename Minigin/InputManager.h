@@ -1,7 +1,6 @@
 #pragma once
 #include "Singleton.h"
 
-#include <map>
 #include <memory>
 #include <vector>
 #include "Controller.h"
@@ -19,9 +18,9 @@ namespace dae
 		bool ProcessInput(float elapsedSec);
 
 		void BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command, int controllerIdx);
-		void UnbindCommand(Input button, int controllerIdx);
+		void UnbindCommand(Input button, TriggerEvent triggerEvent, int controllerIdx);
 		void BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
-		void UnbindCommand(SDL_Scancode button);
+		void UnbindCommand(SDL_Scancode button, TriggerEvent triggerEvent);
 
 		void InitializeControllers(int amountOfControllers);
 	private:
@@ -34,7 +33,7 @@ namespace dae
 		const bool* m_keyboardState{ nullptr };
 		bool m_previousKeyboardState[SDL_SCANCODE_COUNT]{};
 
-		std::map<SDL_Scancode, Bindings> m_keyboardMap;
+		std::vector<Bindings> m_keyboardBindings;
 		
 		std::vector<std::unique_ptr<Controller>> m_controllers;
 		const int m_maxControllers{ 4 };

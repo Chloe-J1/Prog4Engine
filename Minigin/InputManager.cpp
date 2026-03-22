@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include "backends/imgui_impl_sdl3.h"
 #include <iostream>
+#include <algorithm>
 
 
 dae::InputManager::InputManager()
@@ -37,21 +38,21 @@ bool dae::InputManager::ProcessInput(float elapsedSec)
 	m_keyboardState = SDL_GetKeyboardState(nullptr);
 	
 
-	for (const auto& commands : m_keyboardMap)
+	for (const auto& commands : m_keyboardBindings)
 	{
-		switch (commands.second.triggerEvent)
+		switch (commands.triggerEvent)
 		{
 		case dae::TriggerEvent::Hold:
-			if (IsHold(commands.first))
-				commands.second.command->Execute(elapsedSec);
+			if (IsHold(commands.keyboardInput))
+				commands.command->Execute(elapsedSec);
 			break;
 		case dae::TriggerEvent::PressedThisFrame:
-			if (IsDownThisFrame(commands.first))
-				commands.second.command->Execute(elapsedSec);
+			if (IsDownThisFrame(commands.keyboardInput))
+				commands.command->Execute(elapsedSec);
 			break;
 		case dae::TriggerEvent::ReleasedThisFrame:
-			if (IsReleasedThisFrame(commands.first))
-				commands.second.command->Execute(elapsedSec);
+			if (IsReleasedThisFrame(commands.keyboardInput))
+				commands.command->Execute(elapsedSec);
 			break;
 		}
 	}
@@ -65,9 +66,9 @@ void dae::InputManager::BindCommand(Input button, TriggerEvent triggerEvent, std
 	m_controllers[controllerIdx]->BindCommand(button, triggerEvent, std::move(command));
 }
 
-void dae::InputManager::UnbindCommand(Input button, int controllerIdx)
+void dae::InputManager::UnbindCommand(Input button, TriggerEvent triggerEvent, int controllerIdx)
 {
-	m_controllers[controllerIdx]->UnbindCommand(button);
+	m_controllers[controllerIdx]->UnbindCommand(button, triggerEvent);
 }
 
 bool dae::InputManager::IsDownThisFrame(SDL_Scancode button) const
@@ -87,12 +88,14 @@ bool dae::InputManager::IsHold(SDL_Scancode button) const
 
 void dae::InputManager::BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command)
 {
-	m_keyboardMap[button] = Bindings{ triggerEvent, std::move(command) };
+	m_keyboardBindings.emplace_back(Bindings{ button, triggerEvent, std::move(command) });
 }
 
-void dae::InputManager::UnbindCommand(SDL_Scancode button)
+void dae::InputManager::UnbindCommand(SDL_Scancode button, TriggerEvent triggerEvent)
 {
-	m_keyboardMap.erase(button);
+	auto itr = std::find_if(m_keyboardBindings.begin(), m_keyboardBindings.end(), [=](const Bindings& binding) { return binding.keyboardInput == button && binding.triggerEvent == triggerEvent; });
+	if (itr == m_keyboardBindings.end()) return; // no such binding found
+	m_keyboardBindings.erase(itr);
 }
 
 void dae::InputManager::InitializeControllers(int amountOfControllers)
