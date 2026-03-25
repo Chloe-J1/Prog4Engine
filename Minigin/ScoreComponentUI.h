@@ -32,6 +32,11 @@ namespace dae
 			default:
 				break;
 			}
+
+			if (event.id == EventId::HIT)
+			{
+
+			}
 		}
 		
 

@@ -23,6 +23,7 @@
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
 #include "Hitbox.h"
+#include "CollisionHandler.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -106,9 +107,9 @@ static void load()
 	);
 	go->AddComponent<dae::ScoreComponent>();
 		// add observer
-	go->GetComponent<dae::ScoreComponent>()->GetAddScoreEvent()->AddObserver(
+	/*go->GetComponent<dae::ScoreComponent>()->GetAddScoreEvent()->AddObserver(
 		scoreGo->GetComponent<dae::ScoreComponentUI>()
-	);
+	);*/
 
 
 	go->SetLocalPosition(100, 100);
@@ -142,9 +143,14 @@ static void load()
 	std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
 	pellet->AddComponent<dae::Hitbox>(4, 4);
 	pellet->AddComponent<dae::RenderComponent>("Pellet_small.png");
-	pellet->SetLocalPosition(100, 500);
+	pellet->SetLocalPosition(500, 202);
 
 	scene.Add(std::move(pellet));
+	// Collision handler
+	std::unique_ptr<dae::GameObject> collisionHandler = std::make_unique<dae::GameObject>();
+	collisionHandler->AddComponent<pacman::CollisionHandler>();
+
+	scene.Add(std::move(collisionHandler));
 }
 
 int main(int, char*[]) {

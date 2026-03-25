@@ -18,6 +18,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <cstdio>
+#include "EventQueue.h"
+#include "CollisionManager.h"
 
 SDL_Window* g_window{};
 
@@ -147,6 +149,10 @@ void dae::Minigin::RunOneFrame()
 		m_lag -= fixed_time_step;
 	}
 	SceneManager::GetInstance().Update(delta_time);
+
+	CollisionManager::GetInstance().CheckOverlapping();
+	EventQueue::GetInstance().Update();
+
 	SceneManager::GetInstance().LateUpdate(delta_time);
 
 	SceneManager::GetInstance().Cleanup();

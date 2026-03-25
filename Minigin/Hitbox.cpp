@@ -1,11 +1,17 @@
 #include "Hitbox.h"
 #include "GameObject.h"
+#include "Event.h"
+#include "EventQueue.h"
+#include "CollisionManager.h"
+
+#include <iostream>
 
 dae::Hitbox::Hitbox(GameObject* gameObject, int width, int height):
 	Component(gameObject),
 	m_width{width},
 	m_height{height}
 {
+	CollisionManager::GetInstance().AddHitbox(this);
 }
 
 bool dae::Hitbox::IsHit(const Hitbox& other)
@@ -33,4 +39,11 @@ glm::vec2 dae::Hitbox::GetMax() const
 {
 	glm::vec2 worldPos = GetGameObject()->GetWorldPosition();
 	return glm::vec2(worldPos.x + m_width, worldPos.y);
+}
+
+void dae::Hitbox::OnHit(GameObject* other)
+{
+	Event event{ EventId::HIT };
+	event.args[0] = new CollisionEvent{ other };
+	EventQueue::GetInstance().Invoke(event, this->GetGameObject());
 }

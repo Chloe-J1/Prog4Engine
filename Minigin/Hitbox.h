@@ -11,8 +11,11 @@ namespace dae
 		bool IsHit(const Hitbox& other);
 		glm::vec2 GetMin() const;
 		glm::vec2 GetMax() const;
+
+		void OnHit(GameObject* other);
 	private:
 		int m_width;
 		int m_height;
+
 	};
 }
