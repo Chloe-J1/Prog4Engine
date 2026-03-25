@@ -9,7 +9,7 @@ namespace dae
 	public:
 		HealthComponentUI(GameObject* owner);
 
-		virtual void Notify(GameObject* gameObject, Event event) override;
+		virtual void Notify(GameObject* gameObject, const Event& event) override;
 	private:
 		SpriteComponent* m_spriteComp;
 	};

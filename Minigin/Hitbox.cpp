@@ -44,6 +44,6 @@ glm::vec2 dae::Hitbox::GetMax() const
 void dae::Hitbox::OnHit(GameObject* other)
 {
 	Event event{ EventId::HIT };
-	event.args[0] = new CollisionEvent{ other };
-	EventQueue::GetInstance().Invoke(event, this->GetGameObject());
+	event.args[0] =  std::make_unique<CollisionEvent>( other );
+	EventQueue::GetInstance().Invoke(std::move(event), this->GetGameObject());
 }

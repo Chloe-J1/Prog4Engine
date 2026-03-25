@@ -34,7 +34,8 @@ namespace dae
 
 		void Invoke(Event event, GameObject* sender)
 		{
-			m_eventQueue.push(EventInQueue{event, sender});
+			m_eventQueue.push(EventInQueue{std::move(event), sender});
+			
 		}
 
 		void Update()
@@ -48,6 +49,7 @@ namespace dae
 					observer->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
 					std::cout << "notify";
 				}
+				
 				m_eventQueue.pop();
 			}
 		}

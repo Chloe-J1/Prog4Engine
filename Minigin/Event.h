@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdint>
 #include "Pellets.h"
+#include <memory>
+// EVENT ARGS
+//************
 struct EventArg
 {
 	virtual ~EventArg() = default;
@@ -34,6 +37,9 @@ struct PickupPelletEvent : EventArg
 	virtual ~PickupPelletEvent() = default;
 };
 
+
+//************
+
 enum class EventId
 {
 	PLAYER_DIED,
@@ -49,7 +55,7 @@ struct Event
 	const EventId id;
 
 	static const uint8_t maxArgs = 8;
-	EventArg* args[maxArgs];
+	std::unique_ptr<EventArg> args[maxArgs];
 
 	explicit Event(EventId _id):
 		id{_id}

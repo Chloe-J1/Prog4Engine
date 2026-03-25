@@ -16,7 +16,7 @@ namespace dae
 			m_textComponent = owner->GetComponent<TextComponent>();
 		}
 
-		virtual void Notify(GameObject* gameObject, Event event) override
+		virtual void Notify(GameObject* gameObject, const Event& event) override
 		{
 			switch (event.id)
 			{

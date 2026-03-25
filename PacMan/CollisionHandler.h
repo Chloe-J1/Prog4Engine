@@ -19,18 +19,18 @@ namespace pacman
             dae::EventQueue::GetInstance().RemoveObserver(this);
         }
 
-        void Notify(dae::GameObject* sender, Event event) override
+        void Notify(dae::GameObject* sender, const Event& event) override
         {
             if (event.id != EventId::HIT) return;
 
-            CollisionEvent* collision = dynamic_cast<CollisionEvent*>(event.args[0]);
+            CollisionEvent* collision = dynamic_cast<CollisionEvent*>(event.args[0].get());
             if (!collision) return;
             dae::GameObject* other = collision->other;
 
             if (/*sender->GetComponent<PlayerComponent>() != nullptr &&*/ other->GetComponent<dae::BasePellet>() != nullptr)
             {
                 Event scoreEvent{ EventId::PICKUP_PELLET };
-                dae::EventQueue::GetInstance().Invoke(scoreEvent, sender);
+                dae::EventQueue::GetInstance().Invoke(std::move(scoreEvent), sender);
             }
         }
 	};

@@ -12,7 +12,7 @@ dae::HealthComponentUI::HealthComponentUI(GameObject* owner):
 	m_spriteComp->SetRow(3);
 }
 
-void dae::HealthComponentUI::Notify(GameObject* gameObject, Event event)
+void dae::HealthComponentUI::Notify(GameObject* gameObject, const Event& event)
 {
 	switch (event.id)
 	{

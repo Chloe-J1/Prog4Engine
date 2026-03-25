@@ -121,7 +121,7 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 	if (m_parent) m_parent->AddChild(this);
 }
 
-bool dae::GameObject::IsChild(GameObject* parent) // fout
+bool dae::GameObject::IsChild(GameObject* parent)
 {
 	if(parent == m_parent)
 		return true;
@@ -161,7 +161,7 @@ dae::GameObject* dae::GameObject::GetParent()
 
 void dae::GameObject::SetPositionDirty()
 {
-	m_transform.SetPositionDirty(); // check if ok 
+	m_transform.SetPositionDirty(); 
 }
 
 std::vector<dae::GameObject*> dae::GameObject::GetChildren()

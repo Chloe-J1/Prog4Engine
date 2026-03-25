@@ -36,11 +36,11 @@ namespace dae
 			return m_score;
 		}
 
-		virtual void Notify(GameObject*, Event event) override
+		virtual void Notify(GameObject*, const Event& event) override
 		{
 			if (event.id == EventId::PICKUP_PELLET)
 			{
-				PickupPelletEvent* pickupEvent = static_cast<PickupPelletEvent*>(event.args[0]);
+				PickupPelletEvent* pickupEvent = static_cast<PickupPelletEvent*>(event.args[0].get());
 				AddScore(pickupEvent->pellet->GetValue());
 			}
 		}
