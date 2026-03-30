@@ -4,6 +4,7 @@
 #include "TextComponent.h"
 #include "ScoreComponent.h"
 #include <string>
+#include "EventQueue.h"
 
 namespace dae
 {
@@ -20,7 +21,7 @@ namespace dae
 		{
 			switch (event.id)
 			{
-			case EventId::ADD_SCORE:
+			case EventId::PICKUP_PELLET:
 			{
 				int score{ gameObject->GetComponent<ScoreComponent>()->GetScore() };
 				m_textComponent->SetText("Score: " + std::to_string(score));
@@ -31,11 +32,6 @@ namespace dae
 				break;
 			default:
 				break;
-			}
-
-			if (event.id == EventId::HIT)
-			{
-
 			}
 		}
 		

@@ -40,14 +40,13 @@ namespace dae
 
 		void Update()
 		{
-			// Send events to all observers and remove event from queue
+			// Send events to all observers and then remove event from queue
 			while (not m_eventQueue.empty())
 			{
 				
 				for (const auto& observer : m_observers)
 				{
 					observer->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
-					std::cout << "notify";
 				}
 				
 				m_eventQueue.pop();

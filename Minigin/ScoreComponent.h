@@ -4,50 +4,39 @@
 #include "Subject.h"
 #include <memory>
 #include "Event.h"
-#include "Observer.h"
+#include "EventQueue.h"
 #include <iostream>
+#include "Pellets.h"
 namespace dae
 {
-	class ScoreComponent : public Component, public Observer
+	class ScoreComponent : public Component
 	{
 	public:
 		ScoreComponent(GameObject* owner):
 			Component(owner)
 		{ 
-			/*m_addScoreEvent = std::make_unique<Subject>();*/
 		}
 
-		/*Subject* GetAddScoreEvent() { return m_addScoreEvent.get(); }*/
 
-		void AddScore(int amount)
-		{
-			m_score += amount;
-			std::cout << "score added\n";
-			
-
-			//// Notify observers
-			//m_addScoreEvent->NotifyObservers(GetGameObject(), Event{ EventId::ADD_SCORE });
-
-			//if (m_score >= m_neededScore)
-			//	m_addScoreEvent->NotifyObservers(GetGameObject(), Event{ EventId::GAME_WON });
-		}
 		int GetScore() const
 		{
 			return m_score;
 		}
 
-		virtual void Notify(GameObject*, const Event& event) override
+		
+		virtual void OnCollision(GameObject* other) override
 		{
-			if (event.id == EventId::PICKUP_PELLET)
+			BasePellet* pellet = other->GetComponent<dae::SmallPellet>();
+			if (pellet != nullptr)
 			{
-				PickupPelletEvent* pickupEvent = static_cast<PickupPelletEvent*>(event.args[0].get());
-				AddScore(pickupEvent->pellet->GetValue());
+				/*Event scoreEvent{ EventId::PICKUP_PELLET };
+				dae::EventQueue::GetInstance().Invoke(std::move(scoreEvent), GetGameObject());*/
+
+				m_score += pellet->GetValue();
 			}
 		}
 
 	private:
 		int m_score{ 0 };
-		/*std::unique_ptr<Subject> m_addScoreEvent;*/
-		const int m_neededScore{ 500 };
 	};
 }

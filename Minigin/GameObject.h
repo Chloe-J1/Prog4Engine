@@ -82,6 +82,7 @@ namespace dae
 		void SetIsAlive(bool isAlive);
 		bool GetIsAlive();
 		
+		void OnCollision(GameObject* other);
 
 		GameObject();
 		~GameObject();

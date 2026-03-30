@@ -40,10 +40,3 @@ glm::vec2 dae::Hitbox::GetMax() const
 	glm::vec2 worldPos = GetGameObject()->GetWorldPosition();
 	return glm::vec2(worldPos.x + m_width, worldPos.y);
 }
-
-void dae::Hitbox::OnHit(GameObject* other)
-{
-	Event event{ EventId::HIT };
-	event.args[0] =  std::make_unique<CollisionEvent>( other );
-	EventQueue::GetInstance().Invoke(std::move(event), this->GetGameObject());
-}

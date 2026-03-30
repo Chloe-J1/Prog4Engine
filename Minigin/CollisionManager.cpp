@@ -1,6 +1,7 @@
 #include "CollisionManager.h"
 #include "Hitbox.h"
 #include <iostream>
+#include "GameObject.h"
 
 void dae::CollisionManager::AddHitbox(Hitbox* hitbox)
 {
@@ -19,16 +20,21 @@ void dae::CollisionManager::CheckOverlapping()
 {
 	for (int index = 0; index < m_hitboxes.size(); index++)
 	{
-		Hitbox* hitbox = m_hitboxes[index]; // get the hitbox we will check collision for
+		Hitbox* hitbox = m_hitboxes[index];
 
-		for (int indexOther = index; indexOther < m_hitboxes.size(); indexOther++) // INDEX + 1? <-------------------
+		for (int indexOther = index; indexOther < m_hitboxes.size(); indexOther++)
 		{
 			Hitbox* hitboxOther = m_hitboxes[indexOther];
 			if (hitboxOther == hitbox) continue; // don't calculate isOverlapping with itself
 
 			if (hitbox->IsHit(*hitboxOther))
 			{
-				hitbox->OnHit(hitboxOther->GetGameObject());
+				// Call collision on all components
+				GameObject* thisObj = hitbox->GetGameObject();
+				GameObject* otherObj = hitboxOther->GetGameObject();
+
+				thisObj->OnCollision(otherObj);
+				otherObj->OnCollision(thisObj);
 			}
 		}
 	}

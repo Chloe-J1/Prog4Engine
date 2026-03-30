@@ -23,9 +23,10 @@ namespace dae
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
 
-
+		virtual void OnCollision(GameObject*) {};
 	private:
 		GameObject* m_gameObject{};
 		bool m_isAlive{ true };
+
 	};
 }

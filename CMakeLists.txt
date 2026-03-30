@@ -28,7 +28,7 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   Minigin/Transform.cpp
  "Minigin/Component.h" "Minigin/RenderComponent.h" "Minigin/RenderComponent.cpp" "Minigin/FPSComponent.h" "Minigin/RotationComponent.h" "Minigin/RotationComponent.cpp" "Minigin/GraphComponent.h" "Minigin/GraphComponent.cpp" "Minigin/Commands.h"  "Minigin/Commands.cpp" "Minigin/Controller.h" "Minigin/Controller.cpp" "Minigin/InputData.h" "Minigin/SpriteComponent.h" "Minigin/SpriteComponent.cpp" "Minigin/InputData.h" "Minigin/SpriteComponent.h" "Minigin/SpriteComponent.cpp" "Minigin/Observer.h" "Minigin/HealthComponentUI.h" "Minigin/HealthComponentUI.cpp" "Minigin/Subject.h" "Minigin/Observer.h" "Minigin/HealthComponentUI.h" "Minigin/HealthComponentUI.cpp" "Minigin/Subject.h" "Minigin/HealthComponentUI.h" "Minigin/HealthComponentUI.cpp" "Minigin/HealthComponent.h" "Minigin/HealthComponent.cpp" "Minigin/ScoreComponentUI.h"
   PacMan/Main.cpp
- "Minigin/Hitbox.h" "Minigin/Hitbox.cpp" "Minigin/Event.h" "Minigin/CollisionManager.h" "Minigin/CollisionManager.cpp" "Minigin/Pellets.h" "Minigin/EventQueue.h" "PacMan/CollisionHandler.h")
+ "Minigin/Hitbox.h" "Minigin/Hitbox.cpp" "Minigin/Event.h" "Minigin/CollisionManager.h" "Minigin/CollisionManager.cpp" "Minigin/Pellets.h" "Minigin/EventQueue.h" )
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
 

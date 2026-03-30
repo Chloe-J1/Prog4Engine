@@ -11,9 +11,7 @@
 #include "TextComponent.h"
 #include "Scene.h"
 #include "RenderComponent.h"
-#include "RotationComponent.h"
 #include "FPSComponent.h"
-#include "GraphComponent.h"
 #include "Commands.h"
 #include "InputManager.h"
 #include "SpriteComponent.h"
@@ -23,7 +21,6 @@
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
 #include "Hitbox.h"
-#include "CollisionHandler.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -52,6 +49,7 @@ static void load()
 	go->AddComponent<dae::RenderComponent>("MrsPacman.png");
 	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
 	go->AddComponent<dae::Hitbox>(16, 16);
+	go->AddComponent<dae::ScoreComponent>();
 
 	go->SetLocalPosition(200, 200);
 
@@ -61,6 +59,11 @@ static void load()
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 0); // left
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 0); // up
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 0); // down
+
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1, 0), speed)); // right
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed)); // left
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed)); // up
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed)); // down
 
 
 	scene.Add(std::move(go));
@@ -124,9 +127,7 @@ static void load()
 
 	// trigger events
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Damage>(go.get()), 0);
-	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_B, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Score>(go.get()), 0);
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Damage>(go.get()), 1);
-	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_B, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Score>(go.get()), 1);
 
 	scene.Add(std::move(healthUIGo));
 	scene.Add(std::move(scoreGo));
@@ -143,14 +144,10 @@ static void load()
 	std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
 	pellet->AddComponent<dae::Hitbox>(4, 4);
 	pellet->AddComponent<dae::RenderComponent>("Pellet_small.png");
+	pellet->AddComponent<dae::SmallPellet>();
 	pellet->SetLocalPosition(500, 202);
 
 	scene.Add(std::move(pellet));
-	// Collision handler
-	std::unique_ptr<dae::GameObject> collisionHandler = std::make_unique<dae::GameObject>();
-	collisionHandler->AddComponent<pacman::CollisionHandler>();
-
-	scene.Add(std::move(collisionHandler));
 }
 
 int main(int, char*[]) {

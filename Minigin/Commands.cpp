@@ -31,12 +31,3 @@ void dae::Damage::Execute(float)
 		subject->NotifyObservers(go, Event{ EventId::PLAYER_DIED });
 	}
 }
-
-// SCORE
-//********
-void dae::Score::Execute(float)
-{
-	const int amount{ 100 };
-	GetGameObject()->GetComponent<dae::ScoreComponent>()->AddScore(amount);
-	
-}

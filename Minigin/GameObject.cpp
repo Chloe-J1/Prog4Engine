@@ -179,6 +179,14 @@ bool dae::GameObject::GetIsAlive()
 	return m_isAlive;
 }
 
+void dae::GameObject::OnCollision(GameObject* other)
+{
+	for (const auto& component : m_components)
+	{
+		component->OnCollision(other);
+	}
+}
+
 
 
 
