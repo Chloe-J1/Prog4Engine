@@ -3,10 +3,15 @@
 #include <glm/glm.hpp>
 namespace dae
 {
-	class Hitbox : public Component
+	class Hitbox final : public Component
 	{
 	public:
 		Hitbox(GameObject* gameObject, int width, int height);
+		~Hitbox();
+		Hitbox(const Hitbox& other) = delete;
+		Hitbox(Hitbox&& other) = delete;
+		Hitbox& operator=(const Hitbox& other) = delete;
+		Hitbox& operator=(Hitbox&& other) = delete;
 
 		bool IsHit(const Hitbox& other);
 		glm::vec2 GetMin() const;

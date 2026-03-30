@@ -5,7 +5,8 @@
 #include "Pellets.h"
 
 #include <iostream>
-
+#include "Hitbox.h"
+#include "CollisionManager.h"
 namespace dae
 {
 	class ScoreComponent : public Component
@@ -37,6 +38,8 @@ namespace dae
 				Event updateScoreEvent{ EventId::UPDATE_SCORE };
 				updateScoreEvent.arg = std::make_unique<UpdateScoreArg>( m_score );
 				m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
+
+				other->SetIsAlive(false);
 			}
 		}
 

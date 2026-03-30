@@ -14,6 +14,11 @@ dae::Hitbox::Hitbox(GameObject* gameObject, int width, int height):
 	CollisionManager::GetInstance().AddHitbox(this);
 }
 
+dae::Hitbox::~Hitbox()
+{
+	CollisionManager::GetInstance().RemoveHitbox(this);
+}
+
 bool dae::Hitbox::IsHit(const Hitbox& other)
 {
 	glm::vec2 max{ this->GetMax() };
