@@ -6,7 +6,6 @@
 void dae::CollisionManager::AddHitbox(Hitbox* hitbox)
 {
 	m_hitboxes.emplace_back(hitbox);
-	std::cout << "hitbox added\n";
 }
 
 void dae::CollisionManager::RemoveHitbox(Hitbox* hitbox)

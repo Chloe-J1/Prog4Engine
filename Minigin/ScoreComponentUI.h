@@ -2,9 +2,8 @@
 #include "Component.h"
 #include "Observer.h"
 #include "TextComponent.h"
-#include "ScoreComponent.h"
 #include <string>
-#include "EventQueue.h"
+#include "Event.h"
 
 namespace dae
 {
@@ -17,13 +16,14 @@ namespace dae
 			m_textComponent = owner->GetComponent<TextComponent>();
 		}
 
-		virtual void Notify(GameObject* gameObject, const Event& event) override
+		virtual void Notify(GameObject*, const Event& event) override
 		{
 			switch (event.id)
 			{
-			case EventId::PICKUP_PELLET:
+			case EventId::UPDATE_SCORE:
 			{
-				int score{ gameObject->GetComponent<ScoreComponent>()->GetScore() };
+				auto* updateArg = static_cast<UpdateScoreArg*>(event.arg.get());
+				int score{ updateArg->score };
 				m_textComponent->SetText("Score: " + std::to_string(score));
 				break;
 			}

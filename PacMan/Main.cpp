@@ -44,12 +44,25 @@ static void load()
 
 
 	const float speed{ 100.f };
+
+	// Score UI -> MRS PACMAN
+	std::unique_ptr<dae::GameObject> scoreGo = std::make_unique<dae::GameObject>();
+	scoreGo->AddComponent<dae::RenderComponent>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+	scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
+	scoreGo->AddComponent<dae::ScoreComponentUI>();
+
+	scoreGo->SetLocalPosition(800, 10);
 	// MrsPacman -> NO HEALTH COMP
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("MrsPacman.png");
 	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
 	go->AddComponent<dae::Hitbox>(16, 16);
 	go->AddComponent<dae::ScoreComponent>();
+	// add observer
+	go->GetComponent<dae::ScoreComponent>()->GetSubject()->AddObserver(
+		scoreGo->GetComponent<dae::ScoreComponentUI>()
+	);
 
 	go->SetLocalPosition(200, 200);
 
@@ -87,14 +100,7 @@ static void load()
 	goText->SetLocalPosition(-55.f, -3);
 	scene.Add(std::move(goText));
 
-	// Score UI
-	std::unique_ptr<dae::GameObject> scoreGo = std::make_unique<dae::GameObject>();
-	scoreGo->AddComponent<dae::RenderComponent>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
-	scoreGo->AddComponent<dae::ScoreComponentUI>();
-
-	scoreGo->SetLocalPosition(800, 10);
+	
 
 	
 
@@ -109,10 +115,7 @@ static void load()
 		healthUIGo->GetComponent<dae::HealthComponentUI>()
 	);
 	go->AddComponent<dae::ScoreComponent>();
-		// add observer
-	/*go->GetComponent<dae::ScoreComponent>()->GetAddScoreEvent()->AddObserver(
-		scoreGo->GetComponent<dae::ScoreComponentUI>()
-	);*/
+		
 
 
 	go->SetLocalPosition(100, 100);

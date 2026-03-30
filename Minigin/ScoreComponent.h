@@ -1,22 +1,26 @@
 #pragma once
 #include "Component.h"
-#include "HealthComponent.h"
 #include "Subject.h"
-#include <memory>
 #include "Event.h"
-#include "EventQueue.h"
-#include <iostream>
 #include "Pellets.h"
+
+#include <iostream>
+
 namespace dae
 {
 	class ScoreComponent : public Component
 	{
 	public:
-		ScoreComponent(GameObject* owner):
-			Component(owner)
+		ScoreComponent(GameObject* owner) :
+			Component(owner),
+			m_updateScoreEvent{ std::make_unique<Subject>() }
 		{ 
 		}
 
+		Subject* GetSubject()
+		{
+			return m_updateScoreEvent.get();
+		}
 
 		int GetScore() const
 		{
@@ -29,14 +33,15 @@ namespace dae
 			BasePellet* pellet = other->GetComponent<dae::SmallPellet>();
 			if (pellet != nullptr)
 			{
-				/*Event scoreEvent{ EventId::PICKUP_PELLET };
-				dae::EventQueue::GetInstance().Invoke(std::move(scoreEvent), GetGameObject());*/
-
 				m_score += pellet->GetValue();
+				Event updateScoreEvent{ EventId::UPDATE_SCORE };
+				updateScoreEvent.arg = std::make_unique<UpdateScoreArg>( m_score );
+				m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
 			}
 		}
 
 	private:
 		int m_score{ 0 };
+		std::unique_ptr<Subject> m_updateScoreEvent;
 	};
 }
