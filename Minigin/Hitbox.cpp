@@ -5,7 +5,6 @@
 #include "CollisionManager.h"
 
 #include <iostream>
-
 dae::Hitbox::Hitbox(GameObject* gameObject, int width, int height):
 	Component(gameObject),
 	m_width{width},
@@ -37,11 +36,12 @@ bool dae::Hitbox::IsHit(const Hitbox& other)
 glm::vec2 dae::Hitbox::GetMin() const
 {
 	glm::vec2 worldPos = GetGameObject()->GetWorldPosition();
-	return glm::vec2(worldPos.x, worldPos.y - m_height);
+	return glm::vec2(worldPos.x, worldPos.y);
+
 }
 
 glm::vec2 dae::Hitbox::GetMax() const
 {
 	glm::vec2 worldPos = GetGameObject()->GetWorldPosition();
-	return glm::vec2(worldPos.x + m_width, worldPos.y);
+	return glm::vec2(worldPos.x + m_width, worldPos.y + m_height);
 }
