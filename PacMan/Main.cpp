@@ -26,7 +26,10 @@
 #include <glm/glm.hpp>
 namespace fs = std::filesystem;
 
-
+dae::GameObject* CreatePlayer(/*xxx.png or use a isFemale bool?*/) // TODO: make this spawn a male / female pacman
+{
+	return new dae::GameObject();
+}
 
 static void load()
 {
@@ -53,7 +56,8 @@ static void load()
 	scoreGo->AddComponent<dae::ScoreComponentUI>();
 
 	scoreGo->SetLocalPosition(800, 10);
-	// MrsPacman -> NO HEALTH COMP
+	// MrsPacman
+	//**********
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>("MrsPacman.png");
 	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
@@ -66,6 +70,29 @@ static void load()
 
 	go->SetLocalPosition(200, 200);
 
+	scene.Add(std::move(scoreGo));
+	
+
+	// Health UI
+	std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
+	healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
+	healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
+	healthUIGo->AddComponent<dae::HealthComponentUI>();
+
+
+	healthUIGo->SetLocalPosition(480, 540);
+
+	std::unique_ptr<dae::GameObject> goHealthTextF = std::make_unique<dae::GameObject>();
+	goHealthTextF->SetParent(healthUIGo.get(), false);
+
+	goHealthTextF->AddComponent<dae::RenderComponent>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+	goHealthTextF->AddComponent<dae::TextComponent>("Health:", font);
+
+	goHealthTextF->SetLocalPosition(-55.f, -3);
+	scene.Add(std::move(goHealthTextF));
+	scene.Add(std::move(healthUIGo));
+	//BINDINGS
 	dae::InputManager::GetInstance().InitializeControllers(2);
 
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1,0), speed), 1); // right
@@ -78,11 +105,21 @@ static void load()
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed)); // up
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed)); // down
 
-	scene.Add(std::move(scoreGo));
-	scene.Add(std::move(go));
 
+	scene.Add(std::move(go));
+	
+
+	
+
+	// Pacman
+	//*********
+
+	go = std::make_unique<dae::GameObject>();
+	go->AddComponent<dae::RenderComponent>("Pacman.png");
+	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
+	go->AddComponent<dae::Hitbox>(16, 16);
 	// Health UI
-	std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
+	healthUIGo = std::make_unique<dae::GameObject>();
 	healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
 	healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
 	healthUIGo->AddComponent<dae::HealthComponentUI>();
@@ -99,18 +136,8 @@ static void load()
 
 	goText->SetLocalPosition(-55.f, -3);
 	scene.Add(std::move(goText));
-
-	
-
-	
-
-	// Pacman
-	go = std::make_unique<dae::GameObject>();
-	go->AddComponent<dae::RenderComponent>("Pacman.png");
-	go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
-	go->AddComponent<dae::Hitbox>(16, 16);
 	go->AddComponent<dae::HealthComponent>();
-		// add observer
+		// add score observer
 	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
 		healthUIGo->GetComponent<dae::HealthComponentUI>()
 	);
@@ -122,7 +149,7 @@ static void load()
 
 	scoreGo->SetLocalPosition(800, 30);
 
-		// add observer
+		// add score observer
 	go->AddComponent<dae::ScoreComponent>();
 	go->GetComponent<dae::ScoreComponent>()->GetSubject()->AddObserver(
 		scoreGo->GetComponent<dae::ScoreComponentUI>()
@@ -136,8 +163,6 @@ static void load()
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 0); // left
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 0); // up
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 0); // down
-
-	//dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 1); // down
 
 	// trigger events
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<dae::Damage>(go.get()), 0);
