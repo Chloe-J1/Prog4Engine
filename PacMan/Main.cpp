@@ -21,6 +21,7 @@
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
 #include "Hitbox.h"
+#include "Ghost.h"
 
 #include <filesystem>
 #include <glm/glm.hpp>
@@ -195,6 +196,15 @@ static void load()
 	bigpellet->SetLocalPosition(500, 212);
 
 	scene.Add(std::move(bigpellet));
+
+	// Ghost
+	std::unique_ptr<dae::GameObject> ghost = std::make_unique<dae::GameObject>();
+	ghost->AddComponent<dae::Hitbox>(16, 16);
+	ghost->AddComponent<dae::RenderComponent>("Ghost_red.png");
+	ghost->AddComponent<dae::SpriteComponent>(1, 6);
+	ghost->AddComponent<pacman::Ghost>();
+	ghost->SetLocalPosition(300, 300);
+	scene.Add(std::move(ghost));
 }
 
 int main(int, char*[]) {
