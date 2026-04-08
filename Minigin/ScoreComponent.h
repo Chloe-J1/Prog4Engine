@@ -31,7 +31,7 @@ namespace dae
 		
 		virtual void OnCollision(GameObject* other) override
 		{
-			BasePellet* pellet = other->GetComponent<dae::SmallPellet>();
+			BasePellet* pellet = other->GetComponent<dae::BasePellet>();
 			if (pellet != nullptr)
 			{
 				m_score += pellet->GetValue();

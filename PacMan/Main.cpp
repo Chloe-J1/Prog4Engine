@@ -151,6 +151,14 @@ static void load()
 	pellet->SetLocalPosition(500, 202);
 
 	scene.Add(std::move(pellet));
+
+	std::unique_ptr<dae::GameObject> bigpellet = std::make_unique<dae::GameObject>();
+	bigpellet->AddComponent<dae::Hitbox>(8, 8);
+	bigpellet->AddComponent<dae::RenderComponent>("Pellet_big.png");
+	bigpellet->AddComponent<dae::PowerPellet>();
+	bigpellet->SetLocalPosition(500, 212);
+
+	scene.Add(std::move(bigpellet));
 }
 
 int main(int, char*[]) {
