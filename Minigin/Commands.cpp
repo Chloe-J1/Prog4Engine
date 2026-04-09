@@ -1,5 +1,4 @@
 #include "Commands.h"
-#include "GameObject.h"
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 
@@ -9,7 +8,7 @@
 //********
 void dae::Move::Execute(float elapsedSec)
 {
-	GetGameObject()->AddLocalPosition(m_direction * m_speed * elapsedSec);
+	m_moveComp->Move(m_speed, m_direction, elapsedSec);
 }
 
 // DAMAGE

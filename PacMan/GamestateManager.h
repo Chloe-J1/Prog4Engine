@@ -9,6 +9,7 @@
 #include "../Minigin/TextComponent.h"
 #include "../Minigin/Commands.h"
 #include "../Minigin/InputManager.h"
+#include "PlayerMovement.h"
 
 #include "ResourceManager.h"
 #include "TextComponent.h"
@@ -82,7 +83,7 @@ namespace pacman
 				scoreGo->GetComponent<dae::ScoreComponentUI>()
 			);
 
-			go->AddComponent<pacman::PacmanMovement>();
+			go->AddComponent<pacman::PlayerMovement>();
 			go->SetLocalPosition(200, 200);
 
 			scene.Add(std::move(scoreGo));
@@ -180,7 +181,7 @@ namespace pacman
 
 			go->SetLocalPosition(100, 100);
 
-			go->AddComponent<pacman::PacmanMovement>();
+			go->AddComponent<pacman::PlayerMovement>();
 			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1, 0), speed), 0); // right
 			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 0); // left
 			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 0); // up
@@ -247,7 +248,7 @@ namespace pacman
 			scene.Add(std::move(go));
 
 			go = std::make_unique<dae::GameObject>();
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Test>(go.get()), 0);
+			/*dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Test>(go.get()), 0);*/
 		}
 
 	};

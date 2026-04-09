@@ -1,10 +1,9 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "../PacMan/PlayerMovement.h"
+#include "GameObject.h"
 namespace dae
 {
-	
-	class GameObject;
-	class MoveComponent;
 	// BASE COMMAND
 	//********
 	class Command
@@ -49,13 +48,16 @@ namespace dae
 			GameObjectCommand(gameObject),
 			m_direction{direction},
 			m_speed{speed}
-		{}
+		{
+			m_moveComp = GetGameObject()->GetComponent<pacman::PlayerMovement>();
+		}
 
 		virtual void Execute(float elapsedSec) override;
 		
 	private:
 		glm::vec2 m_direction;
 		float m_speed;
+		pacman::PlayerMovement* m_moveComp;
 	};
 
 	// DAMAGE
