@@ -11,14 +11,14 @@ dae::InputManager::InputManager()
 	
 }
 
-bool dae::InputManager::ProcessInput(float elapsedSec)
+bool dae::InputManager::ProcessInput()
 {
 	// XINPUT -> controller
 	//********
 	
 	for (const auto& controller : m_controllers)
 	{
-		controller->ProcessInput(elapsedSec);
+		controller->ProcessInput();
 	}
 
 	// SDL -> keyboard
@@ -44,15 +44,15 @@ bool dae::InputManager::ProcessInput(float elapsedSec)
 		{
 		case dae::TriggerEvent::Hold:
 			if (IsHold(commands.keyboardInput))
-				commands.command->Execute(elapsedSec);
+				commands.command->Execute();
 			break;
 		case dae::TriggerEvent::PressedThisFrame:
 			if (IsDownThisFrame(commands.keyboardInput))
-				commands.command->Execute(elapsedSec);
+				commands.command->Execute();
 			break;
 		case dae::TriggerEvent::ReleasedThisFrame:
 			if (IsReleasedThisFrame(commands.keyboardInput))
-				commands.command->Execute(elapsedSec);
+				commands.command->Execute();
 			break;
 		}
 	}

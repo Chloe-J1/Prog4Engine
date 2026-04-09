@@ -126,7 +126,7 @@ namespace dae
     {}
     Controller::~Controller() = default;
 
-	void Controller::ProcessInput(float elapsedSec)
+	void Controller::ProcessInput()
 	{
 		m_pImpl->ProcessInput();
 
@@ -136,15 +136,15 @@ namespace dae
 			{
 			case dae::TriggerEvent::Hold:
 				if (IsHold(commands.ctrlInput))
-					commands.command->Execute(elapsedSec);
+					commands.command->Execute();
 				break;
 			case dae::TriggerEvent::PressedThisFrame:
 				if (IsDownThisFrame(commands.ctrlInput))
-					commands.command->Execute(elapsedSec);
+					commands.command->Execute();
 				break;
 			case dae::TriggerEvent::ReleasedThisFrame:
 				if (IsReleasedThisFrame(commands.ctrlInput))
-					commands.command->Execute(elapsedSec);
+					commands.command->Execute();
 				break;
 			}
 		}

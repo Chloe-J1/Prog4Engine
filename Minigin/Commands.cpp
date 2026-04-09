@@ -6,14 +6,14 @@
 
 // MOVE
 //********
-void dae::Move::Execute(float elapsedSec)
+void dae::Move::Execute()
 {
-	m_moveComp->Move(m_speed, m_direction, elapsedSec);
+	m_moveComp->Move(m_direction);
 }
 
 // DAMAGE
 //********
-void dae::Damage::Execute(float)
+void dae::Damage::Execute()
 {
 	const int amount{ 1 };
 	GameObject* go{ GetGameObject() };

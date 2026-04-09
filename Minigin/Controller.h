@@ -17,7 +17,7 @@ namespace dae
 		Controller& operator=(const Controller&) = delete;
 
 	
-		void ProcessInput(float elapsedSec);
+		void ProcessInput();
 
 		void BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
 		void UnbindCommand(Input button, TriggerEvent triggerEvent);

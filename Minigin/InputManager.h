@@ -15,7 +15,7 @@ namespace dae
 	{
 	public:
 		InputManager();
-		bool ProcessInput(float elapsedSec);
+		bool ProcessInput();
 
 		void BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command, int controllerIdx);
 		void UnbindCommand(Input button, TriggerEvent triggerEvent, int controllerIdx);

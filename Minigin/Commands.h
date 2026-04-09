@@ -16,7 +16,7 @@ namespace dae
 		Command& operator=(const Command& other) = delete;
 		Command& operator=(Command&& other) = delete;
 
-		virtual void Execute(float elapsedSec) = 0;
+		virtual void Execute() = 0;
 	};
 	// GAME OBJ COMMAND
 	//********
@@ -44,19 +44,17 @@ namespace dae
 	class Move final : public GameObjectCommand
 	{
 	public:
-		Move(GameObject* gameObject, const glm::vec2& direction, float speed) :
+		Move(GameObject* gameObject, const glm::vec2& direction) :
 			GameObjectCommand(gameObject),
-			m_direction{direction},
-			m_speed{speed}
+			m_direction{direction}
 		{
 			m_moveComp = GetGameObject()->GetComponent<pacman::PlayerMovement>();
 		}
 
-		virtual void Execute(float elapsedSec) override;
+		virtual void Execute() override;
 		
 	private:
 		glm::vec2 m_direction;
-		float m_speed;
 		pacman::PlayerMovement* m_moveComp;
 	};
 
@@ -69,19 +67,6 @@ namespace dae
 			GameObjectCommand(gameObject)
 		{}
 
-		virtual void Execute(float elapsedSec) override;
-	};
-
-	// SCORE
-	//*********
-	class Score final : public GameObjectCommand
-	{
-	public:
-		Score(GameObject* gameObject) :
-			GameObjectCommand(gameObject)
-		{
-		}
-
-		/*virtual void Execute(float elapsedSec) override;*/
+		virtual void Execute() override;
 	};
 }
