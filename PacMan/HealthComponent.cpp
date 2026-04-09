@@ -1,29 +1,28 @@
 #include "HealthComponent.h"
-#include "Subject.h"
 #include "../PacMan/Ghost.h"
 #include "Event.h"
 
-dae::HealthComponent::HealthComponent(GameObject* owner, int health):
+pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	Component(owner),
 	m_health{health},
-	m_takeDamageEvent{ std::make_unique<Subject>() },
+	m_takeDamageEvent{ std::make_unique<dae::Subject>() },
 	m_invincibleTime{0},
 	m_maxInvincibleTime{0.7f},
 	m_isInvincible{false}
 {
 }
 
-void dae::HealthComponent::TakeDamage(int amount)
+void pacman::HealthComponent::TakeDamage(int amount)
 {
 	m_health -= amount;
 }
 
-int dae::HealthComponent::GetHealth() const
+int pacman::HealthComponent::GetHealth() const
 {
 	return m_health;
 }
 
-void dae::HealthComponent::OnCollision(GameObject* other)
+void pacman::HealthComponent::OnCollision(dae::GameObject* other)
 {
 	pacman::GhostComponent* ghost = other->GetComponent<pacman::GhostComponent>();
 	if (ghost != nullptr)
@@ -32,7 +31,7 @@ void dae::HealthComponent::OnCollision(GameObject* other)
 	}
 }
 
-void dae::HealthComponent::Update(float elapsedSec)
+void pacman::HealthComponent::Update(float elapsedSec)
 {
 	if (m_isInvincible) // TODO: coroutine?
 	{
@@ -47,7 +46,7 @@ void dae::HealthComponent::Update(float elapsedSec)
 
 #include "InputManager.h"
 
-void dae::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
+void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 {
 	if (not m_isInvincible)
 	{

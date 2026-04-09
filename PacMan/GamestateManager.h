@@ -56,7 +56,7 @@ namespace pacman
 			fpsgo->AddComponent<dae::RenderComponent>();
 			auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 			fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
-			fpsgo->AddComponent<dae::FPSComponent>();
+			fpsgo->AddComponent<pacman::FPSComponent>();
 
 			scene.Add(std::move(fpsgo));
 
@@ -67,7 +67,7 @@ namespace pacman
 			scoreGo->AddComponent<dae::RenderComponent>();
 			font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 			scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
-			scoreGo->AddComponent<dae::ScoreComponentUI>();
+			scoreGo->AddComponent<pacman::ScoreComponentUI>();
 
 			scoreGo->SetLocalPosition(800, 10);
 			// MrsPacman
@@ -76,10 +76,10 @@ namespace pacman
 			go->AddComponent<dae::RenderComponent>("MrsPacman.png");
 			go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
 			go->AddComponent<dae::Hitbox>(16, 16);
-			go->AddComponent<dae::ScoreComponent>();
+			go->AddComponent<pacman::ScoreComponent>();
 			// add observer
-			go->GetComponent<dae::ScoreComponent>()->GetSubject()->AddObserver(
-				scoreGo->GetComponent<dae::ScoreComponentUI>()
+			go->GetComponent<pacman::ScoreComponent>()->GetSubject()->AddObserver(
+				scoreGo->GetComponent<pacman::ScoreComponentUI>()
 			);
 
 			go->AddComponent<pacman::PlayerMovement>();
@@ -92,13 +92,13 @@ namespace pacman
 			std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
 			healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
 			healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
-			healthUIGo->AddComponent<dae::HealthComponentUI>();
-			go->AddComponent<dae::HealthComponent>();
+			healthUIGo->AddComponent<pacman::HealthComponentUI>();
+			go->AddComponent<pacman::HealthComponent>();
 			// add health observer
-			go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
-				healthUIGo->GetComponent<dae::HealthComponentUI>()
+			go->GetComponent<pacman::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
+				healthUIGo->GetComponent<pacman::HealthComponentUI>()
 			);
-			go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
+			go->GetComponent<pacman::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
 				&pacman::GamestateManager::GetInstance()
 			);
 
@@ -144,7 +144,7 @@ namespace pacman
 			healthUIGo = std::make_unique<dae::GameObject>();
 			healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
 			healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
-			healthUIGo->AddComponent<dae::HealthComponentUI>();
+			healthUIGo->AddComponent<pacman::HealthComponentUI>();
 
 
 			healthUIGo->SetLocalPosition(480, 555);
@@ -158,23 +158,23 @@ namespace pacman
 
 			goText->SetLocalPosition(-55.f, -3);
 			scene.Add(std::move(goText));
-			go->AddComponent<dae::HealthComponent>();
+			go->AddComponent<pacman::HealthComponent>();
 			// add health observer
-			go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
-				healthUIGo->GetComponent<dae::HealthComponentUI>()
+			go->GetComponent<pacman::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
+				healthUIGo->GetComponent<pacman::HealthComponentUI>()
 			);
 			scoreGo = std::make_unique<dae::GameObject>();
 			scoreGo->AddComponent<dae::RenderComponent>();
 			font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 			scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
-			scoreGo->AddComponent<dae::ScoreComponentUI>();
+			scoreGo->AddComponent<pacman::ScoreComponentUI>();
 
 			scoreGo->SetLocalPosition(800, 30);
 
 			// add score observer
-			go->AddComponent<dae::ScoreComponent>();
-			go->GetComponent<dae::ScoreComponent>()->GetSubject()->AddObserver(
-				scoreGo->GetComponent<dae::ScoreComponentUI>()
+			go->AddComponent<pacman::ScoreComponent>();
+			go->GetComponent<pacman::ScoreComponent>()->GetSubject()->AddObserver(
+				scoreGo->GetComponent<pacman::ScoreComponentUI>()
 			);
 
 
@@ -205,7 +205,7 @@ namespace pacman
 			std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
 			pellet->AddComponent<dae::Hitbox>(4, 4);
 			pellet->AddComponent<dae::RenderComponent>("Pellet_small.png");
-			pellet->AddComponent<dae::SmallPellet>();
+			pellet->AddComponent<pacman::SmallPellet>();
 			pellet->SetLocalPosition(500, 202);
 
 			scene.Add(std::move(pellet));
@@ -213,7 +213,7 @@ namespace pacman
 			std::unique_ptr<dae::GameObject> bigpellet = std::make_unique<dae::GameObject>();
 			bigpellet->AddComponent<dae::Hitbox>(8, 8);
 			bigpellet->AddComponent<dae::RenderComponent>("Pellet_big.png");
-			bigpellet->AddComponent<dae::PowerPellet>();
+			bigpellet->AddComponent<pacman::PowerPellet>();
 			bigpellet->SetLocalPosition(500, 212);
 
 			scene.Add(std::move(bigpellet));

@@ -5,11 +5,11 @@
 #include "TextComponent.h"
 #include <SDL3/SDL_pixels.h> // used for color
 #include <iostream>
-namespace dae
+namespace pacman
 {
 	class Font;
 
-    class FPSComponent final : public Component
+    class FPSComponent final : public dae::Component
     {
     public:
         FPSComponent(dae::GameObject* owner):
@@ -22,7 +22,7 @@ namespace dae
         {
             Component::Update(elapsedSec);
 
-            m_textComponent = GetGameObject()->GetComponent<TextComponent>();
+            m_textComponent = GetGameObject()->GetComponent<dae::TextComponent>();
             if (m_textComponent == nullptr)
                 std::cout << "TextComponent is nullptr\n";
 
@@ -45,6 +45,6 @@ namespace dae
         float m_FPS{ 0.0f };
         float m_cumulatedTime{ 0.0f };
         int m_frameCount{ 0 };
-        TextComponent* m_textComponent{};
+        dae::TextComponent* m_textComponent{};
     };
 }

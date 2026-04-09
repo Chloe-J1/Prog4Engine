@@ -5,18 +5,18 @@
 #include <string>
 #include "Event.h"
 
-namespace dae
+namespace pacman
 {
-	class ScoreComponentUI : public Component, public Observer
+	class ScoreComponentUI : public dae::Component, public dae::Observer
 	{
 	public:
-		ScoreComponentUI(GameObject* owner) :
+		ScoreComponentUI(dae::GameObject* owner) :
 			Component(owner)
 		{
-			m_textComponent = owner->GetComponent<TextComponent>();
+			m_textComponent = owner->GetComponent<dae::TextComponent>();
 		}
 
-		virtual void Notify(GameObject*, const Event& event) override
+		virtual void Notify(dae::GameObject*, const Event& event) override
 		{
 			switch (event.id)
 			{
@@ -37,6 +37,6 @@ namespace dae
 		
 
 	private:
-		TextComponent* m_textComponent;
+		dae::TextComponent* m_textComponent;
 	};
 }

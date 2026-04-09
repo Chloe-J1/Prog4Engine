@@ -4,21 +4,18 @@
 #include "Event.h"
 #include "Pellets.h"
 
-#include <iostream>
-#include "Hitbox.h"
-#include "CollisionManager.h"
-namespace dae
+namespace pacman
 {
-	class ScoreComponent : public Component
+	class ScoreComponent : public dae::Component
 	{
 	public:
-		ScoreComponent(GameObject* owner) :
+		ScoreComponent(dae::GameObject* owner) :
 			Component(owner),
-			m_updateScoreEvent{ std::make_unique<Subject>() }
+			m_updateScoreEvent{ std::make_unique<dae::Subject>() }
 		{ 
 		}
 
-		Subject* GetSubject()
+		dae::Subject* GetSubject()
 		{
 			return m_updateScoreEvent.get();
 		}
@@ -29,9 +26,9 @@ namespace dae
 		}
 
 		
-		virtual void OnCollision(GameObject* other) override
+		virtual void OnCollision(dae::GameObject* other) override
 		{
-			BasePellet* pellet = other->GetComponent<dae::BasePellet>();
+			BasePellet* pellet = other->GetComponent<BasePellet>();
 			if (pellet != nullptr)
 			{
 				m_score += pellet->GetValue();
@@ -45,6 +42,6 @@ namespace dae
 
 	private:
 		int m_score{ 0 };
-		std::unique_ptr<Subject> m_updateScoreEvent;
+		std::unique_ptr<dae::Subject> m_updateScoreEvent;
 	};
 }

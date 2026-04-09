@@ -1,18 +1,16 @@
 #include "HealthComponentUI.h"
-#include "SpriteComponent.h"
 #include "GameObject.h"
-#include "HealthComponent.h"
 #include "Event.h"
 
 #include <iostream>
-dae::HealthComponentUI::HealthComponentUI(GameObject* owner):
+pacman::HealthComponentUI::HealthComponentUI(dae::GameObject* owner):
 	Component(owner)
 {
-	m_spriteComp = GetGameObject()->GetComponent<SpriteComponent>();
+	m_spriteComp = GetGameObject()->GetComponent<dae::SpriteComponent>();
 	m_spriteComp->SetRow(3);
 }
 
-void dae::HealthComponentUI::Notify(GameObject*, const Event& event)
+void pacman::HealthComponentUI::Notify(dae::GameObject*, const Event& event)
 {
 	switch (event.id)
 	{

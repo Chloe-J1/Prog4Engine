@@ -17,7 +17,7 @@ void dae::Damage::Execute()
 {
 	const int amount{ 1 };
 	GameObject* go{ GetGameObject() };
-	HealthComponent* healthComp{ go->GetComponent<HealthComponent>() };
+	pacman::HealthComponent* healthComp{ go->GetComponent<pacman::HealthComponent>() };
 	Subject* subject{ healthComp->GetTakeDamageEvent() };
 
 	healthComp->TakeDamage(amount);

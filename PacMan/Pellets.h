@@ -1,11 +1,11 @@
 #pragma once
 #include "Component.h"
-namespace dae
+namespace pacman
 {
-	class BasePellet : public Component
+	class BasePellet : public dae::Component
 	{
 	public:
-		BasePellet(GameObject* owner):
+		BasePellet(dae::GameObject* owner):
 			Component(owner)
 		{};
 		int GetValue() { return m_value; }
@@ -16,7 +16,7 @@ namespace dae
 	class SmallPellet final : public BasePellet
 	{
 	public:
-		SmallPellet(GameObject* owner) :
+		SmallPellet(dae::GameObject* owner) :
 			BasePellet(owner)
 		{
 			m_value = 10;
@@ -26,7 +26,7 @@ namespace dae
 	class PowerPellet final : public BasePellet
 	{
 	public:
-		PowerPellet(GameObject* owner) :
+		PowerPellet(dae::GameObject* owner) :
 			BasePellet(owner)
 		{
 			m_value = 50;

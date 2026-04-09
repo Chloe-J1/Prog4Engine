@@ -1,16 +1,16 @@
 #pragma once
 #include "Component.h"
 #include "Observer.h"
-namespace dae
+#include "SpriteComponent.h"
+namespace pacman
 {
-	class SpriteComponent;
-	class HealthComponentUI : public Component, public Observer
+	class HealthComponentUI : public dae::Component, public dae::Observer
 	{
 	public:
-		HealthComponentUI(GameObject* owner);
+		HealthComponentUI(dae::GameObject* owner);
 
-		virtual void Notify(GameObject* gameObject, const Event& event) override;
+		virtual void Notify(dae::GameObject* gameObject, const Event& event) override;
 	private:
-		SpriteComponent* m_spriteComp;
+		dae::SpriteComponent* m_spriteComp;
 	};
 }
