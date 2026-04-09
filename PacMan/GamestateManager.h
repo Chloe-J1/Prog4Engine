@@ -231,6 +231,7 @@ namespace pacman
 			// Wall
 			std::unique_ptr<dae::GameObject> wall = std::make_unique <dae::GameObject>();
 			wall->AddComponent<dae::RenderComponent>("Wall.png");
+			wall->AddComponent<dae::Hitbox>(16,16);
 			wall->SetLocalPosition(250, 300);
 			wall->SetLayer("Obstacle");
 			scene.Add(std::move(wall));

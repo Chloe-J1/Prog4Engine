@@ -10,5 +10,9 @@ namespace pacman
 		explicit PlayerMovement(dae::GameObject* owner);
 
 		void Move(float speed, const glm::vec2& direction, float elaspedSec);
+		virtual void OnCollision(dae::GameObject* other) override;
+
+	private:
+		glm::vec2 m_oldPos;
 	};
 }

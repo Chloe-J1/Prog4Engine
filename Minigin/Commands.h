@@ -82,6 +82,6 @@ namespace dae
 		{
 		}
 
-		virtual void Execute(float elapsedSec) override;
+		/*virtual void Execute(float elapsedSec) override;*/
 	};
 }
