@@ -45,6 +45,8 @@ void dae::HealthComponent::Update(float elapsedSec)
 	}
 }
 
+#include "InputManager.h"
+
 void dae::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 {
 	if (not m_isInvincible)
@@ -60,6 +62,13 @@ void dae::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 			Event deadEvent{ EventId::PLAYER_DIED };
 			m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(deadEvent));
 			GetGameObject()->SetIsAlive(false);
+
+
+			// quick & dirty -> clean this up
+			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold); // right
+			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold); // left
+			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold); // up
+			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold); // down
 		}
 	}
 }

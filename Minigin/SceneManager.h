@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <map>
 #include <string>
 #include <memory>
 #include "Scene.h"
@@ -11,7 +11,8 @@ namespace dae
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		Scene& CreateScene();
+		Scene& CreateScene(const std::string& name);
+		Scene& GetActiveScene();
 
 		void Update(float elapsedSec);
 		void FixedUpdate();
@@ -22,6 +23,7 @@ namespace dae
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::unique_ptr<Scene>> m_scenes{};
+		std::unordered_map<std::string, std::unique_ptr<Scene>> m_scenes{};
+		Scene* m_activeScene{ nullptr };
 	};
 }

@@ -98,6 +98,15 @@ void dae::InputManager::UnbindCommand(SDL_Scancode button, TriggerEvent triggerE
 	m_keyboardBindings.erase(itr);
 }
 
+void dae::InputManager::UnbindAllCommands()
+{
+	m_keyboardBindings.clear();
+	for (const auto& controller : m_controllers)
+	{
+		controller->UnbindAllCommands();
+	}
+}
+
 void dae::InputManager::InitializeControllers(int amountOfControllers)
 {
 	if (amountOfControllers > m_maxControllers)

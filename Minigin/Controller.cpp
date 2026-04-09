@@ -159,6 +159,10 @@ namespace dae
 		if (itr == m_controllerBindings.end()) return; // no such bindings found
 		m_controllerBindings.erase(itr);
 	}
+	void Controller::UnbindAllCommands()
+	{
+		m_controllerBindings.clear();
+	}
 	bool Controller::IsDownThisFrame(Input button) const 
 	{ 
 		return m_pImpl->IsDownThisFrame(Input(button));

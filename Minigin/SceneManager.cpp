@@ -3,54 +3,53 @@
 
 void dae::SceneManager::Update(float elapsedSec)
 {
-	for(auto& scene : m_scenes)
-	{
-		scene->Update(elapsedSec);
-	}
+
+	m_activeScene->Update(elapsedSec);
+
 }
 
 void dae::SceneManager::FixedUpdate()
 {
-	for (auto& scene : m_scenes)
-	{
-		scene->FixedUpdate();
-	}
+
+	m_activeScene->FixedUpdate();
+
 }
 
 void dae::SceneManager::LateUpdate(float elapsedSec)
 {
-	for (auto& scene : m_scenes)
-	{
-		scene->LateUpdate(elapsedSec);
-	}
+	m_activeScene->LateUpdate(elapsedSec);
 }
 
 void dae::SceneManager::Cleanup()
 {
-	for (auto& scene : m_scenes)
-	{
-		scene->Cleanup();
-	}
+	m_activeScene->Cleanup();
+
 }
 
 void dae::SceneManager::Render()
 {
-	for (const auto& scene : m_scenes)
-	{
-		scene->Render();
-	}
+	m_activeScene->Render();
 }
 
 void dae::SceneManager::RenderUI()
 {
-	for (const auto& scene : m_scenes)
-	{
-		scene->RenderUI();
-	}
+	m_activeScene->RenderUI();
 }
 
-dae::Scene& dae::SceneManager::CreateScene()
+#include "InputManager.h"
+#include <iostream>
+dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
-	m_scenes.emplace_back(new Scene());
-	return *m_scenes.back();
+	InputManager::GetInstance().UnbindAllCommands(); // TODO: event
+
+	m_scenes[name] = std::unique_ptr<Scene>(new Scene());
+	m_activeScene = m_scenes[name].get();
+
+	return *m_scenes[name];
+
+}
+
+dae::Scene& dae::SceneManager::GetActiveScene()
+{
+	return *m_activeScene;
 }

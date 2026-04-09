@@ -21,6 +21,7 @@ namespace dae
 
 		void BindCommand(Input button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
 		void UnbindCommand(Input button, TriggerEvent triggerEvent);
+		void UnbindAllCommands();
 	
 		bool IsDownThisFrame(Input button) const;
 		bool IsReleasedThisFrame(Input button) const;

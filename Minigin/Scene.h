@@ -30,7 +30,7 @@ namespace dae
 		void Render() const;
 		void RenderUI();
 
-		~Scene() = default;
+		~Scene()= default;
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;

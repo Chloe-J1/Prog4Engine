@@ -21,6 +21,7 @@ namespace dae
 		void UnbindCommand(Input button, TriggerEvent triggerEvent, int controllerIdx);
 		void BindCommand(SDL_Scancode button, TriggerEvent triggerEvent, std::unique_ptr<Command> command);
 		void UnbindCommand(SDL_Scancode button, TriggerEvent triggerEvent);
+		void UnbindAllCommands();
 
 		void InitializeControllers(int amountOfControllers);
 	private:

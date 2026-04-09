@@ -34,7 +34,8 @@ dae::GameObject* CreatePlayer(/*xxx.png or use a isFemale bool?*/) // TODO: make
 
 static void load()
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene();
+	dae::SceneManager::GetInstance().CreateScene("testScene");
+	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
 	// FPS
 	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
