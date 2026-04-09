@@ -3,12 +3,21 @@
 #include "GameObject.h"
 namespace pacman
 {
-	class Ghost : public dae::Component
+	class GhostComponent : public dae::Component
 	{
 	public:
-		Ghost(dae::GameObject* owner) :
-			Component(owner)
+		GhostComponent(dae::GameObject* owner) :
+			Component(owner),
+			m_damage{1}
 		{
 		}
+
+		int GetDamage() const
+		{
+			return m_damage;
+		}
+
+	private:
+		int m_damage;
 	};
 }

@@ -24,6 +24,18 @@ struct UpdateScoreArg : EventArg
 	virtual ~UpdateScoreArg() = default;
 };
 
+struct UpdateHealthArg : EventArg
+{
+	int health;
+
+	UpdateHealthArg(int _health)
+	{
+		health = _health;
+	}
+
+	virtual ~UpdateHealthArg() = default;
+};
+
 
 //************
 

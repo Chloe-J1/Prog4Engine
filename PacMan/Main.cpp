@@ -79,7 +79,11 @@ static void load()
 	healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
 	healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
 	healthUIGo->AddComponent<dae::HealthComponentUI>();
-
+	go->AddComponent<dae::HealthComponent>();
+		// add health observer
+	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
+		healthUIGo->GetComponent<dae::HealthComponentUI>()
+	);
 
 	healthUIGo->SetLocalPosition(480, 540);
 
@@ -138,7 +142,7 @@ static void load()
 	goText->SetLocalPosition(-55.f, -3);
 	scene.Add(std::move(goText));
 	go->AddComponent<dae::HealthComponent>();
-		// add score observer
+		// add health observer
 	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
 		healthUIGo->GetComponent<dae::HealthComponentUI>()
 	);
@@ -202,7 +206,7 @@ static void load()
 	ghost->AddComponent<dae::Hitbox>(16, 16);
 	ghost->AddComponent<dae::RenderComponent>("Ghost_red.png");
 	ghost->AddComponent<dae::SpriteComponent>(1, 6);
-	ghost->AddComponent<pacman::Ghost>();
+	ghost->AddComponent<pacman::GhostComponent>();
 	ghost->SetLocalPosition(300, 300);
 	scene.Add(std::move(ghost));
 }

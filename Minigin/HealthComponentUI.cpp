@@ -12,18 +12,18 @@ dae::HealthComponentUI::HealthComponentUI(GameObject* owner):
 	m_spriteComp->SetRow(3);
 }
 
-void dae::HealthComponentUI::Notify(GameObject* gameObject, const Event& event)
+void dae::HealthComponentUI::Notify(GameObject*, const Event& event)
 {
 	switch (event.id)
 	{
 	case EventId::PLAYER_TAKES_DAMAGE:
 	{
-		int health{ gameObject->GetComponent<HealthComponent>()->GetHealth()  };
+		auto* healthArg = static_cast<UpdateHealthArg*>(event.arg.get());
+		int health{ healthArg->health };
 		m_spriteComp->SetRow(health - 1);
 		break;
 	}
 	case EventId::PLAYER_DIED:
-		std::cout << "dead\n";
 		GetGameObject()->SetIsAlive(false);
 		// TODO: Remove observer from subject list
 		break;
