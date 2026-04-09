@@ -4,7 +4,7 @@
 #include "Component.h"
 #include <glm/glm.hpp>
 #include "Transform.h"
-#include <memory>
+#include <string>
 
 namespace dae
 {
@@ -82,7 +82,10 @@ namespace dae
 		void SetIsAlive(bool isAlive);
 		bool GetIsAlive();
 		
+		// Collision
 		void OnCollision(GameObject* other);
+		void SetLayer(const std::string& layer);
+		const std::string& GetLayer() const;
 
 		GameObject();
 		~GameObject();
@@ -96,11 +99,12 @@ namespace dae
 		bool m_isAlive{ true };
 
 		GameObject* m_parent{}; // not owner
-		
 		std::vector<GameObject*> m_childObjects;
-
+		
 		void RemoveChild(GameObject* child);
 		void AddChild(GameObject* child);
+
+		std::string m_layer{"default"};
 	};
 	
 }

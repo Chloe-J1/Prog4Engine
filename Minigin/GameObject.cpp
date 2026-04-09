@@ -187,6 +187,16 @@ void dae::GameObject::OnCollision(GameObject* other)
 	}
 }
 
+void dae::GameObject::SetLayer(const std::string& layer)
+{
+	m_layer = layer;
+}
+
+const std::string& dae::GameObject::GetLayer() const
+{
+	return m_layer;
+}
+
 
 
 
