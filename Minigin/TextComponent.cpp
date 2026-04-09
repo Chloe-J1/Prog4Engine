@@ -10,15 +10,17 @@
 #include <iostream>
 dae::TextComponent::TextComponent(GameObject* owner, const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)
 	: Component(owner), m_needsUpdate(true), m_text(text), m_color(color), m_font(std::move(font)), m_textTexture(nullptr)
-{ }
-
-void dae::TextComponent::Update(float)
 {
 	m_renderComp = GetGameObject()->GetComponent<RenderComponent>();
 	if (m_renderComp == nullptr)
 	{
 		std::cout << "GameObject needs a renderComponent for the textComponent to work\n";
 	}
+}
+
+void dae::TextComponent::Update(float)
+{
+	
 	if (m_needsUpdate)
 	{
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), m_text.length(), m_color);

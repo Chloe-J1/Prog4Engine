@@ -8,7 +8,6 @@
 namespace dae
 {
 	class Font;
-	class TextObject;
 
     class FPSComponent final : public Component
     {

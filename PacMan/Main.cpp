@@ -22,7 +22,7 @@
 #include "ScoreComponentUI.h"
 #include "Hitbox.h"
 #include "Ghost.h"
-
+#include "GamestateManager.h"
 #include <filesystem>
 #include <glm/glm.hpp>
 namespace fs = std::filesystem;
@@ -32,17 +32,18 @@ dae::GameObject* CreatePlayer(/*xxx.png or use a isFemale bool?*/) // TODO: make
 	return new dae::GameObject();
 }
 
-static void load()
+void GameScene()
 {
-	dae::SceneManager::GetInstance().CreateScene("testScene");
+	dae::SceneManager::GetInstance().CreateScene("gameScene");
 	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+
 
 	// FPS
 	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
 	fpsgo->SetLocalPosition(20, 20);
 	fpsgo->AddComponent<dae::RenderComponent>();
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	fpsgo->AddComponent<dae::TextComponent>("FPS: ",  font);
+	fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
 	fpsgo->AddComponent<dae::FPSComponent>();
 
 	scene.Add(std::move(fpsgo));
@@ -73,7 +74,7 @@ static void load()
 	go->SetLocalPosition(200, 200);
 
 	scene.Add(std::move(scoreGo));
-	
+
 
 	// Health UI
 	std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
@@ -81,9 +82,12 @@ static void load()
 	healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
 	healthUIGo->AddComponent<dae::HealthComponentUI>();
 	go->AddComponent<dae::HealthComponent>();
-		// add health observer
+	// add health observer
 	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
 		healthUIGo->GetComponent<dae::HealthComponentUI>()
+	);
+	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
+		&pacman::GamestateManager::GetInstance()
 	);
 
 	healthUIGo->SetLocalPosition(480, 540);
@@ -101,7 +105,7 @@ static void load()
 	//BINDINGS
 	dae::InputManager::GetInstance().InitializeControllers(2);
 
-	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1,0), speed), 1); // right
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(1, 0), speed), 1); // right
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(-1, 0), speed), 1); // left
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, -1), speed), 1); // up
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::Hold, std::make_unique<dae::Move>(go.get(), glm::vec2(0, 1), speed), 1); // down
@@ -113,9 +117,9 @@ static void load()
 
 
 	scene.Add(std::move(go));
-	
 
-	
+
+
 
 	// Pacman
 	//*********
@@ -143,7 +147,7 @@ static void load()
 	goText->SetLocalPosition(-55.f, -3);
 	scene.Add(std::move(goText));
 	go->AddComponent<dae::HealthComponent>();
-		// add health observer
+	// add health observer
 	go->GetComponent<dae::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
 		healthUIGo->GetComponent<dae::HealthComponentUI>()
 	);
@@ -155,7 +159,7 @@ static void load()
 
 	scoreGo->SetLocalPosition(800, 30);
 
-		// add score observer
+	// add score observer
 	go->AddComponent<dae::ScoreComponent>();
 	go->GetComponent<dae::ScoreComponent>()->GetSubject()->AddObserver(
 		scoreGo->GetComponent<dae::ScoreComponentUI>()
@@ -210,6 +214,11 @@ static void load()
 	ghost->AddComponent<pacman::GhostComponent>();
 	ghost->SetLocalPosition(300, 300);
 	scene.Add(std::move(ghost));
+}
+
+static void load()
+{
+	GameScene();
 }
 
 int main(int, char*[]) {

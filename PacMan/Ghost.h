@@ -3,7 +3,7 @@
 #include "GameObject.h"
 namespace pacman
 {
-	class GhostComponent : public dae::Component
+	class GhostComponent final : public dae::Component
 	{
 	public:
 		GhostComponent(dae::GameObject* owner) :
