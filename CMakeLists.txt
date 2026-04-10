@@ -26,9 +26,9 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   "Minigin/TextComponent.cpp"
   Minigin/Texture2D.cpp
   Minigin/Transform.cpp
- "Minigin/Component.h" "Minigin/RenderComponent.h" "Minigin/RenderComponent.cpp" "PacMan/FPSComponent.h" "Minigin/RotationComponent.h" "Minigin/RotationComponent.cpp" "Minigin/GraphComponent.h" "Minigin/GraphComponent.cpp" "Minigin/Commands.h"  "Minigin/Commands.cpp" "Minigin/Controller.h" "Minigin/Controller.cpp" "Minigin/InputData.h" "Minigin/SpriteComponent.h" "Minigin/SpriteComponent.cpp" "Minigin/Observer.h" "PacMan/HealthComponentUI.h" "PacMan/HealthComponentUI.cpp" "Minigin/Subject.h" "PacMan/ScoreComponentUI.h"
+ "Minigin/Component.h" "Minigin/RenderComponent.h" "Minigin/RenderComponent.cpp" "PacMan/FPSComponent.h" "Minigin/RotationComponent.h" "Minigin/RotationComponent.cpp" "Minigin/GraphComponent.h" "Minigin/GraphComponent.cpp" "PacMan/Commands.h"  "PacMan/Commands.cpp" "Minigin/Controller.h" "Minigin/Controller.cpp" "Minigin/InputData.h" "Minigin/SpriteComponent.h" "Minigin/SpriteComponent.cpp" "Minigin/Observer.h" "PacMan/HealthComponentUI.h" "PacMan/HealthComponentUI.cpp" "Minigin/Subject.h" "PacMan/ScoreComponentUI.h"
   PacMan/Main.cpp
- "Minigin/Hitbox.h" "Minigin/Hitbox.cpp" "Minigin/Event.h" "Minigin/CollisionManager.h" "Minigin/CollisionManager.cpp" "PacMan/Pellets.h" "Minigin/EventQueue.h"  "PacMan/Ghost.h" "PacMan/GamestateManager.h" "PacMan/PlayerMovement.h" "PacMan/PlayerMovement.cpp" "PacMan/HealthComponent.h" "PacMan/HealthComponent.cpp")
+ "Minigin/Hitbox.h" "Minigin/Hitbox.cpp" "Minigin/Event.h" "Minigin/CollisionManager.h" "Minigin/CollisionManager.cpp" "PacMan/Pellets.h" "Minigin/EventQueue.h"  "PacMan/Ghost.h" "PacMan/GamestateManager.h" "PacMan/PlayerMovement.h" "PacMan/PlayerMovement.cpp" "PacMan/HealthComponent.h" "PacMan/HealthComponent.cpp" "Minigin/Command.h")
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
 
