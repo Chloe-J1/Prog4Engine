@@ -47,6 +47,16 @@ void dae::SpriteComponent::Update(float elapsedSec)
 	
 }
 
+float dae::SpriteComponent::GetWidth() const
+{
+	return m_width;
+}
+
+float dae::SpriteComponent::GetHeight() const
+{
+	return m_height;
+}
+
 void dae::SpriteComponent::SetRow(int rowNr)
 {
 	m_row = rowNr;

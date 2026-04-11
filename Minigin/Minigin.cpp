@@ -20,8 +20,10 @@
 #include <cstdio>
 #include "EventQueue.h"
 #include "CollisionManager.h"
+#include "WindowConfig.h"
 
 SDL_Window* g_window{};
+
 
 void LogSDLVersion(const std::string& message, int major, int minor, int patch)
 {
@@ -60,8 +62,9 @@ void PrintSDLVersion()
 	LogSDLVersion("Linked with SDL_ttf ", SDL_VERSIONNUM_MAJOR(version), SDL_VERSIONNUM_MINOR(version),	SDL_VERSIONNUM_MICRO(version));
 }
 
-dae::Minigin::Minigin(const std::filesystem::path& dataPath)
+dae::Minigin::Minigin(const std::filesystem::path& dataPath, int windowWidth, int windowHeight, const std::string& title)
 {
+	WindowConfig::GetInstance().Init(windowWidth, windowHeight, title);
 	PrintSDLVersion();
 	
 	if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
@@ -81,9 +84,9 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath)
 
 
 	g_window = SDL_CreateWindow( 
-		"Programming 4 assignment",
-		1024,
-		576,
+		WindowConfig::GetInstance().GetTitle().c_str(),
+		WindowConfig::GetInstance().GetWidth(),
+		WindowConfig::GetInstance().GetHeight(),
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 

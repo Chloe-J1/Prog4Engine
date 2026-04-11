@@ -11,6 +11,8 @@ namespace dae
 
 		virtual void Update(float elapsedSec) override;
 
+		float GetWidth() const;
+		float GetHeight() const;
 		void SetRow(int rowNr);
 	private:
 		int m_cols;

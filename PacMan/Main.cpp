@@ -7,10 +7,9 @@
 
 #include "Minigin.h"
 #include "GamestateManager.h"
-#include "SceneManager.h"
-#include "GamestateManager.h"
+#include "WindowConfig.h"
+
 #include <filesystem>
-#include <glm/glm.hpp>
 namespace fs = std::filesystem;
 
 dae::GameObject* CreatePlayer(/*xxx.png or use a isFemale bool?*/) // TODO: make this spawn a male / female pacman
@@ -20,6 +19,7 @@ dae::GameObject* CreatePlayer(/*xxx.png or use a isFemale bool?*/) // TODO: make
 
 static void load()
 {
+	dae::WindowConfig::GetInstance().Init(2000,500,"test");
 	dae::InputManager::GetInstance().InitializeControllers(2);
 	pacman::GamestateManager::GetInstance().GameScene();
 }
@@ -32,7 +32,10 @@ int main(int, char*[]) {
 	if(!fs::exists(data_location))
 		data_location = "../Data/";
 #endif
-	dae::Minigin engine(data_location);
+	const int wWidth{ 1024 };
+	const int wHeight{ 576 };
+	const std::string title{ "Prog4 Exam" };
+	dae::Minigin engine(data_location, wWidth, wHeight, title);
 	engine.Run(load);
 
 	

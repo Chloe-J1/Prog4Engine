@@ -28,7 +28,7 @@ add_executable(${TARGET_NAME} ${TARGET_PARAM}
   Minigin/Transform.cpp
  "Minigin/Component.h" "Minigin/RenderComponent.h" "Minigin/RenderComponent.cpp" "PacMan/FPSComponent.h" "Minigin/RotationComponent.h" "Minigin/RotationComponent.cpp" "Minigin/GraphComponent.h" "Minigin/GraphComponent.cpp" "PacMan/Commands.h"  "PacMan/Commands.cpp" "Minigin/Controller.h" "Minigin/Controller.cpp" "Minigin/InputData.h" "Minigin/SpriteComponent.h" "Minigin/SpriteComponent.cpp" "Minigin/Observer.h" "PacMan/HealthComponentUI.h" "PacMan/HealthComponentUI.cpp" "Minigin/Subject.h" "PacMan/ScoreComponentUI.h"
   PacMan/Main.cpp
- "Minigin/Hitbox.h" "Minigin/Hitbox.cpp" "Minigin/Event.h" "Minigin/CollisionManager.h" "Minigin/CollisionManager.cpp" "PacMan/Pellets.h" "Minigin/EventQueue.h"  "PacMan/Ghost.h" "PacMan/GamestateManager.h" "PacMan/PlayerMovement.h" "PacMan/PlayerMovement.cpp" "PacMan/HealthComponent.h" "PacMan/HealthComponent.cpp" "Minigin/Command.h")
+ "Minigin/Hitbox.h" "Minigin/Hitbox.cpp" "Minigin/Event.h" "Minigin/CollisionManager.h" "Minigin/CollisionManager.cpp" "PacMan/Pellets.h" "Minigin/EventQueue.h"  "PacMan/Ghost.h" "PacMan/GamestateManager.h" "PacMan/PlayerMovement.h" "PacMan/PlayerMovement.cpp" "PacMan/HealthComponent.h" "PacMan/HealthComponent.cpp" "Minigin/Command.h" "Minigin/WindowConfig.h")
 # enable c++20 features
 target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
 
@@ -121,7 +121,7 @@ add_library(imgui STATIC
   ${imgui_SOURCE_DIR}/imgui_demo.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
-  )
+   "Minigin/WindowConfig.h")
 
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${sdl3_SOURCE_DIR}/include)
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
