@@ -104,6 +104,11 @@ const glm::vec3& dae::GameObject::GetWorldPosition()
 	return m_transform.GetWorldPosition();
 }
 
+const std::vector<std::unique_ptr<dae::Component>>& dae::GameObject::GetAllComponents() const
+{
+	return m_components;
+}
+
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
 	if (IsChild(parent) || parent == this || m_parent == parent)
@@ -177,14 +182,6 @@ void dae::GameObject::SetIsAlive(bool isAlive)
 bool dae::GameObject::GetIsAlive()
 {
 	return m_isAlive;
-}
-
-void dae::GameObject::OnCollision(GameObject* other)
-{
-	for (const auto& component : m_components)
-	{
-		component->OnCollision(other);
-	}
 }
 
 void dae::GameObject::SetLayer(const std::string& layer)

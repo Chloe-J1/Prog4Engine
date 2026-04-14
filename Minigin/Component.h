@@ -3,6 +3,7 @@
 namespace dae
 {
 	class GameObject;
+	class CollisonManager;
 	class Component
 	{
 	public:
@@ -22,9 +23,11 @@ namespace dae
 		Component(Component&& other) = delete;
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
-
+	protected:
 		virtual void OnCollision(GameObject*) {};
 	private:
+		friend class CollisionManager;
+
 		GameObject* m_gameObject{};
 		bool m_isAlive{ true };
 

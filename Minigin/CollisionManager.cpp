@@ -24,7 +24,7 @@ void dae::CollisionManager::CheckOverlapping()
 		for (int indexOther = index; indexOther < m_hitboxes.size(); indexOther++)
 		{
 			Hitbox* hitboxOther = m_hitboxes[indexOther];
-			if (hitboxOther == hitbox) continue; // don't calculate isOverlapping with itself
+			if (hitboxOther == hitbox) continue; // Don't calculate IsHit with itself
 
 			if (hitbox->IsHit(*hitboxOther))
 			{
@@ -32,8 +32,14 @@ void dae::CollisionManager::CheckOverlapping()
 				GameObject* thisObj = hitbox->GetGameObject();
 				GameObject* otherObj = hitboxOther->GetGameObject();
 
-				thisObj->OnCollision(otherObj);
-				otherObj->OnCollision(thisObj);
+				for (const auto& comp : thisObj->GetAllComponents())
+				{
+					comp->OnCollision(otherObj); 
+				}
+				for (const auto& comp : otherObj->GetAllComponents())
+				{
+					comp->OnCollision(thisObj);
+				}
 			}
 		}
 	}

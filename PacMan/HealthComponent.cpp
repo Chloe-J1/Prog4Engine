@@ -42,6 +42,8 @@ void pacman::HealthComponent::Update(float elapsedSec)
 			m_invincibleTime = 0;
 		}
 	}
+
+
 }
 
 #include "InputManager.h"

@@ -70,7 +70,7 @@ namespace dae
 			}
 			return false;
 		}
-
+		const std::vector<std::unique_ptr<Component>>& GetAllComponents() const;
 		// Parenting
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		bool IsChild(GameObject* parent);
@@ -83,7 +83,6 @@ namespace dae
 		bool GetIsAlive();
 		
 		// Collision
-		void OnCollision(GameObject* other);
 		void SetLayer(const std::string& layer);
 		const std::string& GetLayer() const;
 
