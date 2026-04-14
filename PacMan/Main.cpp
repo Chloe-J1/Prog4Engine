@@ -12,16 +12,11 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
-dae::GameObject* CreatePlayer(/*xxx.png or use a isFemale bool?*/) // TODO: make this spawn a male / female pacman
-{
-	return new dae::GameObject();
-}
-
 static void load()
 {
-	dae::WindowConfig::GetInstance().Init(2000,500,"test");
 	dae::InputManager::GetInstance().InitializeControllers(2);
-	pacman::GamestateManager::GetInstance().GameScene();
+	//pacman::GamestateManager::GetInstance().GameScene();
+	pacman::GamestateManager::GetInstance().MapScene();
 }
 
 int main(int, char*[]) {
@@ -32,8 +27,8 @@ int main(int, char*[]) {
 	if(!fs::exists(data_location))
 		data_location = "../Data/";
 #endif
-	const int wWidth{ 1024 };
-	const int wHeight{ 576 };
+	const int wWidth{ 744 };
+	const int wHeight{ 744 };
 	const std::string title{ "Prog4 Exam" };
 	dae::Minigin engine(data_location, wWidth, wHeight, title);
 	engine.Run(load);

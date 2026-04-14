@@ -26,8 +26,31 @@
 #include "ScoreComponentUI.h"
 #include "Hitbox.h"
 #include "Ghost.h"
+
+#include <fstream>
 namespace pacman
 {
+	std::unique_ptr<dae::GameObject> CreateWall(float x, float y)
+	{
+		std::unique_ptr<dae::GameObject> wall = std::make_unique <dae::GameObject>();
+		wall->AddComponent<dae::RenderComponent>("Wall_24.png");
+		wall->AddComponent<dae::Hitbox>(24, 24);
+		wall->SetLocalPosition(x, y);
+		wall->SetLayer("Obstacle");
+		return wall;
+	}
+	std::unique_ptr<dae::GameObject> CreatePellet(float x, float y)
+	{
+		const int offset{ 10 };
+		std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
+		pellet->AddComponent<dae::Hitbox>(4, 4);
+		pellet->AddComponent<dae::RenderComponent>("Pellet_small.png");
+		pellet->AddComponent<pacman::SmallPellet>();
+		pellet->SetLocalPosition(x + offset, y + offset);
+		return pellet;
+	}
+
+
 	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::Observer
 	{
 	public:
@@ -37,6 +60,70 @@ namespace pacman
 			{
 				LoseScene();
 			}
+		}
+		void MapScene()
+		{
+			dae::SceneManager::GetInstance().CreateScene("mapScene");
+			dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+
+			// TODO: Wrapper class for map loading
+			std::string filename{ "Data/Maps/Level_one.txt" };
+			std::ifstream iFile;
+			iFile.open(filename);
+			std::string line;
+			float x{};
+			float y{};
+			float size{ 24.f };
+						
+			if (iFile.is_open())
+			{
+				while (std::getline(iFile, line))
+				{
+					std::stringstream ss(line);
+					std::string type;
+					
+					while (std::getline(ss, type, ','))
+					{
+						if (type == "w")
+						{
+							scene.Add(CreateWall(x, y));
+						}
+						else if (type == "p")
+						{
+							scene.Add(CreatePellet(x, y));
+						}
+						x += size;
+					}
+					y += size;
+					x = 0;
+				}
+				iFile.close();
+			}
+			else
+			{
+				throw std::invalid_argument("this file can't be opened");
+			}
+
+			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+			go->AddComponent<dae::RenderComponent>("Pacman.png");
+			go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
+			go->AddComponent<dae::Hitbox>(16, 16);
+			go->AddComponent<pacman::PlayerMovement>();
+			go->SetLocalPosition(28, 28);
+
+			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(1, 0)), 1); // right
+			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(-1, 0)), 1); // left
+			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, -1)), 1); // up
+			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, 1)), 1); // down
+
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(1, 0))); // right
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(-1, 0))); // left
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, -1))); // up
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, 1))); // down
+
+
+
+			scene.Add(std::move(go));
 		}
 		void OtherScene()
 		{
@@ -224,12 +311,9 @@ namespace pacman
 			scene.Add(std::move(ghost));
 
 			// Wall
-			std::unique_ptr<dae::GameObject> wall = std::make_unique <dae::GameObject>();
-			wall->AddComponent<dae::RenderComponent>("Wall.png");
-			wall->AddComponent<dae::Hitbox>(16,16);
-			wall->SetLocalPosition(250, 300);
-			wall->SetLayer("Obstacle");
-			scene.Add(std::move(wall));
+
+			scene.Add(std::move(CreateWall(250, 300)));
+			
 		}
 	private:
 		void LoseScene()

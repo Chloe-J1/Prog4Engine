@@ -34,8 +34,6 @@ void pacman::PlayerMovement::Update(float elapsedSec)
 {
 	m_oldPos = GetGameObject()->GetWorldPosition();
 	GetGameObject()->AddLocalPosition(m_currDirection * m_speed * elapsedSec);
-	
-	// TODO: clean this
 
 	glm::vec3 pos{ GetGameObject()->GetTransform().GetWorldPosition() };
 	if (pos.x < -m_playerWidth)
