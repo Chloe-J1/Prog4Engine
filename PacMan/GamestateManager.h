@@ -26,6 +26,7 @@
 #include "ScoreComponentUI.h"
 #include "Hitbox.h"
 #include "Ghost.h"
+#include "PlayerAnimator.h"
 
 #include <fstream>
 namespace pacman
@@ -161,7 +162,8 @@ namespace pacman
 			//**********
 			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 			go->AddComponent<dae::RenderComponent>("MrsPacman.png");
-			go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
+			go->AddComponent<dae::SpriteComponent>(3, 4, 0.2f);
+			go->AddComponent<pacman::PlayerAnimator>(go->GetComponent<dae::SpriteComponent>());
 			go->AddComponent<dae::Hitbox>(16, 16);
 			go->AddComponent<pacman::ScoreComponent>();
 			// add observer
@@ -225,7 +227,8 @@ namespace pacman
 
 			go = std::make_unique<dae::GameObject>();
 			go->AddComponent<dae::RenderComponent>("Pacman.png");
-			go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
+			go->AddComponent<dae::SpriteComponent>(3, 4, 0.2f);
+			go->AddComponent<pacman::PlayerAnimator>(go->GetComponent<dae::SpriteComponent>());
 			go->AddComponent<dae::Hitbox>(16, 16);
 			// Health UI
 			healthUIGo = std::make_unique<dae::GameObject>();

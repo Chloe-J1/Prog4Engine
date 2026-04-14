@@ -15,7 +15,6 @@ namespace pacman
 		{
 			m_moveComp = GetGameObject()->GetComponent<pacman::PlayerMovement>();
 		}
-
 		virtual void Execute() override;
 		
 	private:

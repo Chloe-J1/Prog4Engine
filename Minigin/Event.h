@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <glm/glm.hpp>
 // EVENT ARGS
 //************
 struct EventArg
@@ -36,6 +37,18 @@ struct UpdateHealthArg : EventArg
 	virtual ~UpdateHealthArg() = default;
 };
 
+struct DirectionChangedArg : EventArg
+{
+	glm::vec2 direction;
+
+	DirectionChangedArg(glm::vec2 _direction)
+	{
+		direction = _direction;
+	}
+
+	virtual ~DirectionChangedArg() = default;
+};
+
 
 //************
 
@@ -44,7 +57,8 @@ enum class EventId
 	PLAYER_DIED,
 	PLAYER_TAKES_DAMAGE,
 	UPDATE_SCORE,
-	GAME_WON
+	GAME_WON,
+	DIRECTION_CHANGED
 };
 
 struct Event

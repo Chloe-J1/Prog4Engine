@@ -15,8 +15,8 @@ namespace fs = std::filesystem;
 static void load()
 {
 	dae::InputManager::GetInstance().InitializeControllers(2);
-	//pacman::GamestateManager::GetInstance().GameScene();
-	pacman::GamestateManager::GetInstance().MapScene();
+	pacman::GamestateManager::GetInstance().GameScene();
+	//pacman::GamestateManager::GetInstance().MapScene();
 }
 
 int main(int, char*[]) {
