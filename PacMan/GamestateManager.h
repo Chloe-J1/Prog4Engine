@@ -254,7 +254,7 @@ namespace pacman
 				healthUIGo->GetComponent<pacman::HealthComponentUI>()
 			);
 			scoreGo = std::make_unique<dae::GameObject>();
-			scoreGo->AddComponent<dae::RenderComponent>();
+			scoreGo->AddComponent<dae::RenderComponent>(); 
 			font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 			scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
 			scoreGo->AddComponent<pacman::ScoreComponentUI>();
