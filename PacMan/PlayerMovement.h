@@ -4,7 +4,7 @@
 
 namespace pacman
 {
-	class dae::GameObject;
+	class GameObject;
 	class PlayerMovement final : public dae::Component
 	{
 	public:
