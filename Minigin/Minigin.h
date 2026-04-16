@@ -10,8 +10,6 @@ namespace dae
 	{
 		bool m_quit{};
 		float m_lag{ 0.f };
-		const int m_wWidth{ 1024 };
-		const int m_wHeight{ 576 };
 
 		std::chrono::high_resolution_clock::time_point m_lastTime{};
 	public:

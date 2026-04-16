@@ -15,6 +15,9 @@ namespace pacman
         FPSComponent(dae::GameObject* owner):
             Component(owner)
         {
+            m_textComponent = GetGameObject()->GetComponent<dae::TextComponent>();
+            if (m_textComponent == nullptr)
+                std::cout << "TextComponent is nullptr\n";
         }
 
 
@@ -22,9 +25,7 @@ namespace pacman
         {
             Component::Update(elapsedSec);
 
-            m_textComponent = GetGameObject()->GetComponent<dae::TextComponent>();
-            if (m_textComponent == nullptr)
-                std::cout << "TextComponent is nullptr\n";
+            
 
             m_cumulatedTime += elapsedSec;
             m_frameCount++;
@@ -38,6 +39,8 @@ namespace pacman
                 m_cumulatedTime = 0.0f;
                 m_frameCount = 0;
             }
+
+        
             
         }
 
