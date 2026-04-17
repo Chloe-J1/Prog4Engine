@@ -38,4 +38,16 @@ namespace pacman
 
 		virtual ~DirectionChangedArg() = default;
 	};
+
+	struct ButtonSelectionArg : dae::EventArg
+	{
+		bool isSelected;
+
+		ButtonSelectionArg(bool _isSelected)
+		{
+			isSelected = _isSelected;
+		}
+
+		virtual ~ButtonSelectionArg() = default;
+	};
 }

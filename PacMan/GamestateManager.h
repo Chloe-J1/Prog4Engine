@@ -26,6 +26,7 @@
 #include "PlayerAnimator.h"
 #include "ButtonComponent.h"
 #include "Events.h"
+#include "ButtonAnimator.h"
 
 #include <fstream>
 namespace pacman
@@ -344,7 +345,15 @@ namespace pacman
 			// Game Button
 			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 			go->AddComponent<dae::RenderComponent>("Button.png");
+			go->AddComponent<dae::SpriteComponent>(1, 2);
+			go->AddComponent<pacman::ButtonAnimator>(go->GetComponent<dae::SpriteComponent>());
 			go->AddComponent<ButtonComponent>();
+
+				// Add observers
+			go->GetComponent<pacman::ButtonComponent>()->GetSubject()->AddObserver
+			(
+				go->GetComponent<pacman::ButtonAnimator>()
+			);
 
 			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
 
@@ -358,6 +367,34 @@ namespace pacman
 				expl->SetParent(go.get(), false);
 				expl->SetLocalPosition(10, 3);
 				
+			scene.Add(std::move(go));
+			scene.Add(std::move(expl));
+
+			// Game Button
+			go = std::make_unique<dae::GameObject>();
+			go->AddComponent<dae::RenderComponent>("Button.png");
+			go->AddComponent<dae::SpriteComponent>(1, 2);
+			go->AddComponent<pacman::ButtonAnimator>(go->GetComponent<dae::SpriteComponent>());
+			go->AddComponent<ButtonComponent>();
+
+				// Add observers
+			go->GetComponent<pacman::ButtonComponent>()->GetSubject()->AddObserver
+			(
+				go->GetComponent<pacman::ButtonAnimator>()
+			);
+
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
+
+			go->SetLocalPosition(float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2 + 60) / 2.f);
+
+				// Explanation
+				expl = std::make_unique<dae::GameObject>();
+				expl->AddComponent<dae::RenderComponent>();
+				font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+				expl->AddComponent<dae::TextComponent>("Test", font);
+				expl->SetParent(go.get(), false);
+				expl->SetLocalPosition(10, 3);
+
 			scene.Add(std::move(go));
 			scene.Add(std::move(expl));
 

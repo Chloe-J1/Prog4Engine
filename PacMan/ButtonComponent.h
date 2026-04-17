@@ -1,5 +1,7 @@
 #pragma once
 #include "../Minigin/Component.h"
+#include "../Minigin/Subject.h"
+#include <memory>
 namespace pacman
 {
 	class GameObject;
@@ -15,7 +17,10 @@ namespace pacman
 
 		void SetIsSelected(bool isSelected);
 		void ButtonPressed();
+
+		dae::Subject* GetSubject();
 	private:
 		bool m_isSelected;
+		std::unique_ptr<dae::Subject> m_subject;
 	};
 }
