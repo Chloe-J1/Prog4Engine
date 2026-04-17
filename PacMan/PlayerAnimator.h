@@ -4,6 +4,7 @@
 #include "../Minigin/GameObject.h"
 #include "../Minigin/Observer.h"
 #include "../Minigin/EventQueue.h"
+#include "Events.h"
 namespace pacman
 {
 	class PlayerAnimator : public dae::Component, public dae::Observer
@@ -24,9 +25,9 @@ namespace pacman
 		PlayerAnimator& operator=(const PlayerAnimator& other) = delete;
 		PlayerAnimator& operator=(PlayerAnimator&& other) = delete;
 
-		virtual void Notify(dae::GameObject* gameObject, const Event& event)
+		virtual void Notify(dae::GameObject* gameObject, const dae::Event& event)
 		{
-			if (event.id == EventId::DIRECTION_CHANGED && gameObject == GetGameObject())// Only update sprite for your character
+			if (event.id == dae::EventId::DIRECTION_CHANGED && gameObject == GetGameObject())// Only update sprite for your character
 			{
 				DirectionChangedArg* arg = static_cast<DirectionChangedArg*>(event.arg.get());
 				if (arg->direction.x == 1) // right

@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
-#include "Event.h"
+#include "Events.h"
 #include "Pellets.h"
 
 namespace pacman
@@ -32,7 +32,7 @@ namespace pacman
 			if (pellet != nullptr)
 			{
 				m_score += pellet->GetValue();
-				Event updateScoreEvent{ EventId::UPDATE_SCORE };
+				dae::Event updateScoreEvent{ dae::EventId::UPDATE_SCORE };
 				updateScoreEvent.arg = std::make_unique<UpdateScoreArg>( m_score );
 				m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
 

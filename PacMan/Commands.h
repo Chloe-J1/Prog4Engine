@@ -49,25 +49,4 @@ namespace pacman
 
 		virtual void Execute() override;
 	};
-
-	// TEST
-	class GameScene final : public dae::GameObjectCommand
-	{
-	public:
-		GameScene(dae::GameObject* gameObject) :
-			GameObjectCommand(gameObject)
-		{
-		}
-		virtual void Execute() override;
-	};
-
-	class LoseScene final : public dae::GameObjectCommand
-	{
-	public:
-		LoseScene(dae::GameObject* gameObject) :
-			GameObjectCommand(gameObject)
-		{
-		}
-		virtual void Execute() override;
-	};
 }

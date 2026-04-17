@@ -9,7 +9,7 @@ namespace pacman
 	public:
 		HealthComponentUI(dae::GameObject* owner);
 
-		virtual void Notify(dae::GameObject* gameObject, const Event& event) override;
+		virtual void Notify(dae::GameObject* gameObject, const dae::Event& event) override;
 	private:
 		dae::SpriteComponent* m_spriteComp;
 	};

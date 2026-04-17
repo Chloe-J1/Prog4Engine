@@ -2,7 +2,6 @@
 #include "../Minigin/Singleton.h"
 #include "../Minigin/Observer.h"
 #include "../Minigin/GameObject.h"
-#include "../Minigin/Event.h"
 #include "../Minigin/SceneManager.h"
 #include "../Minigin/RenderComponent.h"
 #include "../Minigin/ResourceManager.h"
@@ -26,6 +25,7 @@
 #include "Ghost.h"
 #include "PlayerAnimator.h"
 #include "ButtonComponent.h"
+#include "Events.h"
 
 #include <fstream>
 namespace pacman
@@ -54,9 +54,9 @@ namespace pacman
 	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::Observer
 	{
 	public:
-		virtual void Notify(dae::GameObject*, const Event& event) override
+		virtual void Notify(dae::GameObject*, const dae::Event& event) override
 		{
-			if (event.id == EventId::PLAYER_DIED)
+			if (event.id == dae::EventId::PLAYER_DIED)
 			{
 				LoseScene();
 			}
@@ -315,11 +315,6 @@ namespace pacman
 			// Wall
 			scene.Add(std::move(CreateWall(250, 300)));
 
-			// TEST
-			go = std::make_unique<dae::GameObject>();
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::LoseScene>(go.get()));
-			scene.Add(std::move(go));
-
 		}
 
 		void LoseScene()
@@ -331,11 +326,6 @@ namespace pacman
 			auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 			go->AddComponent<dae::TextComponent>("GAME OVER", font);
 
-			scene.Add(std::move(go));
-
-			// TEST
-			go = std::make_unique<dae::GameObject>();
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::GameScene>(go.get()));
 			scene.Add(std::move(go));
 		}
 

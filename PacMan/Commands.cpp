@@ -3,13 +3,14 @@
 #include <memory>
 #include "MenuManager.h"
 #include "ButtonComponent.h"
+#include "Events.h"
 // MOVE
 //********
 void pacman::Move::Execute()
 {
 	m_moveComp->Move(m_direction);
 
-	Event directionChangedEvent{ EventId::DIRECTION_CHANGED };
+	dae::Event directionChangedEvent{ dae::EventId::DIRECTION_CHANGED };
 	directionChangedEvent.arg = std::make_unique<DirectionChangedArg>(m_direction);
 	dae::EventQueue::GetInstance().Invoke(std::move(directionChangedEvent), GetGameObject());
 }
@@ -24,17 +25,6 @@ void pacman::NextButton::Execute()
 void pacman::PreviousButton::Execute()
 {
 	MenuManager::GetInstance().SelectPreviousButton();
-}
-
-#include "GamestateManager.h"
-void pacman::GameScene::Execute()
-{
-	GamestateManager::GetInstance().GameScene();
-}
-
-void pacman::LoseScene::Execute()
-{
-	GamestateManager::GetInstance().LoseScene();
 }
 
 void pacman::PressButton::Execute()

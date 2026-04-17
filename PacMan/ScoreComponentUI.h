@@ -3,7 +3,7 @@
 #include "Observer.h"
 #include "TextComponent.h"
 #include <string>
-#include "Event.h"
+#include "Events.h"
 
 namespace pacman
 {
@@ -16,18 +16,18 @@ namespace pacman
 			m_textComponent = owner->GetComponent<dae::TextComponent>();
 		}
 
-		virtual void Notify(dae::GameObject*, const Event& event) override
+		virtual void Notify(dae::GameObject*, const dae::Event& event) override
 		{
 			switch (event.id)
 			{
-			case EventId::UPDATE_SCORE:
+			case dae::EventId::UPDATE_SCORE:
 			{
 				auto* updateArg = static_cast<UpdateScoreArg*>(event.arg.get());
 				int score{ updateArg->score };
 				m_textComponent->SetText("Score: " + std::to_string(score));
 				break;
 			}
-			case EventId::GAME_WON:
+			case dae::EventId::GAME_WON:
 
 				break;
 			default:
