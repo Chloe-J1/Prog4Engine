@@ -7,11 +7,12 @@
 #include "../Minigin/RenderComponent.h"
 #include "../Minigin/ResourceManager.h"
 #include "../Minigin/TextComponent.h"
-#include "Commands.h"
 #include "../Minigin/InputManager.h"
+#include "../Minigin/WindowConfig.h"
+
+
+#include "Commands.h"
 #include "PlayerMovement.h"
-
-
 #include "Scene.h"
 #include "FPSComponent.h"
 #include "Commands.h"
@@ -340,28 +341,36 @@ namespace pacman
 
 		void MenuScene()
 		{
+			const int wWidth{ dae::WindowConfig::GetInstance().GetWidth() };
+			const int wHeight{ dae::WindowConfig::GetInstance().GetHeight() };
+
+
 			dae::SceneManager::GetInstance().CreateScene("menuScene");
 			dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
-			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-			go->AddComponent<ButtonComponent>();
-			scene.Add(std::move(go));
-
-			// Game Button
-			go = std::make_unique<dae::GameObject>();
-			go->AddComponent<ButtonComponent>();
-
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_P, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
-
-			scene.Add(std::move(go));
-
-			//
-			go = std::make_unique<dae::GameObject>();
-			go->AddComponent<ButtonComponent>();
-			scene.Add(std::move(go));
-
+			// Bind MenuManager commands
 			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_T, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
 			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_Y, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
+			// Game Button
+			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+			go->AddComponent<dae::RenderComponent>("Button.png");
+			go->AddComponent<ButtonComponent>();
+
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
+
+			go->SetLocalPosition(float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f);
+
+				// Explanation
+				std::unique_ptr<dae::GameObject> expl = std::make_unique<dae::GameObject>();
+				expl->AddComponent<dae::RenderComponent>();
+				auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+				expl->AddComponent<dae::TextComponent>("Game", font);
+				expl->SetParent(go.get(), false);
+				expl->SetLocalPosition(10, 3);
+				
+			scene.Add(std::move(go));
+			scene.Add(std::move(expl));
+
 		}
 	private:
 		
