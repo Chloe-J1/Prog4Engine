@@ -12,13 +12,13 @@ pacman::HealthComponentUI::HealthComponentUI(dae::GameObject* owner):
 
 void pacman::HealthComponentUI::Notify(dae::GameObject*, const dae::Event& event)
 {
-	if ("PLAYER_TAKES_DAMAGE")
+	if (event.id == "PLAYER_TAKES_DAMAGE")
 	{
 		auto* healthArg = static_cast<UpdateHealthArg*>(event.arg.get());
 		int health{ healthArg->health };
 		m_spriteComp->SetRow(health - 1);
 	}
-	else if ("PLAYER_DIED")
+	else if (event.id == "PLAYER_DIED")
 	{
 		GetGameObject()->SetIsAlive(false);
 		// TODO: Remove observer from subject list

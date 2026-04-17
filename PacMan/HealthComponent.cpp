@@ -46,13 +46,12 @@ void pacman::HealthComponent::Update(float elapsedSec)
 
 }
 
-#include "InputManager.h"
-
 void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 {
 	if (not m_isInvincible)
 	{
 		m_health -= ghost->GetDamage();
+
 		dae::Event takeDamageEvent{ "PLAYER_TAKES_DAMAGE" };
 		takeDamageEvent.arg = std::make_unique<UpdateHealthArg>(m_health);
 		m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(takeDamageEvent));
@@ -63,13 +62,6 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 			dae::Event deadEvent{"PLAYER_DIED"};
 			m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(deadEvent));
 			GetGameObject()->SetIsAlive(false);
-
-
-			// quick & dirty -> clean this up
-			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold); // right
-			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold); // left
-			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold); // up
-			dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold); // down
 		}
 	}
 }

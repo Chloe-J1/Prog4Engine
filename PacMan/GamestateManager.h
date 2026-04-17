@@ -55,12 +55,12 @@ namespace pacman
 	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::Observer
 	{
 	public:
-		virtual void Notify(dae::GameObject*, const dae::Event& event) override
+		virtual void Notify(dae::GameObject*, const dae::Event&) override
 		{
-			if (event.id == "PLAYER_DIED")
+			/*if (event.id == "PLAYER_DIED")
 			{
 				LoseScene();
-			}
+			}*/
 		}
 		void MapScene()
 		{
@@ -109,18 +109,8 @@ namespace pacman
 			go->AddComponent<dae::RenderComponent>("Pacman.png");
 			go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
 			go->AddComponent<dae::Hitbox>(16, 16);
-			go->AddComponent<pacman::PlayerMovement>();
+			go->AddComponent<pacman::PlayerMovement>(false);
 			go->SetLocalPosition(28, 28);
-
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(1, 0)), 1); // right
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(-1, 0)), 1); // left
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, -1)), 1); // up
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, 1)), 1); // down
-
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(1, 0))); // right
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(-1, 0))); // left
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, -1))); // up
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, 1))); // down
 
 
 
@@ -171,7 +161,7 @@ namespace pacman
 				scoreGo->GetComponent<pacman::ScoreComponentUI>()
 			);
 
-			go->AddComponent<pacman::PlayerMovement>();
+			go->AddComponent<pacman::PlayerMovement>(false);
 			go->SetLocalPosition(200, 200);
 
 			scene.Add(std::move(scoreGo));
@@ -203,18 +193,8 @@ namespace pacman
 			goHealthTextF->SetLocalPosition(-55.f, -3);
 			scene.Add(std::move(goHealthTextF));
 			scene.Add(std::move(healthUIGo));
-			//BINDINGS
+
 			
-
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(1, 0)), 1); // right
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(-1, 0)), 1); // left
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, -1)), 1); // up
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, 1)), 1); // down
-
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(1, 0))); // right
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(-1, 0))); // left
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, -1))); // up
-			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, 1))); // down
 
 
 			scene.Add(std::move(go));
@@ -270,11 +250,7 @@ namespace pacman
 
 			go->SetLocalPosition(100, 100);
 
-			go->AddComponent<pacman::PlayerMovement>();
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(1, 0)), 0); // right
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(-1, 0)), 0); // left
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, -1)), 0); // up
-			dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(go.get(), glm::vec2(0, 1)), 0); // down
+			go->AddComponent<pacman::PlayerMovement>(true, 0);
 
 			scene.Add(std::move(healthUIGo));
 			scene.Add(std::move(scoreGo));

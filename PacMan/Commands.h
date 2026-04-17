@@ -13,11 +13,11 @@ namespace pacman
 	class Move final : public dae::GameObjectCommand
 	{
 	public:
-		Move(dae::GameObject* gameObject, const glm::vec2& direction) :
+		Move(dae::GameObject* gameObject, const glm::vec2& direction, pacman::PlayerMovement* moveComp) :
 			GameObjectCommand(gameObject),
-			m_direction{direction}
+			m_direction{direction},
+			m_moveComp(moveComp)
 		{
-			m_moveComp = GetGameObject()->GetComponent<pacman::PlayerMovement>();
 		}
 		virtual void Execute() override;
 		

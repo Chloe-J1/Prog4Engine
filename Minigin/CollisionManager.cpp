@@ -17,7 +17,7 @@ void dae::CollisionManager::RemoveHitbox(Hitbox* hitbox)
 
 void dae::CollisionManager::CheckOverlapping()
 {
-	for (int index = 0; index < m_hitboxes.size(); index++)
+	for (int index = 0; index < (int)m_hitboxes.size(); index++)
 	{
 		Hitbox* hitbox = m_hitboxes[index];
 
