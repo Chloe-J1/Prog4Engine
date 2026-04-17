@@ -18,20 +18,11 @@ namespace pacman
 
 		virtual void Notify(dae::GameObject*, const dae::Event& event) override
 		{
-			switch (event.id)
-			{
-			case dae::EventId::UPDATE_SCORE:
+			if(event.id == "UPDATE_SCORE")
 			{
 				auto* updateArg = static_cast<UpdateScoreArg*>(event.arg.get());
 				int score{ updateArg->score };
 				m_textComponent->SetText("Score: " + std::to_string(score));
-				break;
-			}
-			case dae::EventId::GAME_WON:
-
-				break;
-			default:
-				break;
 			}
 		}
 		

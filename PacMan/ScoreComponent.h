@@ -32,7 +32,7 @@ namespace pacman
 			if (pellet != nullptr)
 			{
 				m_score += pellet->GetValue();
-				dae::Event updateScoreEvent{ dae::EventId::UPDATE_SCORE };
+				dae::Event updateScoreEvent{ "UPDATE_SCORE" };
 				updateScoreEvent.arg = std::make_unique<UpdateScoreArg>( m_score );
 				m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
 

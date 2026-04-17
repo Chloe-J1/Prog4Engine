@@ -27,7 +27,7 @@ namespace pacman
 
 		virtual void Notify(dae::GameObject* gameObject, const dae::Event& event)
 		{
-			if (event.id == dae::EventId::DIRECTION_CHANGED && gameObject == GetGameObject())// Only update sprite for your character
+			if (event.id == "DIRECTION_CHANGED" && gameObject == GetGameObject())// Only update sprite for your character
 			{
 				DirectionChangedArg* arg = static_cast<DirectionChangedArg*>(event.arg.get());
 				if (arg->direction.x == 1) // right

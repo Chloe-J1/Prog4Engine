@@ -56,7 +56,7 @@ namespace pacman
 	public:
 		virtual void Notify(dae::GameObject*, const dae::Event& event) override
 		{
-			if (event.id == dae::EventId::PLAYER_DIED)
+			if (event.id == "PLAYER_DIED")
 			{
 				LoseScene();
 			}
@@ -156,7 +156,7 @@ namespace pacman
 			scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
 			scoreGo->AddComponent<pacman::ScoreComponentUI>();
 
-			scoreGo->SetLocalPosition(800, 10);
+			scoreGo->SetLocalPosition(670, 10);
 			// MrsPacman
 			//**********
 			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
@@ -258,7 +258,7 @@ namespace pacman
 			scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
 			scoreGo->AddComponent<pacman::ScoreComponentUI>();
 
-			scoreGo->SetLocalPosition(800, 30);
+			scoreGo->SetLocalPosition(670, 30);
 
 			// add score observer
 			go->AddComponent<pacman::ScoreComponent>();

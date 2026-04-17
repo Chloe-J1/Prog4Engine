@@ -53,14 +53,14 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 	if (not m_isInvincible)
 	{
 		m_health -= ghost->GetDamage();
-		dae::Event takeDamageEvent{ dae::EventId::PLAYER_TAKES_DAMAGE };
+		dae::Event takeDamageEvent{ "PLAYER_TAKES_DAMAGE" };
 		takeDamageEvent.arg = std::make_unique<UpdateHealthArg>(m_health);
 		m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(takeDamageEvent));
 		m_isInvincible = true;
 		// Check death
 		if (m_health <= 0)
 		{
-			dae::Event deadEvent{ dae::EventId::PLAYER_DIED };
+			dae::Event deadEvent{"PLAYER_DIED"};
 			m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(deadEvent));
 			GetGameObject()->SetIsAlive(false);
 

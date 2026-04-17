@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 namespace dae
 {
 	class GameObject;
@@ -12,21 +13,12 @@ namespace dae
 
 	//************
 
-	enum class EventId
-	{
-		PLAYER_DIED,
-		PLAYER_TAKES_DAMAGE,
-		UPDATE_SCORE,
-		GAME_WON,
-		DIRECTION_CHANGED
-	};
-
 	struct Event
 	{
-		const EventId id;
+		const std::string id;
 		std::unique_ptr<EventArg> arg;
 
-		explicit Event(EventId _id) :
+		explicit Event(const std::string& _id) :
 			id{ _id }
 		{
 		}

@@ -10,7 +10,7 @@ void pacman::Move::Execute()
 {
 	m_moveComp->Move(m_direction);
 
-	dae::Event directionChangedEvent{ dae::EventId::DIRECTION_CHANGED };
+	dae::Event directionChangedEvent{ "DIRECTION_CHANGED" };
 	directionChangedEvent.arg = std::make_unique<DirectionChangedArg>(m_direction);
 	dae::EventQueue::GetInstance().Invoke(std::move(directionChangedEvent), GetGameObject());
 }
