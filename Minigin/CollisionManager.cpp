@@ -21,7 +21,7 @@ void dae::CollisionManager::CheckOverlapping()
 	{
 		Hitbox* hitbox = m_hitboxes[index];
 
-		for (int indexOther = index; indexOther < m_hitboxes.size(); indexOther++)
+		for (int indexOther = index; indexOther < (int)m_hitboxes.size(); indexOther++)
 		{
 			Hitbox* hitboxOther = m_hitboxes[indexOther];
 			if (hitboxOther == hitbox) continue; // Don't calculate IsHit with itself
