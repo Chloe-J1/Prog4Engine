@@ -11,13 +11,10 @@
 #include "../Minigin/InputManager.h"
 #include "PlayerMovement.h"
 
-#include "ResourceManager.h"
-#include "TextComponent.h"
+
 #include "Scene.h"
-#include "RenderComponent.h"
 #include "FPSComponent.h"
 #include "Commands.h"
-#include "InputManager.h"
 #include "SpriteComponent.h"
 #include "HealthComponent.h"
 #include "HealthComponentUI.h"
@@ -27,11 +24,12 @@
 #include "Hitbox.h"
 #include "Ghost.h"
 #include "PlayerAnimator.h"
+#include "ButtonComponent.h"
 
 #include <fstream>
 namespace pacman
 {
-	std::unique_ptr<dae::GameObject> CreateWall(float x, float y)
+	inline std::unique_ptr<dae::GameObject> CreateWall(float x, float y)
 	{
 		std::unique_ptr<dae::GameObject> wall = std::make_unique <dae::GameObject>();
 		wall->AddComponent<dae::RenderComponent>("Wall_24.png");
@@ -40,7 +38,7 @@ namespace pacman
 		wall->SetLayer("Obstacle");
 		return wall;
 	}
-	std::unique_ptr<dae::GameObject> CreatePellet(float x, float y)
+	inline std::unique_ptr<dae::GameObject> CreatePellet(float x, float y)
 	{
 		const int offset{ 10 };
 		std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
@@ -314,11 +312,15 @@ namespace pacman
 			scene.Add(std::move(ghost));
 
 			// Wall
-
 			scene.Add(std::move(CreateWall(250, 300)));
-			
+
+			// TEST
+			go = std::make_unique<dae::GameObject>();
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::LoseScene>(go.get()));
+			scene.Add(std::move(go));
+
 		}
-	private:
+
 		void LoseScene()
 		{
 			dae::SceneManager::GetInstance().CreateScene("loseScene");
@@ -330,9 +332,34 @@ namespace pacman
 
 			scene.Add(std::move(go));
 
+			// TEST
 			go = std::make_unique<dae::GameObject>();
-			/*dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::Hold, std::make_unique<dae::Test>(go.get()), 0);*/
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::GameScene>(go.get()));
+			scene.Add(std::move(go));
 		}
+
+		void MenuScene()
+		{
+			dae::SceneManager::GetInstance().CreateScene("menuScene");
+			dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+
+			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+			go->AddComponent<ButtonComponent>();
+			scene.Add(std::move(go));
+
+			go = std::make_unique<dae::GameObject>();
+			go->AddComponent<ButtonComponent>();
+			scene.Add(std::move(go));
+
+			go = std::make_unique<dae::GameObject>();
+			go->AddComponent<ButtonComponent>();
+			scene.Add(std::move(go));
+
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_T, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_Y, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
+		}
+	private:
+		
 
 	};
 }

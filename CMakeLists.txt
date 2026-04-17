@@ -106,7 +106,7 @@ add_library(imgui STATIC
   ${imgui_SOURCE_DIR}/imgui_demo.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
-  )
+   "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp")
 
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${sdl3_SOURCE_DIR}/include)
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
@@ -139,7 +139,7 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/SpriteComponent.cpp
   Minigin/Hitbox.cpp
   Minigin/CollisionManager.cpp
-)
+ "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp")
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -181,7 +181,7 @@ else()
     PacMan/HealthComponentUI.cpp
     PacMan/PlayerMovement.cpp
     PacMan/HealthComponent.cpp
-  )
+   "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp")
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
@@ -189,6 +189,9 @@ target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
 target_include_directories(${GAME_TARGET} PRIVATE
   ${CMAKE_SOURCE_DIR}/PacMan/
   ${CMAKE_SOURCE_DIR}/Minigin/
+  ${imgui_SOURCE_DIR}
+  ${glm_SOURCE_DIR}
+  $<$<CONFIG:Debug>:${VLD_INCLUDE_DIRS}>
 )
 
 target_link_libraries(${GAME_TARGET} PRIVATE

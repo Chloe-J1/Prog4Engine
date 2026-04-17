@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Scene.h"
+#include <iostream>
 
 void dae::SceneManager::Update(float elapsedSec)
 {
@@ -46,6 +47,21 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 
 	return *m_scenes[name];
 
+}
+
+dae::Scene& dae::SceneManager::LoadScene(const std::string& name)
+{
+	auto itr = m_scenes.find(name);
+
+	if (itr != m_scenes.end())
+	{
+		m_activeScene = itr->second.get();
+	}
+	else
+	{
+		std::cerr << "Scene not created yet\n";
+	}
+	return *m_activeScene;
 }
 
 dae::Scene& dae::SceneManager::GetActiveScene()
