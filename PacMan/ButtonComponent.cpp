@@ -1,5 +1,7 @@
 #include "ButtonComponent.h"
 #include "MenuManager.h"
+
+#include "GamestateManager.h"
 pacman::ButtonComponent::ButtonComponent(dae::GameObject* owner):
 	Component(owner),
 	m_isSelected{false}
@@ -15,4 +17,10 @@ pacman::ButtonComponent::~ButtonComponent()
 void pacman::ButtonComponent::SetIsSelected(bool isSelected)
 {
 	m_isSelected = isSelected;
+}
+
+void pacman::ButtonComponent::ButtonPressed()
+{
+	if(m_isSelected)
+		GamestateManager::GetInstance().GameScene(); // TODO: make it load the corresponding scene
 }

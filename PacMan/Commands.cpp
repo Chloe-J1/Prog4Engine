@@ -2,6 +2,7 @@
 #include "../Minigin/EventQueue.h"
 #include <memory>
 #include "MenuManager.h"
+#include "ButtonComponent.h"
 // MOVE
 //********
 void pacman::Move::Execute()
@@ -36,4 +37,7 @@ void pacman::LoseScene::Execute()
 	GamestateManager::GetInstance().LoseScene();
 }
 
-
+void pacman::PressButton::Execute()
+{
+	GetGameObject()->GetComponent<pacman::ButtonComponent>()->ButtonPressed();
+}

@@ -347,10 +347,15 @@ namespace pacman
 			go->AddComponent<ButtonComponent>();
 			scene.Add(std::move(go));
 
+			// Game Button
 			go = std::make_unique<dae::GameObject>();
 			go->AddComponent<ButtonComponent>();
+
+			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_P, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
+
 			scene.Add(std::move(go));
 
+			//
 			go = std::make_unique<dae::GameObject>();
 			go->AddComponent<ButtonComponent>();
 			scene.Add(std::move(go));

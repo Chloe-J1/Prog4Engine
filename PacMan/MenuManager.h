@@ -26,8 +26,6 @@ namespace pacman
 				m_currButtonIdx = 0;
 
 			m_buttons[m_currButtonIdx]->SetIsSelected(true);
-
-			std::cout << m_currButtonIdx << "\n";
 		}
 
 		void SelectPreviousButton()
@@ -41,8 +39,6 @@ namespace pacman
 				m_currButtonIdx = (int)m_buttons.size() - 1;
 
 			m_buttons[m_currButtonIdx]->SetIsSelected(true);
-
-			std::cout << m_currButtonIdx << "\n";
 		}
 
 		void RegisterButton(ButtonComponent* button)

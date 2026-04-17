@@ -14,6 +14,7 @@ namespace pacman
 		ButtonComponent& operator=(ButtonComponent&& other) = delete;
 
 		void SetIsSelected(bool isSelected);
+		void ButtonPressed();
 	private:
 		bool m_isSelected;
 	};

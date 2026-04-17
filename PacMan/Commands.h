@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include "../PacMan/PlayerMovement.h"
 #include "../Minigin/Command.h"	
+#include <string>
 
 
 #include <iostream>
@@ -36,6 +37,16 @@ namespace pacman
 	class PreviousButton final : public dae::Command
 	{
 	public:
+		virtual void Execute() override;
+	};
+
+	class PressButton final : public dae::GameObjectCommand
+	{
+	public:
+		PressButton(dae::GameObject* gameObject):
+			GameObjectCommand(gameObject)
+		{ }
+
 		virtual void Execute() override;
 	};
 
