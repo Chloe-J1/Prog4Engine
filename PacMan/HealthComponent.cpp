@@ -33,7 +33,7 @@ void pacman::HealthComponent::OnCollision(dae::GameObject* other)
 
 void pacman::HealthComponent::Update(float elapsedSec)
 {
-	if (m_isInvincible) // TODO: coroutine?
+	if (m_isInvincible)
 	{
 		m_invincibleTime += elapsedSec;
 		if (m_invincibleTime >= m_maxInvincibleTime)
