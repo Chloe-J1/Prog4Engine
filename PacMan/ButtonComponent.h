@@ -1,14 +1,16 @@
 #pragma once
 #include "../Minigin/Component.h"
 #include "../Minigin/Subject.h"
+#include "../Minigin/EventQueue.h"
 #include <memory>
+#include <string>
 namespace pacman
 {
 	class GameObject;
 	class ButtonComponent : public dae::Component
 	{
 	public:
-		ButtonComponent(dae::GameObject* owner);
+		ButtonComponent(dae::GameObject* owner, const std::string& name);
 		~ButtonComponent();
 		ButtonComponent(const ButtonComponent& other) = delete;
 		ButtonComponent(ButtonComponent&& other) = delete;
@@ -17,10 +19,10 @@ namespace pacman
 
 		void SetIsSelected(bool isSelected);
 		void ButtonPressed();
-
-		dae::Subject* GetSubject();
+		const std::string& GetName() const;
 	private:
 		bool m_isSelected;
-		std::unique_ptr<dae::Subject> m_subject;
+		std::string m_name;
+		dae::EventQueue* m_eventQueue;
 	};
 }

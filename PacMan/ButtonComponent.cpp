@@ -1,13 +1,16 @@
 #include "ButtonComponent.h"
 #include "MenuManager.h"
-
-
 #include "GamestateManager.h"
-pacman::ButtonComponent::ButtonComponent(dae::GameObject* owner):
+
+#include "../Minigin/Event.h"
+
+
+pacman::ButtonComponent::ButtonComponent(dae::GameObject* owner, const std::string& name):
 	Component(owner),
 	m_isSelected{false},
-	m_subject{std::make_unique<dae::Subject>()}
+	m_name{name}
 {
+	m_eventQueue = &dae::EventQueue::GetInstance();
 	MenuManager::GetInstance().RegisterButton(this);
 }
 
@@ -19,19 +22,23 @@ pacman::ButtonComponent::~ButtonComponent()
 void pacman::ButtonComponent::SetIsSelected(bool isSelected)
 {
 	m_isSelected = isSelected;
-	// Notify observers
-	dae::Event selectionChangedEvent{ "BUTTON_SELECITON_CHANGED" };
+	
+	dae::Event selectionChangedEvent{ "BUTTON_SELECTION_CHANGED" };
 	selectionChangedEvent.arg = std::make_unique<ButtonSelectionArg>(isSelected);
-	m_subject->NotifyObservers(GetGameObject(), std::move(selectionChangedEvent));
+	m_eventQueue->Invoke(std::move(selectionChangedEvent), GetGameObject());
 }
 
 void pacman::ButtonComponent::ButtonPressed()
 {
-	if(m_isSelected)
-		GamestateManager::GetInstance().GameScene(); // TODO: make it load the corresponding scene
+	if (m_isSelected)
+	{
+		dae::Event buttonPressed{"BUTTON_PRESSED"};
+		m_eventQueue->Invoke(std::move(buttonPressed), GetGameObject());
+	}
+
 }
 
-dae::Subject* pacman::ButtonComponent::GetSubject()
+const std::string& pacman::ButtonComponent::GetName() const
 {
-	return m_subject.get();
+	return m_name;
 }

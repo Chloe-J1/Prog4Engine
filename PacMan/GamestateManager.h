@@ -318,18 +318,17 @@ namespace pacman
 			// Bind MenuManager commands
 			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_T, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
 			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_Y, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
+
+			// Button animator - used for all buttons
+			std::unique_ptr<dae::GameObject> buttonAnim = std::make_unique<dae::GameObject>();
+			buttonAnim->AddComponent<pacman::ButtonAnimator>();
+			scene.Add(std::move(buttonAnim));
+
 			// Game Button
 			std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 			go->AddComponent<dae::RenderComponent>("Button.png");
 			go->AddComponent<dae::SpriteComponent>(1, 2);
-			go->AddComponent<pacman::ButtonAnimator>(go->GetComponent<dae::SpriteComponent>());
-			go->AddComponent<ButtonComponent>();
-
-				// Add observers
-			go->GetComponent<pacman::ButtonComponent>()->GetSubject()->AddObserver
-			(
-				go->GetComponent<pacman::ButtonAnimator>()
-			);
+			go->AddComponent<ButtonComponent>("LoadGameScene");
 
 			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
 
@@ -346,18 +345,11 @@ namespace pacman
 			scene.Add(std::move(go));
 			scene.Add(std::move(expl));
 
-			// Game Button
+			// Test Button
 			go = std::make_unique<dae::GameObject>();
 			go->AddComponent<dae::RenderComponent>("Button.png");
 			go->AddComponent<dae::SpriteComponent>(1, 2);
-			go->AddComponent<pacman::ButtonAnimator>(go->GetComponent<dae::SpriteComponent>());
-			go->AddComponent<ButtonComponent>();
-
-				// Add observers
-			go->GetComponent<pacman::ButtonComponent>()->GetSubject()->AddObserver
-			(
-				go->GetComponent<pacman::ButtonAnimator>()
-			);
+			go->AddComponent<ButtonComponent>("LoadLoseScene");
 
 			dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
 
