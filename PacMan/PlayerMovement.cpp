@@ -6,11 +6,12 @@
 #include "Commands.h"
 #include <memory>
 
-pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool isController, int ctrlIdx) :
+pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool isKeyboard, bool isController, int ctrlIdx) :
 	Component(owner),
 	m_speed{100.f},
 	m_wWidth{ dae::WindowConfig::GetInstance().GetWidth() },
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
+	m_isKeyboard{isKeyboard},
 	m_isController{isController},
 	m_ctrlIdx{ctrlIdx}
 {
@@ -25,7 +26,7 @@ pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool isController
 		dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, -1), this), m_ctrlIdx); // up
 		dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, 1), this), m_ctrlIdx); // down
 	}
-	else
+	if(isKeyboard)
 	{
 		dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(1, 0), this)); // right
 		dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(-1, 0), this)); // left
@@ -44,7 +45,7 @@ pacman::PlayerMovement::~PlayerMovement()
 		dae::InputManager::GetInstance().UnbindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // down
 
 	}
-	else
+	if(m_isKeyboard)
 	{
 		dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold); // right
 		dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold); // left

@@ -16,7 +16,7 @@ namespace pacman
 		int GetHealth() const;
 		virtual void OnCollision(dae::GameObject* other) override;
 
-		virtual void Update(float elapsedSec);
+		virtual void Update(float elapsedSec) override;
 	private:
 		int m_health;
 		std::unique_ptr<dae::Subject> m_takeDamageEvent;

@@ -29,6 +29,7 @@
 #include "ButtonAnimator.h"
 
 #include <fstream>
+#include <sstream>
 namespace pacman
 {
 	inline std::unique_ptr<dae::GameObject> CreateWall(float x, float y)
@@ -109,7 +110,7 @@ namespace pacman
 			go->AddComponent<dae::RenderComponent>("Pacman.png");
 			go->AddComponent<dae::SpriteComponent>(3, 1, 0.2f);
 			go->AddComponent<dae::Hitbox>(16, 16);
-			go->AddComponent<pacman::PlayerMovement>(false);
+			go->AddComponent<pacman::PlayerMovement>(true, false);
 			go->SetLocalPosition(28, 28);
 
 
@@ -119,8 +120,7 @@ namespace pacman
 		void OtherScene()
 		{
 			dae::SceneManager::GetInstance().CreateScene("otherScene");
-			dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
-			scene;
+			//dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 		}
 		void GameScene()
 		{
@@ -161,7 +161,7 @@ namespace pacman
 				scoreGo->GetComponent<pacman::ScoreComponentUI>()
 			);
 
-			go->AddComponent<pacman::PlayerMovement>(false);
+			go->AddComponent<pacman::PlayerMovement>(true, true, 0);
 			go->SetLocalPosition(200, 200);
 
 			scene.Add(std::move(scoreGo));
@@ -250,7 +250,7 @@ namespace pacman
 
 			go->SetLocalPosition(100, 100);
 
-			go->AddComponent<pacman::PlayerMovement>(true, 0);
+			go->AddComponent<pacman::PlayerMovement>(false, true, 1);
 
 			scene.Add(std::move(healthUIGo));
 			scene.Add(std::move(scoreGo));
@@ -290,7 +290,7 @@ namespace pacman
 			scene.Add(std::move(ghost));
 
 			// Wall
-			scene.Add(std::move(CreateWall(250, 300)));
+			scene.Add(CreateWall(250, 300));
 
 		}
 
