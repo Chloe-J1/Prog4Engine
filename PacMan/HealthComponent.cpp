@@ -6,8 +6,8 @@ pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	Component(owner),
 	m_health{health},
 	m_takeDamageEvent{ std::make_unique<dae::Subject>() },
-	m_invincibleTime{0},
 	m_maxInvincibleTime{0.7f},
+	m_invincibleTime{0},
 	m_isInvincible{false}
 {
 }

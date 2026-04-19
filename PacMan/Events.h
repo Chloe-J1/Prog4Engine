@@ -7,47 +7,63 @@ namespace pacman
 	{
 		int score;
 
-		UpdateScoreArg(int _score)
+		UpdateScoreArg(int _score):
+			score{_score}
 		{
-			score = _score;
 		}
 
 		virtual ~UpdateScoreArg() = default;
+		UpdateScoreArg(const UpdateScoreArg& other) = delete;
+		UpdateScoreArg(UpdateScoreArg&& other) = delete;
+		UpdateScoreArg& operator=(const UpdateScoreArg& other) = delete;
+		UpdateScoreArg& operator=(UpdateScoreArg&& other) = delete;
 	};
 
 	struct UpdateHealthArg : dae::EventArg
 	{
 		int health;
 
-		UpdateHealthArg(int _health)
+		UpdateHealthArg(int _health):
+			health{_health}
 		{
-			health = _health;
 		}
 
 		virtual ~UpdateHealthArg() = default;
+		UpdateHealthArg(const UpdateHealthArg& other) = delete;
+		UpdateHealthArg(UpdateHealthArg&& other) = delete;
+		UpdateHealthArg& operator=(const UpdateHealthArg& other) = delete;
+		UpdateHealthArg& operator=(UpdateHealthArg&& other) = delete;
 	};
 
 	struct DirectionChangedArg : dae::EventArg
 	{
 		glm::vec2 direction;
 
-		DirectionChangedArg(glm::vec2 _direction)
+		DirectionChangedArg(glm::vec2 _direction):
+			direction{_direction}
 		{
-			direction = _direction;
 		}
 
 		virtual ~DirectionChangedArg() = default;
+		DirectionChangedArg(const DirectionChangedArg& other) = delete;
+		DirectionChangedArg(DirectionChangedArg&& other) = delete;
+		DirectionChangedArg& operator=(const DirectionChangedArg& other) = delete;
+		DirectionChangedArg& operator=(DirectionChangedArg&& other) = delete;
 	};
 
 	struct ButtonSelectionArg : dae::EventArg
 	{
 		bool isSelected;
 
-		ButtonSelectionArg(bool _isSelected)
+		ButtonSelectionArg(bool _isSelected):
+			isSelected{_isSelected}
 		{
-			isSelected = _isSelected;
 		}
 
 		virtual ~ButtonSelectionArg() = default;
+		ButtonSelectionArg(const ButtonSelectionArg& other) = delete;
+		ButtonSelectionArg(ButtonSelectionArg&& other) = delete;
+		ButtonSelectionArg& operator=(const ButtonSelectionArg& other) = delete;
+		ButtonSelectionArg& operator=(ButtonSelectionArg&& other) = delete;
 	};
 }

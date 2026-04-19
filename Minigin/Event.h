@@ -8,7 +8,12 @@ namespace dae
 	//************
 	struct EventArg
 	{
+		EventArg() = default;
 		virtual ~EventArg() = default;
+		EventArg(const EventArg& other) = delete;
+		EventArg(EventArg&& other) = delete;
+		EventArg& operator=(const EventArg& other) = delete;
+		EventArg& operator=(EventArg&& other) = delete;
 	};
 
 	//************
@@ -19,7 +24,8 @@ namespace dae
 		std::unique_ptr<EventArg> arg;
 
 		explicit Event(const std::string& _id) :
-			id{ _id }
+			id{ _id },
+			arg{}
 		{
 		}
 	};

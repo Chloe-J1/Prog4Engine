@@ -10,12 +10,6 @@
 #include <iostream>
 namespace dae
 {
-	struct EventInQueue
-	{
-		Event event;
-		GameObject* sender;
-	};
-
 	class EventQueue : public Singleton<EventQueue>
 	{
 	public:
@@ -34,8 +28,7 @@ namespace dae
 
 		void Invoke(Event event, GameObject* sender)
 		{
-			m_eventQueue.push(EventInQueue{std::move(event), sender});
-			
+			m_eventQueue.push(QueuedEventData{std::move(event), sender});
 		}
 
 		void Update()
@@ -43,7 +36,6 @@ namespace dae
 			// Send events to all observers and then remove event from queue
 			while (not m_eventQueue.empty())
 			{
-				
 				for (const auto& observer : m_observers)
 				{
 					observer->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
@@ -54,7 +46,12 @@ namespace dae
 		}
 
 	private:
-		std::queue<EventInQueue> m_eventQueue;
+		struct QueuedEventData
+		{
+			Event event;
+			GameObject* sender;
+		};
+		std::queue<QueuedEventData> m_eventQueue;
 		std::vector<Observer*> m_observers;
 	};
 }
