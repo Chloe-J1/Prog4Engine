@@ -1,7 +1,7 @@
 #include "ButtonComponent.h"
 #include "MenuManager.h"
 #include "GamestateManager.h"
-
+#include "Events.h"
 #include "../Minigin/Event.h"
 
 
@@ -35,7 +35,6 @@ void pacman::ButtonComponent::ButtonPressed()
 		dae::Event buttonPressed{"BUTTON_PRESSED"};
 		m_eventQueue->Invoke(std::move(buttonPressed), GetGameObject());
 	}
-
 }
 
 const std::string& pacman::ButtonComponent::GetName() const

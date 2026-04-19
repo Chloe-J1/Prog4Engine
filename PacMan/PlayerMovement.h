@@ -8,7 +8,7 @@ namespace pacman
 	class PlayerMovement final : public dae::Component
 	{
 	public:
-		explicit PlayerMovement(dae::GameObject* owner, bool isKeyboard, bool isController, int ctrlIdx = 0);
+		explicit PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
 		~PlayerMovement();
 		PlayerMovement(const PlayerMovement& other) = delete;
 		PlayerMovement(PlayerMovement&& other) = delete;
@@ -29,8 +29,8 @@ namespace pacman
 		float m_playerWidth;
 		float m_playerHeight;
 
-		bool m_isKeyboard;
-		bool m_isController;
+		bool m_usesKeyboard;
+		bool m_usesController;
 		int m_ctrlIdx;
 	};
 }

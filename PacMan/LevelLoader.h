@@ -8,7 +8,7 @@ namespace pacman
 	public:
 		explicit LevelLoader() = default;
 		
-		void ReadLevel(dae::Scene& scene, const std::string& filename);
+		void InitLevel(dae::Scene& scene, const std::string& filename);
 	private:
 		float m_cellsize{ 24.f };
 

@@ -7,7 +7,7 @@
 
 #include "Minigin.h"
 #include "GamestateManager.h"
-#include "WindowConfig.h"
+#include "../Minigin/InputManager.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -15,9 +15,6 @@ namespace fs = std::filesystem;
 static void load()
 {
 	dae::InputManager::GetInstance().InitializeControllers(2);
-	//pacman::GamestateManager::GetInstance().GameScene();
-	//pacman::GamestateManager::GetInstance().LoseScene();
-	//pacman::GamestateManager::GetInstance().MapScene();
 	pacman::GamestateManager::GetInstance().MenuScene();
 }
 

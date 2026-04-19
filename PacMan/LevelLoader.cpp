@@ -7,7 +7,7 @@
 
 #include "Pellets.h"
 
-void pacman::LevelLoader::ReadLevel(dae::Scene& scene, const std::string& filename)
+void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filename)
 {
 	std::ifstream iFile;
 	iFile.open(filename);
