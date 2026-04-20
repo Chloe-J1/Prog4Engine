@@ -25,9 +25,12 @@ namespace pacman
 		void MenuScene();
 	private:
 		LevelLoader m_levelLoader;
+		const int m_player1CtrlIdx{ 0 };
+		const int m_player2CtrllIdx{ 1 };
 
-		std::unique_ptr<dae::GameObject> CreatePacman(const std::string& spritefile, const glm::vec2& spawnPos, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
+		std::unique_ptr<dae::GameObject> CreatePacman(const glm::vec2& spawnPos, const std::string& spritefile, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
 		std::unique_ptr<dae::GameObject> CreateScoreUI(const glm::vec2& spawnPos, ScoreComponent* scoreComp);
 		std::unique_ptr<dae::GameObject> CreateHealthUI(const glm::vec2& spawnPos, HealthComponent* healthComp);
+		std::unique_ptr<dae::GameObject> CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile);
 	};
 }

@@ -14,7 +14,6 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	std::string line;
 	float x{};
 	float y{};
-	float size{ 24.f };
 
 	if (iFile.is_open())
 	{
@@ -29,13 +28,17 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 				{
 					scene.Add(CreateWall(x, y));
 				}
+				else if (type == "0")
+				{
+					scene.Add(CreatePellet(x, y));
+				}
 				else if (type == "p")
 				{
 					scene.Add(CreatePellet(x, y));
 				}
-				x += size;
+				x += m_cellsize;
 			}
-			y += size;
+			y += m_cellsize;
 			x = 0;
 		}
 		iFile.close();

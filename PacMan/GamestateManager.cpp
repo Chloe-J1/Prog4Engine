@@ -43,13 +43,43 @@ void pacman::GamestateManager::MapScene()
 
 	// MrsPacman
 	//**********
-	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman("MrsPacman.png", glm::vec2{ 28,28 }, true, true, 0);
-	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 670, 10 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
-	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 480, 540 }, mrsPacman->GetComponent<pacman::HealthComponent>());
+	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman(glm::vec2{ 28,28 }, "MrsPacman.png", true, true, m_player1CtrlIdx);
+	//UI
+	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
+	UI->SetLocalPosition(10, 724);
+	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::HealthComponent>());
+	scoreUI->SetParent(UI.get(), false);
+	healthUI->SetParent(UI.get(), false);
+	scoreUI->SetLocalPosition(0, 0);
+	healthUI->SetLocalPosition(100, 0);
 
 	scene.Add(std::move(mrsPacman));
+	scene.Add(std::move(UI));
 	scene.Add(std::move(scoreUI));
 	scene.Add(std::move(healthUI));
+
+	// Pacman
+	//**********
+	std::unique_ptr<dae::GameObject> pacman = CreatePacman(glm::vec2{ 700,700 }, "Pacman.png", false, true, m_player2CtrllIdx);
+	//UI
+	UI = std::make_unique<dae::GameObject>();
+	UI->SetLocalPosition(634, 724);
+	scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::ScoreComponent>());
+	healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::HealthComponent>());
+	scoreUI->SetParent(UI.get(), false);
+	healthUI->SetParent(UI.get(), false);
+	scoreUI->SetLocalPosition(0, 0);
+	healthUI->SetLocalPosition(-100, 0);
+
+	scene.Add(std::move(pacman));
+	scene.Add(std::move(UI));
+	scene.Add(std::move(scoreUI));
+	scene.Add(std::move(healthUI));
+
+	// Ghosts
+	//**********
+	scene.Add(CreateGhost(glm::vec2{28,256}, "Ghost_red.png"));
 }
 
 void pacman::GamestateManager::GameScene()
@@ -73,7 +103,7 @@ void pacman::GamestateManager::GameScene()
 	
 	// MrsPacman
 	//**********
-	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman("MrsPacman.png", glm::vec2{ 200,208 }, true, true, 0);
+	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman(glm::vec2{ 200,208 }, "MrsPacman.png", true, true, 0);
 	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 670, 10 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
 	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 480, 540 }, mrsPacman->GetComponent<pacman::HealthComponent>());
 
@@ -170,8 +200,6 @@ void pacman::GamestateManager::GameScene()
 	ghost->AddComponent<pacman::GhostComponent>();
 	ghost->SetLocalPosition(300, 300);
 	scene.Add(std::move(ghost));
-
-	// Wall
 }
 
 void pacman::GamestateManager::LoseScene()
@@ -247,7 +275,9 @@ void pacman::GamestateManager::MenuScene()
 	scene.Add(std::move(expl));
 }
 
-std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreatePacman(const std::string& spritefile, const glm::vec2& spawnPos, bool usesKeyboard, bool usesController, int ctrlIdx)
+// Helper functions
+//******************
+std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreatePacman(const glm::vec2& spawnPos, const std::string& spritefile, bool usesKeyboard, bool usesController, int ctrlIdx)
 {
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>(spritefile);
@@ -258,7 +288,8 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreatePacman(const st
 	go->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
 	//
 	go->AddComponent<pacman::PlayerAnimator>(go->GetComponent<dae::SpriteComponent>());
-	go->AddComponent<dae::Hitbox>(16, 16);
+	constexpr int playerSize{ 16 };
+	go->AddComponent<dae::Hitbox>(playerSize, playerSize);
 	go->AddComponent<pacman::ScoreComponent>();
 	go->AddComponent<pacman::PlayerMovement>(usesKeyboard, usesController, ctrlIdx);
 	go->AddComponent<pacman::HealthComponent>();
@@ -288,10 +319,9 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateHealthUI(const 
 	std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
 	healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
 	// Load sprite
-	int nrCols{ 1 };
-	int nrRows{ 4 };
-	float frameSec{ 0.f };
-	healthUIGo->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
+	constexpr int nrCols{ 1 };
+	constexpr int nrRows{ 4 };
+	healthUIGo->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	//
 	healthUIGo->AddComponent<pacman::HealthComponentUI>();
 	// add observer
@@ -304,4 +334,21 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateHealthUI(const 
 
 	healthUIGo->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return healthUIGo;
+}
+
+std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile)
+{
+	std::unique_ptr<dae::GameObject> ghost = std::make_unique<dae::GameObject>();
+	constexpr int ghostSize{ 16 };
+	ghost->AddComponent<dae::Hitbox>(ghostSize, ghostSize);
+	ghost->AddComponent<dae::RenderComponent>(spritefile);
+	// Load sprite
+	constexpr int nrCols{ 1 };
+	constexpr int nrRows{ 6 };
+	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
+	//
+	ghost->AddComponent<pacman::GhostComponent>();
+
+	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
+	return ghost;
 }
