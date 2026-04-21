@@ -28,10 +28,6 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 				{
 					scene.Add(CreateWall(x, y));
 				}
-				else if (type == "0")
-				{
-					scene.Add(CreatePellet(x, y));
-				}
 				else if (type == "p")
 				{
 					scene.Add(CreatePellet(x, y));
