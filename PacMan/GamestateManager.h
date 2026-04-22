@@ -19,7 +19,6 @@ namespace pacman
 
 		virtual void Notify(dae::GameObject*, const dae::Event&) override;
 		// Scenes
-		void MapScene();
 		void GameScene();
 		void LoseScene();
 		void MenuScene();

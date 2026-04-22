@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 #include "Scene.h"
-#include <iostream>
+#include "InputManager.h"
 
 void dae::SceneManager::Update(float elapsedSec)
 {
@@ -37,31 +37,13 @@ void dae::SceneManager::RenderUI()
 	m_activeScene->RenderUI();
 }
 
-#include "InputManager.h"
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+dae::Scene& dae::SceneManager::CreateScene()
 {
-	InputManager::GetInstance().UnbindAllCommands(); // TODO: event
+	InputManager::GetInstance().UnbindAllCommands();
 
-	m_scenes[name] = std::unique_ptr<Scene>(new Scene());
-	m_activeScene = m_scenes[name].get();
-
-	return *m_scenes[name];
-
-}
-
-dae::Scene& dae::SceneManager::LoadScene(const std::string& name)
-{
-	auto itr = m_scenes.find(name);
-
-	if (itr != m_scenes.end())
-	{
-		m_activeScene = itr->second.get();
-	}
-	else
-	{
-		std::cerr << "Scene not created yet\n";
-	}
+	m_activeScene = std::unique_ptr<Scene>(new Scene());
 	return *m_activeScene;
+
 }
 
 dae::Scene& dae::SceneManager::GetActiveScene()

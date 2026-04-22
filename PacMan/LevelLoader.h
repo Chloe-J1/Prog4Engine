@@ -1,6 +1,7 @@
 #pragma once
 #include "../Minigin/GameObject.h"
 #include "../Minigin/Scene.h"
+
 namespace pacman
 {
 	class LevelLoader final
@@ -12,7 +13,7 @@ namespace pacman
 	private:
 		float m_cellsize{ 24.f };
 
-		std::unique_ptr<dae::GameObject> CreateWall(float x, float y);
+		std::unique_ptr<dae::GameObject> CreateWall(float x, float y, float width);
 		std::unique_ptr<dae::GameObject> CreatePellet(float x, float y);
 	};
 }

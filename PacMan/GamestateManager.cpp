@@ -34,12 +34,20 @@ void pacman::GamestateManager::Notify(dae::GameObject*, const dae::Event&)
 	}*/
 }
 
-void pacman::GamestateManager::MapScene()
+void pacman::GamestateManager::GameScene()
 {
-	dae::SceneManager::GetInstance().CreateScene("mapScene");
+	dae::SceneManager::GetInstance().CreateScene();
 	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
+	// Background
+	//***********
+	std::unique_ptr<dae::GameObject> bg = std::make_unique<dae::GameObject>();
+	bg->AddComponent<dae::RenderComponent>("Level_one.png");
+	scene.Add(std::move(bg));
+
 	m_levelLoader.InitLevel(scene, "Data/Maps/Level_one.txt");
+
+	
 
 	// MrsPacman
 	//**********
@@ -80,13 +88,6 @@ void pacman::GamestateManager::MapScene()
 	// Ghosts
 	//**********
 	scene.Add(CreateGhost(glm::vec2{28,256}, "Ghost_red.png"));
-}
-
-void pacman::GamestateManager::GameScene()
-{
-	dae::SceneManager::GetInstance().CreateScene("gameScene");
-	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
-
 
 	// FPS
 	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
@@ -97,114 +98,11 @@ void pacman::GamestateManager::GameScene()
 	fpsgo->AddComponent<pacman::FPSComponent>();
 
 	scene.Add(std::move(fpsgo));
-
-
-
-	
-	// MrsPacman
-	//**********
-	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman(glm::vec2{ 200,208 }, "MrsPacman.png", true, true, 0);
-	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 670, 10 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
-	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 480, 540 }, mrsPacman->GetComponent<pacman::HealthComponent>());
-
-	scene.Add(std::move(mrsPacman));
-	scene.Add(std::move(scoreUI));
-	scene.Add(std::move(healthUI));
-
-
-
-
-	// Pacman
-	//*********
-
-	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->AddComponent<dae::RenderComponent>("Pacman.png");
-	go->AddComponent<dae::SpriteComponent>(3, 4, 0.2f);
-	go->AddComponent<pacman::PlayerAnimator>(go->GetComponent<dae::SpriteComponent>());
-	go->AddComponent<dae::Hitbox>(16, 16);
-	// Health UI
-	std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
-	healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
-	healthUIGo->AddComponent<dae::SpriteComponent>(1, 4, 0.f);
-	healthUIGo->AddComponent<pacman::HealthComponentUI>();
-
-
-	healthUIGo->SetLocalPosition(480, 555);
-
-	std::unique_ptr<dae::GameObject> goText = std::make_unique<dae::GameObject>();
-	goText->SetParent(healthUIGo.get(), false);
-
-	goText->AddComponent<dae::RenderComponent>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	goText->AddComponent<dae::TextComponent>("Health:", font);
-
-	goText->SetLocalPosition(-55.f, -3);
-	scene.Add(std::move(goText));
-	go->AddComponent<pacman::HealthComponent>();
-	// add health observer
-	go->GetComponent<pacman::HealthComponent>()->GetTakeDamageEvent()->AddObserver(
-		healthUIGo->GetComponent<pacman::HealthComponentUI>()
-	);
-	std::unique_ptr<dae::GameObject> scoreGo = std::make_unique<dae::GameObject>();
-	scoreGo->AddComponent<dae::RenderComponent>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
-	scoreGo->AddComponent<pacman::ScoreComponentUI>();
-
-	scoreGo->SetLocalPosition(670, 30);
-
-	// add score observer
-	go->AddComponent<pacman::ScoreComponent>();
-	go->GetComponent<pacman::ScoreComponent>()->GetSubject()->AddObserver(
-		scoreGo->GetComponent<pacman::ScoreComponentUI>()
-	);
-
-
-	go->SetLocalPosition(100, 100);
-
-	go->AddComponent<pacman::PlayerMovement>(false, true, 1);
-
-	scene.Add(std::move(healthUIGo));
-	scene.Add(std::move(scoreGo));
-	scene.Add(std::move(go));
-
-	// Explanation
-	std::unique_ptr<dae::GameObject> expl = std::make_unique<dae::GameObject>();
-	expl->AddComponent<dae::RenderComponent>();
-	expl->AddComponent<dae::TextComponent>("Use D-pad to move players     Use A to lose lives     Use B to gain points", font);
-	scene.Add(std::move(expl));
-
-
-	// Pellet
-	std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
-	pellet->AddComponent<dae::Hitbox>(4, 4);
-	pellet->AddComponent<dae::RenderComponent>("Pellet_small.png");
-	pellet->AddComponent<pacman::SmallPellet>();
-	pellet->SetLocalPosition(500, 202);
-
-	scene.Add(std::move(pellet));
-
-	std::unique_ptr<dae::GameObject> bigpellet = std::make_unique<dae::GameObject>();
-	bigpellet->AddComponent<dae::Hitbox>(8, 8);
-	bigpellet->AddComponent<dae::RenderComponent>("Pellet_big.png");
-	bigpellet->AddComponent<pacman::PowerPellet>();
-	bigpellet->SetLocalPosition(500, 212);
-
-	scene.Add(std::move(bigpellet));
-
-	// Ghost
-	std::unique_ptr<dae::GameObject> ghost = std::make_unique<dae::GameObject>();
-	ghost->AddComponent<dae::Hitbox>(16, 16);
-	ghost->AddComponent<dae::RenderComponent>("Ghost_red.png");
-	ghost->AddComponent<dae::SpriteComponent>(1, 6);
-	ghost->AddComponent<pacman::GhostComponent>();
-	ghost->SetLocalPosition(300, 300);
-	scene.Add(std::move(ghost));
 }
 
 void pacman::GamestateManager::LoseScene()
 {
-	dae::SceneManager::GetInstance().CreateScene("loseScene");
+	dae::SceneManager::GetInstance().CreateScene();
 	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>();
@@ -220,7 +118,7 @@ void pacman::GamestateManager::MenuScene()
 	const int wHeight{ dae::WindowConfig::GetInstance().GetHeight() };
 
 
-	dae::SceneManager::GetInstance().CreateScene("menuScene");
+	dae::SceneManager::GetInstance().CreateScene();
 	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
 	// Bind MenuManager commands

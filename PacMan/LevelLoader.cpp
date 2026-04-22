@@ -7,6 +7,7 @@
 
 #include "Pellets.h"
 
+#include <iostream>
 void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filename)
 {
 	std::ifstream iFile;
@@ -14,6 +15,8 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	std::string line;
 	float x{};
 	float y{};
+	float wallStartX{ -1.f };
+	float wallWidth{ 0.f };
 
 	if (iFile.is_open())
 	{
@@ -26,12 +29,30 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 			{
 				if (type == "w")
 				{
-					scene.Add(CreateWall(x, y));
+					if (wallStartX < 0.f)
+						wallStartX = x;
+					wallWidth += m_cellsize;  
 				}
-				else if (type == "p")
+				else
 				{
-					scene.Add(CreatePellet(x, y));
+					if (wallStartX >= 0.f)
+					{
+						scene.Add(CreateWall(wallStartX, y, wallWidth));
+						wallStartX = -1.f;
+						wallWidth = 0.f;
+					}
+
+					if (type == "p")
+						scene.Add(CreatePellet(x, y));
 				}
+				// Reset wall values
+				if (wallStartX >= 0.f)
+				{
+					scene.Add(CreateWall(wallStartX, y, wallWidth));
+					wallStartX = -1.f;
+					wallWidth = 0.f;
+				}
+
 				x += m_cellsize;
 			}
 			y += m_cellsize;
@@ -45,11 +66,11 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	}
 }
 
-std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreateWall(float x, float y)
+std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreateWall(float x, float y, float width)
 {
+	constexpr int height{ 24 };
 	std::unique_ptr<dae::GameObject> wall = std::make_unique <dae::GameObject>();
-	wall->AddComponent<dae::RenderComponent>("Wall_24.png");
-	wall->AddComponent<dae::Hitbox>(24, 24);
+	wall->AddComponent<dae::Hitbox>((int)width, height);
 	wall->SetLocalPosition(x, y);
 	wall->SetLayer("Obstacle");
 	return wall;
@@ -57,9 +78,10 @@ std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreateWall(float x, float 
 
 std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreatePellet(float x, float y)
 {
-	const int offset{ 10 };
+	constexpr int offset{ 10 };
+	constexpr int size{ 4 };
 	std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
-	pellet->AddComponent<dae::Hitbox>(4, 4);
+	pellet->AddComponent<dae::Hitbox>(size, size);
 	pellet->AddComponent<dae::RenderComponent>("Pellet_small.png");
 	pellet->AddComponent<pacman::SmallPellet>();
 	pellet->SetLocalPosition(x + offset, y + offset);

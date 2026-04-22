@@ -78,7 +78,7 @@ namespace pacman
 				}
 				else if (button->GetName() == "LoadLoseScene")
 				{
-					GamestateManager::GetInstance().MapScene();
+					GamestateManager::GetInstance().LoseScene();
 				}
 			}
 		}
