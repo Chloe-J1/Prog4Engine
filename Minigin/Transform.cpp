@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "Transform.h"
 #include "GameObject.h"
 
 #include <iostream>
@@ -24,6 +25,11 @@ void dae::Transform::SetLocalPosition(const glm::vec3& newPos)
 	SetPositionDirty();
 }
 
+void dae::Transform::SetLocalPosition(const glm::vec2& newPos)
+{
+	SetLocalPosition(glm::vec3{ newPos, 0 });
+}
+
 void dae::Transform::AddLocalPosition(const glm::vec2& deltaMovement)
 {
 	m_localPosition.x += deltaMovement.x;
@@ -40,7 +46,7 @@ void dae::Transform::SetPositionDirty()
 	}
 }
 
-bool dae::Transform::GetPositionDirty() const
+bool dae::Transform::GetIsPositionDirty() const
 {
 	return m_isPositionDirty;
 }

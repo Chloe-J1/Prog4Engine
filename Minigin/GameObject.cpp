@@ -94,7 +94,7 @@ void dae::GameObject::AddLocalPosition(const glm::vec2& deltaMovement)
 	m_transform.AddLocalPosition(deltaMovement);
 }
 
-dae::Transform dae::GameObject::GetTransform() const
+dae::Transform& dae::GameObject::GetTransform()
 {
 	return m_transform;
 }
