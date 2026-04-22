@@ -50,20 +50,4 @@ namespace pacman
 		DirectionChangedArg& operator=(const DirectionChangedArg& other) = delete;
 		DirectionChangedArg& operator=(DirectionChangedArg&& other) = delete;
 	};
-
-	struct ButtonSelectionArg : dae::EventArg
-	{
-		bool isSelected;
-
-		ButtonSelectionArg(bool _isSelected):
-			isSelected{_isSelected}
-		{
-		}
-
-		virtual ~ButtonSelectionArg() = default;
-		ButtonSelectionArg(const ButtonSelectionArg& other) = delete;
-		ButtonSelectionArg(ButtonSelectionArg&& other) = delete;
-		ButtonSelectionArg& operator=(const ButtonSelectionArg& other) = delete;
-		ButtonSelectionArg& operator=(ButtonSelectionArg&& other) = delete;
-	};
 }

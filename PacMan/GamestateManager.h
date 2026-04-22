@@ -5,6 +5,7 @@
 #include "LevelLoader.h"
 #include <string>
 #include <glm/glm.hpp>
+#include "../Minigin/Font.h"
 namespace pacman
 {
 	class ScoreComponent;
@@ -31,5 +32,7 @@ namespace pacman
 		std::unique_ptr<dae::GameObject> CreateScoreUI(const glm::vec2& spawnPos, ScoreComponent* scoreComp);
 		std::unique_ptr<dae::GameObject> CreateHealthUI(const glm::vec2& spawnPos, HealthComponent* healthComp);
 		std::unique_ptr<dae::GameObject> CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile);
+		std::unique_ptr<dae::GameObject> CreateButton(const glm::vec2& spawnPos, const std::string& spritefile, const std::string& name);
+		std::unique_ptr<dae::GameObject> CreateText(const glm::vec2& spawnPos, const std::string& text, std::shared_ptr<dae::Font> font);
 	};
 }

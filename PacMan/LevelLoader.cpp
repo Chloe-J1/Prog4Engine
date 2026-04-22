@@ -16,7 +16,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	float x{};
 	float y{};
 	float wallStartX{ -1.f };
-	float wallWidth{ 0.f };
+	int wallWidth{ 0 };
 
 	if (iFile.is_open())
 	{
@@ -31,7 +31,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 				{
 					if (wallStartX < 0.f)
 						wallStartX = x;
-					wallWidth += m_cellsize;  
+					wallWidth += (int)m_cellsize;  
 				}
 				else
 				{
@@ -39,7 +39,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 					{
 						scene.Add(CreateWall(wallStartX, y, wallWidth));
 						wallStartX = -1.f;
-						wallWidth = 0.f;
+						wallWidth = 0;
 					}
 
 					if (type == "p")
@@ -50,7 +50,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 				{
 					scene.Add(CreateWall(wallStartX, y, wallWidth));
 					wallStartX = -1.f;
-					wallWidth = 0.f;
+					wallWidth = 0;
 				}
 
 				x += m_cellsize;
@@ -66,11 +66,11 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	}
 }
 
-std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreateWall(float x, float y, float width)
+std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreateWall(float x, float y, int width)
 {
 	constexpr int height{ 24 };
 	std::unique_ptr<dae::GameObject> wall = std::make_unique <dae::GameObject>();
-	wall->AddComponent<dae::Hitbox>((int)width, height);
+	wall->AddComponent<dae::Hitbox>(width, height);
 	wall->SetLocalPosition(x, y);
 	wall->SetLayer("Obstacle");
 	return wall;

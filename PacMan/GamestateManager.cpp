@@ -24,7 +24,6 @@
 #include "PlayerAnimator.h"
 #include "ButtonComponent.h"
 #include "Events.h"
-#include "ButtonAnimator.h"
 
 void pacman::GamestateManager::Notify(dae::GameObject*, const dae::Event&)
 {
@@ -46,8 +45,6 @@ void pacman::GamestateManager::GameScene()
 	scene.Add(std::move(bg));
 
 	m_levelLoader.InitLevel(scene, "Data/Maps/Level_one.txt");
-
-	
 
 	// MrsPacman
 	//**********
@@ -124,53 +121,23 @@ void pacman::GamestateManager::MenuScene()
 	// Bind MenuManager commands
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_T, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_Y, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
-
-	// Button animator - used for all buttons
-	std::unique_ptr<dae::GameObject> buttonAnim = std::make_unique<dae::GameObject>();
-	buttonAnim->AddComponent<pacman::ButtonAnimator>();
-	scene.Add(std::move(buttonAnim));
-
-	// Game Button
-	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->AddComponent<dae::RenderComponent>("Button.png");
-	go->AddComponent<dae::SpriteComponent>(1, 2);
-	go->AddComponent<ButtonComponent>("LoadGameScene");
-
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
-
-	go->SetLocalPosition(float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f);
-
-	// Explanation
-	std::unique_ptr<dae::GameObject> expl = std::make_unique<dae::GameObject>();
-	expl->AddComponent<dae::RenderComponent>();
+	
+	// Game button
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	expl->AddComponent<dae::TextComponent>("Game", font);
-	expl->SetParent(go.get(), false);
-	expl->SetLocalPosition(10, 3);
+	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadGameScene");
+	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Game", font);
+	buttonText->SetParent(button.get(), false);
 
-	scene.Add(std::move(go));
-	scene.Add(std::move(expl));
+	scene.Add(std::move(button));
+	scene.Add(std::move(buttonText));
 
-	// Test Button
-	go = std::make_unique<dae::GameObject>();
-	go->AddComponent<dae::RenderComponent>("Button.png");
-	go->AddComponent<dae::SpriteComponent>(1, 2);
-	go->AddComponent<ButtonComponent>("LoadLoseScene");
+	// Test button
+	button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f + 60.f}, "Button.png", "LoadLoseScene");
+	buttonText = CreateText(glm::vec2{ 10,4 }, "Lose", font);
+	buttonText->SetParent(button.get(), false);
 
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
-
-	go->SetLocalPosition(float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2 + 60) / 2.f);
-
-	// Explanation
-	expl = std::make_unique<dae::GameObject>();
-	expl->AddComponent<dae::RenderComponent>();
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	expl->AddComponent<dae::TextComponent>("Test", font);
-	expl->SetParent(go.get(), false);
-	expl->SetLocalPosition(10, 3);
-
-	scene.Add(std::move(go));
-	scene.Add(std::move(expl));
+	scene.Add(std::move(button));
+	scene.Add(std::move(buttonText));
 }
 
 // Helper functions
@@ -249,4 +216,32 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm
 
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;
+}
+
+std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateButton(const glm::vec2& spawnPos, const std::string& spritefile, const std::string& name)
+{
+	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	go->AddComponent<dae::RenderComponent>(spritefile);
+	// Load sprite
+	constexpr int nrCols{ 1 };
+	constexpr int nrRows{ 2 };
+	go->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
+	//
+	go->AddComponent<ButtonComponent>(name);
+
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
+
+	go->SetLocalPosition(spawnPos.x, spawnPos.y);
+
+	return go;
+}
+
+std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateText(const glm::vec2& spawnPos, const std::string& text, std::shared_ptr<dae::Font> font)
+{
+	std::unique_ptr<dae::GameObject> textGo = std::make_unique<dae::GameObject>();
+	textGo->AddComponent<dae::RenderComponent>();
+	textGo->AddComponent<dae::TextComponent>(text, font);
+	textGo->SetLocalPosition(spawnPos.x, spawnPos.y);
+
+	return textGo;
 }

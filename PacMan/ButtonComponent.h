@@ -4,6 +4,7 @@
 #include "../Minigin/EventQueue.h"
 #include <memory>
 #include <string>
+#include "../Minigin/SpriteComponent.h"
 namespace pacman
 {
 	class GameObject;
@@ -24,5 +25,6 @@ namespace pacman
 		bool m_isSelected;
 		std::string m_name;
 		dae::EventQueue* m_eventQueue;
+		dae::SpriteComponent* m_spriteComp{};
 	};
 }

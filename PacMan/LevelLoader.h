@@ -13,7 +13,7 @@ namespace pacman
 	private:
 		float m_cellsize{ 24.f };
 
-		std::unique_ptr<dae::GameObject> CreateWall(float x, float y, float width);
+		std::unique_ptr<dae::GameObject> CreateWall(float x, float y, int width);
 		std::unique_ptr<dae::GameObject> CreatePellet(float x, float y);
 	};
 }

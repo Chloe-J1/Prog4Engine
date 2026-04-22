@@ -11,6 +11,9 @@ pacman::ButtonComponent::ButtonComponent(dae::GameObject* owner, const std::stri
 	m_name{name}
 {
 	m_eventQueue = &dae::EventQueue::GetInstance();
+	m_spriteComp = GetGameObject()->GetComponent<dae::SpriteComponent>();
+	if (m_spriteComp == nullptr)
+		std::cout << "no spritecomp\n";
 	MenuManager::GetInstance().RegisterButton(this);
 }
 
@@ -23,9 +26,10 @@ void pacman::ButtonComponent::SetIsSelected(bool isSelected)
 {
 	m_isSelected = isSelected;
 	
-	dae::Event selectionChangedEvent{ "BUTTON_SELECTION_CHANGED" };
-	selectionChangedEvent.arg = std::make_unique<ButtonSelectionArg>(isSelected);
-	m_eventQueue->Invoke(std::move(selectionChangedEvent), GetGameObject());
+	if (isSelected)
+		m_spriteComp->SetRow(1);
+	else
+		m_spriteComp->SetRow(0);
 }
 
 void pacman::ButtonComponent::ButtonPressed()

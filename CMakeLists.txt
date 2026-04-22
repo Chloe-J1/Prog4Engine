@@ -139,7 +139,7 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/SpriteComponent.cpp
   Minigin/Hitbox.cpp
   Minigin/CollisionManager.cpp
- "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h" "PacMan/ButtonAnimator.h"   "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp")
+ "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp")
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -155,7 +155,7 @@ target_link_libraries(${ENGINE_TARGET} PUBLIC
   glm::glm
   imgui
   $<$<CONFIG:Debug>:${VLD_LIBRARIES}>
-  $<$<PLATFORM_ID:Windows>:xinput.lib> # TODO: Remove?
+  $<$<PLATFORM_ID:Windows>:xinput.lib>
 )
 
 if(MSVC)
@@ -181,7 +181,7 @@ else()
     PacMan/HealthComponentUI.cpp
     PacMan/PlayerMovement.cpp
     PacMan/HealthComponent.cpp
-   "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h" "PacMan/ButtonAnimator.h"   "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp")
+   "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp")
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
