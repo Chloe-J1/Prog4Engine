@@ -6,7 +6,7 @@ if(EMSCRIPTEN)
 endif()
 
 if(EMSCRIPTEN)
-  set(GAME_TARGET pacman_web)
+  set(GAME_TARGET minigin_web)
   set(TARGET_PARAM )
 else()
   set(GAME_TARGET pacman)
