@@ -12,6 +12,8 @@ pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 {
 }
 
+
+
 void pacman::HealthComponent::TakeDamage(int amount)
 {
 	m_health -= amount;

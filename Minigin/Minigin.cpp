@@ -10,8 +10,8 @@
 #endif
 
 #include <SDL3/SDL.h>
-//#include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -82,6 +82,9 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath, int windowWidth, in
 	
 #endif
 
+	if (!MIX_Init()) {
+		SDL_Log("MIX_Init failed: %s", SDL_GetError());
+	}
 
 	g_window = SDL_CreateWindow( 
 		WindowConfig::GetInstance().GetTitle().c_str(),

@@ -75,6 +75,7 @@ if(NOT SDL3_ttf_FOUND)
   endif()
 endif()
 
+# add sdl3_mixer
 find_package(SDL3_mixer 3.2.2 CONFIG QUIET)
 if(NOT SDL3_mixer_FOUND)
     FetchContent_Declare(
@@ -84,6 +85,7 @@ if(NOT SDL3_mixer_FOUND)
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
     )
+    set(GLM_BUILD_LIBRARY OFF)
     FetchContent_MakeAvailable(SDL3_mixer)
 endif()
 
