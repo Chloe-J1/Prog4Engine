@@ -75,6 +75,18 @@ if(NOT SDL3_ttf_FOUND)
   endif()
 endif()
 
+find_package(SDL3_mixer 3.2.2 CONFIG QUIET)
+if(NOT SDL3_mixer_FOUND)
+    FetchContent_Declare(
+        SDL3_mixer
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL_mixer.git
+        GIT_TAG release-3.2.0
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+    )
+    FetchContent_MakeAvailable(SDL3_mixer)
+endif()
+
 # add glm
 find_package(glm CONFIG QUIET)
 if(NOT glm_FOUND)
@@ -152,6 +164,7 @@ target_include_directories(${ENGINE_TARGET} PUBLIC
 target_link_libraries(${ENGINE_TARGET} PUBLIC
   SDL3::SDL3
   SDL3_ttf::SDL3_ttf
+  SDL3_mixer::SDL3_mixer
   glm::glm
   imgui
   $<$<CONFIG:Debug>:${VLD_LIBRARIES}>
@@ -220,7 +233,7 @@ elseif(WIN32)
   set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${GAME_TARGET})
   set_target_properties(${GAME_TARGET} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${GAME_TARGET}>")
 
-  foreach(dllTarget IN ITEMS SDL3::SDL3 SDL3_ttf::SDL3_ttf)
+  foreach(dllTarget IN ITEMS SDL3::SDL3 SDL3_ttf::SDL3_ttf SDL3_mixer::SDL3_mixer)
     add_custom_command(TARGET ${GAME_TARGET} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "$<TARGET_FILE:${dllTarget}>"
