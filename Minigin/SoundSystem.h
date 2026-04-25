@@ -23,10 +23,21 @@ namespace dae
 		~SDLSoundSystem();
 
 		virtual void Play(int soundId, const float volume) override;
-		void RegisterSound(int id, const std::string& path);
+		virtual void RegisterSound(int id, const std::string& path) override;
 	private:
 		std::unordered_map<int, std::unique_ptr<Sound>> m_soundMap;
 		MIX_Mixer* m_mixer;
 	};
 
+	// Logging sound system
+	class LoggingSoundSystem final : public SoundSystem
+	{
+		std::unique_ptr<SoundSystem> m_realSoundSys;
+	public:
+		LoggingSoundSystem(std::unique_ptr<SoundSystem>&& soundSys);
+		virtual ~LoggingSoundSystem() = default;
+
+		virtual void Play(int soundId, const float volume) override;
+		virtual void RegisterSound(int id, const std::string& path) override;
+	};
 }

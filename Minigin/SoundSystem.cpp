@@ -1,7 +1,8 @@
 #include "SoundSystem.h"
 #include <iostream>
 
-
+// SDLSoundSystem
+//***************
 dae::SDLSoundSystem::SDLSoundSystem()
 {
 	m_mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, nullptr);
@@ -25,4 +26,22 @@ void dae::SDLSoundSystem::Play(int soundId, const float volume)
 void dae::SDLSoundSystem::RegisterSound(int id, const std::string& path)
 {
 	m_soundMap[id] = std::make_unique<Sound>(path, m_mixer);
+}
+
+// LoggingSoundSystem
+//***************
+dae::LoggingSoundSystem::LoggingSoundSystem(std::unique_ptr<SoundSystem>&& soundSys):
+	m_realSoundSys{std::move(soundSys)}
+{
+}
+
+void dae::LoggingSoundSystem::Play(int soundId, const float volume)
+{
+	std::cout << "playing " << soundId << " at volume " << volume << std::endl;
+	m_realSoundSys->Play(soundId, volume);
+}
+
+void dae::LoggingSoundSystem::RegisterSound(int id, const std::string& path)
+{
+	m_realSoundSys->RegisterSound(id, path);
 }

@@ -113,6 +113,8 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath, int windowWidth, in
 
 	// Sound
 #ifdef _DEBUG
+	ServiceLocator::RegisterSoundsystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
+#else
 	ServiceLocator::RegisterSoundsystem(std::make_unique<dae::SDLSoundSystem>());
 #endif
 }
