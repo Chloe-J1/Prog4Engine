@@ -153,13 +153,14 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/SpriteComponent.cpp
   Minigin/Hitbox.cpp
   Minigin/CollisionManager.cpp
- "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp")
+ "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp" "Minigin/SoundSystem.h" "Minigin/ServiceLocator.h" "Minigin/SoundSystem.cpp" "Minigin/Sound.h" "Minigin/Sound.cpp")
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
   ${CMAKE_SOURCE_DIR}/Minigin/
   ${imgui_SOURCE_DIR}
   ${glm_SOURCE_DIR}
+  ${sdl3_mixer_SOURCE_DIR}/include
   $<$<CONFIG:Debug>:${VLD_INCLUDE_DIRS}>
 )
 
@@ -196,7 +197,7 @@ else()
     PacMan/HealthComponentUI.cpp
     PacMan/PlayerMovement.cpp
     PacMan/HealthComponent.cpp
-   "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp")
+   "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp" "Minigin/SoundSystem.h" "Minigin/ServiceLocator.h" "Minigin/SoundSystem.cpp" "Minigin/Sound.h" "Minigin/Sound.cpp")
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)

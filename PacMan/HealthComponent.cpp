@@ -2,6 +2,8 @@
 #include "../PacMan/Ghost.h"
 #include "Events.h"
 
+#include "../Minigin/ServiceLocator.h"
+
 pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	Component(owner),
 	m_health{health},
@@ -10,6 +12,8 @@ pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	m_invincibleTime{0},
 	m_isInvincible{false}
 {
+	dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
+	ss->RegisterSound(0, "Data/Sound/death_1.wav");
 }
 
 
@@ -30,6 +34,8 @@ void pacman::HealthComponent::OnCollision(dae::GameObject* other)
 	if (ghost != nullptr)
 	{
 		HandleDamage(ghost);
+		dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
+		ss->Play(0, 50);
 	}
 }
 

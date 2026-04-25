@@ -21,6 +21,8 @@
 #include "EventQueue.h"
 #include "CollisionManager.h"
 #include "WindowConfig.h"
+#include "SoundSystem.h"
+#include "ServiceLocator.h"
 
 SDL_Window* g_window{};
 
@@ -108,14 +110,20 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath, int windowWidth, in
 	std::ios::sync_with_stdio(true);
 	std::cout.clear();
 #endif
+
+	// Sound
+#ifdef _DEBUG
+	ServiceLocator::RegisterSoundsystem(std::make_unique<dae::SDLSoundSystem>());
+#endif
 }
 
 dae::Minigin::~Minigin()
 {
+	ServiceLocator::RegisterSoundsystem(nullptr);
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
-
+	MIX_Quit();
 	SDL_Quit();
 }
 
