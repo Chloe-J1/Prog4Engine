@@ -3,9 +3,19 @@
 #include <memory>
 #include "Sound.h"
 #include <SDL3_mixer/SDL_mixer.h>
+#include <queue>
+#include <thread>
+#include <mutex>
+#include <atomic>
 
 namespace dae
 {
+	struct SoundMessage
+	{
+		int id;
+		float volume;
+	};
+
 	// Interface used for sound service locator
 	class SoundSystem
 	{
@@ -24,9 +34,17 @@ namespace dae
 
 		virtual void Play(int soundId, const float volume) override;
 		virtual void RegisterSound(int id, const std::string& path) override;
+
+		void ProcessRequests();
 	private:
 		std::unordered_map<int, std::unique_ptr<Sound>> m_soundMap;
 		MIX_Mixer* m_mixer;
+
+		std::queue<SoundMessage> m_pendingRequests;
+		std::jthread m_thread;
+		std::mutex m_mutex{};
+		std::condition_variable m_conditionVar{};
+		std::atomic<bool> m_isRunning{ true };
 	};
 
 	// Logging sound system

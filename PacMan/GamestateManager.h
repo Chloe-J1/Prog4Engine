@@ -6,6 +6,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include "../Minigin/Font.h"
+#include "SoundManager.h"
 namespace pacman
 {
 	class ScoreComponent;
@@ -27,6 +28,8 @@ namespace pacman
 		LevelLoader m_levelLoader;
 		const int m_player1CtrlIdx{ 0 };
 		const int m_player2CtrllIdx{ 1 };
+
+		SoundManager m_soundManager{};
 
 		std::unique_ptr<dae::GameObject> CreatePacman(const glm::vec2& spawnPos, const std::string& spritefile, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
 		std::unique_ptr<dae::GameObject> CreateScoreUI(const glm::vec2& spawnPos, ScoreComponent* scoreComp);

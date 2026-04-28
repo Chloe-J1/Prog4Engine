@@ -25,6 +25,7 @@
 #include "ButtonComponent.h"
 #include "Events.h"
 
+
 void pacman::GamestateManager::Notify(dae::GameObject*, const dae::Event&)
 {
 	/*if (event.id == "PLAYER_DIED")
@@ -85,6 +86,8 @@ void pacman::GamestateManager::GameScene()
 	// Ghosts
 	//**********
 	scene.Add(CreateGhost(glm::vec2{28,256}, "Ghost_red.png"));
+
+	
 
 	//// FPS
 	//std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();

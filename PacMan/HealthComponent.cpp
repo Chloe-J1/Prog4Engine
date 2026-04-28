@@ -2,7 +2,7 @@
 #include "../PacMan/Ghost.h"
 #include "Events.h"
 
-#include "../Minigin/ServiceLocator.h"
+#include "../Minigin/EventQueue.h"
 
 pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	Component(owner),
@@ -12,8 +12,7 @@ pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	m_invincibleTime{0},
 	m_isInvincible{false}
 {
-	dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
-	ss->RegisterSound(0, "Data/Sound/death_1.wav");
+	
 }
 
 
@@ -34,8 +33,6 @@ void pacman::HealthComponent::OnCollision(dae::GameObject* other)
 	if (ghost != nullptr)
 	{
 		HandleDamage(ghost);
-		dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
-		ss->Play(0, 50);
 	}
 }
 
@@ -63,6 +60,14 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 		dae::Event takeDamageEvent{ "PLAYER_TAKES_DAMAGE" };
 		takeDamageEvent.arg = std::make_unique<UpdateHealthArg>(m_health);
 		m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(takeDamageEvent));
+
+		// TEMP
+		dae::Event damageQueueEvent{ "PLAYER_TAKES_DAMAGE" };
+		damageQueueEvent.arg = std::make_unique<UpdateHealthArg>(m_health);
+		dae::EventQueue::GetInstance().Invoke(std::move(damageQueueEvent), GetGameObject());
+		//
+
+
 		m_isInvincible = true;
 		// Check death
 		if (m_health <= 0)
