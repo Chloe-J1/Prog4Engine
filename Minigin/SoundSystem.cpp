@@ -19,14 +19,14 @@ dae::SDLSoundSystem::~SDLSoundSystem()
 	MIX_DestroyMixer(m_mixer);
 }
 
-void dae::SDLSoundSystem::Play(int soundId, const float volume)
+void dae::SDLSoundSystem::Play(const std::string& soundId, const float volume)
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 	m_pendingRequests.push(SoundMessage{ soundId, volume });
 	m_conditionVar.notify_one();
 }
 
-void dae::SDLSoundSystem::RegisterSound(int id, const std::string& path)
+void dae::SDLSoundSystem::RegisterSound(const std::string& id, const std::string& path)
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 	m_soundMap[id] = std::make_unique<Sound>(path, m_mixer);
@@ -34,7 +34,6 @@ void dae::SDLSoundSystem::RegisterSound(int id, const std::string& path)
 
 void dae::SDLSoundSystem::ProcessRequests()
 {
-	
 	while (m_isRunning) // As long as this system is running, we don't want to destroy the sound thread
 	{
 		std::unique_lock<std::mutex> lock(m_mutex);
@@ -67,13 +66,13 @@ dae::LoggingSoundSystem::LoggingSoundSystem(std::unique_ptr<SoundSystem>&& sound
 {
 }
 
-void dae::LoggingSoundSystem::Play(int soundId, const float volume)
+void dae::LoggingSoundSystem::Play(const std::string& soundId, const float volume)
 {
 	std::cout << "playing " << soundId << " at volume " << volume << std::endl;
 	m_realSoundSys->Play(soundId, volume);
 }
 
-void dae::LoggingSoundSystem::RegisterSound(int id, const std::string& path)
+void dae::LoggingSoundSystem::RegisterSound(const std::string& id, const std::string& path)
 {
 	m_realSoundSys->RegisterSound(id, path);
 }

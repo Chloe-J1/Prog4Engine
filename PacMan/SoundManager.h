@@ -14,7 +14,8 @@ namespace pacman
 			dae::EventQueue::GetInstance().AddObserver(this);
 
 			dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
-			ss->RegisterSound(0, "Data/Sound/death_1.wav");
+			ss->RegisterSound("damage", "Data/Sound/death_1.wav");
+			ss->RegisterSound("button", "Data/Sound/button.mp3");
 		}
 		~SoundManager()
 		{
@@ -27,10 +28,14 @@ namespace pacman
 
 		virtual void Notify(dae::GameObject*, const dae::Event& event) override
 		{
+			dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
 			if (event.id == "PLAYER_TAKES_DAMAGE")
 			{
-				dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
-				ss->Play(0, 50);
+				ss->Play("damage", 50);
+			}
+			else if (event.id == "BUTTON_PRESSED")
+			{
+				ss->Play("button", 50);
 			}
 		}
 	private:

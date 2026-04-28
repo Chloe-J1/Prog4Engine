@@ -7,12 +7,13 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
+#include <string>
 
 namespace dae
 {
 	struct SoundMessage
 	{
-		int id;
+		std::string id;
 		float volume;
 	};
 
@@ -21,8 +22,8 @@ namespace dae
 	{
 	public:
 		virtual ~SoundSystem() = default;
-		virtual void Play(int soundId, const float volume) = 0;
-		virtual void RegisterSound(int id, const std::string& path) = 0;
+		virtual void Play(const std::string& soundId, const float volume) = 0;
+		virtual void RegisterSound(const std::string& id, const std::string& path) = 0;
 	};
 
 	// SDL sound system
@@ -32,12 +33,12 @@ namespace dae
 		SDLSoundSystem();
 		~SDLSoundSystem();
 
-		virtual void Play(int soundId, const float volume) override;
-		virtual void RegisterSound(int id, const std::string& path) override;
+		virtual void Play(const std::string& soundId, const float volume) override;
+		virtual void RegisterSound(const std::string& id, const std::string& path) override;
 
 		void ProcessRequests();
 	private:
-		std::unordered_map<int, std::unique_ptr<Sound>> m_soundMap;
+		std::unordered_map<std::string, std::unique_ptr<Sound>> m_soundMap;
 		MIX_Mixer* m_mixer;
 
 		std::queue<SoundMessage> m_pendingRequests;
@@ -55,7 +56,7 @@ namespace dae
 		LoggingSoundSystem(std::unique_ptr<SoundSystem>&& soundSys);
 		virtual ~LoggingSoundSystem() = default;
 
-		virtual void Play(int soundId, const float volume) override;
-		virtual void RegisterSound(int id, const std::string& path) override;
+		virtual void Play(const std::string& soundId, const float volume) override;
+		virtual void RegisterSound(const std::string& id, const std::string& path) override;
 	};
 }
