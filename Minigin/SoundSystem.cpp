@@ -22,7 +22,6 @@ public:
 	{
 		m_thread.request_stop();
 		m_conditionVar.notify_all();
-		m_thread.join(); // Stop thread
 
 		m_soundMap.clear(); // Clear all sound before destroying mixer
 		MIX_DestroyMixer(m_mixer);
@@ -46,9 +45,7 @@ public:
 		while (not stopToken.stop_requested())
 		{
 			std::unique_lock<std::mutex> lock(m_mutex);
-			m_conditionVar.wait(lock, [this, &stopToken]() {
-				return not m_pendingRequests.empty() || stopToken.stop_requested();
-				});
+			m_conditionVar.wait(lock);
 
 			while (not m_pendingRequests.empty())
 			{
@@ -72,9 +69,9 @@ private:
 	MIX_Mixer* m_mixer;
 
 	std::queue<SoundMessage> m_pendingRequests;
-	std::jthread m_thread;
 	std::mutex m_mutex{};
 	std::condition_variable m_conditionVar{};
+	std::jthread m_thread;
 };
 
 // Shared

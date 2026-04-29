@@ -16,6 +16,8 @@ namespace pacman
 			dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
 			ss->RegisterSound("damage", "Data/Sound/death_1.wav");
 			ss->RegisterSound("button", "Data/Sound/button.mp3");
+			ss->RegisterSound("pickup_pellet", "Data/Sound/eat_dot.wav");
+			
 		}
 		~SoundManager()
 		{
@@ -33,10 +35,17 @@ namespace pacman
 			if (event.id == "PLAYER_TAKES_DAMAGE")
 			{
 				ss->Play("damage", volume);
+				ss->Play("damage", volume);
 			}
 			else if (event.id == "BUTTON_PRESSED")
 			{
 				ss->Play("button", volume);
+				SDL_Delay(100);
+				ss->Play("button", volume);
+			}
+			else if (event.id == "PELLET_PICKUP")
+			{
+				ss->Play("pickup_pellet", volume);
 			}
 		}
 	private:

@@ -4,6 +4,8 @@
 #include "Events.h"
 #include "Pellets.h"
 
+#include "../Minigin/EventQueue.h"
+
 namespace pacman
 {
 	class ScoreComponent : public dae::Component
@@ -35,6 +37,11 @@ namespace pacman
 				dae::Event updateScoreEvent{ "UPDATE_SCORE" };
 				updateScoreEvent.arg = std::make_unique<UpdateScoreArg>( m_score );
 				m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
+
+				// TEMP
+				dae::Event pickupEvent{ "PELLET_PICKUP" };
+				dae::EventQueue().GetInstance().Invoke(std::move(pickupEvent), GetGameObject());
+				//
 
 				other->SetIsAlive(false);
 			}

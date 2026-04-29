@@ -9,6 +9,10 @@ namespace dae
 	public:
 		Sound(const std::string& filepath, MIX_Mixer* mixer);
 		~Sound();
+		Sound(const Sound& other) = delete;
+		Sound(Sound&& other) = delete;
+		Sound operator=(const Sound& other) = delete;
+		Sound operator=(Sound&& other) = delete;
 
 		bool IsLoaded() const;
 		void Load();

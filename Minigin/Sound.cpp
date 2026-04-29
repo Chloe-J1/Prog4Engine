@@ -1,7 +1,6 @@
 #include "Sound.h"
 #include <iostream>
 
-
 namespace dae
 {
 	class dae::Sound::SoundImpl final // Nested class
