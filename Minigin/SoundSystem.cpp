@@ -1,5 +1,11 @@
 #include "SoundSystem.h"
 #include <iostream>
+#include <unordered_map>
+#include <queue>
+#include <thread>
+#include <mutex>
+#include <SDL3_mixer/SDL_mixer.h>
+
 
 // SDLSoundSystem
 //***************
@@ -43,7 +49,9 @@ public:
 		while (not stopToken.stop_requested())
 		{
 			std::unique_lock<std::mutex> lock(m_mutex);
-			m_conditionVar.wait(lock);
+			m_conditionVar.wait(lock, [this, &stopToken] {
+				return stopToken.stop_requested() || !m_pendingRequests.empty();
+				});
 
 			while (not m_pendingRequests.empty())
 			{
@@ -63,13 +71,49 @@ public:
 		}
 	}
 private:
-	std::unordered_map<std::string, std::unique_ptr<Sound>> m_soundMap;
-	MIX_Mixer* m_mixer;
 
-	std::queue<SoundMessage> m_pendingRequests;
-	std::mutex m_mutex{};
-	std::condition_variable m_conditionVar{};
+	class Sound {
+	public:
+		Sound(const std::string& path, MIX_Mixer* mixer)
+			: m_mixer(mixer), m_filepath(path) {
+		}
+
+		~Sound() {
+			MIX_StopTrack(m_track, 0);
+			MIX_DestroyTrack(m_track);
+			MIX_DestroyAudio(m_audio);
+		}
+
+		bool IsLoaded() const { return m_audio != nullptr; }
+
+		void Load() {
+			m_audio = MIX_LoadAudio(m_mixer, m_filepath.c_str(), false);
+			m_track = MIX_CreateTrack(m_mixer);
+		}
+
+		void SetVolume(float volume) {
+			if (m_track) MIX_SetTrackGain(m_track, volume);
+		}
+
+		void Play() {
+			MIX_SetTrackAudio(m_track, m_audio);
+			MIX_PlayTrack(m_track, 0);
+		}
+	private:
+		MIX_Mixer* m_mixer;
+		MIX_Audio* m_audio{};
+		MIX_Track* m_track{};
+		std::string m_filepath;
+	};
+
+	MIX_Mixer* m_mixer{};
 	std::jthread m_thread;
+	std::mutex m_mutex;
+	std::condition_variable m_conditionVar;
+	std::queue<SoundMessage> m_pendingRequests;
+	std::unordered_map<std::string, std::unique_ptr<Sound>> m_soundMap;
+
+	
 };
 
 // Shared

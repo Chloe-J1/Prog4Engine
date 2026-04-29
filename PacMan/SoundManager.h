@@ -40,8 +40,6 @@ namespace pacman
 			else if (event.id == "BUTTON_PRESSED")
 			{
 				ss->Play("button", volume);
-				SDL_Delay(100);
-				ss->Play("button", volume);
 			}
 			else if (event.id == "PELLET_PICKUP")
 			{

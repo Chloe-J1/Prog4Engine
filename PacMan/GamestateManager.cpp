@@ -87,8 +87,6 @@ void pacman::GamestateManager::GameScene()
 	//**********
 	scene.Add(CreateGhost(glm::vec2{28,256}, "Ghost_red.png"));
 
-	
-
 	//// FPS
 	//std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
 	//fpsgo->SetLocalPosition(20, 20);
@@ -141,6 +139,9 @@ void pacman::GamestateManager::MenuScene()
 
 	scene.Add(std::move(button));
 	scene.Add(std::move(buttonText));
+
+	// Explanation
+	scene.Add(CreateText({ 250.f,30.f }, "Press space to play sound!", font));
 }
 
 // Helper functions
