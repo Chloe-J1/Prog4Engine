@@ -32,20 +32,16 @@ namespace dae
 	public:
 		SDLSoundSystem();
 		~SDLSoundSystem();
+		SDLSoundSystem(const SDLSoundSystem& other) = delete;
+		SDLSoundSystem(SDLSoundSystem&& other) = delete;
+		SDLSoundSystem& operator=(const SDLSoundSystem& other) = delete;
+		SDLSoundSystem& operator=(SDLSoundSystem&& other) = delete;
 
 		virtual void Play(const std::string& soundId, const float volume) override;
 		virtual void RegisterSound(const std::string& id, const std::string& path) override;
-
-		void ProcessRequests();
 	private:
-		std::unordered_map<std::string, std::unique_ptr<Sound>> m_soundMap;
-		MIX_Mixer* m_mixer;
-
-		std::queue<SoundMessage> m_pendingRequests;
-		std::jthread m_thread;
-		std::mutex m_mutex{};
-		std::condition_variable m_conditionVar{};
-		std::atomic<bool> m_isRunning{ true };
+		class SoundSystemImpl;
+		std::unique_ptr<SoundSystemImpl> m_impl;
 	};
 
 	// Logging sound system
@@ -55,6 +51,10 @@ namespace dae
 	public:
 		LoggingSoundSystem(std::unique_ptr<SoundSystem>&& soundSys);
 		virtual ~LoggingSoundSystem() = default;
+		LoggingSoundSystem(const LoggingSoundSystem& other) = delete;
+		LoggingSoundSystem(LoggingSoundSystem&& other) = delete;
+		LoggingSoundSystem& operator=(const LoggingSoundSystem& other) = delete;
+		LoggingSoundSystem& operator=(LoggingSoundSystem&& other) = delete;
 
 		virtual void Play(const std::string& soundId, const float volume) override;
 		virtual void RegisterSound(const std::string& id, const std::string& path) override;

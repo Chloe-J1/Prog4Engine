@@ -3,7 +3,7 @@
 #include "../Minigin/Observer.h"
 #include "../Minigin/SoundSystem.h"
 #include "../Minigin/ServiceLocator.h"
-#include <iostream>
+
 namespace pacman
 {
 	class SoundManager : public dae::Observer
@@ -28,14 +28,15 @@ namespace pacman
 
 		virtual void Notify(dae::GameObject*, const dae::Event& event) override
 		{
+			const float volume{ 50 };
 			dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
 			if (event.id == "PLAYER_TAKES_DAMAGE")
 			{
-				ss->Play("damage", 50);
+				ss->Play("damage", volume);
 			}
 			else if (event.id == "BUTTON_PRESSED")
 			{
-				ss->Play("button", 50);
+				ss->Play("button", volume);
 			}
 		}
 	private:

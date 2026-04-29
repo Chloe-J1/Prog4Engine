@@ -5,7 +5,7 @@
 
 namespace dae
 {
-	class Controller
+	class Controller final
 	{
 	public:
 			
@@ -30,7 +30,7 @@ namespace dae
 		glm::vec2 GetLeftStickValues() const;
 	private:
 		class ControllerImpl;
-		std::unique_ptr<ControllerImpl> m_pImpl;
+		std::unique_ptr<ControllerImpl> m_impl;
 		std::vector<Bindings> m_controllerBindings;
 	};
 }

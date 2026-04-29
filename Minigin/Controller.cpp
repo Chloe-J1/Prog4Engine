@@ -122,13 +122,13 @@ private:
 namespace dae
 {
     Controller::Controller(int index): 
-        m_pImpl(std::make_unique<ControllerImpl>(index))
+        m_impl(std::make_unique<ControllerImpl>(index))
     {}
     Controller::~Controller() = default;
 
 	void Controller::ProcessInput()
 	{
-		m_pImpl->ProcessInput();
+		m_impl->ProcessInput();
 
 		for (auto& commands : m_controllerBindings)
 		{
@@ -165,22 +165,22 @@ namespace dae
 	}
 	bool Controller::IsDownThisFrame(Input button) const 
 	{ 
-		return m_pImpl->IsDownThisFrame(Input(button));
+		return m_impl->IsDownThisFrame(Input(button));
 	}
 	bool Controller::IsReleasedThisFrame(Input button) const
 	{ 
-		return m_pImpl->IsReleasedThisFrame(Input(button));
+		return m_impl->IsReleasedThisFrame(Input(button));
 	}
 	bool Controller::IsHold(Input button) const
 	{
-		return m_pImpl->IsHold(Input(button));
+		return m_impl->IsHold(Input(button));
 	}
 	glm::vec2 Controller::GetLeftStickValues() const 
 	{ 
-		return m_pImpl->GetLeftStickValues(); 
+		return m_impl->GetLeftStickValues(); 
 	}
 	glm::vec2 Controller::GetRightStickValues() const 
 	{ 
-		return m_pImpl->GetRightStickValues(); 
+		return m_impl->GetRightStickValues(); 
 	}
 }

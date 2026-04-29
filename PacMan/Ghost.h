@@ -49,7 +49,7 @@ namespace pacman
 			{
 				// Go to next point
 				++m_pathIdx;
-				if (m_pathIdx >= m_path.size())
+				if (m_pathIdx >= (int)m_path.size())
 				{
 					m_pathIdx = 0;
 				}
