@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <SDL3_mixer/SDL_mixer.h>
+#include <memory>
 namespace dae
 {
 	class Sound final
@@ -14,10 +15,7 @@ namespace dae
 		void SetVolume(float volume);
 		void Play();
 	private:
-		MIX_Mixer* m_mixer;
-		MIX_Track* m_track{};
-		MIX_Audio* m_sound{};
-
-		std::string m_filepath;
+		class SoundImpl;
+		std::unique_ptr<SoundImpl> m_impl;
 	};
 }
