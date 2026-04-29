@@ -4,8 +4,6 @@
 // SDLSoundSystem
 //***************
 
-
-
 // SDL
 class dae::SDLSoundSystem::SoundSystemImpl final
 {

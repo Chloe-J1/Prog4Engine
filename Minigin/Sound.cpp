@@ -1,6 +1,6 @@
 #include "Sound.h"
 #include <iostream>
-
+#include <SDL3_mixer/SDL_mixer.h>
 namespace dae
 {
 	class dae::Sound::SoundImpl final // Nested class

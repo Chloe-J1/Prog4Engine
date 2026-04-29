@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <SDL3_mixer/SDL_mixer.h>
 #include <memory>
 namespace dae
 {
