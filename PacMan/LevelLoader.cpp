@@ -6,6 +6,8 @@
 #include "../Minigin/Hitbox.h"
 
 #include "Pellets.h"
+#include <unordered_set>
+#include "Graph.h"
 
 #include <iostream>
 void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filename)
@@ -18,6 +20,9 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	float wallStartX{ -1.f };
 	int wallWidth{ 0 };
 
+	std::unordered_set<int> pathIndices;
+	int pathIdx{ 0 };
+
 	if (iFile.is_open())
 	{
 		while (std::getline(iFile, line))
@@ -27,6 +32,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 
 			while (std::getline(ss, type, ','))
 			{
+				
 				if (type == "w")
 				{
 					if (wallStartX < 0.f)
@@ -43,7 +49,10 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 					}
 
 					if (type == "p")
+					{
 						scene.Add(CreatePellet(x, y));
+						pathIndices.insert(pathIdx);
+					}
 				}
 				// Reset wall values
 				if (wallStartX >= 0.f)
@@ -54,6 +63,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 				}
 
 				x += m_cellsize;
+				pathIdx++;
 			}
 			y += m_cellsize;
 			x = 0;
@@ -64,6 +74,9 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	{
 		throw std::invalid_argument("this file can't be opened");
 	}
+
+	// Give the graph all walkable indices
+	Graph::GetInstance().SetNeighbors(pathIndices);
 }
 
 std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreateWall(float x, float y, int width)

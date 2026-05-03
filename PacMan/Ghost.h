@@ -3,22 +3,31 @@
 #include "GameObject.h"
 #include <vector>
 #include <iostream>
+#include "Graph.h"
+
+#include <queue>
+#include <unordered_map>
+#include <algorithm>
+
 namespace pacman
 {
+	enum class Direction
+	{
+		right,
+		left,
+		up,
+		down
+	};
+
 	class GhostComponent final : public dae::Component
 	{
 	public:
 		GhostComponent(dae::GameObject* owner) :
 			Component(owner),
-			m_damage{1}
-		{
-			m_transform = &GetGameObject()->GetTransform();
+			m_damage{1},
+			m_gridIdx{Graph::GetInstance().GetGridIdx(GetGameObject()->GetWorldPosition())}
 
-			// Hard coded path -> remove this
-			m_path.push_back(glm::vec2{ 28,26 });
-			m_path.push_back(glm::vec2{ 100,26 });
-			m_path.push_back(glm::vec2{ 28,26 });
-			m_path.push_back(glm::vec2{ 28,256 });
+		{
 		}
 
 		int GetDamage() const
@@ -28,37 +37,116 @@ namespace pacman
 
 		virtual void Update(float elapsedSec) override
 		{
-			FollowPath(elapsedSec);
+			const float spriteSize{ 24 };
+			const float halfSpriteSize{ spriteSize / 2.f };
+			glm::vec2 centerPos{ GetGameObject()->GetWorldPosition() };
+			centerPos.x += halfSpriteSize;
+			centerPos.y += halfSpriteSize;
+			glm::vec2 furthestPos{centerPos};
+			switch (m_dir)
+			{
+			case pacman::Direction::right:
+				furthestPos.x -= halfSpriteSize;
+				break;
+			case pacman::Direction::left:
+				furthestPos.x += halfSpriteSize;
+				break;
+			case pacman::Direction::up:
+				furthestPos.y += halfSpriteSize;
+				break;
+			case pacman::Direction::down:
+				furthestPos.y -= halfSpriteSize;
+				break;
+			}
+
+			int newGridIdx{ Graph::GetInstance().GetGridIdx(furthestPos) };
+			if (newGridIdx != m_gridIdx)
+			{
+				m_gridIdx = newGridIdx;
+				ChangeDirection();
+			}
+
+			GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
+		}
+
+		void SetTarget(dae::GameObject* targetObj)
+		{
+			m_targetObj = targetObj;
 		}
 
 	private:
 		int m_damage;
-		std::vector<glm::vec2> m_path;
-		dae::Transform* m_transform;
-		int m_pathIdx{ 0 };
 		float m_moveSpeed{ 50.f };
+		dae::GameObject* m_targetObj{};
+		glm::vec2 m_nextDir{0,-1};
+		int m_gridIdx{};
+		std::vector<int> m_neighbors;
+		Direction m_dir{ Direction::up };
 
-		void FollowPath(float elapsedSec)
+		void ChangeDirection()
 		{
-			if (m_path.empty()) return; // No path so early exit
+			std::cout << "gridIdx: " << m_gridIdx << " exists: " << Graph::GetInstance().HasIndex(m_gridIdx) << "\n";
+			m_neighbors = Graph::GetInstance().GetNeighbors(m_gridIdx);
+			if (m_neighbors.size() < 2) // NOT an intersection
+				return;
 
-			glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ m_transform->GetWorldPosition() };
-			float distance = glm::length(direction);
-			const float threshold{ 1.f };
-			if (distance < threshold)
+			// Calc new direction aiming towards target
+			glm::vec2 targetPos{ m_targetObj->GetWorldPosition() };
+			glm::vec2 ownPos{ GetGameObject()->GetWorldPosition() };
+
+			int bestIdx = -1;
+			float bestDist = FLT_MAX;
+
+			for (int neighborIdx : m_neighbors) // Choose closest neighbor to target to walk towards
 			{
-				// Go to next point
-				++m_pathIdx;
-				if (m_pathIdx >= (int)m_path.size())
-				{
-					m_pathIdx = 0;
+				glm::vec2 neighborPos = Graph::GetInstance().GetWorldPos(neighborIdx);
+				float dist = glm::length(targetPos - neighborPos);
+				if (dist < bestDist)
+				{ 
+					bestDist = dist;
+					bestIdx = neighborIdx;
 				}
 			}
-			else
+
+			if (bestIdx != -1)
 			{
-				// Move towards point
-				glm::vec2 deltaMovement = glm::normalize(direction) * m_moveSpeed * elapsedSec;
-				m_transform->AddLocalPosition(deltaMovement);
+				glm::vec2 neighborPos = Graph::GetInstance().GetWorldPos(bestIdx);
+				glm::vec2 ownGridPos = Graph::GetInstance().GetWorldPos(m_gridIdx);
+				glm::vec2 diff = neighborPos - ownGridPos;
+
+				if (abs(diff.x) > abs(diff.y))
+				{
+					// Horizonal
+					if (diff.x > 0)
+					{
+						m_nextDir = glm::vec2{ 1, 0 };
+						m_dir = Direction::right;
+						std::cout << "right\n";
+					}
+					else
+					{
+						m_nextDir = glm::vec2{ -1, 0 };
+						m_dir = Direction::left;
+						std::cout << "left\n";
+					}
+				}
+				else
+				{
+					// Vertical
+					if (diff.y < 0)
+					{
+						m_nextDir = glm::vec2{ 0, -1 };
+						m_dir = Direction::up;
+						std::cout << "up\n";
+					}
+					else
+					{
+						m_nextDir = glm::vec2{ 0, 1 };
+						m_dir = Direction::down;
+						std::cout << "down\n";
+						
+					}
+				}
 			}
 		}
 	};
