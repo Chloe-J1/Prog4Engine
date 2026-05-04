@@ -15,5 +15,6 @@ namespace pacman
 
 		std::unique_ptr<dae::GameObject> CreateWall(float x, float y, int width);
 		std::unique_ptr<dae::GameObject> CreatePellet(float x, float y);
+		std::unique_ptr<dae::GameObject> CreatePowerPellet(float x, float y);
 	};
 }

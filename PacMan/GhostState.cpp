@@ -3,6 +3,7 @@
 #include "../Minigin/GameObject.h"
 #include <iostream>
 #include "TargetMoverComponent.h"
+#include "../Minigin/EventQueue.h"
 
 
 
@@ -13,17 +14,34 @@ pacman::ChaseState::ChaseState(dae::SpriteComponent* spriteComp, TargetMoverComp
 {
 	if (m_spriteComp == nullptr)
 		std::cerr << "Missing spritecomponent reference\n";
+
+	dae::EventQueue::GetInstance().AddObserver(this);
 }
 
 pacman::GhostState* pacman::ChaseState::Update(float elapsedSec)
 {
 	m_moveComp->MoveToTarget(elapsedSec);
-	return nullptr;
+	return m_returnedState;
 }
 
 void pacman::ChaseState::OnEnter()
 {
 	m_spriteComp->SetRow(0);
+	m_returnedState = nullptr;
+}
+
+void pacman::ChaseState::OnExit()
+{
+	dae::EventQueue::GetInstance().RemoveObserver(this);
+}
+
+void pacman::ChaseState::Notify(dae::GameObject*, const dae::Event& event)
+{
+	if (event.id == "POWER_PELLET_PICKUP")
+	{
+		std::cout << "power pellet pickup!\n";
+		m_returnedState = new DizziedState(m_spriteComp, m_moveComp);
+	}
 }
 
 // DIZZIED
@@ -35,15 +53,24 @@ pacman::DizziedState::DizziedState(dae::SpriteComponent* spriteComp, TargetMover
 		std::cerr << "Missing spritecomponent reference\n";
 }
 
-pacman::GhostState* pacman::DizziedState::Update(float)
+pacman::GhostState* pacman::DizziedState::Update(float elapsedSec)
 {
-	// Code to return chase state if you are dizzied for too long
+	m_dizziedTime += elapsedSec;
+	if (m_dizziedTime >= m_maxDizziedTime)
+	{
+		return new ChaseState(m_spriteComp, m_moveComp);
+	}
 	return nullptr;
 }
 
 void pacman::DizziedState::OnEnter()
 {
 	m_spriteComp->SetRow(4);
+}
+
+void pacman::DizziedState::OnExit()
+{
+	m_dizziedTime = 0;
 }
 
 // EYES

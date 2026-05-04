@@ -9,6 +9,7 @@ pacman::FruitComponent::FruitComponent(dae::GameObject* owner):
 	m_windowWidth{ dae::WindowConfig::GetInstance().GetWidth() },
 	m_windowHeight{ dae::WindowConfig::GetInstance().GetHeight() }
 {
+	++m_nrFruit;
 }
 
 void pacman::FruitComponent::OnCollision(dae::GameObject* other)

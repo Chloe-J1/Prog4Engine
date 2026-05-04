@@ -16,7 +16,6 @@ namespace pacman
 	private:
 		virtual void OnCollision(dae::GameObject* other) override;
 
-		const int m_nrPoints{ 300 };
 		const int m_windowWidth;
 		const int m_windowHeight;
 		static int m_nrFruit;

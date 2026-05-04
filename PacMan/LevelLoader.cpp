@@ -53,6 +53,11 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 						scene.Add(CreatePellet(x, y));
 						pathIndices.insert(pathIdx);
 					}
+					else if (type == "P")
+					{
+						scene.Add(CreatePowerPellet(x, y));
+						pathIndices.insert(pathIdx);
+					}
 				}
 				// Reset wall values
 				if (wallStartX >= 0.f)
@@ -100,4 +105,17 @@ std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreatePellet(float x, floa
 	pellet->SetLocalPosition(x + offset, y + offset);
 	return pellet;
 }
+
+std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreatePowerPellet(float x, float y)
+{
+	constexpr int offset{ 8 };
+	constexpr int size{ 8 };
+	std::unique_ptr<dae::GameObject> pellet = std::make_unique<dae::GameObject>();
+	pellet->AddComponent<dae::Hitbox>(size, size);
+	pellet->AddComponent<dae::RenderComponent>("Pellet_big.png");
+	pellet->AddComponent<pacman::PowerPellet>();
+	pellet->SetLocalPosition(x + offset, y + offset);
+	return pellet;
+}
+
 

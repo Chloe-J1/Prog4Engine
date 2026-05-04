@@ -41,7 +41,7 @@ namespace pacman
 			{
 				ss->Play("button", volume);
 			}
-			else if (event.id == "PELLET_PICKUP")
+			else if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 			{
 				ss->Play("pickup_pellet", volume);
 			}

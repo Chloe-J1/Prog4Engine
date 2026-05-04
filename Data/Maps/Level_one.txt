@@ -1,5 +1,5 @@
 w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w
-w,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,w
+w,p,p,p,p,p,p,p,p,p,P,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,w
 w,p,w,w,w,w,w,w,w,p,w,w,w,w,w,w,w,w,p,w,w,w,w,w,p,w,w,w,w,p,w
 w,p,w,0,0,0,0,0,w,p,p,p,p,p,p,p,p,w,p,p,p,p,p,p,p,w,0,0,w,p,w
 w,p,w,w,w,w,w,w,w,p,w,w,w,w,w,w,p,w,w,w,w,w,w,w,p,w,w,w,w,p,w
@@ -7,7 +7,7 @@ p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p
 w,p,w,w,w,w,w,w,w,w,w,w,w,w,p,w,w,w,w,w,w,w,w,w,w,p,w,w,w,p,w
 w,p,w,p,p,p,p,p,p,p,p,p,p,w,p,w,p,p,p,p,p,p,p,p,p,p,p,p,w,p,w
 w,p,w,p,w,w,w,w,w,w,w,w,w,w,p,w,p,w,w,w,w,w,w,w,w,w,w,p,w,p,w
-w,p,w,p,w,p,w,p,p,p,p,p,p,w,p,w,p,w,p,p,p,p,p,p,p,p,w,p,w,p,w
+w,p,w,p,w,p,w,p,p,p,p,p,p,w,p,w,p,w,p,p,P,p,p,p,p,p,w,p,w,p,w
 w,p,w,p,w,p,w,p,w,w,w,w,w,w,p,w,p,w,w,p,w,w,w,p,w,p,w,p,w,p,w
 w,p,w,p,p,p,w,p,w,p,p,p,p,p,p,p,p,p,p,p,p,p,w,p,w,p,w,p,w,p,w
 w,p,w,p,w,p,w,p,p,p,w,w,w,w,p,w,w,w,w,w,w,p,w,p,w,p,w,p,w,p,w
@@ -15,10 +15,10 @@ w,p,w,p,w,p,w,p,w,p,w,p,p,p,p,p,p,p,p,p,w,p,w,p,w,p,p,p,w,p,w
 w,p,w,p,w,p,w,p,w,p,w,p,w,w,w,w,w,w,w,p,p,p,w,p,w,p,w,p,w,p,w
 w,p,w,p,w,p,w,p,w,p,w,p,w,0,0,0,0,0,w,p,w,p,w,p,w,p,w,p,w,p,w
 w,p,w,p,w,w,w,p,w,p,p,p,w,w,w,w,w,w,w,p,w,p,w,p,w,p,w,p,w,p,w
-w,p,w,p,w,p,w,p,w,p,w,p,p,p,p,p,p,p,p,p,w,p,w,p,w,p,w,p,w,p,w
+w,p,w,p,w,p,w,p,w,p,w,p,p,p,p,p,p,p,p,p,w,p,w,p,w,p,w,P,w,p,w
 w,p,w,p,w,p,w,p,w,p,w,w,w,w,w,p,w,w,w,w,w,p,w,p,w,p,w,p,w,p,w
 w,p,w,p,w,p,w,p,w,p,p,p,p,p,p,p,p,p,p,p,p,p,w,p,w,p,w,p,w,p,w
-w,p,w,p,w,p,w,p,w,p,w,w,w,w,w,p,w,w,w,w,w,w,w,p,w,p,p,p,w,p,w
+w,P,w,p,w,p,w,p,w,p,w,w,w,w,w,p,w,w,w,w,w,w,w,p,w,p,p,p,w,p,w
 w,p,w,p,w,p,w,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,w,p,w,p,w,p,w
 w,p,w,p,w,p,w,p,w,w,w,w,w,w,w,w,w,w,w,w,p,w,w,w,w,w,w,p,w,p,w
 w,p,w,p,p,p,p,p,p,p,p,p,p,p,w,p,p,p,p,p,p,p,p,p,p,p,p,p,w,p,w
@@ -27,5 +27,5 @@ p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p
 w,p,w,w,w,w,w,w,w,w,w,w,p,w,w,w,w,w,w,w,w,p,w,w,w,w,w,w,w,p,w
 w,p,w,0,0,0,0,0,0,0,0,w,p,w,0,0,0,0,0,0,w,p,w,0,0,0,0,0,w,p,w
 w,p,w,w,w,w,w,w,w,w,w,w,p,w,w,w,w,w,w,w,w,p,w,w,w,w,w,w,w,p,w
-w,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,w
+w,p,p,p,p,p,p,p,p,p,p,p,P,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,p,w
 w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w
