@@ -16,7 +16,7 @@ namespace pacman
 		PlayerMovement& operator=(PlayerMovement&& other) = delete;
 		
 
-		void Move(const glm::vec2& direction);
+		void ChangeDirection(const glm::vec2& direction);
 		virtual void OnCollision(dae::GameObject* other) override;
 		virtual void Update(float elapsedSec) override;
 

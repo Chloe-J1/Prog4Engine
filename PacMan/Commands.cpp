@@ -8,7 +8,7 @@
 //********
 void pacman::Move::Execute()
 {
-	m_moveComp->Move(m_direction);
+	m_moveComp->ChangeDirection(m_direction);
 
 	dae::Event directionChangedEvent{ "DIRECTION_CHANGED" };
 	directionChangedEvent.arg = std::make_unique<DirectionChangedArg>(m_direction);

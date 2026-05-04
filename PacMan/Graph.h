@@ -16,6 +16,7 @@ namespace pacman
 		void SetNeighbors(const std::unordered_set<int>& indices);
 		glm::vec2 GetWorldPos(int gridIdx) const;
 		bool HasIndex(int gridIdx) const;
+		bool HasNeighbor(int gridIdx, int neighborIdx) const;
 
 		int GetNrCols() const;
 		int GetNrRows() const;

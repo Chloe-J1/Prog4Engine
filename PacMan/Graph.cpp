@@ -86,6 +86,16 @@ bool pacman::Graph::HasIndex(int gridIdx) const
 	return m_graph.contains(gridIdx);
 }
 
+bool pacman::Graph::HasNeighbor(int gridIdx, int neighborIdx) const
+{
+	if (HasIndex(gridIdx) == false) return false;
+	std::vector<int> neighbors = m_graph.at(gridIdx);
+	auto itr = std::find(neighbors.begin(), neighbors.end(), neighborIdx);
+	if (itr != neighbors.end())
+		return true;
+	return false;
+}
+
 int pacman::Graph::GetNrCols() const
 {
 	return m_nrCols;

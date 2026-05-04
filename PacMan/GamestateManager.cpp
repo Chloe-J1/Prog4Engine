@@ -23,6 +23,7 @@
 #include "Ghost.h"
 #include "PlayerAnimator.h"
 #include "ButtonComponent.h"
+#include "FruitSpawner.h"
 #include "Events.h"
 
 #include "Graph.h"
@@ -101,6 +102,29 @@ void pacman::GamestateManager::GameScene()
 	//fpsgo->AddComponent<pacman::FPSComponent>();
 
 	//scene.Add(std::move(fpsgo));
+
+	// Fruit Spawner
+	//*********
+	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
+	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
+	scene.Add(std::move(fruitSpawnerGo));
+
+	// CHECK NEIGHBORS OF A POSITION
+	std::unordered_map<int, std::vector<int>> graph = pacman::Graph::GetInstance().GetGraph();
+	/*for (auto neighbor : graph[229])
+	{
+		glm::vec2 spawnPos{ Graph::GetInstance().GetWorldPos(neighbor) };
+		std::unique_ptr<dae::GameObject> wall = std::make_unique<dae::GameObject>();
+		wall->AddComponent<dae::RenderComponent>("Wall.png");
+		wall->SetLocalPosition(spawnPos.x, spawnPos.y);
+		scene.Add(std::move(wall));
+	}*/
+
+	glm::vec2 spawnPos{ Graph::GetInstance().GetWorldPos(297) };
+	std::unique_ptr<dae::GameObject> wall = std::make_unique<dae::GameObject>();
+	wall->AddComponent<dae::RenderComponent>("Wall.png");
+	wall->SetLocalPosition(spawnPos.x, spawnPos.y);
+	scene.Add(std::move(wall));	
 }
 
 void pacman::GamestateManager::LoseScene()
@@ -167,6 +191,7 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreatePacman(const gl
 	go->AddComponent<pacman::ScoreComponent>();
 	go->AddComponent<pacman::PlayerMovement>(usesKeyboard, usesController, ctrlIdx);
 	go->AddComponent<pacman::HealthComponent>();
+	go->SetLayer("Player");
 	go->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return go;
 }

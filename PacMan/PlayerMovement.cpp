@@ -54,7 +54,7 @@ pacman::PlayerMovement::~PlayerMovement()
 	}
 }
 
-void pacman::PlayerMovement::Move(const glm::vec2& direction)
+void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 {
 	m_currDirection = direction;
 }
