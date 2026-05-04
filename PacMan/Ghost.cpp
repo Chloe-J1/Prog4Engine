@@ -20,6 +20,9 @@ void pacman::GhostComponent::Update(float elapsedSec)
 	auto newState{ m_ghostState->Update(elapsedSec) };
 	if (newState != nullptr)
 	{
+		m_ghostState->OnExit();
+		delete m_ghostState; // CHECK IF NECESSARY
 		m_ghostState = newState;
+		m_ghostState->OnEnter();
 	}
 }
