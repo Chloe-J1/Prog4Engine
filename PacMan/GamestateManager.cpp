@@ -246,8 +246,7 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm
 	constexpr int nrRows{ 6 };
 	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	//
-	ghost->AddComponent<pacman::GhostComponent>();
-	ghost->GetComponent<pacman::GhostComponent>()->SetTarget(targetObj);
+	ghost->AddComponent<pacman::GhostComponent>(targetObj);
 	
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;
