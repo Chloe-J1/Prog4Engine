@@ -1,5 +1,4 @@
 #pragma once
-#include <glm/glm.hpp>
 
 namespace dae
 {
@@ -9,13 +8,7 @@ namespace dae
 
 namespace pacman
 {
-	enum class Direction
-	{
-		right,
-		left,
-		up,
-		down
-	};
+	class TargetMoverComponent;
 	class GhostState
 	{
 	public:
@@ -25,46 +18,26 @@ namespace pacman
 		virtual void OnExit() {};
 	};
 
-	class MoveTargetState : public GhostState
+	class ChaseState final : public GhostState
 	{
 	public:
-		MoveTargetState(dae::GameObject* ghost, dae::GameObject* targetState);
-		virtual ~MoveTargetState() {};
-		virtual GhostState* Update(float elapsedSec) override;
-
-		void SetTarget(dae::GameObject* targetObj);
-	private:
-		float m_moveSpeed{ 50.f };
-		dae::GameObject* m_targetObj{};
-		glm::vec2 m_nextDir{ 0,-1 };
-		int m_gridIdx{};
-		std::vector<int> m_neighbors;
-		Direction m_dir{ Direction::up };
-		dae::GameObject* m_ghost{};
-
-		void ChangeDirection();
-		void MoveInDirection(float elapsedSec);
-	};
-
-	class ChaseState final : public MoveTargetState
-	{
-	public:
-		ChaseState(dae::GameObject* ghost, dae::SpriteComponent* spriteComp, dae::GameObject* targetState);
+		ChaseState(dae::SpriteComponent* spriteComp, TargetMoverComponent* moveComp);
 		virtual GhostState* Update(float elapsedSec) override;
 		virtual void OnEnter() override;
 	private:
 		dae::SpriteComponent* m_spriteComp;
-
+		pacman::TargetMoverComponent* m_moveComp;
 	};
 
-	class DizziedState final : public MoveTargetState
+	class DizziedState final : public GhostState
 	{
 	public:
-		DizziedState(dae::GameObject* ghost, dae::SpriteComponent* spriteComp, dae::GameObject* targetState);
+		DizziedState(dae::SpriteComponent* spriteComp, TargetMoverComponent* moveComp);
 		virtual GhostState* Update(float elapsedSec) override;
 		virtual void OnEnter() override;
 	private:
 		dae::SpriteComponent* m_spriteComp;
+		TargetMoverComponent* m_moveComp;
 	};
 
 	class EyeState final : public GhostState

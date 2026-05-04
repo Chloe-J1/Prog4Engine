@@ -24,7 +24,7 @@
 #include "PlayerAnimator.h"
 #include "ButtonComponent.h"
 #include "FruitSpawner.h"
-#include "Events.h"
+#include "TargetMoverComponent.h"
 
 #include "Graph.h"
 
@@ -246,7 +246,8 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm
 	constexpr int nrRows{ 6 };
 	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	//
-	ghost->AddComponent<pacman::GhostComponent>(targetObj);
+	ghost->AddComponent<pacman::TargetMoverComponent>(targetObj);
+	ghost->AddComponent<pacman::GhostComponent>();
 	
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;
