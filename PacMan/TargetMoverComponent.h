@@ -16,7 +16,7 @@ namespace pacman
 	{
 	public:
 		TargetMoverComponent(dae::GameObject* owner, dae::GameObject* targetObj);
-		void MoveToTarget(float elapsedSec);
+		void MoveToTarget(float elapsedSec, bool isMovingAway);
 
 	private:
 		float m_moveSpeed{ 50.f };
@@ -26,6 +26,6 @@ namespace pacman
 		std::vector<int> m_neighbors;
 		Direction m_dir{ Direction::up };
 
-		void ChangeDirection();
+		void ChangeDirection(bool isMovingAway);
 	};
 }

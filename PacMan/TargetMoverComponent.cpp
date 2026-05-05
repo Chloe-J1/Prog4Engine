@@ -9,7 +9,7 @@ pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner, dae::
 {
 }
 
-void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
+void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec, bool isMovingAway)
 {
 	const float spriteSize{ 24 };
 	const float halfSpriteSize{ spriteSize / 2.f };
@@ -37,13 +37,13 @@ void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
 	if (newGridIdx != m_gridIdx)
 	{
 		m_gridIdx = newGridIdx;
-		ChangeDirection();
+		ChangeDirection(isMovingAway);
 	}
 
 	GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
 }
 
-void pacman::TargetMoverComponent::ChangeDirection()
+void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 {
 	std::cout << "gridIdx: " << m_gridIdx << " exists: " << Graph::GetInstance().HasIndex(m_gridIdx) << "\n";
 	if (Graph::GetInstance().HasIndex(m_gridIdx) == false) return;
@@ -61,18 +61,37 @@ void pacman::TargetMoverComponent::ChangeDirection()
 	glm::vec2 ownPos{ GetGameObject()->GetWorldPosition()};
 
 	int bestIdx = -1;
-	float bestDist = FLT_MAX;
-
-	for (int neighborIdx : m_neighbors) // Choose closest neighbor to target to walk towards
+	if (not isMovingAway)
 	{
-		glm::vec2 neighborPos = Graph::GetInstance().GetWorldPos(neighborIdx);
-		float dist = glm::length(targetPos - neighborPos);
-		if (dist < bestDist)
+		float bestDist = FLT_MAX;
+
+		for (int neighborIdx : m_neighbors) // Choose closest neighbor to target to walk towards
 		{
-			bestDist = dist;
-			bestIdx = neighborIdx;
+			glm::vec2 neighborPos = Graph::GetInstance().GetWorldPos(neighborIdx);
+			float dist = glm::length(targetPos - neighborPos);
+			if (dist < bestDist)
+			{
+				bestDist = dist;
+				bestIdx = neighborIdx;
+			}
 		}
 	}
+	else
+	{
+		float bestDist = FLT_MIN;
+
+		for (int neighborIdx : m_neighbors) // Choose furthest neighbor to target to walk towards
+		{
+			glm::vec2 neighborPos = Graph::GetInstance().GetWorldPos(neighborIdx);
+			float dist = glm::length(targetPos - neighborPos);
+			if (dist > bestDist)
+			{
+				bestDist = dist;
+				bestIdx = neighborIdx;
+			}
+		}
+	}
+	
 
 	if (bestIdx != -1)
 	{

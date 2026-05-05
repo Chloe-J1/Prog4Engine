@@ -2,12 +2,14 @@
 #include "../Minigin/SpriteComponent.h"
 #include "TargetMoverComponent.h"
 #include <iostream>
+#include "GhostState.h"
 
 pacman::GhostComponent::GhostComponent(dae::GameObject* owner):
 	Component(owner),
 	m_damage{ 1 }
 {
-	m_ghostState = std::make_unique<ChaseState>(GetGameObject()->GetComponent<dae::SpriteComponent>(), GetGameObject()->GetComponent<pacman::TargetMoverComponent>());
+	m_ghostState = std::make_unique<ChaseState>();
+	m_ghostState->OnEnter(*this);
 }
 
 int pacman::GhostComponent::GetDamage() const
@@ -22,6 +24,6 @@ void pacman::GhostComponent::Update(float elapsedSec)
 	{
 		m_ghostState->OnExit();
 		m_ghostState = std::move(newState);
-		m_ghostState->OnEnter();
+		m_ghostState->OnEnter(*this);
 	}
 }
