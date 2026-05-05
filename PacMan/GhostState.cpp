@@ -18,10 +18,10 @@ pacman::ChaseState::ChaseState(dae::SpriteComponent* spriteComp, TargetMoverComp
 	dae::EventQueue::GetInstance().AddObserver(this);
 }
 
-pacman::GhostState* pacman::ChaseState::Update(float elapsedSec)
+std::unique_ptr<pacman::GhostState> pacman::ChaseState::Update(float elapsedSec)
 {
 	m_moveComp->MoveToTarget(elapsedSec);
-	return m_returnedState;
+	return std::move(m_returnedState);
 }
 
 void pacman::ChaseState::OnEnter()
@@ -40,7 +40,7 @@ void pacman::ChaseState::Notify(dae::GameObject*, const dae::Event& event)
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
 		std::cout << "power pellet pickup!\n";
-		m_returnedState = new DizziedState(m_spriteComp, m_moveComp);
+		m_returnedState =  std::make_unique<DizziedState>(m_spriteComp, m_moveComp);
 	}
 }
 
@@ -53,12 +53,12 @@ pacman::DizziedState::DizziedState(dae::SpriteComponent* spriteComp, TargetMover
 		std::cerr << "Missing spritecomponent reference\n";
 }
 
-pacman::GhostState* pacman::DizziedState::Update(float elapsedSec)
+std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(float elapsedSec)
 {
 	m_dizziedTime += elapsedSec;
 	if (m_dizziedTime >= m_maxDizziedTime)
 	{
-		return new ChaseState(m_spriteComp, m_moveComp);
+		return std::make_unique<ChaseState>(m_spriteComp, m_moveComp);
 	}
 	return nullptr;
 }
@@ -81,7 +81,7 @@ pacman::EyeState::EyeState(dae::SpriteComponent* spriteComp):
 		std::cerr << "Missing spritecomponent reference\n";
 }
 
-pacman::GhostState* pacman::EyeState::Update(float)
+std::unique_ptr<pacman::GhostState> pacman::EyeState::Update(float)
 {
 	return nullptr;
 }

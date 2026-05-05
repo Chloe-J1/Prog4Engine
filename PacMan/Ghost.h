@@ -2,7 +2,7 @@
 #include "../Minigin/Component.h"
 #include "GameObject.h"
 #include "GhostState.h"
-
+#include <memory>
 
 namespace pacman
 {
@@ -17,6 +17,6 @@ namespace pacman
 
 	private:
 		int m_damage;
-		GhostState* m_ghostState{};
+		std::unique_ptr<GhostState> m_ghostState{};
 	};
 }

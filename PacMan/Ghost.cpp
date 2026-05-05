@@ -7,7 +7,7 @@ pacman::GhostComponent::GhostComponent(dae::GameObject* owner):
 	Component(owner),
 	m_damage{ 1 }
 {
-	m_ghostState = new ChaseState(GetGameObject()->GetComponent<dae::SpriteComponent>(), GetGameObject()->GetComponent<pacman::TargetMoverComponent>());
+	m_ghostState = std::make_unique<ChaseState>(GetGameObject()->GetComponent<dae::SpriteComponent>(), GetGameObject()->GetComponent<pacman::TargetMoverComponent>());
 }
 
 int pacman::GhostComponent::GetDamage() const
@@ -21,8 +21,7 @@ void pacman::GhostComponent::Update(float elapsedSec)
 	if (newState != nullptr)
 	{
 		m_ghostState->OnExit();
-		delete m_ghostState; // CHECK IF NECESSARY
-		m_ghostState = newState;
+		m_ghostState = std::move(newState);
 		m_ghostState->OnEnter();
 	}
 }
