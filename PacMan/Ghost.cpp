@@ -22,7 +22,7 @@ void pacman::GhostComponent::Update(float elapsedSec)
 	auto newState{ m_ghostState->Update(elapsedSec) };
 	if (newState != nullptr)
 	{
-		m_ghostState->OnExit();
+		m_ghostState->OnExit(*this);
 		m_ghostState = std::move(newState);
 		m_ghostState->OnEnter(*this);
 	}

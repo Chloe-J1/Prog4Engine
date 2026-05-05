@@ -12,7 +12,12 @@ pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	m_invincibleTime{0},
 	m_isInvincible{false}
 {
-	
+	dae::EventQueue::GetInstance().AddObserver(this);
+}
+
+pacman::HealthComponent::~HealthComponent()
+{
+	dae::EventQueue::GetInstance().RemoveObserver(this);
 }
 
 
@@ -36,6 +41,18 @@ void pacman::HealthComponent::OnCollision(dae::GameObject* other)
 	}
 }
 
+void pacman::HealthComponent::Notify(dae::GameObject*, const dae::Event& event)
+{
+	if (event.id == "POWER_PELLET_PICKUP")
+	{
+		m_areGhostDizzied = true;
+	}
+	else if (event.id == "NOT_DIZZIED")
+	{
+		m_areGhostDizzied = false;
+	}
+}
+
 void pacman::HealthComponent::Update(float elapsedSec)
 {
 	if (m_isInvincible)
@@ -47,13 +64,13 @@ void pacman::HealthComponent::Update(float elapsedSec)
 			m_invincibleTime = 0;
 		}
 	}
-
-
 }
+
+
 
 void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 {
-	if (not m_isInvincible)
+	if (not m_isInvincible && not m_areGhostDizzied)
 	{
 		m_health -= ghost->GetDamage();
 

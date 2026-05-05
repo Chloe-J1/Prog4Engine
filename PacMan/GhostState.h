@@ -17,7 +17,7 @@ namespace pacman
 		virtual ~GhostState() {};
 		virtual std::unique_ptr<pacman::GhostState> Update(float) { return nullptr; };
 		virtual void OnEnter(GhostComponent&) {};
-		virtual void OnExit() {};
+		virtual void OnExit(pacman::GhostComponent&) {};
 	};
 
 	class ChaseState final : public GhostState, public dae::Observer
@@ -26,7 +26,7 @@ namespace pacman
 		ChaseState();
 		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
-		virtual void OnExit() override;
+		virtual void OnExit(pacman::GhostComponent& ghost) override;
 		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
 	private:
 		pacman::TargetMoverComponent* m_moveComp{};
@@ -39,7 +39,7 @@ namespace pacman
 		DizziedState() = default;
 		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
-		virtual void OnExit() override;
+		virtual void OnExit(pacman::GhostComponent& ghost) override;
 	private:
 		TargetMoverComponent* m_moveComp{};
 		float m_dizziedTime{ 0.f };

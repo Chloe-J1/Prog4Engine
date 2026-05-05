@@ -26,7 +26,7 @@ void pacman::ChaseState::OnEnter(pacman::GhostComponent& ghost)
 	m_returnedState = nullptr;
 }
 
-void pacman::ChaseState::OnExit()
+void pacman::ChaseState::OnExit(pacman::GhostComponent&)
 {
 	dae::EventQueue::GetInstance().RemoveObserver(this);
 }
@@ -62,9 +62,11 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 	m_moveComp = ghost.GetGameObject()->GetComponent<pacman::TargetMoverComponent>();
 }
 
-void pacman::DizziedState::OnExit()
+void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
 {
 	m_dizziedTime = 0;
+	dae::Event event = dae::Event{ "NOT_DIZZIED" };
+	dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
 }
 
 // EYES
