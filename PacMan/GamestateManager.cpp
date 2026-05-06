@@ -65,36 +65,22 @@ void pacman::GamestateManager::GameScene()
 	scoreUI->SetLocalPosition(0, 0);
 	healthUI->SetLocalPosition(100, 0);
 
-	// Ghosts
-	//**********
-	/*std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<ChaseState>());
-	scene.Add(std::move(ghost));*/
-
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<ChaseState>());
-	scene.Add(std::move(ghost));
-
-	scene.Add(std::move(mrsPacman));
-	scene.Add(std::move(UI));
-	scene.Add(std::move(scoreUI));
-	scene.Add(std::move(healthUI));
+	
 
 	// Pacman
 	//**********
 	std::unique_ptr<dae::GameObject> pacman = CreatePacman(glm::vec2{ 700,700 }, "Pacman.png", false, true, m_player2CtrllIdx);
 	//UI
-	UI = std::make_unique<dae::GameObject>();
-	UI->SetLocalPosition(634, 724);
-	scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::ScoreComponent>());
-	healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::HealthComponent>());
-	scoreUI->SetParent(UI.get(), false);
-	healthUI->SetParent(UI.get(), false);
-	scoreUI->SetLocalPosition(0, 0);
-	healthUI->SetLocalPosition(-100, 0);
+	std::unique_ptr<dae::GameObject> UIpacman = std::make_unique<dae::GameObject>();
+	UIpacman->SetLocalPosition(634, 724);
+	std::unique_ptr<dae::GameObject> scoreUIpacman = CreateScoreUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> healthUIpacman = CreateHealthUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::HealthComponent>());
+	scoreUIpacman->SetParent(UI.get(), false);
+	healthUIpacman->SetParent(UI.get(), false);
+	scoreUIpacman->SetLocalPosition(0, 0);
+	healthUIpacman->SetLocalPosition(-100, 0);
 
-	scene.Add(std::move(pacman));
-	scene.Add(std::move(UI));
-	scene.Add(std::move(scoreUI));
-	scene.Add(std::move(healthUI));
+	
 
 	
 
@@ -113,6 +99,26 @@ void pacman::GamestateManager::GameScene()
 	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
 	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
 	scene.Add(std::move(fruitSpawnerGo));
+
+	// Ghosts
+	//**********
+	/*std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseState>());
+	scene.Add(std::move(ghost));*/
+
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseState>());
+	scene.Add(std::move(ghost));
+
+
+
+	scene.Add(std::move(mrsPacman));
+	scene.Add(std::move(UI));
+	scene.Add(std::move(scoreUI));
+	scene.Add(std::move(healthUI));
+
+	scene.Add(std::move(pacman));
+	scene.Add(std::move(UIpacman));
+	scene.Add(std::move(scoreUIpacman));
+	scene.Add(std::move(healthUIpacman));
 
 	// CHECK NEIGHBORS OF A POSITION
 	std::unordered_map<int, std::vector<int>> graph = pacman::Graph::GetInstance().GetGraph();
@@ -240,7 +246,7 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateHealthUI(const 
 	return healthUIGo;
 }
 
-std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, dae::GameObject* targetObj, std::unique_ptr<GhostState> state)
+std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, dae::GameObject* firstTarget, dae::GameObject* secondTarget, std::unique_ptr<GhostState> state)
 {
 	std::unique_ptr<dae::GameObject> ghost = std::make_unique<dae::GameObject>();
 	constexpr int ghostSize{ 24 };
@@ -252,9 +258,13 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm
 	const float frameSec{ 0.5f };
 	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
 	//
-	ghost->AddComponent<pacman::TargetMoverComponent>(targetObj);
+	ghost->AddComponent<pacman::TargetMoverComponent>();
 	ghost->AddComponent<pacman::GhostComponent>(std::move(state));
 	ghost->AddComponent<pacman::EatenComponent>();
+
+	GhostComponent* comp = ghost->GetComponent<pacman::GhostComponent>();
+	comp->AddTarget(firstTarget);
+	comp->AddTarget(secondTarget);
 	
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;

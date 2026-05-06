@@ -16,12 +16,13 @@ namespace pacman
 	class TargetMoverComponent final : public dae::Component
 	{
 	public:
-		TargetMoverComponent(dae::GameObject* owner, dae::GameObject* targetObj);
+		TargetMoverComponent(dae::GameObject* owner);
 		void MoveToTarget(float elapsedSec);
 		void MoveAwayTarget(float elapsedSec);
 		void MoveFrontTarget(float elapsedSec);
 		bool MoveToCell(int gridIdx, float elapsedSec);
-
+		
+		void SetTargetObj(dae::GameObject* newTarget);
 	private:
 		float m_moveSpeed{ 50.f };
 		dae::GameObject* m_targetObj{};

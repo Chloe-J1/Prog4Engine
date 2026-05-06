@@ -3,9 +3,8 @@
 #include "../Minigin/GameObject.h"
 #include "../Minigin/SpriteComponent.h"
 
-pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner, dae::GameObject* targetObj):
+pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner):
 	Component(owner),
-	m_targetObj(targetObj),
 	m_spriteWidth{GetGameObject()->GetComponent<dae::SpriteComponent>()->GetWidth()},
 	m_spriteHeight{GetGameObject()->GetComponent<dae::SpriteComponent>()->GetHeight()},
 	m_graph{Graph::GetInstance()}
@@ -15,7 +14,7 @@ pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner, dae::
 
 void pacman::TargetMoverComponent::MoveFrontTarget(float elapsedSec)
 {
-	if (IsInNewCell())
+	if (IsInNewCell() && m_targetObj->GetIsAlive())
 	{
 		const float distance{ 100.f };
 		m_targetPos = m_targetObj->GetWorldPosition();
@@ -28,7 +27,7 @@ void pacman::TargetMoverComponent::MoveFrontTarget(float elapsedSec)
 
 bool pacman::TargetMoverComponent::MoveToCell(int gridIdx, float elapsedSec)
 {
-	if (IsInNewCell())
+	if (IsInNewCell() && m_targetObj->GetIsAlive())
 	{
 		if (m_gridIdx == gridIdx)
 		{
@@ -42,9 +41,10 @@ bool pacman::TargetMoverComponent::MoveToCell(int gridIdx, float elapsedSec)
 	return false;
 }
 
+
 void pacman::TargetMoverComponent::MoveAwayTarget(float elapsedSec)
 {
-	if (IsInNewCell())
+	if (IsInNewCell() && m_targetObj->GetIsAlive())
 	{
 		m_targetPos = m_targetObj->GetWorldPosition();
 		ChangeDirection(true);
@@ -55,7 +55,7 @@ void pacman::TargetMoverComponent::MoveAwayTarget(float elapsedSec)
 
 void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
 {
-	if (IsInNewCell())
+	if (IsInNewCell() && m_targetObj->GetIsAlive())
 	{
 		m_targetPos = m_targetObj->GetWorldPosition();
 		ChangeDirection(false);
@@ -63,6 +63,13 @@ void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
 
 	Move(elapsedSec);
 }
+
+void pacman::TargetMoverComponent::SetTargetObj(dae::GameObject* newTarget)
+{
+	if (newTarget == nullptr) return;
+	m_targetObj = newTarget;
+}
+
 
 void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 {

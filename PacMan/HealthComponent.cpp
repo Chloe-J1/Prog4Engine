@@ -92,6 +92,11 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 			dae::Event deadEvent{"PLAYER_DIED"};
 			m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(deadEvent));
 			GetGameObject()->SetIsAlive(false);
+
+			// TEMP
+			dae::Event event{ "PLAYER_DIED" };
+			dae::EventQueue::GetInstance().Invoke(std::move(event), GetGameObject());
+			//
 		}
 	}
 }
