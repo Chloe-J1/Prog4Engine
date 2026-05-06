@@ -102,13 +102,17 @@ void pacman::GamestateManager::GameScene()
 
 	// Ghosts
 	//**********
-	/*std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseState>());
-	scene.Add(std::move(ghost));*/
-
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseState>());
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseState>());
 	scene.Add(std::move(ghost));
 
+	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerState>());
+	scene.Add(std::move(ghost));
 
+	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", pacman.get(), mrsPacman.get(), std::make_unique<CornerState>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", mrsPacman.get(), pacman.get(), std::make_unique<SueState>());
+	scene.Add(std::move(ghost));
 
 	scene.Add(std::move(mrsPacman));
 	scene.Add(std::move(UI));
@@ -181,7 +185,8 @@ void pacman::GamestateManager::MenuScene()
 	scene.Add(std::move(buttonText));
 
 	// Explanation
-	scene.Add(CreateText({ 250.f,30.f }, "Press space to play sound!", font));
+	scene.Add(CreateText({ 250.f,30.f }, "Press space to play", font));
+	scene.Add(CreateText({ 250.f,60.f }, "Move with WASD, pickup power pellets to eat ghosts", font));
 }
 
 // Helper functions

@@ -6,13 +6,6 @@
 
 namespace pacman
 {
-	enum class Direction
-	{
-		right,
-		left,
-		up,
-		down
-	};
 	class TargetMoverComponent final : public dae::Component
 	{
 	public:
@@ -30,7 +23,6 @@ namespace pacman
 		glm::vec2 m_nextDir{ 0,-1 };
 		int m_gridIdx{};
 		std::vector<int> m_neighbors;
-		Direction m_dir{ Direction::up };
 		const float m_spriteWidth;
 		const float m_spriteHeight;
 		Graph& m_graph;

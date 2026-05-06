@@ -73,7 +73,7 @@ void pacman::TargetMoverComponent::SetTargetObj(dae::GameObject* newTarget)
 
 void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 {
-	std::cout << "gridIdx: " << m_gridIdx << " exists: " << m_graph.HasIndex(m_gridIdx) << "\n";
+	//std::cout << "gridIdx: " << m_gridIdx << " exists: " << m_graph.HasIndex(m_gridIdx) << "\n";
 	if (m_graph.HasIndex(m_gridIdx) == false) return;
 	m_neighbors = m_graph.GetNeighbors(m_gridIdx);
 	if (m_neighbors.empty())
@@ -123,7 +123,7 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 
 	if (bestIdx != -1)
 	{
-		std::cout << "Best Idx: " << bestIdx << "\n";
+		//std::cout << "Best Idx: " << bestIdx << "\n";
 		glm::vec2 neighborPos = m_graph.GetWorldPos(bestIdx);
 		glm::vec2 ownGridPos = m_graph.GetWorldPos(m_gridIdx);
 		glm::vec2 diff = neighborPos - ownGridPos;
@@ -134,14 +134,10 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 			if (diff.x > 0)
 			{
 				m_nextDir = glm::vec2{ 1, 0 };
-				m_dir = Direction::right;
-				std::cout << "right\n";
 			}
 			else
 			{
 				m_nextDir = glm::vec2{ -1, 0 };
-				m_dir = Direction::left;
-				std::cout << "left\n";
 			}
 		}
 		else
@@ -150,15 +146,10 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 			if (diff.y < 0)
 			{
 				m_nextDir = glm::vec2{ 0, -1 };
-				m_dir = Direction::up;
-				std::cout << "up\n";
 			}
 			else
 			{
 				m_nextDir = glm::vec2{ 0, 1 };
-				m_dir = Direction::down;
-				std::cout << "down\n";
-
 			}
 		}
 	}
@@ -171,22 +162,8 @@ bool pacman::TargetMoverComponent::IsInNewCell()
 	glm::vec2 centerPos{ GetGameObject()->GetWorldPosition() };
 	centerPos.x += halfSpriteWidth;
 	centerPos.y += halfSpriteHeight;
-	glm::vec2 furthestPos{ centerPos };
-	switch (m_dir)
-	{
-	case pacman::Direction::right:
-		furthestPos.x -= halfSpriteWidth;
-		break;
-	case pacman::Direction::left:
-		furthestPos.x += halfSpriteWidth;
-		break;
-	case pacman::Direction::up:
-		furthestPos.y += halfSpriteHeight;
-		break;
-	case pacman::Direction::down:
-		furthestPos.y -= halfSpriteHeight;
-		break;
-	}
+
+	glm::vec2 furthestPos{ centerPos - m_nextDir * glm::vec2{halfSpriteWidth, halfSpriteHeight} };
 
 	int newGridIdx{ Graph::GetInstance().GetGridIdx(furthestPos) };
 	if (newGridIdx != m_gridIdx)
