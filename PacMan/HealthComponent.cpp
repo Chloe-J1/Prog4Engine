@@ -45,11 +45,11 @@ void pacman::HealthComponent::Notify(dae::GameObject*, const dae::Event& event)
 {
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
-		m_areGhostDizzied = true;
+		m_canTakeDamage = true;
 	}
 	else if (event.id == "NOT_DIZZIED")
 	{
-		m_areGhostDizzied = false;
+		m_canTakeDamage = false;
 	}
 }
 
@@ -70,7 +70,7 @@ void pacman::HealthComponent::Update(float elapsedSec)
 
 void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 {
-	if (not m_isInvincible && not m_areGhostDizzied)
+	if (not m_isInvincible && not m_canTakeDamage)
 	{
 		m_health -= ghost->GetDamage();
 

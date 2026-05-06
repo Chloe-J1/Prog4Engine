@@ -1,4 +1,5 @@
 #include "Hitbox.h"
+#include "Hitbox.h"
 #include "GameObject.h"
 #include "Event.h"
 #include "EventQueue.h"
@@ -20,6 +21,7 @@ dae::Hitbox::~Hitbox()
 
 bool dae::Hitbox::IsHit(const Hitbox& other)
 {
+	if (m_isEnabled == false || other.m_isEnabled == false) return false;
 	glm::vec2 max{ this->GetMax() };
 	glm::vec2 min{ this->GetMin()};
 	glm::vec2 otherMax{ other.GetMax() };
@@ -44,4 +46,9 @@ glm::vec2 dae::Hitbox::GetMax() const
 {
 	glm::vec2 worldPos = GetGameObject()->GetWorldPosition();
 	return glm::vec2(worldPos.x + m_width, worldPos.y + m_height);
+}
+
+void dae::Hitbox::SetIsEnabled(bool isEnabled)
+{
+	m_isEnabled = isEnabled;
 }

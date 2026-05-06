@@ -19,12 +19,10 @@ void pacman::EatenComponent::Notify(dae::GameObject*, const dae::Event& event)
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
 		m_isVulnerable = true;
-		std::cout << "VULNERABLE\n";
 	}
 	else if (event.id == "NOT_DIZZIED")
 	{
 		m_isVulnerable = false;
-		std::cout << "NOT VULNERABLE\n";
 	}
 }
 

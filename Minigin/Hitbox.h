@@ -16,9 +16,11 @@ namespace dae
 		bool IsHit(const Hitbox& other);
 		glm::vec2 GetMin() const;
 		glm::vec2 GetMax() const;
+		void SetIsEnabled(bool isEnabled);
 
 	private:
 		int m_width;
 		int m_height;
+		bool m_isEnabled{ true };
 	};
 }

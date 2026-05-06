@@ -6,6 +6,7 @@ namespace dae
 {
 	class GameObject;
 	class SpriteComponent;
+	class Hitbox;
 }
 
 namespace pacman
@@ -89,10 +90,11 @@ namespace pacman
 		EyeState();
 		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
-
+		virtual void OnExit(GhostComponent& ghost) override;
 	private:
 		TargetMoverComponent* m_moveComp{};
 		const int m_targetIdx{ 418 };
+		dae::Hitbox* m_hitbox{};
 	};
 
 	class IdleState final : public GhostState

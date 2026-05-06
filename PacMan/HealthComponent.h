@@ -30,7 +30,7 @@ namespace pacman
 		const float m_maxInvincibleTime;
 		float m_invincibleTime;
 		bool m_isInvincible;
-		bool m_areGhostDizzied{false};
+		bool m_canTakeDamage{false};
 
 		void HandleDamage(pacman::GhostComponent* ghost);
 	};
