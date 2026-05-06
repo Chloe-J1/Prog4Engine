@@ -5,17 +5,19 @@
 namespace dae
 {
 	class GameObject;
+	class SpriteComponent;
 }
 
 namespace pacman
 {
 	class GhostComponent;
 	class TargetMoverComponent;
+	
 	class GhostState
 	{
 	public:
 		virtual ~GhostState() {};
-		virtual std::unique_ptr<pacman::GhostState> Update(float) { return nullptr; };
+		virtual std::unique_ptr<pacman::GhostState> Update(pacman::GhostComponent&, float) { return nullptr; };
 		virtual void OnEnter(GhostComponent&) {};
 		virtual void OnExit(pacman::GhostComponent&) {};
 	};
@@ -24,7 +26,7 @@ namespace pacman
 	{
 	public:
 		ChaseState();
-		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
 		virtual void OnExit(pacman::GhostComponent& ghost) override;
 		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
@@ -37,7 +39,7 @@ namespace pacman
 	{
 	public:
 		CornerState();
-		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
 		virtual void OnExit(pacman::GhostComponent& ghost) override;
 		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
@@ -50,7 +52,7 @@ namespace pacman
 	{
 	public:
 		SueState();
-		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
 		virtual void OnExit(pacman::GhostComponent& ghost) override;
 		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
@@ -62,25 +64,44 @@ namespace pacman
 		bool m_isFleeing{ false };
 	};
 
-	class DizziedState final : public GhostState
+	class DizziedState final : public GhostState, public dae::Observer
 	{
 	public:
 		DizziedState() = default;
-		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
 		virtual void OnExit(pacman::GhostComponent& ghost) override;
+
+		virtual void Notify(dae::GameObject* sender, const dae::Event& event);
 	private:
 		TargetMoverComponent* m_moveComp{};
+		dae::SpriteComponent* m_spriteComp{};
+		dae::GameObject* m_ghost{};
 		float m_dizziedTime{ 0.f };
 		const float m_maxDizziedTime{ 5.f };
+		const float m_almostDoneTime{ 3.f };
+		std::unique_ptr<GhostState> m_returnedState{};
 	};
 
 	class EyeState final : public GhostState
 	{
 	public:
 		EyeState();
-		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
+
+	private:
+		TargetMoverComponent* m_moveComp{};
+		const int m_targetIdx{ 418 };
+	};
+
+	class IdleState final : public GhostState
+	{
+	public:
+		virtual void OnEnter(GhostComponent& ghost) override;
+
+	private:
+		const int m_centerBoxIdx{ 480 };
 	};
 
 }

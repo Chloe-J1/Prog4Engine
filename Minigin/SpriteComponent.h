@@ -14,6 +14,7 @@ namespace dae
 		float GetWidth() const;
 		float GetHeight() const;
 		void SetRow(int rowNr);
+		void ChangeCurrentAnimation(int row, int nrFrames);
 	private:
 		int m_cols;
 		int m_rows;

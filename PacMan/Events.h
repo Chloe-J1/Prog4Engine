@@ -50,4 +50,20 @@ namespace pacman
 		DirectionChangedArg& operator=(const DirectionChangedArg& other) = delete;
 		DirectionChangedArg& operator=(DirectionChangedArg&& other) = delete;
 	};
+
+	struct GhostDiedArg : dae::EventArg
+	{
+		dae::GameObject* ghost;
+
+		GhostDiedArg(dae::GameObject* _ghost) :
+			ghost{ _ghost }
+		{
+		}
+
+		virtual ~GhostDiedArg() = default;
+		GhostDiedArg(const GhostDiedArg& other) = delete;
+		GhostDiedArg(GhostDiedArg&& other) = delete;
+		GhostDiedArg& operator=(const GhostDiedArg& other) = delete;
+		GhostDiedArg& operator=(GhostDiedArg&& other) = delete;
+	};
 }

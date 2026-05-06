@@ -1,4 +1,5 @@
 #include "SpriteComponent.h"
+#include "SpriteComponent.h"
 #include "RenderComponent.h"
 #include "GameObject.h"
 
@@ -60,4 +61,10 @@ float dae::SpriteComponent::GetHeight() const
 void dae::SpriteComponent::SetRow(int rowNr)
 {
 	m_row = rowNr;
+}
+
+void dae::SpriteComponent::ChangeCurrentAnimation(int row, int nrFrames)
+{
+	m_row = row;
+	m_nrFrames = nrFrames;
 }

@@ -156,7 +156,7 @@ add_library(${ENGINE_TARGET} STATIC
  "Minigin/SoundSystem.h"
  "Minigin/SoundSystem.cpp"
  "Minigin/ServiceLocator.h"
- "Minigin/ServiceLocator.cpp")
+ "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp")
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -240,7 +240,7 @@ else()
    "PacMan/FruitComponent.h"
    "PacMan/FruitComponent.cpp"
    "PacMan/FruitSpawner.h"
-   "Minigin/ServiceLocator.cpp")
+   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp")
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)

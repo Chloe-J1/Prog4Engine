@@ -25,6 +25,7 @@
 #include "ButtonComponent.h"
 #include "FruitSpawner.h"
 #include "TargetMoverComponent.h"
+#include "EatenComponent.h"
 
 
 #include "Graph.h"
@@ -66,10 +67,10 @@ void pacman::GamestateManager::GameScene()
 
 	// Ghosts
 	//**********
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<ChaseState>());
-	scene.Add(std::move(ghost));
+	/*std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<ChaseState>());
+	scene.Add(std::move(ghost));*/
 
-	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<CornerState>());
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<ChaseState>());
 	scene.Add(std::move(ghost));
 
 	scene.Add(std::move(mrsPacman));
@@ -124,11 +125,11 @@ void pacman::GamestateManager::GameScene()
 		scene.Add(std::move(wall));
 	}*/
 
-	glm::vec2 spawnPos{ Graph::GetInstance().GetWorldPos(297) };
+	/*glm::vec2 spawnPos{ Graph::GetInstance().GetWorldPos(480) };
 	std::unique_ptr<dae::GameObject> wall = std::make_unique<dae::GameObject>();
 	wall->AddComponent<dae::RenderComponent>("Wall.png");
 	wall->SetLocalPosition(spawnPos.x, spawnPos.y);
-	scene.Add(std::move(wall));	
+	scene.Add(std::move(wall));	*/
 }
 
 void pacman::GamestateManager::LoseScene()
@@ -246,12 +247,14 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm
 	ghost->AddComponent<dae::Hitbox>(ghostSize, ghostSize);
 	ghost->AddComponent<dae::RenderComponent>(spritefile);
 	// Load sprite
-	constexpr int nrCols{ 1 };
-	constexpr int nrRows{ 6 };
-	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
+	const int nrCols{ 2 };
+	const int nrRows{ 7 };
+	const float frameSec{ 0.5f };
+	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
 	//
 	ghost->AddComponent<pacman::TargetMoverComponent>(targetObj);
 	ghost->AddComponent<pacman::GhostComponent>(std::move(state));
+	ghost->AddComponent<pacman::EatenComponent>();
 	
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;

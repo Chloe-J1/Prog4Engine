@@ -20,6 +20,7 @@ namespace pacman
 		void MoveToTarget(float elapsedSec);
 		void MoveAwayTarget(float elapsedSec);
 		void MoveFrontTarget(float elapsedSec);
+		bool MoveToCell(int gridIdx, float elapsedSec);
 
 	private:
 		float m_moveSpeed{ 50.f };
@@ -35,5 +36,6 @@ namespace pacman
 
 		void ChangeDirection(bool isMovingAway);
 		bool IsInNewCell();
+		void Move(float elapsedSec);
 	};
 }

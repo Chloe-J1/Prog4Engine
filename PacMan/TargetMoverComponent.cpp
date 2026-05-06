@@ -23,7 +23,23 @@ void pacman::TargetMoverComponent::MoveFrontTarget(float elapsedSec)
 		ChangeDirection(false);
 	}
 
-	GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
+	Move(elapsedSec);
+}
+
+bool pacman::TargetMoverComponent::MoveToCell(int gridIdx, float elapsedSec)
+{
+	if (IsInNewCell())
+	{
+		if (m_gridIdx == gridIdx)
+		{
+			return true;
+		}
+		m_targetPos = m_graph.GetWorldPos(gridIdx);
+		ChangeDirection(false);
+	}
+
+	Move(elapsedSec);
+	return false;
 }
 
 void pacman::TargetMoverComponent::MoveAwayTarget(float elapsedSec)
@@ -34,7 +50,7 @@ void pacman::TargetMoverComponent::MoveAwayTarget(float elapsedSec)
 		ChangeDirection(true);
 	}
 
-	GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
+	Move(elapsedSec);
 }
 
 void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
@@ -45,7 +61,7 @@ void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
 		ChangeDirection(false);
 	}
 
-	GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
+	Move(elapsedSec);
 }
 
 void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
@@ -172,4 +188,9 @@ bool pacman::TargetMoverComponent::IsInNewCell()
 		return true;
 	}
 	return false;
+}
+
+void pacman::TargetMoverComponent::Move(float elapsedSec)
+{
+	GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
 }

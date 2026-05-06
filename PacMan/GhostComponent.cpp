@@ -19,7 +19,7 @@ int pacman::GhostComponent::GetDamage() const
 
 void pacman::GhostComponent::Update(float elapsedSec)
 {
-	auto newState{ m_ghostState->Update(elapsedSec) };
+	auto newState{ m_ghostState->Update(*this, elapsedSec) };
 	if (newState != nullptr)
 	{
 		m_ghostState->OnExit(*this);
