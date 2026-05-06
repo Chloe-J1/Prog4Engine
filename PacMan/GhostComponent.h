@@ -9,7 +9,7 @@ namespace pacman
 	class GhostComponent final : public dae::Component
 	{
 	public:
-		GhostComponent(dae::GameObject* owner);
+		GhostComponent(dae::GameObject* owner, std::unique_ptr<GhostState> state);
 
 		int GetDamage() const;
 

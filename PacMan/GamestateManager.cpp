@@ -20,11 +20,12 @@
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
 #include "Hitbox.h"
-#include "Ghost.h"
+#include "GhostComponent.h"
 #include "PlayerAnimator.h"
 #include "ButtonComponent.h"
 #include "FruitSpawner.h"
 #include "TargetMoverComponent.h"
+
 
 #include "Graph.h"
 
@@ -65,7 +66,10 @@ void pacman::GamestateManager::GameScene()
 
 	// Ghosts
 	//**********
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get());
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<ChaseState>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_red.png", mrsPacman.get(), std::make_unique<CornerState>());
 	scene.Add(std::move(ghost));
 
 	scene.Add(std::move(mrsPacman));
@@ -235,7 +239,7 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateHealthUI(const 
 	return healthUIGo;
 }
 
-std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, dae::GameObject* targetObj)
+std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, dae::GameObject* targetObj, std::unique_ptr<GhostState> state)
 {
 	std::unique_ptr<dae::GameObject> ghost = std::make_unique<dae::GameObject>();
 	constexpr int ghostSize{ 24 };
@@ -247,7 +251,7 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm
 	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	//
 	ghost->AddComponent<pacman::TargetMoverComponent>(targetObj);
-	ghost->AddComponent<pacman::GhostComponent>();
+	ghost->AddComponent<pacman::GhostComponent>(std::move(state));
 	
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;

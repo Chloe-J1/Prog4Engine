@@ -1,5 +1,5 @@
 #include "HealthComponent.h"
-#include "../PacMan/Ghost.h"
+#include "../PacMan/GhostComponent.h"
 #include "Events.h"
 
 #include "../Minigin/EventQueue.h"

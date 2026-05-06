@@ -2,6 +2,7 @@
 #include "../Minigin/Component.h"
 #include <vector>
 #include <glm/glm.hpp>
+#include "Graph.h"
 
 namespace pacman
 {
@@ -16,16 +17,23 @@ namespace pacman
 	{
 	public:
 		TargetMoverComponent(dae::GameObject* owner, dae::GameObject* targetObj);
-		void MoveToTarget(float elapsedSec, bool isMovingAway);
+		void MoveToTarget(float elapsedSec);
+		void MoveAwayTarget(float elapsedSec);
+		void MoveFrontTarget(float elapsedSec);
 
 	private:
 		float m_moveSpeed{ 50.f };
 		dae::GameObject* m_targetObj{};
+		glm::vec2 m_targetPos{};
 		glm::vec2 m_nextDir{ 0,-1 };
 		int m_gridIdx{};
 		std::vector<int> m_neighbors;
 		Direction m_dir{ Direction::up };
+		const float m_spriteWidth;
+		const float m_spriteHeight;
+		Graph& m_graph;
 
 		void ChangeDirection(bool isMovingAway);
+		bool IsInNewCell();
 	};
 }

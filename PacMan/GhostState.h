@@ -33,6 +33,35 @@ namespace pacman
 		std::unique_ptr<GhostState> m_returnedState{nullptr};
 	};
 
+	class CornerState final : public GhostState, public dae::Observer
+	{
+	public:
+		CornerState();
+		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
+		virtual void OnEnter(GhostComponent& ghost) override;
+		virtual void OnExit(pacman::GhostComponent& ghost) override;
+		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
+	private:
+		pacman::TargetMoverComponent* m_moveComp{};
+		std::unique_ptr<GhostState> m_returnedState{ nullptr };
+	};
+
+	class SueState final : public GhostState, public dae::Observer
+	{
+	public:
+		SueState();
+		virtual std::unique_ptr<pacman::GhostState> Update(float elapsedSec) override;
+		virtual void OnEnter(GhostComponent& ghost) override;
+		virtual void OnExit(pacman::GhostComponent& ghost) override;
+		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
+	private:
+		pacman::TargetMoverComponent* m_moveComp{};
+		std::unique_ptr<GhostState> m_returnedState{ nullptr };
+		float m_fleeTimer{0.f};
+		const float m_maxTime{ 8.f };
+		bool m_isFleeing{ false };
+	};
+
 	class DizziedState final : public GhostState
 	{
 	public:
