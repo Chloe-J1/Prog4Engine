@@ -57,7 +57,7 @@ void pacman::GamestateManager::GameScene()
 	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman(glm::vec2{ 28,28 }, "MrsPacman.png", true, true, m_player1CtrlIdx);
 	//UI
 	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
-	UI->SetLocalPosition(10, 724);
+	UI->SetLocalPosition(10, 5);
 	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
 	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::HealthComponent>());
 	scoreUI->SetParent(UI.get(), false);
@@ -72,11 +72,11 @@ void pacman::GamestateManager::GameScene()
 	std::unique_ptr<dae::GameObject> pacman = CreatePacman(glm::vec2{ 700,700 }, "Pacman.png", false, true, m_player2CtrllIdx);
 	//UI
 	std::unique_ptr<dae::GameObject> UIpacman = std::make_unique<dae::GameObject>();
-	UIpacman->SetLocalPosition(634, 724);
+	UIpacman->SetLocalPosition(634, 5);
 	std::unique_ptr<dae::GameObject> scoreUIpacman = CreateScoreUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::ScoreComponent>());
 	std::unique_ptr<dae::GameObject> healthUIpacman = CreateHealthUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::HealthComponent>());
-	scoreUIpacman->SetParent(UI.get(), false);
-	healthUIpacman->SetParent(UI.get(), false);
+	scoreUIpacman->SetParent(UIpacman.get(), false);
+	healthUIpacman->SetParent(UIpacman.get(), false);
 	scoreUIpacman->SetLocalPosition(0, 0);
 	healthUIpacman->SetLocalPosition(-100, 0);
 
@@ -84,15 +84,15 @@ void pacman::GamestateManager::GameScene()
 
 	
 
-	// FPS
-	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
-	fpsgo->SetLocalPosition(20, 20);
-	fpsgo->AddComponent<dae::RenderComponent>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
-	fpsgo->AddComponent<pacman::FPSComponent>();
+	//// FPS
+	//std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
+	//fpsgo->SetLocalPosition(20, 20);
+	//fpsgo->AddComponent<dae::RenderComponent>();
+	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	//fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
+	//fpsgo->AddComponent<pacman::FPSComponent>();
 
-	scene.Add(std::move(fpsgo));
+	//scene.Add(std::move(fpsgo));
 
 	// Fruit Spawner
 	//*********
