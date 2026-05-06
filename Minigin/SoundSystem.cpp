@@ -99,7 +99,6 @@ private:
 			MIX_SetTrackAudio(m_track, m_audio);
 			MIX_PlayTrack(m_track, 0);
 		}
-	private:
 		MIX_Mixer* m_mixer;
 		MIX_Audio* m_audio{};
 		MIX_Track* m_track{};

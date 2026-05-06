@@ -153,7 +153,10 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/SpriteComponent.cpp
   Minigin/Hitbox.cpp
   Minigin/CollisionManager.cpp
- "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp" "Minigin/SoundSystem.h" "Minigin/ServiceLocator.h" "Minigin/SoundSystem.cpp" "Minigin/Sound.h" "Minigin/Sound.cpp" "PacMan/SoundManager.h"  "PacMan/Graph.h" "PacMan/Graph.cpp" "PacMan/FruitComponent.h" "PacMan/FruitSpawner.h" "PacMan/FruitComponent.cpp" "PacMan/Ghost.cpp" "PacMan/GhostState.h" "PacMan/GhostState.cpp" "PacMan/TargetMoverComponent.h" "PacMan/TargetMoverComponent.cpp")
+ "Minigin/SoundSystem.h"
+ "Minigin/SoundSystem.cpp"
+ "Minigin/ServiceLocator.h"
+)
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -189,6 +192,26 @@ if(EMSCRIPTEN)
     PacMan/HealthComponentUI.cpp
     PacMan/PlayerMovement.cpp
     PacMan/HealthComponent.cpp
+    "PacMan/MenuManager.h"
+   "PacMan/ButtonComponent.h"
+   "PacMan/ButtonComponent.cpp" 
+   "PacMan/Events.h"
+   "PacMan/SoundManager.h"
+   "PacMan/GamestateManager.cpp"
+   "PacMan/GamestateManager.h"
+   "PacMan/Graph.h"
+   "PacMan/Graph.cpp"
+   "PacMan/LevelLoader.h"
+   "PacMan/LevelLoader.cpp"
+   "PacMan/GhostState.h"
+   "PacMan/GhostState.cpp"
+   "PacMan/Ghost.h"
+   "PacMan/Ghost.cpp"
+   "PacMan/TargetMoverComponent.h"
+   "PacMan/TargetMoverComponent.cpp"
+   "PacMan/FruitComponent.h"
+   "PacMan/FruitComponent.cpp"
+   "PacMan/FruitSpawner.h"
   )
 else()
   add_executable(${GAME_TARGET} WIN32
@@ -197,7 +220,27 @@ else()
     PacMan/HealthComponentUI.cpp
     PacMan/PlayerMovement.cpp
     PacMan/HealthComponent.cpp
-   "PacMan/MenuManager.h" "PacMan/ButtonComponent.h" "PacMan/ButtonComponent.cpp" "PacMan/Events.h"    "PacMan/LevelLoader.h" "PacMan/LevelLoader.cpp" "PacMan/GamestateManager.cpp" "Minigin/SoundSystem.h" "Minigin/ServiceLocator.h" "Minigin/SoundSystem.cpp" "Minigin/Sound.h" "Minigin/Sound.cpp" "PacMan/SoundManager.h"  "PacMan/Graph.h" "PacMan/Graph.cpp" "PacMan/FruitComponent.h" "PacMan/FruitSpawner.h" "PacMan/FruitComponent.cpp" "PacMan/Ghost.cpp" "PacMan/GhostState.h" "PacMan/GhostState.cpp" "PacMan/TargetMoverComponent.h" "PacMan/TargetMoverComponent.cpp")
+   "PacMan/MenuManager.h"
+   "PacMan/ButtonComponent.h"
+   "PacMan/ButtonComponent.cpp" 
+   "PacMan/Events.h"
+   "PacMan/SoundManager.h"
+   "PacMan/GamestateManager.cpp"
+   "PacMan/GamestateManager.h"
+   "PacMan/Graph.h"
+   "PacMan/Graph.cpp"
+   "PacMan/LevelLoader.h"
+   "PacMan/LevelLoader.cpp"
+   "PacMan/GhostState.h"
+   "PacMan/GhostState.cpp"
+   "PacMan/Ghost.h"
+   "PacMan/Ghost.cpp"
+   "PacMan/TargetMoverComponent.h"
+   "PacMan/TargetMoverComponent.cpp"
+   "PacMan/FruitComponent.h"
+   "PacMan/FruitComponent.cpp"
+   "PacMan/FruitSpawner.h"
+  )
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
