@@ -73,7 +73,7 @@ namespace pacman
 		virtual void OnEnter(GhostComponent& ghost) override;
 		virtual void OnExit(pacman::GhostComponent& ghost) override;
 
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event);
+		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
 	private:
 		TargetMoverComponent* m_moveComp{};
 		dae::SpriteComponent* m_spriteComp{};
