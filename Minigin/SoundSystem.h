@@ -19,6 +19,14 @@ namespace dae
 		virtual void RegisterSound(const std::string& id, const std::string& path) = 0;
 	};
 
+	// Null sound system
+	class NullSoundSystem final : public SoundSystem
+	{
+	public:
+		virtual void Play(const std::string&, const float) override {};
+		virtual void RegisterSound(const std::string&, const std::string&) override {};
+	};
+
 	// SDL sound system
 	class SDLSoundSystem final : public SoundSystem
 	{
