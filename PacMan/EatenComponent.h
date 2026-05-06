@@ -18,7 +18,7 @@ namespace pacman
 		EatenComponent& operator=(const EatenComponent& other) = delete;
 		EatenComponent& operator=(EatenComponent&& other) = delete;
 
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event);
+		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
 	private:
 		virtual void OnCollision(dae::GameObject* other) override;
 		bool m_isVulnerable{ false };
