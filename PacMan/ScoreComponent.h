@@ -38,7 +38,7 @@ namespace pacman
 				updateScoreEvent.arg = std::make_unique<UpdateScoreArg>( m_score );
 				m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
 
-				if (PowerPellet* powerPellet = dynamic_cast<PowerPellet*>(pellet))
+				if (dynamic_cast<PowerPellet*>(pellet) != nullptr)
 				{
 					dae::Event pickupEvent{ "POWER_PELLET_PICKUP" };
 					dae::EventQueue().GetInstance().Invoke(std::move(pickupEvent), GetGameObject());
