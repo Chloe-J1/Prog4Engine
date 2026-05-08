@@ -12,14 +12,12 @@
 #include "PlayerMovement.h"
 #include "Scene.h"
 #include "FPSComponent.h"
-#include "Commands.h"
 #include "SpriteComponent.h"
 #include "HealthComponent.h"
 #include "HealthComponentUI.h"
 #include "Subject.h"
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
-#include "Hitbox.h"
 #include "GhostComponent.h"
 #include "PlayerAnimator.h"
 #include "ButtonComponent.h"
@@ -102,16 +100,16 @@ void pacman::GamestateManager::GameScene()
 
 	// Ghosts
 	//**********
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseState>());
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 25,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerState>());
+	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", pacman.get(), mrsPacman.get(), std::make_unique<CornerState>());
+	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", pacman.get(), mrsPacman.get(), std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", mrsPacman.get(), pacman.get(), std::make_unique<SueState>());
+	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", mrsPacman.get(), pacman.get(), std::make_unique<SueMovement>());
 	scene.Add(std::move(ghost));
 
 	scene.Add(std::move(mrsPacman));
@@ -251,7 +249,7 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateHealthUI(const 
 	return healthUIGo;
 }
 
-std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, dae::GameObject* firstTarget, dae::GameObject* secondTarget, std::unique_ptr<GhostState> state)
+std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, dae::GameObject* firstTarget, dae::GameObject* secondTarget, std::unique_ptr<MovementBase> moveStrategy)
 {
 	std::unique_ptr<dae::GameObject> ghost = std::make_unique<dae::GameObject>();
 	constexpr int ghostSize{ 24 };
@@ -264,7 +262,7 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreateGhost(const glm
 	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
 	//
 	ghost->AddComponent<pacman::TargetMoverComponent>();
-	ghost->AddComponent<pacman::GhostComponent>(std::move(state));
+	ghost->AddComponent<pacman::GhostComponent>(std::move(moveStrategy));
 	ghost->AddComponent<pacman::EatenComponent>();
 
 	GhostComponent* comp = ghost->GetComponent<pacman::GhostComponent>();

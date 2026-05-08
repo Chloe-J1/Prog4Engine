@@ -6,116 +6,30 @@
 #include "GhostComponent.h"
 #include "Events.h"
 #include "../Minigin/Hitbox.h"
+#include "MoveStrategies.h"
 
-// CHASE
-pacman::ChaseState::ChaseState()
+
+// FOLLOW TARGET
+
+std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Update(GhostComponent&, float elapsedSec)
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	m_moveStrategy->Move(elapsedSec);
+	return nullptr;
 }
 
-std::unique_ptr<pacman::GhostState> pacman::ChaseState::Update(pacman::GhostComponent& ,float elapsedSec)
+void pacman::FollowTargetState::OnEnter(GhostComponent& ghost)
 {
-	m_moveComp->MoveToTarget(elapsedSec);
-	return std::move(m_returnedState);
+	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0, 1);
+	m_moveStrategy = ghost.GetMoveStrategy();
 }
 
-void pacman::ChaseState::OnEnter(pacman::GhostComponent& ghost)
-{
-	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0,1);
-	m_moveComp = ghost.GetGameObject()->GetComponent<pacman::TargetMoverComponent>();
-	m_returnedState = nullptr;
-}
-
-void pacman::ChaseState::OnExit(pacman::GhostComponent&)
-{
-	dae::EventQueue::GetInstance().RemoveObserver(this);
-}
-
-void pacman::ChaseState::Notify(dae::GameObject*, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event& event)
 {
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
-		m_returnedState =  std::make_unique<DizziedState>();
+		return std::make_unique<DizziedState>();
 	}
-}
-
-// CORNER
-pacman::CornerState::CornerState()
-{
-	dae::EventQueue::GetInstance().AddObserver(this);
-}
-
-std::unique_ptr<pacman::GhostState> pacman::CornerState::Update(pacman::GhostComponent& ,float elapsedSec)
-{
-	m_moveComp->MoveFrontTarget(elapsedSec);
-	return std::move(m_returnedState);
-}
-
-void pacman::CornerState::OnEnter(GhostComponent& ghost)
-{
-	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0,1);
-	m_moveComp = ghost.GetGameObject()->GetComponent<pacman::TargetMoverComponent>();
-	m_returnedState = nullptr;
-}
-
-void pacman::CornerState::OnExit(pacman::GhostComponent&)
-{
-	dae::EventQueue::GetInstance().RemoveObserver(this);
-}
-
-void pacman::CornerState::Notify(dae::GameObject*, const dae::Event& event)
-{
-	if (event.id == "POWER_PELLET_PICKUP")
-	{
-		m_returnedState = std::make_unique<DizziedState>();
-	}
-}
-
-// SUE
-pacman::SueState::SueState()
-{
-	dae::EventQueue::GetInstance().AddObserver(this);
-}
-
-std::unique_ptr<pacman::GhostState> pacman::SueState::Update(pacman::GhostComponent& ,float elapsedSec)
-{
-	m_fleeTimer += elapsedSec;
-	if (m_fleeTimer >= m_maxTime)
-	{
-		m_isFleeing = !m_isFleeing;
-		m_fleeTimer = 0;
-	}
-	if (m_isFleeing)
-	{
-		m_moveComp->MoveAwayTarget(elapsedSec);
-	}
-	else
-	{
-		m_moveComp->MoveToTarget(elapsedSec);
-	}
-
-
-	return std::move(m_returnedState);
-}
-
-void pacman::SueState::OnEnter(GhostComponent& ghost)
-{
-	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0,1);
-	m_moveComp = ghost.GetGameObject()->GetComponent<pacman::TargetMoverComponent>();
-	m_returnedState = nullptr;
-}
-
-void pacman::SueState::OnExit(pacman::GhostComponent&)
-{
-	dae::EventQueue::GetInstance().RemoveObserver(this);
-}
-
-void pacman::SueState::Notify(dae::GameObject*, const dae::Event& event)
-{
-	if (event.id == "POWER_PELLET_PICKUP")
-	{
-		m_returnedState = std::make_unique<DizziedState>();
-	}
+	return nullptr;
 }
 
 // DIZZIED
@@ -127,7 +41,7 @@ std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostCo
 	m_dizziedTime += elapsedSec;
 	if (m_dizziedTime >= m_maxDizziedTime)
 	{
-		return std::make_unique<ChaseState>();
+		return std::make_unique<FollowTargetState>();
 	}
 	else if (m_dizziedTime >= m_almostDoneTime)
 	{
@@ -143,7 +57,6 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 	m_moveComp = ghost.GetGameObject()->GetComponent<pacman::TargetMoverComponent>();
 	m_spriteComp = ghost.GetGameObject()->GetComponent<dae::SpriteComponent>();
 	m_spriteComp->ChangeCurrentAnimation(4, 1);
-	dae::EventQueue::GetInstance().AddObserver(this);
 }
 
 void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
@@ -151,26 +64,22 @@ void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
 	m_dizziedTime = 0;
 	dae::Event event = dae::Event{ "NOT_DIZZIED" };
 	dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
-	dae::EventQueue::GetInstance().RemoveObserver(this);
 }
 
-void pacman::DizziedState::Notify(dae::GameObject*, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& , dae::GameObject*, const dae::Event& event)
 {
 	if (event.id == "GHOST_DIED")
 	{
 		auto* arg = static_cast<GhostDiedArg*>(event.arg.get());
 		if (arg->ghost == m_ghost)
 		{
-			m_returnedState = std::make_unique<EyeState>();
+			return std::make_unique<EyeState>();
 		}
 	}
+	return nullptr;
 }
 
 // EYES
-pacman::EyeState::EyeState()	
-{
-}
-
 std::unique_ptr<pacman::GhostState> pacman::EyeState::Update(pacman::GhostComponent& ,float elapsedSec)
 {
 	if (m_moveComp->MoveToCell(m_targetIdx, elapsedSec))
@@ -201,3 +110,5 @@ void pacman::IdleState::OnEnter(GhostComponent& ghost)
 	ghost.GetGameObject()->GetTransform().SetLocalPosition(Graph::GetInstance().GetWorldPos(m_centerBoxIdx));
 	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0,1);
 }
+
+

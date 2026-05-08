@@ -33,7 +33,7 @@ public:
 
 	void Play(const std::string& soundId, const float volume)
 	{
-		std::lock_guard<std::mutex> lock(m_mutex);
+		std::lock_guard<std::mutex> lock(m_mutex); // Maybe wrong
 		m_pendingRequests.push(SoundMessage{ soundId, volume });
 		m_conditionVar.notify_one();
 	}

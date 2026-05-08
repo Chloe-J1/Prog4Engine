@@ -1,5 +1,5 @@
 #include "TargetMoverComponent.h"
-#include <iostream>
+#include <algorithm>
 #include "../Minigin/GameObject.h"
 #include "../Minigin/SpriteComponent.h"
 
@@ -86,39 +86,33 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 
 	glm::vec2 ownPos{ GetGameObject()->GetWorldPosition()};
 
+	
 	int bestIdx = -1;
 	if (not isMovingAway)
 	{
-		float bestDist = FLT_MAX;
-
-		for (int neighborIdx : m_neighbors) // Choose closest neighbor to target to walk towards
+		auto chosenItr = std::ranges::min_element(m_neighbors, {}, [&](int neigborIdx) { // https://stackoverflow.com/questions/76071430/how-to-find-min-element-using-stdrangesmin-in-c
+			glm::vec2 neighborPos{ Graph::GetInstance().GetWorldPos(neigborIdx) };
+			return glm::length(m_targetPos - neighborPos);
+		});
+		
+		if (chosenItr != m_neighbors.end())
 		{
-			glm::vec2 neighborPos = Graph::GetInstance().GetWorldPos(neighborIdx);
-			float dist = glm::length(m_targetPos - neighborPos);
-			if (dist < bestDist)
-			{
-				bestDist = dist;
-				bestIdx = neighborIdx;
-			}
+			bestIdx = *chosenItr;
 		}
 	}
 	else
 	{
-		float bestDist = FLT_MIN;
-
-		for (int neighborIdx : m_neighbors) // Choose furthest neighbor to target to walk towards
+		auto chosenItr = std::ranges::max_element(m_neighbors, {}, [&](int neigborIdx) { // https://stackoverflow.com/questions/76071430/how-to-find-min-element-using-stdrangesmin-in-c
+			glm::vec2 neighborPos{ Graph::GetInstance().GetWorldPos(neigborIdx) };
+			return glm::length(m_targetPos - neighborPos);
+			});
+		if (chosenItr != m_neighbors.end())
 		{
-			glm::vec2 neighborPos = Graph::GetInstance().GetWorldPos(neighborIdx);
-			float dist = glm::length(m_targetPos - neighborPos);
-			if (dist > bestDist)
-			{
-				bestDist = dist;
-				bestIdx = neighborIdx;
-			}
+			bestIdx = *chosenItr;
 		}
 	}
 
-
+	
 	
 
 	if (bestIdx != -1)
