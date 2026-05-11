@@ -4,7 +4,7 @@
 
 namespace pacman
 {
-	class GameObject;
+	class Graph;
 	class PlayerMovement final : public dae::Component
 	{
 	public:
@@ -23,6 +23,9 @@ namespace pacman
 	private:
 		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};
+		glm::vec2 m_desiredDirection{};
+		int m_previousIdx;
+		int m_currIdx;
 		const float m_speed;
 		const int m_wWidth;
 		const int m_wHeight;
@@ -32,5 +35,10 @@ namespace pacman
 		bool m_usesKeyboard;
 		bool m_usesController;
 		int m_ctrlIdx;
+		Graph* m_graph;
+
+		void WarpTunnels();
+		glm::vec2 GetCenterPos() const;
+		void SnapToCell(int gridIdx, const glm::vec2& newDir);
 	};
 }

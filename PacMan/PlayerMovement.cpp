@@ -5,18 +5,23 @@
 #include "../Minigin/InputManager.h"
 #include "Commands.h"
 #include <memory>
+#include "Graph.h"
+#include "../Minigin/GameObject.h"
 
 pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx) :
 	Component(owner),
-	m_speed{100.f},
+	m_speed{ 100.f },
 	m_wWidth{ dae::WindowConfig::GetInstance().GetWidth() },
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
 	m_usesKeyboard{ usesKeyboard },
 	m_usesController{ usesController },
-	m_ctrlIdx{ctrlIdx}
+	m_ctrlIdx{ ctrlIdx },
+	m_previousIdx{-1}
 {
 	m_playerWidth = GetGameObject()->GetComponent<dae::SpriteComponent>()->GetWidth();
 	m_playerHeight = GetGameObject()->GetComponent<dae::SpriteComponent>()->GetHeight();
+	m_graph = &Graph::GetInstance();
+	m_currIdx = m_graph->GetGridIdx(GetGameObject()->GetWorldPosition());
 
 	// Input bindings
 	if (usesController)
@@ -54,27 +59,53 @@ pacman::PlayerMovement::~PlayerMovement()
 	}
 }
 
-void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
-{
-	m_currDirection = direction;
-}
 
-void pacman::PlayerMovement::OnCollision(dae::GameObject* other)
+void pacman::PlayerMovement::OnCollision(dae::GameObject*)
 {
-	if (other->GetLayer() == "Obstacle")
+	/*if (other->GetLayer() == "Obstacle")
 	{
 		GetGameObject()->SetLocalPosition(m_oldPos.x, m_oldPos.y);
 		m_currDirection = glm::vec2{ 0,0 };
+	}*/
+
+}
+
+void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
+{
+	if (m_graph->HasNeighborInDirection(m_graph->GetGridIdx(GetCenterPos()), direction))
+	{
+		m_currDirection = direction;
+		m_previousIdx = -1;
+		SnapToCell(m_graph->GetGridIdx(GetCenterPos()), direction);
 	}
-	
+	else
+	{
+		m_desiredDirection = direction;
+	}
 }
 
 void pacman::PlayerMovement::Update(float elapsedSec)
 {
-	m_oldPos = GetGameObject()->GetWorldPosition();
+	int currGridIdx{ m_graph->GetGridIdx(GetCenterPos()) };
+	if (m_previousIdx != -1 && m_previousIdx != currGridIdx)
+	{
+		if (m_graph->HasNeighborInDirection(currGridIdx, m_desiredDirection))
+		{
+			m_currDirection = m_desiredDirection;
+			m_previousIdx = -1;
+			SnapToCell(currGridIdx, m_currDirection);
+		}
+	}
+
+	//m_oldPos = GetGameObject()->GetWorldPosition();
 	GetGameObject()->AddLocalPosition(m_currDirection * m_speed * elapsedSec);
 
-	//Warp tunnels
+
+	WarpTunnels();
+}
+
+void pacman::PlayerMovement::WarpTunnels()
+{
 	glm::vec3 pos{ GetGameObject()->GetTransform().GetWorldPosition() };
 	if (pos.x < -m_playerWidth)
 	{
@@ -92,4 +123,26 @@ void pacman::PlayerMovement::Update(float elapsedSec)
 	{
 		GetGameObject()->SetLocalPosition(pos.x, -m_playerHeight);
 	}
+}
+
+glm::vec2 pacman::PlayerMovement::GetCenterPos() const
+{
+	glm::vec2 center{ GetGameObject()->GetWorldPosition() };
+	center.x += m_playerWidth / 2.f;
+	center.y += m_playerHeight / 2.f;
+	return center;
+}
+
+void pacman::PlayerMovement::SnapToCell(int gridIdx, const glm::vec2& newDir)
+{
+	const int cellSize{ m_graph->GetCellSize() };
+	glm::vec2 cellCenter = m_graph->GetWorldPos(gridIdx);
+	cellCenter += glm::vec2{ cellSize / 2.f, cellSize / 2.f };
+
+	glm::vec2 currentPos = GetGameObject()->GetWorldPosition();
+
+	if (newDir.x != 0)
+		GetGameObject()->SetLocalPosition({ currentPos.x, cellCenter.y - m_playerHeight / 2.f });
+	if (newDir.y != 0)
+		GetGameObject()->SetLocalPosition({ cellCenter.x - m_playerWidth / 2.f, currentPos.y });
 }

@@ -17,9 +17,11 @@ namespace pacman
 		glm::vec2 GetWorldPos(int gridIdx) const;
 		bool HasIndex(int gridIdx) const;
 		bool HasNeighbor(int gridIdx, int neighborIdx) const;
+		bool HasNeighborInDirection(int gridIdx, const glm::vec2& direction) const;
 
 		int GetNrCols() const;
 		int GetNrRows() const;
+		int GetCellSize() const;
 	private:
 		std::unordered_map<int, std::vector<int>> m_graph;
 		const int m_gridWidth;

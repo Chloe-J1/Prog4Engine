@@ -82,15 +82,15 @@ void pacman::GamestateManager::GameScene()
 
 	
 
-	//// FPS
-	//std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
-	//fpsgo->SetLocalPosition(20, 20);
-	//fpsgo->AddComponent<dae::RenderComponent>();
-	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
-	//fpsgo->AddComponent<pacman::FPSComponent>();
+	// FPS
+	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
+	fpsgo->SetLocalPosition(20, 20);
+	fpsgo->AddComponent<dae::RenderComponent>();
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
+	fpsgo->AddComponent<pacman::FPSComponent>();
 
-	//scene.Add(std::move(fpsgo));
+	scene.Add(std::move(fpsgo));
 
 	// Fruit Spawner
 	//*********

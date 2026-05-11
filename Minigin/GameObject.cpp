@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "GameObject.h"
 #include "Component.h"
 #include <algorithm>
 #include <iostream>
@@ -87,6 +88,11 @@ void dae::GameObject::RenderUI()
 void dae::GameObject::SetLocalPosition(float x, float y)
 {
 	m_transform.SetLocalPosition(glm::vec3(x, y, 0.0f));
+}
+
+void dae::GameObject::SetLocalPosition(const glm::vec2& pos)
+{
+	SetLocalPosition(pos.x, pos.y);
 }
 
 void dae::GameObject::AddLocalPosition(const glm::vec2& deltaMovement)

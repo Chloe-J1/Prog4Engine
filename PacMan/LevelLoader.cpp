@@ -43,7 +43,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 				{
 					if (wallStartX >= 0.f)
 					{
-						scene.Add(CreateWall(wallStartX, y, wallWidth));
+						//scene.Add(CreateWall(wallStartX, y, wallWidth));
 						wallStartX = -1.f;
 						wallWidth = 0;
 					}
@@ -62,7 +62,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 				// Reset wall values
 				if (wallStartX >= 0.f)
 				{
-					scene.Add(CreateWall(wallStartX, y, wallWidth));
+					//scene.Add(CreateWall(wallStartX, y, wallWidth));
 					wallStartX = -1.f;
 					wallWidth = 0;
 				}

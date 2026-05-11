@@ -90,7 +90,7 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 	int bestIdx = -1;
 	if (not isMovingAway)
 	{
-		auto chosenItr = std::ranges::min_element(m_neighbors, {}, [&](int neigborIdx) { // https://stackoverflow.com/questions/76071430/how-to-find-min-element-using-stdrangesmin-in-c
+		auto chosenItr = std::ranges::min_element(m_neighbors, {}, [&](int neigborIdx) {
 			glm::vec2 neighborPos{ Graph::GetInstance().GetWorldPos(neigborIdx) };
 			return glm::length(m_targetPos - neighborPos);
 		});
@@ -102,7 +102,7 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 	}
 	else
 	{
-		auto chosenItr = std::ranges::max_element(m_neighbors, {}, [&](int neigborIdx) { // https://stackoverflow.com/questions/76071430/how-to-find-min-element-using-stdrangesmin-in-c
+		auto chosenItr = std::ranges::max_element(m_neighbors, {}, [&](int neigborIdx) {
 			glm::vec2 neighborPos{ Graph::GetInstance().GetWorldPos(neigborIdx) };
 			return glm::length(m_targetPos - neighborPos);
 			});
