@@ -59,17 +59,6 @@ pacman::PlayerMovement::~PlayerMovement()
 	}
 }
 
-
-void pacman::PlayerMovement::OnCollision(dae::GameObject*)
-{
-	/*if (other->GetLayer() == "Obstacle")
-	{
-		GetGameObject()->SetLocalPosition(m_oldPos.x, m_oldPos.y);
-		m_currDirection = glm::vec2{ 0,0 };
-	}*/
-
-}
-
 void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 {
 	if (m_graph->HasNeighborInDirection(m_graph->GetGridIdx(GetCenterPos()), direction))
@@ -135,14 +124,10 @@ glm::vec2 pacman::PlayerMovement::GetCenterPos() const
 
 void pacman::PlayerMovement::SnapToCell(int gridIdx, const glm::vec2& newDir)
 {
-	const int cellSize{ m_graph->GetCellSize() };
-	glm::vec2 cellCenter = m_graph->GetWorldPos(gridIdx);
-	cellCenter += glm::vec2{ cellSize / 2.f, cellSize / 2.f };
-
-	glm::vec2 currentPos = GetGameObject()->GetWorldPosition();
+	glm::vec2 cellPos = m_graph->GetWorldPos(gridIdx);
 
 	if (newDir.x != 0)
-		GetGameObject()->SetLocalPosition({ currentPos.x, cellCenter.y - m_playerHeight / 2.f });
+		GetGameObject()->SetLocalPosition(cellPos);
 	if (newDir.y != 0)
-		GetGameObject()->SetLocalPosition({ cellCenter.x - m_playerWidth / 2.f, currentPos.y });
+		GetGameObject()->SetLocalPosition(cellPos);
 }

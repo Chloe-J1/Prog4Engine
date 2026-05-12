@@ -16,6 +16,13 @@ int pacman::Graph::GetGridIdx(const glm::vec2& pos) const
 	return (int(pos.y / m_cellsize) * m_nrCols) + int(pos.x / m_cellsize);
 }
 
+glm::vec2 pacman::Graph::GetWorldPos(int gridIdx) const
+{
+	int col = gridIdx % m_nrCols;
+	int row = gridIdx / m_nrCols;
+	return glm::vec2{ col * m_cellsize, row * m_cellsize };
+}
+
 const std::vector<int>& pacman::Graph::GetNeighbors(int gridIdx) const
 {
 	return m_graph.at(gridIdx);
@@ -73,13 +80,8 @@ void pacman::Graph::SetNeighbors(const std::unordered_set<int>& indices)
 	}
 }
 
-glm::vec2 pacman::Graph::GetWorldPos(int gridIdx) const
-{
-	int col = gridIdx % m_nrCols;
-	int row = gridIdx / m_nrCols;
-	glm::vec2 worldPos{ col * m_cellsize, row * m_cellsize };
-	return worldPos;
-}
+
+
 
 bool pacman::Graph::HasIndex(int gridIdx) const
 {

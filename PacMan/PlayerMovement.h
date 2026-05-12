@@ -17,11 +17,9 @@ namespace pacman
 		
 
 		void ChangeDirection(const glm::vec2& direction);
-		virtual void OnCollision(dae::GameObject* other) override;
 		virtual void Update(float elapsedSec) override;
 
 	private:
-		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};
 		glm::vec2 m_desiredDirection{};
 		int m_previousIdx;
