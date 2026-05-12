@@ -6,7 +6,6 @@
 #include "Commands.h"
 #include <memory>
 #include "Graph.h"
-#include "../Minigin/GameObject.h"
 
 pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx) :
 	Component(owner),
@@ -61,13 +60,7 @@ pacman::PlayerMovement::~PlayerMovement()
 
 void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 {
-	if (m_graph->HasNeighborInDirection(m_graph->GetGridIdx(GetCenterPos()), direction))
-	{
-		m_currDirection = direction;
-		m_previousIdx = -1;
-		SnapToCell(m_graph->GetGridIdx(GetCenterPos()), direction);
-	}
-	else
+	if (CanChangeDirection(m_graph->GetGridIdx(GetCenterPos()), direction) == false)
 	{
 		m_desiredDirection = direction;
 	}
@@ -78,17 +71,12 @@ void pacman::PlayerMovement::Update(float elapsedSec)
 	int currGridIdx{ m_graph->GetGridIdx(GetCenterPos()) };
 	if (m_previousIdx != -1 && m_previousIdx != currGridIdx)
 	{
-		if (m_graph->HasNeighborInDirection(currGridIdx, m_desiredDirection))
-		{
-			m_currDirection = m_desiredDirection;
-			m_previousIdx = -1;
-			SnapToCell(currGridIdx, m_currDirection);
-		}
+		CanChangeDirection(currGridIdx, m_desiredDirection);
 	}
 
-	//m_oldPos = GetGameObject()->GetWorldPosition();
+	m_oldPos = GetGameObject()->GetWorldPosition();
 	GetGameObject()->AddLocalPosition(m_currDirection * m_speed * elapsedSec);
-
+	WallCheck();
 
 	WarpTunnels();
 }
@@ -130,4 +118,32 @@ void pacman::PlayerMovement::SnapToCell(int gridIdx, const glm::vec2& newDir)
 		GetGameObject()->SetLocalPosition(cellPos);
 	if (newDir.y != 0)
 		GetGameObject()->SetLocalPosition(cellPos);
+}
+
+void pacman::PlayerMovement::WallCheck()
+{
+	const float halfSpriteWidth{ m_playerWidth / 2.f };
+	const float halfSpriteHeight{ m_playerHeight / 2.f };
+	glm::vec2 centerPos{ GetGameObject()->GetWorldPosition() };
+	centerPos.x += halfSpriteWidth;
+	centerPos.y += halfSpriteHeight;
+
+	glm::vec2 furthestPos{ centerPos + m_currDirection * glm::vec2{halfSpriteWidth, halfSpriteHeight} };
+	int newGridIdx{ Graph::GetInstance().GetGridIdx(furthestPos) };
+	if (not m_graph->HasIndex(newGridIdx))
+	{
+		GetGameObject()->SetLocalPosition(m_oldPos);
+	}
+}
+
+bool pacman::PlayerMovement::CanChangeDirection(int gridIdx, const glm::vec2& direction)
+{
+	if (m_graph->HasNeighborInDirection(gridIdx, direction))
+	{
+		m_currDirection = direction;
+		m_previousIdx = -1;
+		SnapToCell(gridIdx, direction);
+		return true;
+	}
+	return false;
 }

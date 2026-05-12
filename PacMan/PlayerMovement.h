@@ -20,6 +20,7 @@ namespace pacman
 		virtual void Update(float elapsedSec) override;
 
 	private:
+		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};
 		glm::vec2 m_desiredDirection{};
 		int m_previousIdx;
@@ -38,5 +39,7 @@ namespace pacman
 		void WarpTunnels();
 		glm::vec2 GetCenterPos() const;
 		void SnapToCell(int gridIdx, const glm::vec2& newDir);
+		void WallCheck();
+		bool CanChangeDirection(int gridIdx, const glm::vec2& direction);
 	};
 }
