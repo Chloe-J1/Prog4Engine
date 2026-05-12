@@ -61,9 +61,12 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 
 void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
 {
+	if (m_dizziedTime == 0) // ALL ghost are no longer in the dizzied state
+	{
+		dae::Event event = dae::Event{ "NOT_DIZZIED" };
+		dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
+	}
 	m_dizziedTime = 0;
-	dae::Event event = dae::Event{ "NOT_DIZZIED" };
-	dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
 }
 
 std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& , dae::GameObject*, const dae::Event& event)

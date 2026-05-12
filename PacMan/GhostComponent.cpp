@@ -2,7 +2,6 @@
 #include "GhostState.h"
 #include "../Minigin/EventQueue.h"
 #include "TargetMoverComponent.h"
-#include <algorithm>
 
 pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy):
 	Component(owner),

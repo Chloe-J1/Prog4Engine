@@ -10,7 +10,8 @@ pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	m_takeDamageEvent{ std::make_unique<dae::Subject>() },
 	m_maxInvincibleTime{0.7f},
 	m_invincibleTime{0},
-	m_isInvincible{false}
+	m_isInvincible{false},
+	m_canTakeDamage{true}
 {
 	dae::EventQueue::GetInstance().AddObserver(this);
 }
@@ -45,11 +46,11 @@ void pacman::HealthComponent::Notify(dae::GameObject*, const dae::Event& event)
 {
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
-		m_canTakeDamage = true;
+		m_canTakeDamage = false;
 	}
 	else if (event.id == "NOT_DIZZIED")
 	{
-		m_canTakeDamage = false;
+		m_canTakeDamage = true;
 	}
 }
 
@@ -70,7 +71,7 @@ void pacman::HealthComponent::Update(float elapsedSec)
 
 void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 {
-	if (not m_isInvincible && not m_canTakeDamage)
+	if (not m_isInvincible && m_canTakeDamage)
 	{
 		m_health -= ghost->GetDamage();
 
