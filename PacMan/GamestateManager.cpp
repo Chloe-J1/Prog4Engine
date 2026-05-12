@@ -19,7 +19,6 @@
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
 #include "GhostComponent.h"
-#include "PlayerAnimator.h"
 #include "ButtonComponent.h"
 #include "FruitSpawner.h"
 #include "TargetMoverComponent.h"
@@ -199,7 +198,6 @@ std::unique_ptr<dae::GameObject> pacman::GamestateManager::CreatePacman(const gl
 	float frameSec{ 0.2f };
 	go->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
 	//
-	go->AddComponent<pacman::PlayerAnimator>(go->GetComponent<dae::SpriteComponent>());
 	constexpr int playerSize{ 16 };
 	go->AddComponent<dae::Hitbox>(playerSize, playerSize);
 	go->AddComponent<pacman::ScoreComponent>();

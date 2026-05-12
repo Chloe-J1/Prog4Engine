@@ -17,8 +17,9 @@ pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard
 	m_ctrlIdx{ ctrlIdx },
 	m_previousIdx{-1}
 {
-	m_playerWidth = GetGameObject()->GetComponent<dae::SpriteComponent>()->GetWidth();
-	m_playerHeight = GetGameObject()->GetComponent<dae::SpriteComponent>()->GetHeight();
+	m_spriteComp = GetGameObject()->GetComponent<dae::SpriteComponent>();
+	m_playerWidth = m_spriteComp->GetWidth();
+	m_playerHeight = m_spriteComp->GetHeight();
 	m_graph = &Graph::GetInstance();
 	m_currIdx = m_graph->GetGridIdx(GetGameObject()->GetWorldPosition());
 
@@ -143,7 +144,28 @@ bool pacman::PlayerMovement::CanChangeDirection(int gridIdx, const glm::vec2& di
 		m_currDirection = direction;
 		m_previousIdx = -1;
 		SnapToCell(gridIdx, direction);
+		ChangeAnimation(direction);
 		return true;
 	}
 	return false;
+}
+
+void pacman::PlayerMovement::ChangeAnimation(const glm::vec2& direction)
+{
+	if (direction.x == 1) // right
+	{
+		m_spriteComp->SetRow(0);
+	}
+	else if (direction.x == -1) // left
+	{
+		m_spriteComp->SetRow(1);
+	}
+	else if (direction.y == -1) // up
+	{
+		m_spriteComp->SetRow(2);
+	}
+	else  // down
+	{
+		m_spriteComp->SetRow(3);
+	}
 }

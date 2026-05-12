@@ -2,6 +2,11 @@
 #include "../Minigin/Component.h"
 #include <glm/glm.hpp>
 
+namespace dae
+{
+	class SpriteComponent;
+}
+
 namespace pacman
 {
 	class Graph;
@@ -35,11 +40,13 @@ namespace pacman
 		bool m_usesController;
 		int m_ctrlIdx;
 		Graph* m_graph;
+		dae::SpriteComponent* m_spriteComp;
 
 		void WarpTunnels();
 		glm::vec2 GetCenterPos() const;
 		void SnapToCell(int gridIdx, const glm::vec2& newDir);
 		void WallCheck();
 		bool CanChangeDirection(int gridIdx, const glm::vec2& direction);
+		void ChangeAnimation(const glm::vec2& direction);
 	};
 }

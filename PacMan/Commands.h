@@ -2,10 +2,8 @@
 #include <glm/glm.hpp>
 #include "../PacMan/PlayerMovement.h"
 #include "../Minigin/Command.h"	
-#include <string>
 
 
-#include <iostream>
 namespace pacman
 {
 	// MOVE

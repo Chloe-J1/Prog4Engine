@@ -61,7 +61,7 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 
 void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
 {
-	if (m_dizziedTime == 0) // ALL ghost are no longer in the dizzied state
+	if (m_dizziedTime >= m_maxDizziedTime) // ALL ghost are no longer in the dizzied state
 	{
 		dae::Event event = dae::Event{ "NOT_DIZZIED" };
 		dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
