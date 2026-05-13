@@ -19,7 +19,7 @@ namespace dae
 
 		float GetWidth() const;
 		float GetHeight() const;
-		
+
 		void SetSrcRect(const SDL_FRect& srcRect);
 		void SetDstSize(float width, float height);
 
@@ -32,9 +32,9 @@ namespace dae
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 	private:
 		std::shared_ptr<Texture2D> m_texture{};
-		
-		SDL_FRect m_srcRect;
-		SDL_FRect m_dstRect;
+
+		SDL_FRect m_srcRect{};
+		SDL_FRect m_dstRect{};
 
 		GameObject* m_owner;
 		bool m_useSrcRect{ true };

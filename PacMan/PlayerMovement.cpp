@@ -6,9 +6,7 @@
 #include "Commands.h"
 #include <memory>
 #include "Graph.h"
-
-#include "../Minigin/Renderer.h"
-#include <iostream>
+#include "../Minigin/DebugDraw.h"
 
 pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx) :
 	Component(owner),
@@ -78,13 +76,37 @@ void pacman::PlayerMovement::Update(float elapsedSec)
 		CanChangeDirection(currGridIdx, m_desiredDirection);
 	}
 
+	m_oldPos = GetGameObject()->GetWorldPosition();
 	GetGameObject()->AddLocalPosition(m_currDirection * m_speed * elapsedSec);
 	WarpTunnels();
-	m_oldPos = GetGameObject()->GetWorldPosition();
 	WallCheck();
 
 }
 
+void pacman::PlayerMovement::Render() const
+{
+	dae::DebugDraw::GetInstance().SetColor(255,0,0);
+	dae::DebugDraw::GetInstance().FillRect(m_furthestPos, 3, 3);
+}
+
+
+glm::vec2 pacman::PlayerMovement::GetCenterPos() const
+{
+	glm::vec2 center{ GetGameObject()->GetWorldPosition() };
+	center.x += m_playerWidth / 2.f;
+	center.y += m_playerHeight / 2.f;
+	return center;
+}
+
+void pacman::PlayerMovement::SnapToCell(int gridIdx, const glm::vec2& newDir)
+{
+	glm::vec2 cellPos = m_graph->GetWorldPos(gridIdx);
+
+	if (newDir.x != 0)
+		GetGameObject()->SetLocalPosition(cellPos);
+	if (newDir.y != 0)
+		GetGameObject()->SetLocalPosition(cellPos);
+}
 void pacman::PlayerMovement::WarpTunnels()
 {
 	glm::vec3 pos{ GetGameObject()->GetTransform().GetWorldPosition() };
@@ -106,24 +128,6 @@ void pacman::PlayerMovement::WarpTunnels()
 	}
 }
 
-glm::vec2 pacman::PlayerMovement::GetCenterPos() const
-{
-	glm::vec2 center{ GetGameObject()->GetWorldPosition() };
-	center.x += m_playerWidth / 2.f;
-	center.y += m_playerHeight / 2.f;
-	return center;
-}
-
-void pacman::PlayerMovement::SnapToCell(int gridIdx, const glm::vec2& newDir)
-{
-	glm::vec2 cellPos = m_graph->GetWorldPos(gridIdx);
-
-	if (newDir.x != 0)
-		GetGameObject()->SetLocalPosition(cellPos);
-	if (newDir.y != 0)
-		GetGameObject()->SetLocalPosition(cellPos);
-}
-
 void pacman::PlayerMovement::WallCheck()
 {
 	const float halfSpriteWidth{ m_playerWidth / 2.f };
@@ -132,9 +136,10 @@ void pacman::PlayerMovement::WallCheck()
 	centerPos.x += halfSpriteWidth;
 	centerPos.y += halfSpriteHeight;
 
-	if (centerPos.x < 0 || centerPos.x > m_wWidth || centerPos.y < 0 || centerPos.y > m_wHeight) return; // Outside of screen = use warp tunnels
-
 	m_furthestPos = centerPos + m_currDirection * glm::vec2{halfSpriteWidth, halfSpriteHeight};
+	const float epsilon{ 3.f };
+	if (m_furthestPos.x < epsilon || m_furthestPos.x > m_wWidth - epsilon || m_furthestPos.y < epsilon || m_furthestPos.y > m_wHeight - epsilon) return; // Outside of screen = use warp tunnels
+
 	int newGridIdx{ Graph::GetInstance().GetGridIdx(m_furthestPos) };
 	if (not m_graph->HasIndex(newGridIdx))
 	{

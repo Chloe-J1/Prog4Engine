@@ -23,7 +23,14 @@ namespace pacman
 
 		void ChangeDirection(const glm::vec2& direction);
 		virtual void Update(float elapsedSec) override;
+		virtual void Render() const override;
 	private:
+		bool m_usesKeyboard;
+		bool m_usesController;
+		int m_ctrlIdx;
+		Graph* m_graph;
+		dae::SpriteComponent* m_spriteComp;
+
 		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};
 		glm::vec2 m_desiredDirection{};
@@ -35,11 +42,7 @@ namespace pacman
 		float m_playerWidth;
 		float m_playerHeight;
 
-		bool m_usesKeyboard;
-		bool m_usesController;
-		int m_ctrlIdx;
-		Graph* m_graph;
-		dae::SpriteComponent* m_spriteComp;
+		
 
 		glm::vec2 m_furthestPos{};
 
