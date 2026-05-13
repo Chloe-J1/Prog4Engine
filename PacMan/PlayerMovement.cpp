@@ -7,6 +7,9 @@
 #include <memory>
 #include "Graph.h"
 
+#include "../Minigin/Renderer.h"
+#include <iostream>
+
 pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx) :
 	Component(owner),
 	m_speed{ 100.f },
@@ -75,11 +78,11 @@ void pacman::PlayerMovement::Update(float elapsedSec)
 		CanChangeDirection(currGridIdx, m_desiredDirection);
 	}
 
-	m_oldPos = GetGameObject()->GetWorldPosition();
 	GetGameObject()->AddLocalPosition(m_currDirection * m_speed * elapsedSec);
+	WarpTunnels();
+	m_oldPos = GetGameObject()->GetWorldPosition();
 	WallCheck();
 
-	WarpTunnels();
 }
 
 void pacman::PlayerMovement::WarpTunnels()
@@ -129,8 +132,10 @@ void pacman::PlayerMovement::WallCheck()
 	centerPos.x += halfSpriteWidth;
 	centerPos.y += halfSpriteHeight;
 
-	glm::vec2 furthestPos{ centerPos + m_currDirection * glm::vec2{halfSpriteWidth, halfSpriteHeight} };
-	int newGridIdx{ Graph::GetInstance().GetGridIdx(furthestPos) };
+	if (centerPos.x < 0 || centerPos.x > m_wWidth || centerPos.y < 0 || centerPos.y > m_wHeight) return; // Outside of screen = use warp tunnels
+
+	m_furthestPos = centerPos + m_currDirection * glm::vec2{halfSpriteWidth, halfSpriteHeight};
+	int newGridIdx{ Graph::GetInstance().GetGridIdx(m_furthestPos) };
 	if (not m_graph->HasIndex(newGridIdx))
 	{
 		GetGameObject()->SetLocalPosition(m_oldPos);

@@ -23,7 +23,6 @@ namespace pacman
 
 		void ChangeDirection(const glm::vec2& direction);
 		virtual void Update(float elapsedSec) override;
-
 	private:
 		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};
@@ -41,6 +40,8 @@ namespace pacman
 		int m_ctrlIdx;
 		Graph* m_graph;
 		dae::SpriteComponent* m_spriteComp;
+
+		glm::vec2 m_furthestPos{};
 
 		void WarpTunnels();
 		glm::vec2 GetCenterPos() const;
