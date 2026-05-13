@@ -15,14 +15,12 @@ pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
 	m_usesKeyboard{ usesKeyboard },
 	m_usesController{ usesController },
-	m_ctrlIdx{ ctrlIdx },
-	m_previousIdx{-1}
+	m_ctrlIdx{ ctrlIdx }
 {
 	m_spriteComp = GetGameObject()->GetComponent<dae::SpriteComponent>();
 	m_playerWidth = m_spriteComp->GetWidth();
 	m_playerHeight = m_spriteComp->GetHeight();
 	m_graph = &Graph::GetInstance();
-	m_currIdx = m_graph->GetGridIdx(GetGameObject()->GetWorldPosition());
 
 	// Input bindings
 	if (usesController)
@@ -62,25 +60,21 @@ pacman::PlayerMovement::~PlayerMovement()
 
 void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 {
-	if (CanChangeDirection(m_graph->GetGridIdx(GetCenterPos()), direction) == false)
+	int gridIdx{ m_graph->GetGridIdx(GetCenterPos()) };
+	if (m_graph->HasNeighborInDirection(gridIdx, direction))
 	{
-		m_desiredDirection = direction;
+		m_currDirection = direction;
+		SnapToCell(gridIdx, direction);
+		ChangeAnimation(direction);
 	}
 }
 
 void pacman::PlayerMovement::Update(float elapsedSec)
 {
-	int currGridIdx{ m_graph->GetGridIdx(GetCenterPos()) };
-	if (m_previousIdx != -1 && m_previousIdx != currGridIdx)
-	{
-		CanChangeDirection(currGridIdx, m_desiredDirection);
-	}
-
 	m_oldPos = GetGameObject()->GetWorldPosition();
 	GetGameObject()->AddLocalPosition(m_currDirection * m_speed * elapsedSec);
 	WarpTunnels();
 	WallCheck();
-
 }
 
 void pacman::PlayerMovement::Render() const
@@ -145,19 +139,6 @@ void pacman::PlayerMovement::WallCheck()
 	{
 		GetGameObject()->SetLocalPosition(m_oldPos);
 	}
-}
-
-bool pacman::PlayerMovement::CanChangeDirection(int gridIdx, const glm::vec2& direction)
-{
-	if (m_graph->HasNeighborInDirection(gridIdx, direction))
-	{
-		m_currDirection = direction;
-		m_previousIdx = -1;
-		SnapToCell(gridIdx, direction);
-		ChangeAnimation(direction);
-		return true;
-	}
-	return false;
 }
 
 void pacman::PlayerMovement::ChangeAnimation(const glm::vec2& direction)
