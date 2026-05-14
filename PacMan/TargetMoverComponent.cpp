@@ -58,6 +58,15 @@ void pacman::TargetMoverComponent::MoveAwayTarget(float elapsedSec)
 
 void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
 {
+	if (m_targetObj->GetIsAlive() == false) return;
+	m_targetPos = m_targetObj->GetWorldPosition();
+	if (IsInNewCell() || m_pathIdx == m_path.size())
+	{
+		m_path = FindPath(GetGameObject()->GetWorldPosition(), m_targetPos);
+		m_pathIdx = 0;
+	}
+	FollowPath(elapsedSec);
+	
 	/*if (IsInNewCell() && m_targetObj->GetIsAlive())
 	{
 		m_targetPos = m_targetObj->GetWorldPosition();
@@ -65,17 +74,6 @@ void pacman::TargetMoverComponent::MoveToTarget(float elapsedSec)
 	}
 
 	Move(elapsedSec);*/
-
-
-
-	m_targetPos = m_targetObj->GetWorldPosition();
-	if (IsInNewCell())
-	{
-		m_path = FindPath(GetGameObject()->GetWorldPosition(), m_targetPos);
-		m_pathIdx = 0;
-		
-	}
-	FollowPath(elapsedSec);
 }
 
 void pacman::TargetMoverComponent::SetTargetObj(dae::GameObject* newTarget)
@@ -108,7 +106,7 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 	}
 
 	glm::vec2 ownPos{ GetGameObject()->GetWorldPosition()};
-
+	glm::vec2 ownGridPos = m_graph.GetWorldPos(m_gridIdx);
 	
 	int bestIdx = -1;
 	if (not isMovingAway)
@@ -136,13 +134,11 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 	}
 
 	
-	
-
 	if (bestIdx != -1)
 	{
 		//std::cout << "Best Idx: " << bestIdx << "\n";
 		glm::vec2 neighborPos = m_graph.GetWorldPos(bestIdx);
-		glm::vec2 ownGridPos = m_graph.GetWorldPos(m_gridIdx);
+		ownGridPos = m_graph.GetWorldPos(m_gridIdx);
 		glm::vec2 diff = neighborPos - ownGridPos;
 
 		if (abs(diff.x) > abs(diff.y))
@@ -170,6 +166,17 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 			}
 		}
 	}
+}
+
+bool pacman::TargetMoverComponent::IsTargetInNewCell()
+{
+	int newGridIdx{ m_graph.GetGridIdx(m_targetObj->GetWorldPosition()) };
+	if (newGridIdx != m_targetGridIdx)
+	{
+		m_targetGridIdx = newGridIdx;
+		return true;
+	}
+	return false;
 }
 
 bool pacman::TargetMoverComponent::IsInNewCell()
@@ -241,18 +248,21 @@ std::vector<glm::vec2> pacman::TargetMoverComponent::FindPath(const glm::vec2& s
 
 std::vector<glm::vec2> pacman::TargetMoverComponent::ReconstructPath(std::unordered_map<int, int>& parentMap, int startIdx, int destIdx) const
 {
-	glm::vec2 current = m_graph.GetWorldPos(destIdx);
 	std::vector<glm::vec2> path;
-	glm::vec2 startPos{ m_graph.GetWorldPos(startIdx) };
+	int currentIdx = destIdx;
 
-	while (current != startPos)
+	while (currentIdx != startIdx)
 	{
-		path.push_back(current);
-		int currentIdx = parentMap[m_graph.GetGridIdx(current)];
-		current = m_graph.GetWorldPos(currentIdx);
+		path.push_back(m_graph.GetWorldPos(currentIdx));
+
+		auto it = parentMap.find(currentIdx);
+		if (it == parentMap.end())
+			return {};
+
+		currentIdx = it->second;
 	}
 
-	path.push_back(startPos);
+	path.push_back(m_graph.GetWorldPos(startIdx));
 	std::ranges::reverse(path.begin(), path.end());
 
 	return path;
@@ -260,9 +270,9 @@ std::vector<glm::vec2> pacman::TargetMoverComponent::ReconstructPath(std::unorde
 
 void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 {
-	if (m_path.empty()) return; // No path so early exit
+	if (m_path.empty() || m_pathIdx >= m_path.size()) return;
 
-	glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition()};
+	glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
 	float distance = glm::length(direction);
 
 	const float threshold = 1.f;

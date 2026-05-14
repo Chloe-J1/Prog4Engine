@@ -27,12 +27,14 @@ namespace pacman
 		glm::vec2 m_targetPos{};
 		glm::vec2 m_nextDir{ 0,-1 };
 		int m_gridIdx{};
+		int m_targetGridIdx{ -1 };
 		std::vector<int> m_neighbors;
 		const float m_spriteWidth;
 		const float m_spriteHeight;
 		Graph& m_graph;
 
 		void ChangeDirection(bool isMovingAway);
+		bool IsTargetInNewCell();
 		bool IsInNewCell();
 		void Move(float elapsedSec);
 
