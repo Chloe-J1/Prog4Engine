@@ -60,6 +60,7 @@ pacman::PlayerMovement::~PlayerMovement()
 
 void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 {
+	if (direction == m_currDirection) return;
 	int gridIdx{ m_graph->GetGridIdx(GetCenterPos()) };
 	if (m_graph->HasNeighborInDirection(gridIdx, direction))
 	{
