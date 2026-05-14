@@ -1,4 +1,5 @@
 #include "DebugDraw.h"
+#include <glm/glm.hpp>
 
 void dae::DebugDraw::FillRect([[maybe_unused]] const glm::vec2& pos, [[maybe_unused]] float width, [[maybe_unused]] float height)
 {
@@ -8,7 +9,7 @@ void dae::DebugDraw::FillRect([[maybe_unused]] const glm::vec2& pos, [[maybe_unu
 #endif // DEBUG
 }
 
-void dae::DebugDraw::FillRect(float x, float y, float width, float height)
+void dae::DebugDraw::FillRect([[maybe_unused]] float x, [[maybe_unused]] float y, [[maybe_unused]] float width, [[maybe_unused]] float height)
 {
 #ifdef _DEBUG
 	FillRect(glm::vec2{ x,y }, width, height);
@@ -23,7 +24,7 @@ void dae::DebugDraw::DrawRect([[maybe_unused]] const glm::vec2& pos, [[maybe_unu
 #endif // _DEBUG
 }
 
-void dae::DebugDraw::DrawRect(float x, float y, float width, float height)
+void dae::DebugDraw::DrawRect([[maybe_unused]] float x, [[maybe_unused]] float y, [[maybe_unused]] float width, [[maybe_unused]] float height)
 {
 #ifdef _DEBUG
 	DrawRect(glm::vec2{ x,y }, width, height);

@@ -1,7 +1,7 @@
 #pragma once
 #include "../Minigin/Singleton.h"
 #include "../Minigin/Renderer.h"
-#include <glm/glm.hpp>
+#include <glm/fwd.hpp>
 
 namespace dae
 {

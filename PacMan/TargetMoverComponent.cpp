@@ -268,7 +268,7 @@ void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 	const float threshold = 1.f;
 	if (distance <= threshold)
 	{
-		// Snap exact op waypoint
+		// Snap onto waypoint
 		glm::vec2 correction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
 		GetGameObject()->AddLocalPosition(correction);
 
@@ -299,13 +299,6 @@ void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 			};
 		}
 
-		GetGameObject()->AddLocalPosition(
-			m_nextDir * m_moveSpeed * elapsedSec
-		);
-
-		std::cout << m_nextDir.x
-			<< " "
-			<< m_nextDir.y
-			<< "\n";
+		GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
 	}
 }
