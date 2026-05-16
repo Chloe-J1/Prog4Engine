@@ -83,8 +83,6 @@ void pacman::PlayerMovement::Render() const
 	const int size{ 3 };
 	dae::DebugDraw::GetInstance().SetColor(255,0,0);
 	dae::DebugDraw::GetInstance().FillRect(m_furthestPos, size, size);
-
-	dae::DebugDraw::GetInstance().FillRect(GetGameObject()->GetWorldPosition(), m_playerWidth, m_playerHeight);
 }
 
 

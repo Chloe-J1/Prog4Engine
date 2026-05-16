@@ -99,7 +99,7 @@ void pacman::GamestateManager::GameScene()
 
 	// Ghosts
 	//**********
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseMovement>());
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
 	/*ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerMovement>());

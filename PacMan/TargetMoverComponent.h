@@ -17,10 +17,6 @@ namespace pacman
 		bool MoveToCell(int gridIdx, float elapsedSec);
 		
 		void SetTargetObj(dae::GameObject* newTarget);
-
-
-		// BFS
-		virtual void Render() const override;
 	private:
 		float m_moveSpeed{ 50.f };
 		dae::GameObject* m_targetObj{};
@@ -34,17 +30,7 @@ namespace pacman
 		Graph& m_graph;
 
 		void ChangeDirection(bool isMovingAway);
-		bool IsTargetInNewCell();
 		bool IsInNewCell();
 		void Move(float elapsedSec);
-
-
-		// BFS
-		std::vector<glm::vec2> FindPath(const glm::vec2& startPos, const glm::vec2& destinationPos) const;
-		std::vector<glm::vec2> ReconstructPath(std::unordered_map<int, int>& parentMap, int startIdx, int destIdx) const;
-
-		void FollowPath(float elapsedSec);
-		std::vector<glm::vec2> m_path;
-		int m_pathIdx{ 0 };
 	};
 }
