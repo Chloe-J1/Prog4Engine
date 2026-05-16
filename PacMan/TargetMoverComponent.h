@@ -24,6 +24,7 @@ namespace pacman
 		glm::vec2 m_nextDir{ 0,-1 };
 		int m_gridIdx{};
 		int m_targetGridIdx{ -1 };
+		int m_cellsize;
 		std::vector<int> m_neighbors;
 		const float m_spriteWidth;
 		const float m_spriteHeight;

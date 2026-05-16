@@ -77,7 +77,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	}
 	else
 	{
-		throw std::invalid_argument("this file can't be opened");
+		std::cerr << "Can't open file " << filename << "\n";
 	}
 
 	// Give the graph all walkable indices

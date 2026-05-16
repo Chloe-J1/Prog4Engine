@@ -1,6 +1,7 @@
 #pragma once
 #include "../Minigin/GameObject.h"
 #include "../Minigin/Scene.h"
+#include "Graph.h"
 
 namespace pacman
 {
@@ -11,7 +12,7 @@ namespace pacman
 		
 		void InitLevel(dae::Scene& scene, const std::string& filename);
 	private:
-		float m_cellsize{ 24.f };
+		float m_cellsize{(float)Graph::GetInstance().GetCellSize()};
 
 		std::unique_ptr<dae::GameObject> CreateWall(float x, float y, int width);
 		std::unique_ptr<dae::GameObject> CreatePellet(float x, float y);

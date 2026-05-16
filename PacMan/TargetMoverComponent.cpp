@@ -12,6 +12,7 @@ pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner):
 	m_spriteHeight{GetGameObject()->GetComponent<dae::SpriteComponent>()->GetHeight()},
 	m_graph{Graph::GetInstance()}
 {
+	m_cellsize = m_graph.GetCellSize();
 }
 
 
@@ -100,9 +101,8 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 		return;
 
 	// Don't allow turning back
-	const float cellsize{ 24.f };
 	glm::vec2 pos{ m_graph.GetWorldPos(m_gridIdx) };
-	pos -= m_nextDir * cellsize;
+	pos -= m_nextDir * float(m_cellsize);
 	int behindIdx{m_graph.GetGridIdx(pos)};
 
 	std::erase(m_neighbors, behindIdx);
@@ -114,13 +114,13 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 
 
 	int bestIdx = -1;
+	auto predicate = [&](int neighborIdx) {
+		return glm::length(m_targetPos - m_graph.GetWorldPos(neighborIdx));
+		};
+
 	if (not isMovingAway)
 	{
-		auto chosenItr = std::ranges::min_element(m_neighbors, {}, [&](int neigborIdx) {
-			glm::vec2 neighborPos{ Graph::GetInstance().GetWorldPos(neigborIdx) };
-			return glm::length(m_targetPos - neighborPos);
-			});
-
+		auto chosenItr = std::ranges::min_element(m_neighbors, {}, predicate);
 		if (chosenItr != m_neighbors.end())
 		{
 			bestIdx = *chosenItr;
@@ -128,18 +128,15 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 	}
 	else
 	{
-		auto chosenItr = std::ranges::max_element(m_neighbors, {}, [&](int neigborIdx) {
-			glm::vec2 neighborPos{ Graph::GetInstance().GetWorldPos(neigborIdx) };
-			return glm::length(m_targetPos - neighborPos);
-			});
+		auto chosenItr = std::ranges::max_element(m_neighbors, {}, predicate);
 		if (chosenItr != m_neighbors.end())
 		{
 			bestIdx = *chosenItr;
 		}
 	}
+
 	if (bestIdx != -1)
 	{
-		//std::cout << "Best Idx: " << bestIdx << "\n";
 		glm::vec2 neighborPos = m_graph.GetWorldPos(bestIdx);
 		glm::vec2 ownGridPos = m_graph.GetWorldPos(m_gridIdx);
 		glm::vec2 diff = neighborPos - ownGridPos;
