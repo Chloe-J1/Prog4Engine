@@ -1,6 +1,7 @@
 #pragma once
 #include "../Minigin/Component.h"
 #include <glm/glm.hpp>
+#include "../Minigin/InputManager.h"
 
 namespace dae
 {
@@ -30,6 +31,7 @@ namespace pacman
 		int m_ctrlIdx;
 		Graph* m_graph;
 		dae::SpriteComponent* m_spriteComp;
+		dae::InputManager* m_inputManager;
 
 		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};

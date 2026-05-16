@@ -156,7 +156,8 @@ add_library(${ENGINE_TARGET} STATIC
  "Minigin/SoundSystem.h"
  "Minigin/SoundSystem.cpp"
  "Minigin/ServiceLocator.h"
- "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp")
+ "Minigin/ServiceLocator.cpp"
+)
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -212,6 +213,16 @@ if(EMSCRIPTEN)
    "PacMan/FruitComponent.h"
    "PacMan/FruitComponent.cpp"
    "PacMan/FruitSpawner.h"
+   "PacMan/EatenComponent.h"
+   "PacMan/EatenComponent.cpp"
+   "PacMan/MoveStrategies.h"
+   "PacMan/MoveStrategies.cpp"
+   "Minigin/DebugDraw.h"
+   "Minigin/DebugDraw.cpp"
+   "PacMan/GameState.h"
+   "PacMan/GameState.cpp"
+   "PacMan/GamestateManager.h"
+   "PacMan/GamestateManager.cpp"
   )
 else()
   add_executable(${GAME_TARGET} WIN32
@@ -225,8 +236,8 @@ else()
    "PacMan/ButtonComponent.cpp" 
    "PacMan/Events.h"
    "PacMan/SoundManager.h"
-   "PacMan/GamestateManager.cpp"
-   "PacMan/GamestateManager.h"
+   "PacMan/SceneLoader.cpp"
+   "PacMan/SceneLoader.h"
    "PacMan/Graph.h"
    "PacMan/Graph.cpp"
    "PacMan/LevelLoader.h"
@@ -240,7 +251,7 @@ else()
    "PacMan/FruitComponent.h"
    "PacMan/FruitComponent.cpp"
    "PacMan/FruitSpawner.h"
-   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp")
+   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp" "PacMan/GameState.h" "PacMan/GameState.cpp" "PacMan/GamestateManager.h" "PacMan/GamestateManager.cpp")
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)

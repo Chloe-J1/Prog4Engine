@@ -29,7 +29,6 @@ namespace pacman
 	class FollowTargetState final : public GhostState
 	{
 	public:
-		FollowTargetState() = default;
 		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
 		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event) override;

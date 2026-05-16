@@ -2,9 +2,6 @@
 #include <algorithm>
 #include "../Minigin/GameObject.h"
 #include "../Minigin/SpriteComponent.h"
-#include <queue>
-#include <iostream>
-#include "../Minigin/DebugDraw.h"
 
 pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner):
 	Component(owner),

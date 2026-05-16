@@ -1,4 +1,4 @@
-#include <SDL3/SDL.h>
+
 #include <SDL3/SDL_main.h>
 
 #if _DEBUG && __has_include(<vld.h>)
@@ -6,16 +6,17 @@
 #endif
 
 #include "Minigin.h"
-#include "GamestateManager.h"
 #include "../Minigin/InputManager.h"
+#include "GamestateManager.h"
 
 #include <filesystem>
 namespace fs = std::filesystem;
 
 static void load()
 {
-	dae::InputManager::GetInstance().InitializeControllers(2);
-	pacman::GamestateManager::GetInstance().MenuScene();
+	const int nrControllers{ 2 };
+	dae::InputManager::GetInstance().InitializeControllers(nrControllers);
+	pacman::GamestateManager::GetInstance().Init();
 }
 
 int main(int, char*[]) {

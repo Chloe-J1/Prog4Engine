@@ -2,7 +2,6 @@
 #include "../Minigin/GameObject.h"
 #include "WindowConfig.h"
 #include "SpriteComponent.h"
-#include "../Minigin/InputManager.h"
 #include "Commands.h"
 #include <memory>
 #include "Graph.h"
@@ -15,7 +14,8 @@ pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
 	m_usesKeyboard{ usesKeyboard },
 	m_usesController{ usesController },
-	m_ctrlIdx{ ctrlIdx }
+	m_ctrlIdx{ ctrlIdx },
+	m_inputManager{&dae::InputManager::GetInstance()}
 {
 	m_spriteComp = GetGameObject()->GetComponent<dae::SpriteComponent>();
 	m_playerWidth = m_spriteComp->GetWidth();
@@ -25,17 +25,17 @@ pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard
 	// Input bindings
 	if (usesController)
 	{
-		dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(1, 0), this), m_ctrlIdx); // right
-		dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(-1, 0), this), m_ctrlIdx); // left
-		dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, -1), this), m_ctrlIdx); // up
-		dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, 1), this), m_ctrlIdx); // down
+		m_inputManager->BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(1, 0), this), m_ctrlIdx); // right
+		m_inputManager->BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(-1, 0), this), m_ctrlIdx); // left
+		m_inputManager->BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, -1), this), m_ctrlIdx); // up
+		m_inputManager->BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, 1), this), m_ctrlIdx); // down
 	}
 	if(usesKeyboard)
 	{
-		dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(1, 0), this)); // right
-		dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(-1, 0), this)); // left
-		dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, -1), this)); // up
-		dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, 1), this)); // down
+		m_inputManager->BindCommand(SDL_SCANCODE_D, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(1, 0), this)); // right
+		m_inputManager->BindCommand(SDL_SCANCODE_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(-1, 0), this)); // left
+		m_inputManager->BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, -1), this)); // up
+		m_inputManager->BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, 1), this)); // down
 	}
 }
 
@@ -43,18 +43,18 @@ pacman::PlayerMovement::~PlayerMovement()
 {
 	if (m_usesController)
 	{
-		dae::InputManager::GetInstance().UnbindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // right
-		dae::InputManager::GetInstance().UnbindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // left
-		dae::InputManager::GetInstance().UnbindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // up
-		dae::InputManager::GetInstance().UnbindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // down
+		m_inputManager->UnbindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // right
+		m_inputManager->UnbindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // left
+		m_inputManager->UnbindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // up
+		m_inputManager->UnbindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, m_ctrlIdx); // down
 
 	}
 	if(m_usesKeyboard)
 	{
-		dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold); // right
-		dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold); // left
-		dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold); // up
-		dae::InputManager::GetInstance().UnbindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold); // down
+		m_inputManager->UnbindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold); // right
+		m_inputManager->UnbindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold); // left
+		m_inputManager->UnbindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold); // up
+		m_inputManager->UnbindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold); // down
 	}
 }
 
