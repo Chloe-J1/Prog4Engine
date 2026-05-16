@@ -16,7 +16,7 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 
 		if (button->GetName() == "LoadGameScene")
 		{
-			return std::unique_ptr<PlayGameState>();
+			return std::make_unique<PlayGameState>();
 		}
 		else if (button->GetName() == "LoadLoseScene")
 		{

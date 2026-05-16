@@ -16,6 +16,12 @@ namespace pacman
 		virtual void OnExit() {};
 	};
 
+	class LoadingState final : public GameState
+	{
+	public:
+		virtual void OnEnter() override;
+	};
+
 	class MainMenuState final : public GameState
 	{
 	public:

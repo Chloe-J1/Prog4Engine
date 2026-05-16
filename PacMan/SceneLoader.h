@@ -1,6 +1,5 @@
 #pragma once
 #include "../Minigin/Singleton.h"
-#include "../Minigin/Observer.h"
 #include "../Minigin/GameObject.h"
 #include "LevelLoader.h"
 #include <string>
@@ -13,7 +12,7 @@ namespace pacman
 {
 	class ScoreComponent;
 	class HealthComponent;
-	class SceneLoader final : public dae::Singleton<SceneLoader>, public dae::Observer
+	class SceneLoader final : public dae::Singleton<SceneLoader>
 	{
 	public:
 		SceneLoader():
@@ -21,7 +20,6 @@ namespace pacman
 		{
 		}
 
-		virtual void Notify(dae::GameObject*, const dae::Event&) override;
 		// Scenes
 		void GameScene();
 		void LoseScene();

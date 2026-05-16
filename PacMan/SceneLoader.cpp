@@ -6,6 +6,7 @@
 #include "../Minigin/InputManager.h"
 #include "../Minigin/WindowConfig.h"
 #include "../Minigin/Hitbox.h"
+#include "../Minigin/Observer.h"
 
 
 #include "Commands.h"
@@ -26,16 +27,6 @@
 
 
 #include "Graph.h"
-
-
-void pacman::SceneLoader::Notify(dae::GameObject*, const dae::Event&)
-{
-	/*if (event.id == "PLAYER_DIED")
-	{
-		LoseScene();
-	}*/
-}
-
 void pacman::SceneLoader::GameScene()
 {
 	dae::SceneManager::GetInstance().CreateScene();
@@ -61,8 +52,6 @@ void pacman::SceneLoader::GameScene()
 	healthUI->SetParent(UI.get(), false);
 	scoreUI->SetLocalPosition(0, 0);
 	healthUI->SetLocalPosition(100, 0);
-
-	
 
 	// Pacman
 	//**********
@@ -239,9 +228,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateHealthUI(const glm::
 	healthComp->GetTakeDamageEvent()->AddObserver(
 		healthUIGo->GetComponent<pacman::HealthComponentUI>()
 	);
-	healthComp->GetTakeDamageEvent()->AddObserver(
-		&pacman::SceneLoader::GetInstance()
-	);
+
 
 	healthUIGo->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return healthUIGo;

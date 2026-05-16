@@ -36,7 +36,8 @@ namespace dae
 			// Send events to all observers and then remove event from queue
 			while (not m_eventQueue.empty())
 			{
-				for (const auto& observer : m_observers)
+				m_copyObservers = m_observers; // Prevent adding observer whilst mid-loop
+				for (const auto& observer : m_copyObservers)
 				{
 					observer->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
 				}
@@ -44,7 +45,6 @@ namespace dae
 				m_eventQueue.pop();
 			}
 		}
-
 	private:
 		struct QueuedEventData
 		{
@@ -53,5 +53,6 @@ namespace dae
 		};
 		std::queue<QueuedEventData> m_eventQueue;
 		std::vector<Observer*> m_observers;
+		std::vector<Observer*> m_copyObservers;
 	};
 }
