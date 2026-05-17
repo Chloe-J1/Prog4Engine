@@ -16,8 +16,11 @@ namespace pacman
 		GamestateManager& operator=(GamestateManager&& other) = delete;
 
 		void Init();
+		void SetTotalPellets(int value);
+		int GetTotalPellets() const;
 		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
 	private:
 		std::unique_ptr<GameState> m_gameState{};
+		int m_totalPellets{};
 	};
 }

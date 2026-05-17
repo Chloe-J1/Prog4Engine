@@ -3,18 +3,28 @@
 
 pacman::GamestateManager::GamestateManager()
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddPersistentObserver(this);
 }
 
 pacman::GamestateManager::~GamestateManager()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemovePersistentObserver(this);
 }
 
 void pacman::GamestateManager::Init()
 {
 	m_gameState = std::make_unique<MainMenuState>();
 	m_gameState->OnEnter();
+}
+
+void pacman::GamestateManager::SetTotalPellets(int value)
+{
+	m_totalPellets = value;
+}
+
+int pacman::GamestateManager::GetTotalPellets() const
+{
+	return m_totalPellets;
 }
 
 void pacman::GamestateManager::Notify(dae::GameObject* sender, const dae::Event& event)

@@ -159,6 +159,7 @@ void dae::Minigin::RunOneFrame()
 
 	const float fixed_time_step = 0.02f;
 	m_quit = !InputManager::GetInstance().ProcessInput();
+
 	while (m_lag >= fixed_time_step)
 	{
 		SceneManager::GetInstance().FixedUpdate();
@@ -178,8 +179,6 @@ void dae::Minigin::RunOneFrame()
 	const int ms_per_frame = 16;
 	const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
 	std::this_thread::sleep_for(sleep_time);
-	
-	
 }
 
 

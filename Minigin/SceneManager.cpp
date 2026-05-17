@@ -1,13 +1,10 @@
 #include "SceneManager.h"
-#include "SceneManager.h"
 #include "Scene.h"
 #include "InputManager.h"
 
 void dae::SceneManager::Update(float elapsedSec)
 {
-
 	m_activeScene->Update(elapsedSec);
-
 }
 
 void dae::SceneManager::FixedUpdate()
@@ -25,7 +22,6 @@ void dae::SceneManager::LateUpdate(float elapsedSec)
 void dae::SceneManager::Cleanup()
 {
 	m_activeScene->Cleanup();
-
 }
 
 void dae::SceneManager::Render()
@@ -44,7 +40,6 @@ dae::Scene& dae::SceneManager::CreateScene()
 
 	m_activeScene = std::unique_ptr<Scene>(new Scene());
 	return *m_activeScene;
-
 }
 
 dae::Scene& dae::SceneManager::GetActiveScene()

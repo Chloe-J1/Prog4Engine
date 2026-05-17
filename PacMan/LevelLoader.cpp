@@ -8,8 +8,9 @@
 #include "Pellets.h"
 #include <unordered_set>
 #include "Graph.h"
-
+#include "GamestateManager.h"
 #include <iostream>
+
 void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filename)
 {
 	std::ifstream iFile;
@@ -17,11 +18,11 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	std::string line;
 	float x{};
 	float y{};
-	float wallStartX{ -1.f };
-	int wallWidth{ 0 };
 
 	std::unordered_set<int> pathIndices;
 	int pathIdx{ 0 };
+
+	int nrPellets{};
 
 	if (iFile.is_open())
 	{
@@ -33,38 +34,17 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 			while (std::getline(ss, type, ','))
 			{
 				
-				if (type == "w")
+				if (type == "p")
 				{
-					if (wallStartX < 0.f)
-						wallStartX = x;
-					wallWidth += (int)m_cellsize;  
+					scene.Add(CreatePellet(x, y));
+					pathIndices.insert(pathIdx);
+					++nrPellets;
 				}
-				else
+				else if (type == "P")
 				{
-					if (wallStartX >= 0.f)
-					{
-						//scene.Add(CreateWall(wallStartX, y, wallWidth));
-						wallStartX = -1.f;
-						wallWidth = 0;
-					}
-
-					if (type == "p")
-					{
-						scene.Add(CreatePellet(x, y));
-						pathIndices.insert(pathIdx);
-					}
-					else if (type == "P")
-					{
-						scene.Add(CreatePowerPellet(x, y));
-						pathIndices.insert(pathIdx);
-					}
-				}
-				// Reset wall values
-				if (wallStartX >= 0.f)
-				{
-					//scene.Add(CreateWall(wallStartX, y, wallWidth));
-					wallStartX = -1.f;
-					wallWidth = 0;
+					scene.Add(CreatePowerPellet(x, y));
+					pathIndices.insert(pathIdx);
+					++nrPellets;
 				}
 
 				x += m_cellsize;
@@ -82,16 +62,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 
 	// Give the graph all walkable indices
 	Graph::GetInstance().SetNeighbors(pathIndices);
-}
-
-std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreateWall(float x, float y, int width)
-{
-	constexpr int height{ 24 };
-	std::unique_ptr<dae::GameObject> wall = std::make_unique <dae::GameObject>();
-	wall->AddComponent<dae::Hitbox>(width, height);
-	wall->SetLocalPosition(x, y);
-	wall->SetLayer("Obstacle");
-	return wall;
+	GamestateManager::GetInstance().SetTotalPellets(nrPellets);
 }
 
 std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreatePellet(float x, float y)

@@ -1,8 +1,7 @@
 #include "ButtonComponent.h"
 #include "MenuManager.h"
-#include "GamestateManager.h"
-#include "Events.h"
 #include "../Minigin/Event.h"
+#include <iostream>
 
 
 pacman::ButtonComponent::ButtonComponent(dae::GameObject* owner, const std::string& name):

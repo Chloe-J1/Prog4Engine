@@ -8,11 +8,6 @@ namespace pacman
 	class MenuManager final : public dae::Singleton<MenuManager>
 	{
 	public:
-		MenuManager() = default;
-		MenuManager(const MenuManager& other) = delete;
-		MenuManager(MenuManager&& other) = delete;
-		MenuManager& operator=(const MenuManager& other) = delete;
-		MenuManager& operator=(MenuManager&& other) = delete;
 
 		void SelectNextButton()
 		{

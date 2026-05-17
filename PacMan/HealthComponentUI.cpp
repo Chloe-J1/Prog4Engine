@@ -21,6 +21,5 @@ void pacman::HealthComponentUI::Notify(dae::GameObject*, const dae::Event& event
 	else if (event.id == "PLAYER_DIED")
 	{
 		GetGameObject()->SetIsAlive(false);
-		// TODO: Remove observer from subject list
 	}
 }

@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include "ButtonComponent.h"
 #include "SceneLoader.h"
+#include "GamestateManager.h"
 
 // MAIN MENU
 void pacman::MainMenuState::OnEnter()
@@ -16,7 +17,7 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 
 		if (button->GetName() == "LoadGameScene")
 		{
-			return std::make_unique<PlayGameState>();
+			return std::make_unique<PlayState>();
 		}
 		else if (button->GetName() == "LoadLoseScene")
 		{
@@ -27,16 +28,36 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 }
 
 // PLAY
-void pacman::PlayGameState::OnEnter()
+void pacman::PlayState::OnEnter()
 {
 	// TODO: load scene depending on GameMode
 	SceneLoader::GetInstance().GameScene();
+	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
 }
 
-std::unique_ptr<pacman::GameState> pacman::PlayGameState::Notify(dae::GameObject* , const dae::Event& )
+std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject* , const dae::Event& event)
 {
-	// PLAYER DEATH / WIN -> transition to highscore menu
+	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
+	{
+		++m_nrEatenPellets;
+		if(m_nrEatenPellets >= m_totalNrPellets)
+			return std::make_unique<pacman::WinState>();
+	}
+	else if (event.id == "GAME_OVER")
+	{
+		return std::make_unique<pacman::LoseState>();
+	}
 	return std::unique_ptr<pacman::GameState>();
 }
 
+// WIN
+void pacman::WinState::OnEnter()
+{
+	SceneLoader::GetInstance().WinScene();
+}
 
+// LOSE
+void pacman::LoseState::OnEnter()
+{
+	SceneLoader::GetInstance().LoseScene();
+}

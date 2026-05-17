@@ -23,6 +23,7 @@ namespace pacman
 		// Scenes
 		void GameScene();
 		void LoseScene();
+		void WinScene();
 		void MenuScene();
 	private:
 		LevelLoader m_levelLoader;

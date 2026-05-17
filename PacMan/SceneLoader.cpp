@@ -29,8 +29,8 @@
 #include "Graph.h"
 void pacman::SceneLoader::GameScene()
 {
-	dae::SceneManager::GetInstance().CreateScene();
-	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
+	//dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
 	// Background
 	//***********
@@ -86,19 +86,19 @@ void pacman::SceneLoader::GameScene()
 	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
 	scene.Add(std::move(fruitSpawnerGo));
 
-	// Ghosts
-	//**********
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseMovement>());
-	scene.Add(std::move(ghost));
+	//// Ghosts
+	////**********
+	//std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseMovement>());
+	//scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerMovement>());
-	scene.Add(std::move(ghost));
+	//ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerMovement>());
+	//scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", pacman.get(), mrsPacman.get(), std::make_unique<CornerMovement>());
-	scene.Add(std::move(ghost));
+	//ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", pacman.get(), mrsPacman.get(), std::make_unique<CornerMovement>());
+	//scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", mrsPacman.get(), pacman.get(), std::make_unique<SueMovement>());
-	scene.Add(std::move(ghost));
+	//ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", mrsPacman.get(), pacman.get(), std::make_unique<SueMovement>());
+	//scene.Add(std::move(ghost));
 
 	scene.Add(std::move(mrsPacman));
 	scene.Add(std::move(UI));
@@ -140,14 +140,26 @@ void pacman::SceneLoader::LoseScene()
 	scene.Add(std::move(go));
 }
 
+void pacman::SceneLoader::WinScene()
+{
+	dae::SceneManager::GetInstance().CreateScene();
+	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
+	go->AddComponent<dae::RenderComponent>();
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	go->AddComponent<dae::TextComponent>("GAME WON + highscore", font);
+
+	scene.Add(std::move(go));
+}
+
 void pacman::SceneLoader::MenuScene()
 {
 	const int wWidth{ dae::WindowConfig::GetInstance().GetWidth() };
 	const int wHeight{ dae::WindowConfig::GetInstance().GetHeight() };
 
 
-	dae::SceneManager::GetInstance().CreateScene();
-	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
+	//dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
 	// Bind MenuManager commands
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_T, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
