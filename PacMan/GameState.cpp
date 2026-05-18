@@ -40,7 +40,7 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject* , 
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
 		++m_nrEatenPellets;
-		if(m_nrEatenPellets >= m_totalNrPellets)
+		if(m_nrEatenPellets >= 5)
 			return std::make_unique<pacman::WinState>();
 	}
 	else if (event.id == "GAME_OVER")

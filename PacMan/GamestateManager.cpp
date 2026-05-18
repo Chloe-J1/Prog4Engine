@@ -3,12 +3,12 @@
 
 pacman::GamestateManager::GamestateManager()
 {
-	dae::EventQueue::GetInstance().AddPersistentObserver(this);
+	dae::EventQueue::GetInstance().AddObserver(this);
 }
 
 pacman::GamestateManager::~GamestateManager()
 {
-	dae::EventQueue::GetInstance().RemovePersistentObserver(this);
+	dae::EventQueue::GetInstance().RemoveObserver(this);
 }
 
 void pacman::GamestateManager::Init()

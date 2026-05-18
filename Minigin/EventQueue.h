@@ -6,6 +6,7 @@
 #include <queue>
 #include <algorithm>
 #include "GameObject.h"
+#include <iostream>
 
 namespace dae
 {
@@ -17,25 +18,12 @@ namespace dae
 			m_observers.emplace_back(observer);
 		}
 
-		void AddPersistentObserver(Observer* observer)
-		{
-			m_persistentObservers.emplace_back(observer);
-		}
-
-		void RemovePersistentObserver(Observer* observer)
-		{
-			auto itr = std::find(m_persistentObservers.begin(), m_persistentObservers.end(), observer);
-
-			if (itr != m_persistentObservers.end())
-				m_persistentObservers.erase(itr);
-		}
-
 		void RemoveObserver(Observer* observer)
 		{
 			auto itr = std::find(m_observers.begin(), m_observers.end(), observer);
 
 			if (itr != m_observers.end())
-				m_observers.erase(itr);
+				*itr = nullptr;
 		}
 
 		void Invoke(Event event, GameObject* sender)
@@ -49,14 +37,12 @@ namespace dae
 			// Send events to all observers and then remove event from queue
 			while (not m_eventQueue.empty())
 			{
-				for (const auto& observer : m_observers)
+				for (size_t i = 0; i < m_observers.size(); ++i)
 				{
-					observer->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
+					if (m_observers[i] != nullptr)
+						m_observers[i]->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
 				}
-				for (const auto& observer : m_persistentObservers)
-				{
-					observer->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
-				}
+				std::erase(m_observers, nullptr);
 				m_eventQueue.pop();
 			}
 		}
@@ -67,7 +53,6 @@ namespace dae
 			GameObject* sender;
 		};
 		std::queue<QueuedEventData> m_eventQueue;
-		std::vector<Observer*> m_observers;
-		std::vector<Observer*> m_persistentObservers;
+		std::vector<Observer*> m_observers{};
 	};
 }

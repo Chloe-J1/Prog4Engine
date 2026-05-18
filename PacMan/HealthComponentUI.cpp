@@ -2,7 +2,6 @@
 #include "GameObject.h"
 #include "Events.h"
 
-#include <iostream>
 pacman::HealthComponentUI::HealthComponentUI(dae::GameObject* owner):
 	Component(owner)
 {

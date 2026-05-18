@@ -1,7 +1,7 @@
 #include "Commands.h"
-#include "../Minigin/EventQueue.h"
 #include "MenuManager.h"
 #include "ButtonComponent.h"
+
 
 // MOVE
 //********
@@ -26,3 +26,4 @@ void pacman::PressButton::Execute()
 {
 	GetGameObject()->GetComponent<pacman::ButtonComponent>()->ButtonPressed();
 }
+
