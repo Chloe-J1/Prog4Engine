@@ -2,7 +2,7 @@
 #include "ButtonComponent.h"
 #include "SceneLoader.h"
 #include "GamestateManager.h"
-
+#include <iostream>
 // MAIN MENU
 void pacman::MainMenuState::OnEnter()
 {
@@ -50,10 +50,27 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject* , 
 	return std::unique_ptr<pacman::GameState>();
 }
 
+// maybe don't split in win & lose screen and just make a general end screen that displays info based on the gamemode
+
 // WIN
 void pacman::WinState::OnEnter()
 {
 	SceneLoader::GetInstance().WinScene();
+}
+
+std::unique_ptr<pacman::GameState> pacman::WinState::Notify(dae::GameObject* sender, const dae::Event& event)
+{
+	if (event.id == "BUTTON_PRESSED")
+	{
+		std::cout << "Game won\n";
+		ButtonComponent* button{ sender->GetComponent<ButtonComponent>() };
+
+		if (button->GetName() == "LoadMainScene")
+		{
+			return std::make_unique<pacman::MainMenuState>();
+		}
+	}
+	return std::unique_ptr<pacman::GameState>();
 }
 
 // LOSE

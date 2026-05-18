@@ -44,6 +44,7 @@ namespace pacman
 	{
 	public:
 		virtual void OnEnter() override;
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
 	};
 
 	class LoseState final : public GameState

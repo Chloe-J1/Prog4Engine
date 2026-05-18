@@ -142,14 +142,24 @@ void pacman::SceneLoader::LoseScene()
 
 void pacman::SceneLoader::WinScene()
 {
+	const int wWidth{ dae::WindowConfig::GetInstance().GetWidth() };
+	const int wHeight{ dae::WindowConfig::GetInstance().GetHeight() };
+
 	dae::SceneManager::GetInstance().CreateScene();
 	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>();
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go->AddComponent<dae::TextComponent>("GAME WON + highscore", font);
-
 	scene.Add(std::move(go));
+
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadMainScene");
+	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Home", font);
+	buttonText->SetParent(button.get(), false);
+
+	scene.Add(std::move(button));
+	scene.Add(std::move(buttonText));
 }
 
 void pacman::SceneLoader::MenuScene()
