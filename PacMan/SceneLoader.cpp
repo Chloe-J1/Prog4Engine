@@ -169,11 +169,12 @@ void pacman::SceneLoader::MenuScene()
 
 
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
-	//dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
 	// Bind MenuManager commands
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_T, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_Y, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 0);
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_DOWN, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_UP, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
+	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
 	
 	// Game button
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
@@ -292,6 +293,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateButton(const glm::ve
 	go->AddComponent<ButtonComponent>(name);
 
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
+	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()), 0);
 
 	go->SetLocalPosition(spawnPos.x, spawnPos.y);
 
