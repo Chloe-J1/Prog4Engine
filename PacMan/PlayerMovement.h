@@ -26,6 +26,8 @@ namespace pacman
 		virtual void Update(float elapsedSec) override;
 		virtual void Render() const override;
 	private:
+		const float m_speed;
+
 		const int m_wWidth;
 		const int m_wHeight;
 
@@ -38,7 +40,6 @@ namespace pacman
 
 		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};
-		const float m_speed;
 		
 		float m_playerWidth;
 		float m_playerHeight;

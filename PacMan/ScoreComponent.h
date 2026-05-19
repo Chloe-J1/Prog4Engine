@@ -1,8 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
-#include "Events.h"
-#include "Pellets.h"
+
 
 #include "../Minigin/EventQueue.h"
 
@@ -11,49 +10,14 @@ namespace pacman
 	class ScoreComponent : public dae::Component
 	{
 	public:
-		ScoreComponent(dae::GameObject* owner) :
-			Component(owner),
-			m_updateScoreEvent{ std::make_unique<dae::Subject>() }
-		{ 
-		}
+		ScoreComponent(dae::GameObject* owner);
 
-		dae::Subject* GetSubject()
-		{
-			return m_updateScoreEvent.get();
-		}
+		dae::Subject* GetSubject();
 
-		int GetScore() const
-		{
-			return m_score;
-		}
+		int GetScore() const;
 
 		
-		virtual void OnCollision(dae::GameObject* other) override
-		{
-			BasePellet* pellet = other->GetComponent<BasePellet>();
-			if (pellet != nullptr)
-			{
-				m_score += pellet->GetValue();
-				dae::Event updateScoreEvent{ "UPDATE_SCORE" };
-				updateScoreEvent.arg = std::make_unique<UpdateScoreArg>( m_score );
-				m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
-
-					// TEMP
-				if (dynamic_cast<PowerPellet*>(pellet) != nullptr)
-				{
-					dae::Event pickupEvent{ "POWER_PELLET_PICKUP" };
-					dae::EventQueue().GetInstance().Invoke(std::move(pickupEvent), GetGameObject());
-				}
-				else
-				{
-					dae::Event pickupEvent{ "PELLET_PICKUP" };
-					dae::EventQueue().GetInstance().Invoke(std::move(pickupEvent), GetGameObject());
-					//
-				}
-
-				other->SetIsAlive(false);
-			}
-		}
+		virtual void OnCollision(dae::GameObject* other) override;
 
 	private:
 		int m_score{ 0 };
