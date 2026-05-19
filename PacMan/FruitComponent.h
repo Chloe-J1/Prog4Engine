@@ -1,10 +1,6 @@
 #pragma once
 #include "../Minigin/Component.h"
 #include "../Minigin/GameObject.h"
-#include "../Minigin/WindowConfig.h"
-#include <string>
-#include <iostream>
-#include <glm/glm.hpp>
 
 namespace pacman
 {

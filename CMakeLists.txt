@@ -120,7 +120,7 @@ add_library(imgui STATIC
   ${imgui_SOURCE_DIR}/imgui_demo.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
-)
+  )
 
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${sdl3_SOURCE_DIR}/include)
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
@@ -156,7 +156,7 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/SoundSystem.cpp
   Minigin/ServiceLocator.cpp
   Minigin/DebugDraw.cpp
- )
+  )
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -193,6 +193,7 @@ if(EMSCRIPTEN)
     PacMan/PlayerMovement.cpp
     PacMan/HealthComponent.cpp
     "PacMan/MenuManager.h"
+    "PacMan/MenuManager.cpp"
    "PacMan/ButtonComponent.h"
    "PacMan/ButtonComponent.cpp" 
    "PacMan/Events.h"
@@ -226,6 +227,12 @@ if(EMSCRIPTEN)
    "PacMan/ScoreComponentUI.h" 
    "PacMan/ScoreComponent.cpp"
    "PacMan/ScoreComponent.h"
+   "PacMan/Pellets.cpp"
+   "PacMan/Pellets.h"
+   "PacMan/FruitSpawner.cpp"
+   "PacMan/FruitSpawner.h"
+   "PacMan/FPSComponent.cpp"
+   "PacMan/FPSComponent.h"
   )
 else()
   add_executable(${GAME_TARGET} WIN32
@@ -254,7 +261,7 @@ else()
    "PacMan/FruitComponent.h"
    "PacMan/FruitComponent.cpp"
    "PacMan/FruitSpawner.h"
-   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp" "PacMan/GameState.h" "PacMan/GameState.cpp" "PacMan/GamestateManager.h" "PacMan/GamestateManager.cpp" "PacMan/SoundManager.cpp" "PacMan/ScoreComponentUI.cpp" "PacMan/ScoreComponent.cpp")
+   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp" "PacMan/GameState.h" "PacMan/GameState.cpp" "PacMan/GamestateManager.h" "PacMan/GamestateManager.cpp" "PacMan/SoundManager.cpp" "PacMan/ScoreComponentUI.cpp" "PacMan/ScoreComponent.cpp" "PacMan/Pellets.cpp" "PacMan/MenuManager.cpp" "PacMan/FruitSpawner.cpp" "PacMan/FPSComponent.cpp")
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)

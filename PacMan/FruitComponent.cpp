@@ -1,5 +1,10 @@
 #include "FruitComponent.h"
 
+#include "../Minigin/WindowConfig.h"
+#include <string>
+#include <iostream>
+#include <glm/glm.hpp>
+
 #include <iostream>
 
 int pacman::FruitComponent::m_nrFruit{};
