@@ -26,6 +26,9 @@ namespace pacman
 		virtual void Update(float elapsedSec) override;
 		virtual void Render() const override;
 	private:
+		const int m_wWidth;
+		const int m_wHeight;
+
 		bool m_usesKeyboard;
 		bool m_usesController;
 		int m_ctrlIdx;
@@ -36,8 +39,7 @@ namespace pacman
 		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};
 		const float m_speed;
-		const int m_wWidth;
-		const int m_wHeight;
+		
 		float m_playerWidth;
 		float m_playerHeight;
 		glm::vec2 m_furthestPos{};
