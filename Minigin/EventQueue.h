@@ -1,51 +1,25 @@
 #pragma once
 #include "Event.h"
 #include "Singleton.h"
-#include "Observer.h"
 #include <vector>
 #include <queue>
-#include <algorithm>
 #include "GameObject.h"
-#include <iostream>
+
 
 namespace dae
 {
+	class Observer;
 	class EventQueue : public Singleton<EventQueue>
 	{
 	public:
-		void AddObserver(Observer* observer)
-		{
-			m_observers.emplace_back(observer);
-		}
+		void AddObserver(Observer* observer);
 
-		void RemoveObserver(Observer* observer)
-		{
-			auto itr = std::find(m_observers.begin(), m_observers.end(), observer);
+		void RemoveObserver(Observer* observer);
 
-			if (itr != m_observers.end())
-				*itr = nullptr;
-		}
-
-		void Invoke(Event event, GameObject* sender)
-		{
-			m_eventQueue.push(QueuedEventData{std::move(event), sender});
-		}
+		void Invoke(Event event, GameObject* sender);
 
 
-		void Update()
-		{
-			// Send events to all observers and then remove event from queue
-			while (not m_eventQueue.empty())
-			{
-				for (size_t i = 0; i < m_observers.size(); ++i)
-				{
-					if (m_observers[i] != nullptr)
-						m_observers[i]->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
-				}
-				std::erase(m_observers, nullptr);
-				m_eventQueue.pop();
-			}
-		}
+		void Update();
 	private:
 		struct QueuedEventData
 		{

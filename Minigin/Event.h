@@ -23,10 +23,6 @@ namespace dae
 		const std::string id;
 		std::unique_ptr<EventArg> arg;
 
-		explicit Event(const std::string& _id) :
-			id{ _id },
-			arg{}
-		{
-		}
+		explicit Event(const std::string& _id);
 	};
 }

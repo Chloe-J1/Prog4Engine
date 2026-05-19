@@ -21,10 +21,7 @@ namespace dae
 	class GameObjectCommand : public Command
 	{
 	public:
-		GameObjectCommand(GameObject* gameObject)
-		{
-			m_gameObject = gameObject;
-		}
+		GameObjectCommand(GameObject* gameObject);
 
 		virtual ~GameObjectCommand() = default;
 		GameObjectCommand(const GameObjectCommand& other) = delete;
@@ -32,7 +29,7 @@ namespace dae
 		GameObjectCommand& operator=(const GameObjectCommand& other) = delete;
 		GameObjectCommand& operator=(GameObjectCommand&& other) = delete;
 	protected:
-		GameObject* GetGameObject() const { return m_gameObject; }
+		GameObject* GetGameObject() const;
 	private:
 		GameObject* m_gameObject;
 	};

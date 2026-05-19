@@ -7,27 +7,13 @@ namespace dae
 	{
 	public:
 
-		int GetWidth() const
-		{
-			return m_width;
-		}
+		int GetWidth() const;
 
-		int GetHeight() const
-		{
-			return m_height;
-		}
+		int GetHeight() const;
 
-		const std::string& GetTitle() const
-		{
-			return m_title;
-		}
+		const std::string& GetTitle() const;
 
-		void Init(int width, int height, const std::string& title)
-		{
-			m_width = width;
-			m_height = height;
-			m_title = title;
-		}
+		void Init(int width, int height, const std::string& title);
 	private:
 		int m_width{ 1024 };
 		int m_height{ 576 };

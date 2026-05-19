@@ -57,18 +57,8 @@ namespace dae
 
 	struct Bindings
 	{
-		Bindings(SDL_Scancode sdlScancode, TriggerEvent _triggerEvent, std::unique_ptr<Command> _command) :
-			keyboardInput(sdlScancode),
-			triggerEvent(_triggerEvent),
-			command(std::move(_command))
-		{
-		}
-		Bindings(Input controllerInput, TriggerEvent _triggerEvent, std::unique_ptr<Command> _command) :
-			ctrlInput(controllerInput),
-			triggerEvent(_triggerEvent),
-			command(std::move(_command))
-		{
-		}
+		Bindings(SDL_Scancode sdlScancode, TriggerEvent _triggerEvent, std::unique_ptr<Command> _command);
+		Bindings(Input controllerInput, TriggerEvent _triggerEvent, std::unique_ptr<Command> _command);
 
 		SDL_Scancode keyboardInput{}; // keyboard input
 		Input ctrlInput{}; // controller input
