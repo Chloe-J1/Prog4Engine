@@ -6,6 +6,7 @@
 #include <memory>
 #include "Graph.h"
 #include "../Minigin/DebugDraw.h"
+#include <iostream>
 
 pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx) :
 	Component(owner),
@@ -51,15 +52,16 @@ pacman::PlayerMovement::~PlayerMovement()
 	}
 	if(m_usesKeyboard)
 	{
-		m_inputManager->UnbindCommand(SDL_SCANCODE_D, dae::TriggerEvent::Hold); // right
-		m_inputManager->UnbindCommand(SDL_SCANCODE_A, dae::TriggerEvent::Hold); // left
-		m_inputManager->UnbindCommand(SDL_SCANCODE_W, dae::TriggerEvent::Hold); // up
-		m_inputManager->UnbindCommand(SDL_SCANCODE_S, dae::TriggerEvent::Hold); // down
+		m_inputManager->UnbindCommand(SDL_SCANCODE_D, dae::TriggerEvent::PressedThisFrame); // right
+		m_inputManager->UnbindCommand(SDL_SCANCODE_A, dae::TriggerEvent::PressedThisFrame); // left
+		m_inputManager->UnbindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame); // up
+		m_inputManager->UnbindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame); // down
 	}
 }
 
 void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 {
+	std::cout << "Change direction\n";
 	if (direction == m_currDirection) return;
 	int gridIdx{ m_graph->GetGridIdx(GetCenterPos()) };
 	if (m_graph->HasNeighborInDirection(gridIdx, direction))

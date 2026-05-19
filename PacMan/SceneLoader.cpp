@@ -71,15 +71,15 @@ void pacman::SceneLoader::GameScene()
 
 	
 
-	//// FPS
-	//std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
-	//fpsgo->SetLocalPosition(20, 20);
-	//fpsgo->AddComponent<dae::RenderComponent>();
-	//auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
-	//fpsgo->AddComponent<pacman::FPSComponent>();
+	// FPS
+	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
+	fpsgo->SetLocalPosition(20, 20);
+	fpsgo->AddComponent<dae::RenderComponent>();
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
+	fpsgo->AddComponent<pacman::FPSComponent>();
 
-	//scene.Add(std::move(fpsgo));
+	scene.Add(std::move(fpsgo));
 
 	// Fruit Spawner
 	//*********
@@ -110,27 +110,13 @@ void pacman::SceneLoader::GameScene()
 	scene.Add(std::move(UIpacman));
 	scene.Add(std::move(scoreUIpacman));
 	scene.Add(std::move(healthUIpacman));
-
-	// CHECK NEIGHBORS OF A POSITION
-	std::unordered_map<int, std::vector<int>> graph = pacman::Graph::GetInstance().GetGraph();
-	/*for (auto neighbor : graph[229])
-	{
-		glm::vec2 spawnPos{ Graph::GetInstance().GetWorldPos(neighbor) };
-		std::unique_ptr<dae::GameObject> wall = std::make_unique<dae::GameObject>();
-		wall->AddComponent<dae::RenderComponent>("Wall.png");
-		wall->SetLocalPosition(spawnPos.x, spawnPos.y);
-		scene.Add(std::move(wall));
-	}*/
-
-	/*glm::vec2 spawnPos{ Graph::GetInstance().GetWorldPos(155) };
-	std::unique_ptr<dae::GameObject> wall = std::make_unique<dae::GameObject>();
-	wall->AddComponent<dae::RenderComponent>("Wall.png");
-	wall->SetLocalPosition(spawnPos.x, spawnPos.y);
-	scene.Add(std::move(wall));	*/
 }
 
 void pacman::SceneLoader::LoseScene()
 {
+	const int wWidth{ dae::WindowConfig::GetInstance().GetWidth() };
+	const int wHeight{ dae::WindowConfig::GetInstance().GetHeight() };
+
 	dae::SceneManager::GetInstance().CreateScene();
 	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
@@ -138,6 +124,14 @@ void pacman::SceneLoader::LoseScene()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	go->AddComponent<dae::TextComponent>("GAME OVER", font);
 	scene.Add(std::move(go));
+
+	// Main menu button
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
+	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadMainScene");
+	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Home", font);
+	buttonText->SetParent(button.get(), false);
+	scene.Add(std::move(button));
+	scene.Add(std::move(buttonText));
 }
 
 void pacman::SceneLoader::WinScene()
@@ -153,6 +147,7 @@ void pacman::SceneLoader::WinScene()
 	go->AddComponent<dae::TextComponent>("GAME WON + highscore", font);
 	scene.Add(std::move(go));
 
+	// Main menu button
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadMainScene");
 	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Home", font);

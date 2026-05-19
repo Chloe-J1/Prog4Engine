@@ -32,6 +32,7 @@ namespace pacman
 	private:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
+		int m_nrDeaths{};
 	};
 
 	class WinState final : public GameState
@@ -45,5 +46,6 @@ namespace pacman
 	{
 	public:
 		virtual void OnEnter() override;
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
 	};
 }
