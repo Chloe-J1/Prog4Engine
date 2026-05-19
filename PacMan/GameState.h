@@ -16,24 +16,18 @@ namespace pacman
 		virtual void OnExit() {};
 	};
 
-	class LoadingState final : public GameState
-	{
-	public:
-		virtual void OnEnter() override;
-	};
-
 	class MainMenuState final : public GameState
 	{
 	public:
 		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
 	};
 
 	class PlayState final : public GameState
 	{
 	public:
 		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
 
 	private:
 		int m_nrEatenPellets{};
@@ -44,7 +38,7 @@ namespace pacman
 	{
 	public:
 		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
 	};
 
 	class LoseState final : public GameState
