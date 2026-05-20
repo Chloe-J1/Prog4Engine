@@ -24,6 +24,7 @@ void dae::GameObject::Update(float elapsedSec)
 
 		for (const auto& comp : m_components)
 		{
+			if (comp->GetIsEnabled() == false) continue;
 			comp->Update(elapsedSec);
 		}
 	}
@@ -35,6 +36,7 @@ void dae::GameObject::FixedUpdate()
 	{
 		for (const auto& comp : m_components)
 		{
+			if (comp->GetIsEnabled() == false) continue;
 			comp->FixedUpdate();
 		}
 	}
@@ -46,6 +48,7 @@ void dae::GameObject::LateUpdate(float elapsedSec)
 	{
 		for (const auto& comp : m_components)
 		{
+			if (comp->GetIsEnabled() == false) continue;
 			comp->LateUpdate(elapsedSec);
 		}
 	}
@@ -67,6 +70,7 @@ void dae::GameObject::Render() const
 	{
 		for (const auto& comp : m_components)
 		{
+			if (comp->GetIsEnabled() == false) continue;
 			comp->Render();
 		}
 	}
@@ -79,6 +83,7 @@ void dae::GameObject::RenderUI()
 	{
 		for (const auto& comp : m_components)
 		{
+			if (comp->GetIsEnabled() == false) continue;
 			comp->RenderUI();
 		}
 	}

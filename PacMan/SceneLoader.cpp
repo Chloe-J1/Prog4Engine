@@ -152,6 +152,43 @@ void pacman::SceneLoader::CoopScene()
 	scene.Add(std::move(ghost));
 }
 
+void pacman::SceneLoader::VersusScene()
+{
+	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+
+	// MrsPacman
+	//**********
+	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman(glm::vec2{ 28,28 }, "MrsPacman.png", true, true, m_player1CtrlIdx);
+	//UI
+	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
+	UI->SetLocalPosition(10, 5);
+	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::HealthComponent>());
+	scoreUI->SetParent(UI.get(), false);
+	healthUI->SetParent(UI.get(), false);
+	scoreUI->SetLocalPosition(0, 0);
+	healthUI->SetLocalPosition(100, 0);
+
+	scene.Add(std::move(mrsPacman));
+	scene.Add(std::move(UI));
+	scene.Add(std::move(scoreUI));
+	scene.Add(std::move(healthUI));
+
+	// Ghosts
+	//**********
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", std::make_unique<NonAIMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", std::make_unique<CornerMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
+	scene.Add(std::move(ghost));
+}
+
 void pacman::SceneLoader::LoseScene()
 {
 	const int wWidth{ dae::WindowConfig::GetInstance().GetWidth() };
@@ -214,7 +251,7 @@ void pacman::SceneLoader::MenuScene()
 	// Sinle player button
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadSingleplayerScene");
-	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Singleplayer", font);
+	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Solo", font);
 	buttonText->SetParent(button.get(), false);
 
 	scene.Add(std::move(button));
@@ -223,6 +260,14 @@ void pacman::SceneLoader::MenuScene()
 	// Co-op button
 	button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f + 60.f}, "Button.png", "LoadCoopScene");
 	buttonText = CreateText(glm::vec2{ 10,4 }, "Co-op", font);
+	buttonText->SetParent(button.get(), false);
+
+	scene.Add(std::move(button));
+	scene.Add(std::move(buttonText));
+
+	// Versus button
+	button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f + 120.f }, "Button.png", "LoadVersusScene");
+	buttonText = CreateText(glm::vec2{ 10,4 }, "Versus", font);
 	buttonText->SetParent(button.get(), false);
 
 	scene.Add(std::move(button));
@@ -305,6 +350,10 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateGhost(const glm::vec
 	ghost->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
 	//
 	ghost->AddComponent<pacman::TargetMoverComponent>();
+	if (dynamic_cast<NonAIMovement*>(moveStrategy.get())) // Ghost is controllable by a player
+	{
+		ghost->AddComponent<pacman::PlayerMovement>(false, true, 1);
+	}
 	ghost->AddComponent<pacman::GhostComponent>(std::move(moveStrategy));
 	ghost->AddComponent<pacman::EatenComponent>();
 	

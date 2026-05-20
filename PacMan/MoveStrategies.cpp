@@ -1,5 +1,11 @@
 #include "MoveStrategies.h"
 #include "TargetMoverComponent.h"
+#include "PlayerMovement.h"
+
+void pacman::MovementBase::Init(TargetMoverComponent* moveComp)
+{
+	m_moveComp = moveComp;
+}
 
 // CHASE
 
@@ -43,7 +49,20 @@ void pacman::FleeMovement::Move(float elapsedSec)
 	m_moveComp->MoveToTarget(elapsedSec);
 }
 
-void pacman::MovementBase::Init(TargetMoverComponent* moveComp)
+
+// NON AI
+
+void pacman::NonAIMovement::OnEnter()
 {
-	m_moveComp = moveComp;
+	m_playerMovement->SetIsEnabled(true);
+}
+
+void pacman::NonAIMovement::OnExit()
+{
+	m_playerMovement->SetIsEnabled(false);
+}
+
+void pacman::NonAIMovement::Init(PlayerMovement* playerMovementComp)
+{
+	m_playerMovement = playerMovementComp;
 }

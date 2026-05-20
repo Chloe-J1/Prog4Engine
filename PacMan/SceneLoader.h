@@ -24,6 +24,7 @@ namespace pacman
 		void GameScene();
 		void SingleplayerScene();
 		void CoopScene();
+		void VersusScene();
 		void LoseScene();
 		void WinScene();
 		void MenuScene();

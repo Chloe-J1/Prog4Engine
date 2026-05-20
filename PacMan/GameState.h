@@ -33,7 +33,7 @@ namespace pacman
 	private:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
-		const int m_nrPlayers{ 1 };
+		const int m_nrPacman{ 1 };
 		int m_nrDeaths{};
 	};
 
@@ -46,7 +46,20 @@ namespace pacman
 	private:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
-		const int m_nrPlayers{ 2 };
+		const int m_nrPacman{ 2 };
+		int m_nrDeaths{};
+	};
+
+	class VersusState final : public GameState
+	{
+	public:
+		virtual void OnEnter() override;
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
+
+	private:
+		int m_nrEatenPellets{};
+		int m_totalNrPellets{};
+		const int m_nrPacman{ 1 };
 		int m_nrDeaths{};
 	};
 

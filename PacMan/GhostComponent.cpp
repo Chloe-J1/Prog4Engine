@@ -4,6 +4,8 @@
 #include "TargetMoverComponent.h"
 #include "../Minigin/SceneManager.h"
 #include "HealthComponent.h"
+#include <utility>
+#include "PlayerMovement.h"
 
 pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy):
 	Component(owner),
@@ -14,6 +16,10 @@ pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<M
 	m_ghostState->OnEnter(*this);
 	dae::EventQueue::GetInstance().AddObserver(this);
 	m_moveStrategy->Init(GetGameObject()->GetComponent<TargetMoverComponent>());
+	if (auto* strategy = dynamic_cast<NonAIMovement*>(m_moveStrategy.get()))
+	{
+		strategy->Init(GetGameObject()->GetComponent<PlayerMovement>());
+	}
 	m_targets = dae::SceneManager::GetInstance().GetActiveScene().FindObjectsWithComponent<HealthComponent>();
 	GetGameObject()->GetComponent<TargetMoverComponent>()->SetTargetObj(m_targets[0]);
 }

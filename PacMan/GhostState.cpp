@@ -21,6 +21,7 @@ void pacman::FollowTargetState::OnEnter(GhostComponent& ghost)
 {
 	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0, 1);
 	m_moveStrategy = ghost.GetMoveStrategy();
+	m_moveStrategy->OnEnter();
 }
 
 std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event& event)
@@ -30,6 +31,11 @@ std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::Gh
 		return std::make_unique<DizziedState>();
 	}
 	return nullptr;
+}
+
+void pacman::FollowTargetState::OnExit(pacman::GhostComponent&)
+{
+	m_moveStrategy->OnExit();
 }
 
 // DIZZIED

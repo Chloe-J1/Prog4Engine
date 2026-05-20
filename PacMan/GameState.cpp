@@ -23,6 +23,10 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 		{
 			return std::make_unique<CoopState>();
 		}
+		else if (button->GetName() == "LoadVersusScene")
+		{
+			return std::make_unique<VersusState>();
+		}
 	}
 	return nullptr;
 }
@@ -47,7 +51,7 @@ std::unique_ptr<pacman::GameState> pacman::SingleplayerState::Notify(dae::GameOb
 	else if (event.id == "PLAYER_DIED")
 	{
 		++m_nrDeaths;
-		if (m_nrDeaths >= m_nrPlayers)
+		if (m_nrDeaths >= m_nrPacman)
 			return std::make_unique<pacman::LoseState>();
 	}
 
@@ -75,12 +79,27 @@ std::unique_ptr<pacman::GameState> pacman::CoopState::Notify(dae::GameObject*, c
 	else if (event.id == "PLAYER_DIED")
 	{
 		++m_nrDeaths;
-		if (m_nrDeaths >= m_nrPlayers)
+		if (m_nrDeaths >= m_nrPacman)
 			return std::make_unique<pacman::LoseState>();
 	}
 
 	return nullptr;
 }
+
+// VERSUS
+void pacman::VersusState::OnEnter()
+{
+	SceneLoader::GetInstance().GameScene();
+	SceneLoader::GetInstance().VersusScene();
+
+	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
+}
+
+std::unique_ptr<pacman::GameState> pacman::VersusState::Notify(dae::GameObject* , const dae::Event& )
+{
+	return std::unique_ptr<pacman::GameState>();
+}
+
 
 // maybe don't split in win & lose screen and just make a general end screen that displays info based on the gamemode
 

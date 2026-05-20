@@ -13,9 +13,11 @@ namespace dae
 		virtual void Render() const { };
 		virtual void RenderUI() {};
 
-		bool GetIsAlive() { return m_isAlive; };
+		bool GetIsAlive() const { return m_isAlive; };
 		void SetIsAlive(bool isAlive) { m_isAlive = isAlive; };
 		GameObject* GetGameObject() const { return m_gameObject; };
+		bool GetIsEnabled() const { return m_isEnabled; };
+		void SetIsEnabled(bool isEnabled) { m_isEnabled = isEnabled; };
 
 		Component(GameObject* owner) { m_gameObject = owner; };
 		virtual ~Component() = default;
@@ -30,6 +32,6 @@ namespace dae
 
 		GameObject* m_gameObject{};
 		bool m_isAlive{ true };
-
+		bool m_isEnabled{ true };
 	};
 }
