@@ -13,13 +13,13 @@ pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<M
 	m_ghostState{std::make_unique<FollowTargetState>()},
 	m_moveStrategy{std::move(moveStrategy)}
 {
-	m_ghostState->OnEnter(*this);
-	dae::EventQueue::GetInstance().AddObserver(this);
-	m_moveStrategy->Init(GetGameObject()->GetComponent<TargetMoverComponent>());
 	if (auto* strategy = dynamic_cast<NonAIMovement*>(m_moveStrategy.get()))
 	{
 		strategy->Init(GetGameObject()->GetComponent<PlayerMovement>());
 	}
+	m_ghostState->OnEnter(*this);
+	dae::EventQueue::GetInstance().AddObserver(this);
+	m_moveStrategy->Init(GetGameObject()->GetComponent<TargetMoverComponent>());
 	m_targets = dae::SceneManager::GetInstance().GetActiveScene().FindObjectsWithComponent<HealthComponent>();
 	GetGameObject()->GetComponent<TargetMoverComponent>()->SetTargetObj(m_targets[0]);
 }

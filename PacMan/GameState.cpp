@@ -95,9 +95,22 @@ void pacman::VersusState::OnEnter()
 	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
 }
 
-std::unique_ptr<pacman::GameState> pacman::VersusState::Notify(dae::GameObject* , const dae::Event& )
+std::unique_ptr<pacman::GameState> pacman::VersusState::Notify(dae::GameObject* , const dae::Event& event)
 {
-	return std::unique_ptr<pacman::GameState>();
+	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
+	{
+		++m_nrEatenPellets;
+		if (m_nrEatenPellets >= m_totalNrPellets)
+			return std::make_unique<pacman::WinState>();
+	}
+	else if (event.id == "PLAYER_DIED")
+	{
+		++m_nrDeaths;
+		if (m_nrDeaths >= m_nrPacman)
+			return std::make_unique<pacman::LoseState>();
+	}
+
+	return nullptr;
 }
 
 

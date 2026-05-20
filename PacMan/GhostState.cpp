@@ -21,6 +21,7 @@ void pacman::FollowTargetState::OnEnter(GhostComponent& ghost)
 {
 	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0, 1);
 	m_moveStrategy = ghost.GetMoveStrategy();
+
 	m_moveStrategy->OnEnter();
 }
 
