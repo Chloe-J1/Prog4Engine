@@ -20,7 +20,6 @@ namespace pacman
 		GhostComponent& operator=(GhostComponent&& other) = delete;
 
 		int GetDamage() const;
-		void AddTarget(dae::GameObject* target);
 		MovementBase* GetMoveStrategy();
 
 		virtual void Update(float elapsedSec) override;

@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "../Minigin/Event.h"
+
 namespace dae
 {
 	class GameObject;
@@ -23,7 +24,7 @@ namespace pacman
 		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
 	};
 
-	class PlayState final : public GameState
+	class SingleplayerState final : public GameState
 	{
 	public:
 		virtual void OnEnter() override;
@@ -32,6 +33,20 @@ namespace pacman
 	private:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
+		const int m_nrPlayers{ 1 };
+		int m_nrDeaths{};
+	};
+
+	class CoopState final : public GameState
+	{
+	public:
+		virtual void OnEnter() override;
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
+
+	private:
+		int m_nrEatenPellets{};
+		int m_totalNrPellets{};
+		const int m_nrPlayers{ 2 };
 		int m_nrDeaths{};
 	};
 

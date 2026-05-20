@@ -26,12 +26,11 @@
 #include "TargetMoverComponent.h"
 #include "EatenComponent.h"
 
+#include <iostream>
 
-#include "Graph.h"
 void pacman::SceneLoader::GameScene()
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
-	//dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
 	// Background
 	//***********
@@ -40,6 +39,66 @@ void pacman::SceneLoader::GameScene()
 	scene.Add(std::move(bg));
 
 	m_levelLoader.InitLevel(scene, "Data/Maps/Level_one.txt");
+	
+	// FPS
+	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
+	fpsgo->SetLocalPosition(20, 20);
+	fpsgo->AddComponent<dae::RenderComponent>();
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
+	fpsgo->AddComponent<pacman::FPSComponent>();
+
+	scene.Add(std::move(fpsgo));
+
+	// Fruit Spawner
+	//*********
+	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
+	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
+	scene.Add(std::move(fruitSpawnerGo));
+
+	
+}
+
+void pacman::SceneLoader::SingleplayerScene()
+{
+	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
+
+	// MrsPacman
+	//**********
+	std::unique_ptr<dae::GameObject> mrsPacman = CreatePacman(glm::vec2{ 28,28 }, "MrsPacman.png", true, true, m_player1CtrlIdx);
+	//UI
+	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
+	UI->SetLocalPosition(10, 5);
+	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::HealthComponent>());
+	scoreUI->SetParent(UI.get(), false);
+	healthUI->SetParent(UI.get(), false);
+	scoreUI->SetLocalPosition(0, 0);
+	healthUI->SetLocalPosition(100, 0);
+
+	scene.Add(std::move(mrsPacman));
+	scene.Add(std::move(UI));
+	scene.Add(std::move(scoreUI));
+	scene.Add(std::move(healthUI));
+
+	// Ghosts
+	//**********
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", std::make_unique<ChaseMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", std::make_unique<CornerMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
+	scene.Add(std::move(ghost));
+}
+
+void pacman::SceneLoader::CoopScene()
+{
+	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
 
 	// MrsPacman
 	//**********
@@ -67,40 +126,6 @@ void pacman::SceneLoader::GameScene()
 	scoreUIpacman->SetLocalPosition(0, 0);
 	healthUIpacman->SetLocalPosition(-100, 0);
 
-	
-
-	
-
-	// FPS
-	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
-	fpsgo->SetLocalPosition(20, 20);
-	fpsgo->AddComponent<dae::RenderComponent>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
-	fpsgo->AddComponent<pacman::FPSComponent>();
-
-	scene.Add(std::move(fpsgo));
-
-	// Fruit Spawner
-	//*********
-	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
-	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
-	scene.Add(std::move(fruitSpawnerGo));
-
-	// Ghosts
-	//**********
-	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", mrsPacman.get(), pacman.get(), std::make_unique<ChaseMovement>());
-	scene.Add(std::move(ghost));
-
-	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", mrsPacman.get(), pacman.get(), std::make_unique<CornerMovement>());
-	scene.Add(std::move(ghost));
-
-	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", pacman.get(), mrsPacman.get(), std::make_unique<CornerMovement>());
-	scene.Add(std::move(ghost));
-
-	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", mrsPacman.get(), pacman.get(), std::make_unique<SueMovement>());
-	scene.Add(std::move(ghost));
-
 	scene.Add(std::move(mrsPacman));
 	scene.Add(std::move(UI));
 	scene.Add(std::move(scoreUI));
@@ -110,6 +135,21 @@ void pacman::SceneLoader::GameScene()
 	scene.Add(std::move(UIpacman));
 	scene.Add(std::move(scoreUIpacman));
 	scene.Add(std::move(healthUIpacman));
+
+
+	// Ghosts
+	//**********
+	std::unique_ptr<dae::GameObject> ghost = CreateGhost(glm::vec2{ 24,241 }, "Ghost_red.png", std::make_unique<ChaseMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", std::make_unique<CornerMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
+	scene.Add(std::move(ghost));
+
+	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
+	scene.Add(std::move(ghost));
 }
 
 void pacman::SceneLoader::LoseScene()
@@ -171,25 +211,25 @@ void pacman::SceneLoader::MenuScene()
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_UP, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
 	dae::InputManager::GetInstance().BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
 	
-	// Game button
+	// Sinle player button
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadGameScene");
-	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Game", font);
+	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadSingleplayerScene");
+	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Singleplayer", font);
 	buttonText->SetParent(button.get(), false);
 
 	scene.Add(std::move(button));
 	scene.Add(std::move(buttonText));
 
-	// Test button
-	button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f + 60.f}, "Button.png", "LoadLoseScene");
-	buttonText = CreateText(glm::vec2{ 10,4 }, "Lose", font);
+	// Co-op button
+	button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f + 60.f}, "Button.png", "LoadCoopScene");
+	buttonText = CreateText(glm::vec2{ 10,4 }, "Co-op", font);
 	buttonText->SetParent(button.get(), false);
 
 	scene.Add(std::move(button));
 	scene.Add(std::move(buttonText));
 
 	// Explanation
-	scene.Add(CreateText({ 250.f,30.f }, "Press space to play", font));
+	scene.Add(CreateText({ 250.f,30.f }, "Press space to play, select buttons with arrow keys / dpad", font));
 	scene.Add(CreateText({ 250.f,60.f }, "Move with WASD, pickup power pellets to eat ghosts", font));
 }
 
@@ -252,7 +292,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateHealthUI(const glm::
 	return healthUIGo;
 }
 
-std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, dae::GameObject* firstTarget, dae::GameObject* secondTarget, std::unique_ptr<MovementBase> moveStrategy)
+std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, std::unique_ptr<MovementBase> moveStrategy)
 {
 	std::unique_ptr<dae::GameObject> ghost = std::make_unique<dae::GameObject>();
 	constexpr int ghostSize{ 24 };
@@ -267,10 +307,6 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateGhost(const glm::vec
 	ghost->AddComponent<pacman::TargetMoverComponent>();
 	ghost->AddComponent<pacman::GhostComponent>(std::move(moveStrategy));
 	ghost->AddComponent<pacman::EatenComponent>();
-
-	GhostComponent* comp = ghost->GetComponent<pacman::GhostComponent>();
-	comp->AddTarget(firstTarget);
-	comp->AddTarget(secondTarget);
 	
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;

@@ -15,38 +15,67 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 	{
 		ButtonComponent* button{ sender->GetComponent<ButtonComponent>() };
 
-		if (button->GetName() == "LoadGameScene")
+		if (button->GetName() == "LoadSingleplayerScene")
 		{
-			return std::make_unique<PlayState>();
+			return std::make_unique<SingleplayerState>();
 		}
-		else if (button->GetName() == "LoadLoseScene")
+		else if (button->GetName() == "LoadCoopScene")
 		{
-			SceneLoader::GetInstance().LoseScene();
+			return std::make_unique<CoopState>();
 		}
 	}
 	return nullptr;
 }
 
-// PLAY
-void pacman::PlayState::OnEnter()
+// SINGLEPLAYER
+void pacman::SingleplayerState::OnEnter()
 {
-	// TODO: load scene depending on GameMode
 	SceneLoader::GetInstance().GameScene();
+	SceneLoader::GetInstance().SingleplayerScene();
+
 	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
 }
 
-std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject* , const dae::Event& event)
+std::unique_ptr<pacman::GameState> pacman::SingleplayerState::Notify(dae::GameObject* , const dae::Event& event)
 {
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
 		++m_nrEatenPellets;
-		if(m_nrEatenPellets >= m_totalNrPellets)
+		if (m_nrEatenPellets >= m_totalNrPellets)
 			return std::make_unique<pacman::WinState>();
 	}
 	else if (event.id == "PLAYER_DIED")
 	{
 		++m_nrDeaths;
-		if(m_nrDeaths >= 2)
+		if (m_nrDeaths >= m_nrPlayers)
+			return std::make_unique<pacman::LoseState>();
+	}
+
+	return nullptr;
+}
+
+
+//COOP
+void pacman::CoopState::OnEnter()
+{
+	SceneLoader::GetInstance().GameScene();
+	SceneLoader::GetInstance().CoopScene();
+
+	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
+}
+
+std::unique_ptr<pacman::GameState> pacman::CoopState::Notify(dae::GameObject*, const dae::Event& event)
+{
+	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
+	{
+		++m_nrEatenPellets;
+		if (m_nrEatenPellets >= m_totalNrPellets)
+			return std::make_unique<pacman::WinState>();
+	}
+	else if (event.id == "PLAYER_DIED")
+	{
+		++m_nrDeaths;
+		if (m_nrDeaths >= m_nrPlayers)
 			return std::make_unique<pacman::LoseState>();
 	}
 
@@ -94,3 +123,5 @@ std::unique_ptr<pacman::GameState> pacman::LoseState::Notify(dae::GameObject* se
 	}
 	return nullptr;
 }
+
+

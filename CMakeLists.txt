@@ -120,7 +120,7 @@ add_library(imgui STATIC
   ${imgui_SOURCE_DIR}/imgui_demo.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
-  )
+    )
 
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${sdl3_SOURCE_DIR}/include)
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
@@ -161,7 +161,7 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/InputData.cpp
   Minigin/EventQueue.cpp 
   Minigin/Event.cpp
-  Minigin/Command.cpp)
+  Minigin/Command.cpp  )
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -267,7 +267,7 @@ else()
    "PacMan/FruitComponent.h"
    "PacMan/FruitComponent.cpp"
    "PacMan/FruitSpawner.h"
-   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp" "PacMan/GameState.h" "PacMan/GameState.cpp" "PacMan/GamestateManager.h" "PacMan/GamestateManager.cpp" "PacMan/SoundManager.cpp" "PacMan/ScoreComponentUI.cpp" "PacMan/ScoreComponent.cpp" "PacMan/Pellets.cpp" "PacMan/MenuManager.cpp" "PacMan/FruitSpawner.cpp" "PacMan/FPSComponent.cpp" "PacMan/Events.cpp" "Minigin/WindowConfig.cpp" "Minigin/Subject.cpp" "Minigin/InputData.cpp" "Minigin/EventQueue.cpp" "Minigin/Event.cpp" "Minigin/Command.cpp")
+   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp" "PacMan/GameState.h" "PacMan/GameState.cpp" "PacMan/GamestateManager.h" "PacMan/GamestateManager.cpp" "PacMan/SoundManager.cpp" "PacMan/ScoreComponentUI.cpp" "PacMan/ScoreComponent.cpp" "PacMan/Pellets.cpp" "PacMan/MenuManager.cpp" "PacMan/FruitSpawner.cpp" "PacMan/FPSComponent.cpp" "PacMan/Events.cpp" "Minigin/WindowConfig.cpp" "Minigin/Subject.cpp" "Minigin/InputData.cpp" "Minigin/EventQueue.cpp" "Minigin/Event.cpp" "Minigin/Command.cpp"  )
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)

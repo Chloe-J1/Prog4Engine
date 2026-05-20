@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include <string>
 #include <vector>
 #include "GameObject.h"
+#include <vector>
 
 namespace dae
 {
@@ -29,6 +29,18 @@ namespace dae
 		void Cleanup();
 		void Render() const;
 		void RenderUI();
+
+		template<typename T>
+		std::vector<GameObject*> FindObjectsWithComponent()
+		{
+			std::vector<GameObject*> foundObjects{};
+			for (const auto& go : m_objects)
+			{
+				if (go.get()->GetComponent<T>())
+					foundObjects.push_back(go.get());
+			}
+			return foundObjects;
+		}
 
 		~Scene()= default;
 		Scene(const Scene& other) = delete;
