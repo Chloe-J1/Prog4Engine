@@ -94,18 +94,6 @@ std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostCo
 	return nullptr;
 }
 
-void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
-{
-	if (m_dizziedTime >= m_maxDizziedTime) // ALL ghost are no longer in the dizzied state
-	{
-		dae::Event event = dae::Event{ "NOT_DIZZIED" };
-		dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
-	}
-	m_dizziedTime = 0;
-
-	m_moveStrategy->OnExit();
-}
-
 std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& , dae::GameObject*, const dae::Event& event)
 {
 	if (event.id == "GHOST_DIED")
@@ -117,6 +105,18 @@ std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostCo
 		}
 	}
 	return nullptr;
+}
+
+void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
+{
+	if (m_dizziedTime >= m_maxDizziedTime) // ALL ghost are no longer in the dizzied state
+	{
+		dae::Event event = dae::Event{ "NOT_DIZZIED" };
+		dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
+	}
+	m_dizziedTime = 0;
+
+	m_moveStrategy->OnExit();
 }
 
 // EYES
@@ -133,7 +133,7 @@ std::unique_ptr<pacman::GhostState> pacman::EyeState::Update(pacman::GhostCompon
 {
 	if (m_moveComp->MoveToCell(m_targetIdx, elapsedSec))
 	{
-		return std::make_unique<IdleState>();
+		return std::make_unique<DeathState>();
 	}
 
 	return nullptr;
@@ -145,11 +145,26 @@ void pacman::EyeState::OnExit(GhostComponent&)
 }
 
 // IDLE
-void pacman::IdleState::OnEnter(GhostComponent& ghost)
+void pacman::DeathState::OnEnter(GhostComponent& ghost)
 {
 	// Move to center box
 	ghost.GetGameObject()->GetTransform().SetLocalPosition(Graph::GetInstance().GetWorldPos(m_centerBoxIdx));
 	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0,1);
+}
+
+std::unique_ptr<pacman::GhostState> pacman::DeathState::Update(GhostComponent&, float elapsedSec)
+{
+	m_timer += elapsedSec;
+	if (m_timer >= m_maxDeathTime)
+	{
+		return std::make_unique<pacman::FollowTargetState>();
+	}
+	return std::unique_ptr<pacman::GhostState>();
+}
+
+void pacman::DeathState::OnExit(GhostComponent& ghost)
+{
+	ghost.GetGameObject()->SetLocalPosition(m_respawnPos);
 }
 
 

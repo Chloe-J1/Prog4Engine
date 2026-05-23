@@ -1,6 +1,8 @@
 #pragma once
 #include "../Minigin/Event.h"
 #include <memory>
+#include <glm/glm.hpp>
+#include "Graph.h"
 
 namespace dae
 {
@@ -70,13 +72,17 @@ namespace pacman
 		dae::Hitbox* m_hitbox{};
 	};
 
-	class IdleState final : public GhostState
+	class DeathState final : public GhostState
 	{
 	public:
 		virtual void OnEnter(GhostComponent& ghost) override;
-
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
+		virtual void OnExit(GhostComponent& ghost) override;
 	private:
 		const int m_centerBoxIdx{ 480 };
+		float m_timer{};
+		const float m_maxDeathTime{ 5.f };
+		glm::vec2 m_respawnPos{Graph::GetInstance().GetWorldPos(419)};
 	};
 
 }
