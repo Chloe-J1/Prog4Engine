@@ -41,26 +41,27 @@ namespace pacman
 	class DizziedState final : public GhostState
 	{
 	public:
-		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnExit(pacman::GhostComponent& ghost) override;
 
 		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event) override;
 	private:
 		TargetMoverComponent* m_moveComp{};
+		MovementBase* m_moveStrategy{ nullptr };
+		bool m_isNonAIStrategy{ false };
 		dae::SpriteComponent* m_spriteComp{};
 		dae::GameObject* m_ghost{};
 		float m_dizziedTime{ 0.f };
 		const float m_maxDizziedTime{ 5.f };
 		const float m_almostDoneTime{ 3.f };
-		std::unique_ptr<GhostState> m_returnedState{};
 	};
 
 	class EyeState final : public GhostState
 	{
 	public:
-		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnExit(GhostComponent& ghost) override;
 	private:
 		TargetMoverComponent* m_moveComp{};

@@ -2,7 +2,7 @@
 #include "TargetMoverComponent.h"
 #include "PlayerMovement.h"
 
-void pacman::MovementBase::Init(TargetMoverComponent* moveComp)
+void pacman::MovementBase::Init(TargetMoverComponent* moveComp) // TODO: pass through context
 {
 	m_moveComp = moveComp;
 }
