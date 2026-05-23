@@ -1,9 +1,11 @@
 #pragma once
 #include "Component.h"
-#include "Subject.h"
-
-
 #include "../Minigin/EventQueue.h"
+
+namespace dae
+{
+	class EventQueue;
+}
 
 namespace pacman
 {
@@ -12,8 +14,6 @@ namespace pacman
 	public:
 		ScoreComponent(dae::GameObject* owner);
 
-		dae::Subject* GetSubject();
-
 		int GetScore() const;
 
 		
@@ -21,6 +21,6 @@ namespace pacman
 
 	private:
 		int m_score{ 0 };
-		std::unique_ptr<dae::Subject> m_updateScoreEvent;
+		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 	};
 }

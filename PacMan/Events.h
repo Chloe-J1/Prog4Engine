@@ -3,17 +3,17 @@
 #include <glm/glm.hpp>
 namespace pacman
 {
-	struct UpdateScoreArg final : dae::EventArg
+	struct ScoreArg final : dae::EventArg
 	{
 		int score;
 
-		UpdateScoreArg(int _score);
+		ScoreArg(int _score);
 
-		virtual ~UpdateScoreArg() = default;
-		UpdateScoreArg(const UpdateScoreArg& other) = delete;
-		UpdateScoreArg(UpdateScoreArg&& other) = delete;
-		UpdateScoreArg& operator=(const UpdateScoreArg& other) = delete;
-		UpdateScoreArg& operator=(UpdateScoreArg&& other) = delete;
+		virtual ~ScoreArg() = default;
+		ScoreArg(const ScoreArg& other) = delete;
+		ScoreArg(ScoreArg&& other) = delete;
+		ScoreArg& operator=(const ScoreArg& other) = delete;
+		ScoreArg& operator=(ScoreArg&& other) = delete;
 	};
 
 	struct UpdateHealthArg final : dae::EventArg

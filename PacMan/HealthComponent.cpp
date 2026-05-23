@@ -2,8 +2,6 @@
 #include "../PacMan/GhostComponent.h"
 #include "Events.h"
 
-#include "../Minigin/EventQueue.h"
-
 pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	Component(owner),
 	m_health{health},
@@ -19,8 +17,6 @@ pacman::HealthComponent::~HealthComponent()
 {
 	dae::EventQueue::GetInstance().RemoveObserver(this);
 }
-
-
 
 void pacman::HealthComponent::TakeDamage(int amount)
 {
@@ -83,7 +79,7 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 		if (m_health <= 0)
 		{
 			dae::Event event{ "PLAYER_DIED" };
-			dae::EventQueue::GetInstance().Invoke(std::move(event), GetGameObject());
+			m_eventQueue.Invoke(std::move(event), GetGameObject());
 			GetGameObject()->SetIsAlive(false);
 		}
 	}

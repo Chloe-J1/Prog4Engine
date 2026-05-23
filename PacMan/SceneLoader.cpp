@@ -15,7 +15,6 @@
 #include "SpriteComponent.h"
 #include "HealthComponent.h"
 #include "HealthComponentUI.h"
-#include "Subject.h"
 #include "ScoreComponent.h"
 #include "ScoreComponentUI.h"
 #include "GhostComponent.h"
@@ -68,7 +67,7 @@ void pacman::SceneLoader::SingleplayerScene()
 	//UI
 	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
 	UI->SetLocalPosition(10, 5);
-	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	scoreUI->SetParent(UI.get(), false);
 	healthUI->SetParent(UI.get(), false);
@@ -105,7 +104,7 @@ void pacman::SceneLoader::CoopScene()
 	//UI
 	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
 	UI->SetLocalPosition(10, 5);
-	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	scoreUI->SetParent(UI.get(), false);
 	healthUI->SetParent(UI.get(), false);
@@ -118,7 +117,7 @@ void pacman::SceneLoader::CoopScene()
 	//UI
 	std::unique_ptr<dae::GameObject> UIpacman = std::make_unique<dae::GameObject>();
 	UIpacman->SetLocalPosition(634, 5);
-	std::unique_ptr<dae::GameObject> scoreUIpacman = CreateScoreUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> scoreUIpacman = CreateScoreUI(glm::vec2{ 0, 0 }, pacman.get());
 	std::unique_ptr<dae::GameObject> healthUIpacman = CreateHealthUI(glm::vec2{ 0, 0 }, pacman.get());
 	scoreUIpacman->SetParent(UIpacman.get(), false);
 	healthUIpacman->SetParent(UIpacman.get(), false);
@@ -161,7 +160,7 @@ void pacman::SceneLoader::VersusScene()
 	//UI
 	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
 	UI->SetLocalPosition(10, 5);
-	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
+	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	scoreUI->SetParent(UI.get(), false);
 	healthUI->SetParent(UI.get(), false);
@@ -300,18 +299,13 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreatePacman(const glm::ve
 	return go;
 }
 
-std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateScoreUI(const glm::vec2& spawnPos, ScoreComponent* scoreComp)
+std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateScoreUI(const glm::vec2& spawnPos, dae::GameObject* pacman)
 {
 	std::unique_ptr<dae::GameObject> scoreGo = std::make_unique<dae::GameObject>();
 	scoreGo->AddComponent<dae::RenderComponent>();
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 	scoreGo->AddComponent<dae::TextComponent>("Score: 0", font);
-	scoreGo->AddComponent<pacman::ScoreComponentUI>();
-
-	// add observer
-	scoreComp->GetSubject()->AddObserver(
-		scoreGo->GetComponent<pacman::ScoreComponentUI>()
-	);
+	scoreGo->AddComponent<pacman::ScoreComponentUI>(pacman);
 
 	scoreGo->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return scoreGo;

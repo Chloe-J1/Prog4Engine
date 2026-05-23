@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "../Minigin/Observer.h"
+#include "../Minigin/EventQueue.h"
 
 namespace pacman
 {
@@ -27,6 +28,7 @@ namespace pacman
 		float m_invincibleTime;
 		bool m_isInvincible;
 		bool m_canTakeDamage;
+		dae::EventQueue& m_eventQueue{dae::EventQueue::GetInstance()};
 
 		void HandleDamage(pacman::GhostComponent* ghost);
 	};

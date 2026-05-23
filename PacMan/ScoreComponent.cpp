@@ -1,16 +1,11 @@
 #include "ScoreComponent.h"
 #include "Events.h"
 #include "Pellets.h"
+#include "../Minigin/GameObject.h"
 
 pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner) :
-	Component(owner),
-	m_updateScoreEvent{ std::make_unique<dae::Subject>() }
+	Component(owner)
 {
-}
-
-dae::Subject* pacman::ScoreComponent::GetSubject()
-{
-	return m_updateScoreEvent.get();
 }
 
 int pacman::ScoreComponent::GetScore() const
@@ -24,22 +19,20 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 	if (pellet != nullptr)
 	{
 		m_score += pellet->GetValue();
-		dae::Event updateScoreEvent{ "UPDATE_SCORE" }; // TODO: to specific name, make it general pickupEvent
-		updateScoreEvent.arg = std::make_unique<UpdateScoreArg>(m_score);
-		m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
 
-		// TEMP
+		std::string eventID{};
 		if (dynamic_cast<PowerPellet*>(pellet) != nullptr)
 		{
-			dae::Event pickupEvent{ "POWER_PELLET_PICKUP" };
-			dae::EventQueue().GetInstance().Invoke(std::move(pickupEvent), GetGameObject());
+			eventID = "POWER_PELLET_PICKUP";
 		}
 		else
 		{
-			dae::Event pickupEvent{ "PELLET_PICKUP" };
-			dae::EventQueue().GetInstance().Invoke(std::move(pickupEvent), GetGameObject());
-			//
+			eventID = "PELLET_PICKUP";
 		}
+
+		dae::Event pickupEvent{ eventID };
+		pickupEvent.arg = std::make_unique<ScoreArg>(m_score);
+		m_eventQueue.Invoke(std::move(pickupEvent), GetGameObject());
 
 		other->SetIsAlive(false);
 	}

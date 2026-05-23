@@ -1,7 +1,7 @@
 #include "Events.h"
 
-pacman::UpdateScoreArg::UpdateScoreArg(int _score) :
-	score{ _score }
+pacman::ScoreArg::ScoreArg(int _score):
+	score{_score}
 {
 }
 
