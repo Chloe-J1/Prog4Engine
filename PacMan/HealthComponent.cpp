@@ -7,7 +7,6 @@
 pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	Component(owner),
 	m_health{health},
-	m_takeDamageEvent{ std::make_unique<dae::Subject>() },
 	m_maxInvincibleTime{0.7f},
 	m_invincibleTime{0},
 	m_isInvincible{false},
@@ -77,27 +76,15 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 
 		dae::Event takeDamageEvent{ "PLAYER_TAKES_DAMAGE" };
 		takeDamageEvent.arg = std::make_unique<UpdateHealthArg>(m_health);
-		m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(takeDamageEvent));
-
-		// TEMP
-		dae::Event damageQueueEvent{ "PLAYER_TAKES_DAMAGE" };
-		damageQueueEvent.arg = std::make_unique<UpdateHealthArg>(m_health);
-		dae::EventQueue::GetInstance().Invoke(std::move(damageQueueEvent), GetGameObject());
-		//
-
+		dae::EventQueue::GetInstance().Invoke(std::move(takeDamageEvent), GetGameObject());
 
 		m_isInvincible = true;
 		// Check death
 		if (m_health <= 0)
 		{
-			dae::Event deadEvent{"PLAYER_DIED"};
-			m_takeDamageEvent->NotifyObservers(GetGameObject(), std::move(deadEvent));
-			GetGameObject()->SetIsAlive(false);
-
-			// TEMP
 			dae::Event event{ "PLAYER_DIED" };
 			dae::EventQueue::GetInstance().Invoke(std::move(event), GetGameObject());
-			//
+			GetGameObject()->SetIsAlive(false);
 		}
 	}
 }

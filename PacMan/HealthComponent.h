@@ -1,7 +1,5 @@
 #pragma once
 #include "Component.h"
-#include <memory>
-#include "Subject.h"
 #include "../Minigin/Observer.h"
 
 namespace pacman
@@ -18,7 +16,6 @@ namespace pacman
 		HealthComponent operator=(HealthComponent&& other) = delete;
 
 		void TakeDamage(int amount);
-		dae::Subject* GetTakeDamageEvent() { return m_takeDamageEvent.get(); }
 		int GetHealth() const;
 		virtual void OnCollision(dae::GameObject* other) override;
 		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
@@ -26,7 +23,6 @@ namespace pacman
 		virtual void Update(float elapsedSec) override;
 	private:
 		int m_health;
-		std::unique_ptr<dae::Subject> m_takeDamageEvent;
 		const float m_maxInvincibleTime;
 		float m_invincibleTime;
 		bool m_isInvincible;

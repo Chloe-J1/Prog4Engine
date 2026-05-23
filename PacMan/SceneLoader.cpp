@@ -69,7 +69,7 @@ void pacman::SceneLoader::SingleplayerScene()
 	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
 	UI->SetLocalPosition(10, 5);
 	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
-	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::HealthComponent>());
+	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	scoreUI->SetParent(UI.get(), false);
 	healthUI->SetParent(UI.get(), false);
 	scoreUI->SetLocalPosition(0, 0);
@@ -106,7 +106,7 @@ void pacman::SceneLoader::CoopScene()
 	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
 	UI->SetLocalPosition(10, 5);
 	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
-	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::HealthComponent>());
+	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	scoreUI->SetParent(UI.get(), false);
 	healthUI->SetParent(UI.get(), false);
 	scoreUI->SetLocalPosition(0, 0);
@@ -119,7 +119,7 @@ void pacman::SceneLoader::CoopScene()
 	std::unique_ptr<dae::GameObject> UIpacman = std::make_unique<dae::GameObject>();
 	UIpacman->SetLocalPosition(634, 5);
 	std::unique_ptr<dae::GameObject> scoreUIpacman = CreateScoreUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::ScoreComponent>());
-	std::unique_ptr<dae::GameObject> healthUIpacman = CreateHealthUI(glm::vec2{ 0, 0 }, pacman->GetComponent<pacman::HealthComponent>());
+	std::unique_ptr<dae::GameObject> healthUIpacman = CreateHealthUI(glm::vec2{ 0, 0 }, pacman.get());
 	scoreUIpacman->SetParent(UIpacman.get(), false);
 	healthUIpacman->SetParent(UIpacman.get(), false);
 	scoreUIpacman->SetLocalPosition(0, 0);
@@ -162,7 +162,7 @@ void pacman::SceneLoader::VersusScene()
 	std::unique_ptr <dae::GameObject> UI = std::make_unique<dae::GameObject>();
 	UI->SetLocalPosition(10, 5);
 	std::unique_ptr<dae::GameObject> scoreUI = CreateScoreUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::ScoreComponent>());
-	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman->GetComponent<pacman::HealthComponent>());
+	std::unique_ptr<dae::GameObject> healthUI = CreateHealthUI(glm::vec2{ 0, 0 }, mrsPacman.get());
 	scoreUI->SetParent(UI.get(), false);
 	healthUI->SetParent(UI.get(), false);
 	scoreUI->SetLocalPosition(0, 0);
@@ -317,7 +317,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateScoreUI(const glm::v
 	return scoreGo;
 }
 
-std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateHealthUI(const glm::vec2& spawnPos, HealthComponent* healthComp)
+std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateHealthUI(const glm::vec2& spawnPos, dae::GameObject* pacman)
 {
 	std::unique_ptr<dae::GameObject> healthUIGo = std::make_unique<dae::GameObject>();
 	healthUIGo->AddComponent<dae::RenderComponent>("Health.png");
@@ -326,11 +326,8 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateHealthUI(const glm::
 	constexpr int nrRows{ 4 };
 	healthUIGo->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	//
-	healthUIGo->AddComponent<pacman::HealthComponentUI>();
-	// add observer
-	healthComp->GetTakeDamageEvent()->AddObserver(
-		healthUIGo->GetComponent<pacman::HealthComponentUI>()
-	);
+	healthUIGo->AddComponent<pacman::HealthComponentUI>(pacman);
+	
 
 
 	healthUIGo->SetLocalPosition(spawnPos.x, spawnPos.y);
