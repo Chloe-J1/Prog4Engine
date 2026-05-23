@@ -53,6 +53,6 @@ namespace pacman
 		virtual void OnExit() override;
 		void Init(PlayerMovement* playerMovementComp);
 	private:
-		PlayerMovement* m_playerMovement;
+		PlayerMovement* m_playerMovement{};
 	};
 }

@@ -49,6 +49,5 @@ namespace pacman
 		glm::vec2 GetCenterPos() const;
 		void SnapToCell(int gridIdx, const glm::vec2& newDir);
 		void WallCheck();
-		void ChangeAnimation(const glm::vec2& direction);
 	};
 }

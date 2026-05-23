@@ -24,7 +24,7 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 	if (pellet != nullptr)
 	{
 		m_score += pellet->GetValue();
-		dae::Event updateScoreEvent{ "UPDATE_SCORE" };
+		dae::Event updateScoreEvent{ "UPDATE_SCORE" }; // TODO: to specific name, make it general pickupEvent
 		updateScoreEvent.arg = std::make_unique<UpdateScoreArg>(m_score);
 		m_updateScoreEvent->NotifyObservers(GetGameObject(), std::move(updateScoreEvent));
 

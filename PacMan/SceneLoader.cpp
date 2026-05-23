@@ -6,8 +6,6 @@
 #include "../Minigin/InputManager.h"
 #include "../Minigin/WindowConfig.h"
 #include "../Minigin/Hitbox.h"
-#include "../Minigin/Observer.h"
-#include "../Minigin/Command.h"
 
 
 #include "Commands.h"
@@ -25,6 +23,7 @@
 #include "FruitSpawner.h"
 #include "TargetMoverComponent.h"
 #include "EatenComponent.h"
+#include "PacmanAnimator.h"
 
 #include <iostream>
 
@@ -289,6 +288,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreatePacman(const glm::ve
 	int nrRows{ 4 };
 	float frameSec{ 0.2f };
 	go->AddComponent<dae::SpriteComponent>(nrCols, nrRows, frameSec);
+	go->AddComponent<pacman::PacmanAnimator>();
 	//
 	constexpr int playerSize{ 16 };
 	go->AddComponent<dae::Hitbox>(playerSize, playerSize);

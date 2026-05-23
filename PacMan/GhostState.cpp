@@ -8,7 +8,6 @@
 #include "../Minigin/Hitbox.h"
 #include "MoveStrategies.h"
 
-
 // FOLLOW TARGET
 void pacman::FollowTargetState::OnEnter(GhostComponent& ghost)
 {
@@ -54,7 +53,6 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 		m_isNonAIStrategy = true;
 	}
 	m_moveStrategy->OnEnter();
-	
 }
 
 std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostComponent&,float elapsedSec)

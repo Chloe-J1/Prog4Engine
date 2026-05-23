@@ -6,7 +6,8 @@
 #include <memory>
 #include "Graph.h"
 #include "../Minigin/DebugDraw.h"
-#include <iostream>
+#include "../Minigin/EventQueue.h"
+#include "Events.h"
 
 pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx) :
 	Component(owner),
@@ -67,7 +68,9 @@ void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 	{
 		m_currDirection = direction;
 		SnapToCell(gridIdx, direction);
-		ChangeAnimation(direction);
+		dae::Event e{ "DIRECTION_CHANGED" };
+		e.arg = std::make_unique<DirectionChangedArg>(m_currDirection);
+		dae::EventQueue::GetInstance().Invoke(std::move(e), GetGameObject());
 	}
 }
 
@@ -141,25 +144,5 @@ void pacman::PlayerMovement::WallCheck()
 	if (not m_graph->HasIndex(newGridIdx))
 	{
 		GetGameObject()->SetLocalPosition(m_oldPos);
-	}
-}
-
-void pacman::PlayerMovement::ChangeAnimation(const glm::vec2& direction)
-{
-	if (direction.x == 1) // right
-	{
-		m_spriteComp->SetRow(0);
-	}
-	else if (direction.x == -1) // left
-	{
-		m_spriteComp->SetRow(1);
-	}
-	else if (direction.y == -1) // up
-	{
-		m_spriteComp->SetRow(2);
-	}
-	else  // down
-	{
-		m_spriteComp->SetRow(3);
 	}
 }

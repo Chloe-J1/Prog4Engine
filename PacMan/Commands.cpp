@@ -1,8 +1,6 @@
 #include "Commands.h"
 #include "MenuManager.h"
 #include "ButtonComponent.h"
-
-
 // MOVE
 //********
 void pacman::Move::Execute()
