@@ -11,9 +11,9 @@
 // FOLLOW TARGET
 void pacman::FollowTargetState::OnEnter(GhostComponent& ghost)
 {
-	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0, 1);
+	m_spriteComp = ghost.GetGameObject()->GetComponent<dae::SpriteComponent>();
+	m_spriteComp->ChangeCurrentAnimation(0, 1);
 	m_moveStrategy = ghost.GetMoveStrategy();
-
 	m_moveStrategy->OnEnter();
 }
 
@@ -25,11 +25,31 @@ std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Update(GhostCompo
 
 
 
-std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event)
 {
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
 		return std::make_unique<DizziedState>();
+	}
+	else if (event.id == "DIRECTION_CHANGED" && sender == ghost.GetGameObject())
+	{
+		DirectionChangedArg* arg{ static_cast<pacman::DirectionChangedArg*>(event.arg.get()) };
+		if (arg->direction.x == 1) // right
+		{
+			m_spriteComp->SetRow(0);
+		}
+		else if (arg->direction.x == -1) // left
+		{
+			m_spriteComp->SetRow(1);
+		}
+		else if (arg->direction.y == -1) // up
+		{
+			m_spriteComp->SetRow(2);
+		}
+		else // down
+		{
+			m_spriteComp->SetRow(3);
+		}
 	}
 	return nullptr;
 }

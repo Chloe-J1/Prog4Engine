@@ -19,9 +19,9 @@ namespace pacman
 	{
 	public:
 		virtual ~GhostState() {};
+		virtual void OnEnter(GhostComponent&) {};
 		virtual std::unique_ptr<pacman::GhostState> Update(pacman::GhostComponent&, float) { return nullptr; };
 		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event&) { return nullptr; };
-		virtual void OnEnter(GhostComponent&) {};
 		virtual void OnExit(pacman::GhostComponent&) {};
 
 	};
@@ -29,13 +29,14 @@ namespace pacman
 	class FollowTargetState final : public GhostState
 	{
 	public:
-		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnEnter(GhostComponent& ghost) override;
+		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event) override;
 		virtual void OnExit(pacman::GhostComponent&) override;
 
 	private:
 		MovementBase* m_moveStrategy{nullptr};
+		dae::SpriteComponent* m_spriteComp{};
 	};
 
 	class DizziedState final : public GhostState

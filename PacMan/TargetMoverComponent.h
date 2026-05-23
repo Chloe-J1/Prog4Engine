@@ -3,7 +3,6 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Graph.h"
-#include <unordered_map>
 
 namespace pacman
 {

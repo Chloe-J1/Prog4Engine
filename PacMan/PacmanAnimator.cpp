@@ -16,9 +16,9 @@ pacman::PacmanAnimator::~PacmanAnimator()
 	dae::EventQueue::GetInstance().RemoveObserver(this);
 }
 
-void pacman::PacmanAnimator::Notify(dae::GameObject*, const dae::Event& event)
+void pacman::PacmanAnimator::Notify(dae::GameObject* sender, const dae::Event& event)
 {
-	if (event.id == "DIRECTION_CHANGED")
+	if (event.id == "DIRECTION_CHANGED" && sender == GetGameObject())
 	{
 		DirectionChangedArg* arg{ static_cast<pacman::DirectionChangedArg*>(event.arg.get()) };
 		if (arg->direction.x == 1) // right

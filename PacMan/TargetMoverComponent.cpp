@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "../Minigin/GameObject.h"
 #include "../Minigin/SpriteComponent.h"
+#include "../Minigin/EventQueue.h"
+#include "Events.h"
 
 pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner):
 	Component(owner),
@@ -162,6 +164,10 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 				m_nextDir = glm::vec2{ 0, 1 };
 			}
 		}
+
+		dae::Event e{ "DIRECTION_CHANGED" };
+		e.arg = std::make_unique<DirectionChangedArg>(m_nextDir);
+		dae::EventQueue::GetInstance().Invoke(std::move(e), GetGameObject());
 	}
 }
 void pacman::TargetMoverComponent::Move(float elapsedSec)

@@ -162,7 +162,7 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/InputData.cpp
   Minigin/EventQueue.cpp 
   Minigin/Event.cpp
-  Minigin/Command.cpp   "PacMan/PacmanAnimator.h" "PacMan/PacmanAnimator.cpp")
+  Minigin/Command.cpp)
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
