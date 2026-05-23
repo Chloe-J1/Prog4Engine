@@ -2,10 +2,19 @@
 #include "Events.h"
 #include "Pellets.h"
 #include "../Minigin/GameObject.h"
+#include <iostream>
+
+int pacman::ScoreComponent::m_nrGhostsEaten{ 0 };
 
 pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner) :
 	Component(owner)
 {
+	m_eventQueue.AddObserver(this);
+}
+
+pacman::ScoreComponent::~ScoreComponent()
+{
+	m_eventQueue.RemoveObserver(this);
 }
 
 int pacman::ScoreComponent::GetScore() const
@@ -35,5 +44,18 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 		m_eventQueue.Invoke(std::move(pickupEvent), GetGameObject());
 
 		other->SetIsAlive(false);
+	}
+}
+
+void pacman::ScoreComponent::Notify(dae::GameObject*, const dae::Event& event)
+{
+	if (event.id == "GHOST_DIED")
+	{
+		const int baseValue{ 200 };
+		++m_nrGhostsEaten;
+		m_score += baseValue * m_nrGhostsEaten;
+		dae::Event e{ "SCORE_CHANGED" };
+		e.arg = std::make_unique<ScoreArg>(m_score);
+		m_eventQueue.Invoke(std::move(e), GetGameObject());
 	}
 }

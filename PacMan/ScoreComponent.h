@@ -1,26 +1,29 @@
 #pragma once
 #include "Component.h"
 #include "../Minigin/EventQueue.h"
-
-namespace dae
-{
-	class EventQueue;
-}
+#include "../Minigin/Observer.h"
 
 namespace pacman
 {
-	class ScoreComponent : public dae::Component
+	class ScoreComponent final : public dae::Component, public dae::Observer
 	{
 	public:
 		ScoreComponent(dae::GameObject* owner);
+		~ScoreComponent();
+		ScoreComponent(const ScoreComponent& other) = delete;
+		ScoreComponent(ScoreComponent&& other) = delete;
+		ScoreComponent& operator=(const ScoreComponent& other) = delete;
+		ScoreComponent& operator=(ScoreComponent&& other) = delete;
 
 		int GetScore() const;
 
 		
 		virtual void OnCollision(dae::GameObject* other) override;
+		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
 
 	private:
 		int m_score{ 0 };
+		static int m_nrGhostsEaten;
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 	};
 }
