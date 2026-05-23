@@ -1,8 +1,6 @@
 #include "GameObject.h"
-#include "GameObject.h"
 #include "Component.h"
 #include <algorithm>
-#include <iostream>
 
 dae::GameObject::GameObject():
 	m_transform{Transform(this)}

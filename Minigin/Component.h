@@ -7,28 +7,27 @@ namespace dae
 	class Component
 	{
 	public:
-		virtual void Update(float) { };
-		virtual void FixedUpdate() { };
-		virtual void LateUpdate(float) {  };
-		virtual void Render() const { };
-		virtual void RenderUI() {};
+		virtual void Start();
+		virtual void Update(float elapsedSec);
+		virtual void FixedUpdate();
+		virtual void LateUpdate(float elapsedSec);
+		virtual void Render() const;
+		virtual void RenderUI();
 
-		bool GetIsAlive() const { return m_isAlive; };
-		void SetIsAlive(bool isAlive) { m_isAlive = isAlive; };
-		GameObject* GetGameObject() const { return m_gameObject; };
-		bool GetIsEnabled() const { return m_isEnabled; };
-		void SetIsEnabled(bool isEnabled) { m_isEnabled = isEnabled; };
+		bool GetIsAlive() const;
+		void SetIsAlive(bool isAlive);
+		GameObject* GetGameObject() const;
+		bool GetIsEnabled() const;
+		void SetIsEnabled(bool isEnabled);
 
-		Component(GameObject* owner) { m_gameObject = owner; };
+		Component(GameObject* owner);
 		virtual ~Component() = default;
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
-	protected:
 		virtual void OnCollision(GameObject*) {};
 	private:
-		friend class CollisionManager;
 
 		GameObject* m_gameObject{};
 		bool m_isAlive{ true };

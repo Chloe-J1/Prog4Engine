@@ -137,6 +137,7 @@ endif()
 add_library(${ENGINE_TARGET} STATIC
   Minigin/Font.cpp
   Minigin/GameObject.cpp
+  Minigin/Component.cpp
   Minigin/InputManager.cpp
   Minigin/Minigin.cpp
   Minigin/Renderer.cpp
