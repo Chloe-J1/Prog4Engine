@@ -221,6 +221,7 @@ if(EMSCRIPTEN)
     PacMan/FruitSpawner.cpp
     PacMan/FPSComponent.cpp
     PacMan/SceneLoader.cpp
+    PacMan/PacmanAnimator.cpp
   )
 else()
   add_executable(${GAME_TARGET} WIN32
