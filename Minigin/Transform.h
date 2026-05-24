@@ -26,7 +26,7 @@ namespace dae
 	private:
 		glm::vec3 m_localPosition{};
 		glm::vec3 m_worldPosition{};
-		bool m_isPositionDirty{ false };
+		bool m_isPositionDirty{ true };
 		GameObject* m_gameObject;
 
 		void UpdateWorldPosition();

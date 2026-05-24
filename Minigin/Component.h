@@ -14,6 +14,8 @@ namespace dae
 		virtual void Render() const;
 		virtual void RenderUI();
 
+		void SetHasStarted(bool hasStarted);
+		bool GetHasStarted();
 		bool GetIsAlive() const;
 		void SetIsAlive(bool isAlive);
 		GameObject* GetGameObject() const;
@@ -32,5 +34,6 @@ namespace dae
 		GameObject* m_gameObject{};
 		bool m_isAlive{ true };
 		bool m_isEnabled{ true };
+		bool m_hasStarted{ false };
 	};
 }

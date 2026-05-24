@@ -1,4 +1,7 @@
 #include "Component.h"
+#include "Component.h"
+#include "Component.h"
+#include "Component.h"
 
 
 void dae::Component::Start()
@@ -23,6 +26,16 @@ void dae::Component::Render() const
 
 void dae::Component::RenderUI()
 {
+}
+
+void dae::Component::SetHasStarted(bool hasStarted)
+{
+	m_hasStarted = hasStarted;
+}
+
+bool dae::Component::GetHasStarted()
+{
+	return m_hasStarted;
 }
 
 bool dae::Component::GetIsAlive() const

@@ -19,10 +19,11 @@ void dae::GameObject::Update(float elapsedSec)
 {
 	if (m_isAlive)
 	{
-
 		for (const auto& comp : m_components)
 		{
 			if (comp->GetIsEnabled() == false) continue;
+			comp->Start();
+			comp->SetHasStarted(true);
 			comp->Update(elapsedSec);
 		}
 	}

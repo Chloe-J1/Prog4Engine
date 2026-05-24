@@ -22,6 +22,7 @@ namespace pacman
 		int GetDamage() const;
 		MovementBase* GetMoveStrategy();
 
+		virtual void Start() override;
 		virtual void Update(float elapsedSec) override;
 
 		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;

@@ -4,6 +4,7 @@
 
 void dae::SceneManager::Update(float elapsedSec)
 {
+	m_activeScene->FlushPending();
 	m_activeScene->Update(elapsedSec);
 }
 

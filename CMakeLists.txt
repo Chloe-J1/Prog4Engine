@@ -230,27 +230,30 @@ else()
     PacMan/HealthComponentUI.cpp
     PacMan/PlayerMovement.cpp
     PacMan/HealthComponent.cpp
-   "PacMan/MenuManager.h"
-   "PacMan/ButtonComponent.h"
-   "PacMan/ButtonComponent.cpp" 
-   "PacMan/Events.h"
-   "PacMan/SoundManager.h"
-   "PacMan/SceneLoader.cpp"
-   "PacMan/SceneLoader.h"
-   "PacMan/Graph.h"
-   "PacMan/Graph.cpp"
-   "PacMan/LevelLoader.h"
-   "PacMan/LevelLoader.cpp"
-   "PacMan/GhostState.h"
-   "PacMan/GhostState.cpp"
-   "PacMan/GhostComponent.h"
-   "PacMan/GhostComponent.cpp"
-   "PacMan/TargetMoverComponent.h"
-   "PacMan/TargetMoverComponent.cpp"
-   "PacMan/FruitComponent.h"
-   "PacMan/FruitComponent.cpp"
-   "PacMan/FruitSpawner.h"
-   "Minigin/ServiceLocator.cpp" "PacMan/EatenComponent.h" "PacMan/EatenComponent.cpp" "PacMan/MoveStrategies.h" "PacMan/MoveStrategies.cpp" "Minigin/DebugDraw.h" "Minigin/DebugDraw.cpp" "PacMan/GameState.h" "PacMan/GameState.cpp" "PacMan/GamestateManager.h" "PacMan/GamestateManager.cpp" "PacMan/SoundManager.cpp" "PacMan/ScoreComponentUI.cpp" "PacMan/ScoreComponent.cpp" "PacMan/Pellets.cpp" "PacMan/MenuManager.cpp" "PacMan/FruitSpawner.cpp" "PacMan/FPSComponent.cpp" "PacMan/Events.cpp" "Minigin/WindowConfig.cpp" "Minigin/Subject.cpp" "Minigin/InputData.cpp" "Minigin/EventQueue.cpp" "Minigin/Event.cpp" "Minigin/Command.cpp"   "PacMan/PacmanAnimator.h" "PacMan/PacmanAnimator.cpp")
+    PacMan/MenuManager.cpp
+    PacMan/ButtonComponent.cpp
+    PacMan/Events.cpp
+    PacMan/SoundManager.h
+    PacMan/GamestateManager.cpp
+    PacMan/Graph.cpp
+    PacMan/LevelLoader.cpp
+    PacMan/GhostState.cpp
+    PacMan/GhostComponent.cpp
+    PacMan/TargetMoverComponent.cpp
+    PacMan/FruitComponent.cpp
+    PacMan/FruitSpawner.cpp
+    PacMan/EatenComponent.cpp
+    PacMan/MoveStrategies.cpp
+    PacMan/GameState.cpp
+    PacMan/GamestateManager.cpp
+    PacMan/SoundManager.cpp
+    PacMan/ScoreComponentUI.cpp
+    PacMan/ScoreComponent.cpp
+    PacMan/Pellets.cpp
+    PacMan/FruitSpawner.cpp
+    PacMan/FPSComponent.cpp
+    PacMan/SceneLoader.cpp
+    PacMan/PacmanAnimator.cpp)
 endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)

@@ -2,10 +2,10 @@
 #include <memory>
 #include "Scene.h"
 #include "Singleton.h"
+#include <functional>
 
 namespace dae
 {
-	class Scene;
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:

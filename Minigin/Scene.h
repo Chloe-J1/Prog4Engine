@@ -3,6 +3,7 @@
 #include <vector>
 #include "GameObject.h"
 #include <vector>
+#include <string>
 
 namespace dae
 {
@@ -10,18 +11,9 @@ namespace dae
 	{
 	public:
 		void Add(std::unique_ptr<GameObject> object);
-		void Remove(const GameObject& object)
-		{
-			for (auto& obj : m_objects)
-			{
-				if (obj.get() == &object)
-				{
-					obj->SetIsAlive(false);
-					return;
-				}
-			}
-		}
+		void Remove(const GameObject& object);
 		void RemoveAll();
+		void FlushPending();
 
 		void Update(float elapsedSec);
 		void FixedUpdate();
@@ -52,8 +44,8 @@ namespace dae
 		friend class SceneManager;
 		explicit Scene() = default;
 
-		std::vector < std::unique_ptr<GameObject>> m_objects{};
-
+		std::vector <std::unique_ptr<GameObject>> m_objects{};
+		std::vector <std::unique_ptr<GameObject>> m_pendingObjects{};
 	};
 
 }

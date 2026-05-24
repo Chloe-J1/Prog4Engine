@@ -20,6 +20,10 @@ pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<M
 	m_ghostState->OnEnter(*this);
 	dae::EventQueue::GetInstance().AddObserver(this);
 	m_moveStrategy->Init(GetGameObject()->GetComponent<TargetMoverComponent>());
+}
+
+void pacman::GhostComponent::Start()
+{
 	m_targets = dae::SceneManager::GetInstance().GetActiveScene().FindObjectsWithComponent<HealthComponent>();
 	GetGameObject()->GetComponent<TargetMoverComponent>()->SetTargetObj(m_targets[0]);
 }
@@ -38,6 +42,8 @@ pacman::MovementBase* pacman::GhostComponent::GetMoveStrategy()
 {
 	return m_moveStrategy.get();
 }
+
+
 
 void pacman::GhostComponent::Update(float elapsedSec)
 {
