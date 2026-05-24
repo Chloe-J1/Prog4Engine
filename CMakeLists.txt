@@ -5,11 +5,10 @@ if(EMSCRIPTEN)
   message("Using Emscripten!")
 endif()
 
+set(GAME_TARGET pacman)
 if(EMSCRIPTEN)
-  set(GAME_TARGET minigin_web)
   set(TARGET_PARAM )
 else()
-  set(GAME_TARGET pacman)
   set(TARGET_PARAM WIN32)
 endif()
 
