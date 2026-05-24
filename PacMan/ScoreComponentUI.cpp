@@ -3,8 +3,6 @@
 #include "Events.h"
 #include "../Minigin/EventQueue.h"
 
-static int m_nrGhostsEaten{ 0 };
-
 pacman::ScoreComponentUI::ScoreComponentUI(dae::GameObject* owner, dae::GameObject* pacman) :
 	Component(owner),
 	m_pacman{pacman}
