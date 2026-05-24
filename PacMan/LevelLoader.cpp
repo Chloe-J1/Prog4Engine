@@ -1,5 +1,4 @@
 #include "LevelLoader.h"
-#include <sstream>
 #include <fstream>
 #include <string>
 #include "../Minigin/RenderComponent.h"
@@ -10,12 +9,11 @@
 #include "Graph.h"
 #include "GamestateManager.h"
 #include <iostream>
+#include <nlohmann/json.hpp>
 
-void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filename)
+void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filename, const std::string& levelname)
 {
-	std::ifstream iFile;
-	iFile.open(filename);
-	std::string line;
+	std::ifstream iFile(filename);
 	float x{};
 	float y{};
 
@@ -23,24 +21,22 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	int pathIdx{ 0 };
 
 	int nrPellets{};
-
 	if (iFile.is_open())
 	{
-		while (std::getline(iFile, line))
+		nlohmann::json data = nlohmann::json::parse(iFile);
+		for (const auto& line : data[levelname])
 		{
-			std::stringstream ss(line);
-			std::string type;
-
-			while (std::getline(ss, type, ','))
+			std::string row = line;
+			for (const auto& item : row)
 			{
-				
-				if (type == "p")
+				if (item == ',') continue; // ignore
+				if (item == 'p')
 				{
 					scene.Add(CreatePellet(x, y));
 					pathIndices.insert(pathIdx);
 					++nrPellets;
 				}
-				else if (type == "P")
+				else if (item == 'P')
 				{
 					scene.Add(CreatePowerPellet(x, y));
 					pathIndices.insert(pathIdx);
@@ -53,6 +49,7 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 			y += m_cellsize;
 			x = 0;
 		}
+
 		iFile.close();
 	}
 	else

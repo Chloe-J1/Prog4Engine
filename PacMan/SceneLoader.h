@@ -21,7 +21,7 @@ namespace pacman
 		}
 
 		// Scenes
-		void GameScene();
+		void GameScene(const std::string& levelname);
 		void SingleplayerScene();
 		void CoopScene();
 		void VersusScene();

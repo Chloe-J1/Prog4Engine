@@ -10,7 +10,7 @@ namespace pacman
 	public:
 		explicit LevelLoader() = default;
 		
-		void InitLevel(dae::Scene& scene, const std::string& filename);
+		void InitLevel(dae::Scene& scene, const std::string& filename, const std::string& levelname);
 	private:
 		float m_cellsize{(float)Graph::GetInstance().GetCellSize()};
 

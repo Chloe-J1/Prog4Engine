@@ -24,9 +24,8 @@
 #include "EatenComponent.h"
 #include "PacmanAnimator.h"
 
-#include <iostream>
 
-void pacman::SceneLoader::GameScene()
+void pacman::SceneLoader::GameScene(const std::string& levelname)
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
@@ -36,7 +35,7 @@ void pacman::SceneLoader::GameScene()
 	bg->AddComponent<dae::RenderComponent>("Level_one.png");
 	scene.Add(std::move(bg));
 
-	m_levelLoader.InitLevel(scene, "Data/Maps/Level_one.txt");
+	m_levelLoader.InitLevel(scene, "Data/Levels.json", levelname);
 	
 	// FPS
 	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();

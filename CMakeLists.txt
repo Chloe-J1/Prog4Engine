@@ -100,7 +100,17 @@ if(NOT glm_FOUND)
   FetchContent_MakeAvailable(glm)
 endif()
 
-
+# add nlohmann json
+find_package (nlohmann_json CONFIG QUIET)
+if(NOT nlohmann_json_FOUND)
+FetchContent_Declare(
+   nlohmann_json
+   URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+    DOWNLOAD_NO_PROGRESS ON
+    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/downloads
+  )
+  FetchContent_MakeAvailable(nlohmann_json)
+ endif()
 
 # Dear ImGui
 FetchContent_Declare(
@@ -128,7 +138,6 @@ target_compile_features(imgui PUBLIC cxx_std_20)
 
 if (WIN32)
   # Add VLD (Visual Leak Detector) for memory leak detection on Windows
-  list(APPEND CMAKE_PREFIX_PATH "C:/Program Files (x86)/Visual Leak Detector")
   find_package(VLD CONFIG)
 endif()
 
@@ -190,8 +199,7 @@ else()
 endif()
 
 # GAME
-if(EMSCRIPTEN)
-  add_executable(${GAME_TARGET}
+add_executable(${GAME_TARGET}
     PacMan/Main.cpp
     PacMan/Commands.cpp
     PacMan/HealthComponentUI.cpp
@@ -222,38 +230,6 @@ if(EMSCRIPTEN)
     PacMan/SceneLoader.cpp
     PacMan/PacmanAnimator.cpp
   )
-else()
-  add_executable(${GAME_TARGET} WIN32
-    PacMan/Main.cpp
-    PacMan/Commands.cpp
-    PacMan/HealthComponentUI.cpp
-    PacMan/PlayerMovement.cpp
-    PacMan/HealthComponent.cpp
-    PacMan/MenuManager.cpp
-    PacMan/ButtonComponent.cpp
-    PacMan/Events.cpp
-    PacMan/SoundManager.h
-    PacMan/GamestateManager.cpp
-    PacMan/Graph.cpp
-    PacMan/LevelLoader.cpp
-    PacMan/GhostState.cpp
-    PacMan/GhostComponent.cpp
-    PacMan/TargetMoverComponent.cpp
-    PacMan/FruitComponent.cpp
-    PacMan/FruitSpawner.cpp
-    PacMan/EatenComponent.cpp
-    PacMan/MoveStrategies.cpp
-    PacMan/GameState.cpp
-    PacMan/GamestateManager.cpp
-    PacMan/SoundManager.cpp
-    PacMan/ScoreComponentUI.cpp
-    PacMan/ScoreComponent.cpp
-    PacMan/Pellets.cpp
-    PacMan/FruitSpawner.cpp
-    PacMan/FPSComponent.cpp
-    PacMan/SceneLoader.cpp
-    PacMan/PacmanAnimator.cpp)
-endif()
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
 
@@ -267,6 +243,7 @@ target_include_directories(${GAME_TARGET} PRIVATE
 
 target_link_libraries(${GAME_TARGET} PRIVATE
   ${ENGINE_TARGET}
+  nlohmann_json::nlohmann_json
 )
 
 if(MSVC)

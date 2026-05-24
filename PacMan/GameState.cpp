@@ -34,7 +34,7 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 // SINGLEPLAYER
 void pacman::SingleplayerState::OnEnter()
 {
-	SceneLoader::GetInstance().GameScene();
+	SceneLoader::GetInstance().GameScene("level_one");
 	SceneLoader::GetInstance().SingleplayerScene();
 
 	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
@@ -62,7 +62,7 @@ std::unique_ptr<pacman::GameState> pacman::SingleplayerState::Notify(dae::GameOb
 //COOP
 void pacman::CoopState::OnEnter()
 {
-	SceneLoader::GetInstance().GameScene();
+	SceneLoader::GetInstance().GameScene("level_one");
 	SceneLoader::GetInstance().CoopScene();
 
 	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
@@ -89,7 +89,7 @@ std::unique_ptr<pacman::GameState> pacman::CoopState::Notify(dae::GameObject*, c
 // VERSUS
 void pacman::VersusState::OnEnter()
 {
-	SceneLoader::GetInstance().GameScene();
+	SceneLoader::GetInstance().GameScene("level_one");
 	SceneLoader::GetInstance().VersusScene();
 
 	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
