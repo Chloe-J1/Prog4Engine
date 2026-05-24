@@ -3,6 +3,11 @@
 #include <functional>
 #include <filesystem>
 #include <string>
+#include "InputManager.h"
+#include "SceneManager.h"
+#include "CollisionManager.h"
+#include "EventQueue.h"
+#include "Renderer.h"
 
 namespace dae
 {
@@ -22,5 +27,10 @@ namespace dae
 		Minigin(Minigin&& other) = delete;
 		Minigin& operator=(const Minigin& other) = delete;
 		Minigin& operator=(Minigin&& other) = delete;
+
+		SceneManager& m_sceneManager{ dae::SceneManager::GetInstance() };
+		CollisionManager& m_collisionManager{ dae::CollisionManager::GetInstance() };
+		EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
+		Renderer& m_renderer{ dae::Renderer::GetInstance() };
 	};
 }

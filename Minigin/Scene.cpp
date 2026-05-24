@@ -10,7 +10,7 @@ using namespace dae;
 void Scene::Add(std::unique_ptr<GameObject> object)
 {
 	assert(object != nullptr && "Cannot add a null GameObject to the scene.");
-	m_pendingObjects.emplace_back(std::move(object));
+	m_newObjects.emplace_back(std::move(object));
 }
 
 void dae::Scene::Remove(const GameObject& object)
@@ -28,14 +28,14 @@ void dae::Scene::Remove(const GameObject& object)
 void Scene::RemoveAll()
 {
 	m_objects.clear();
-	m_pendingObjects.clear();
+	m_newObjects.clear();
 }
 
-void dae::Scene::FlushPending()
+void dae::Scene::MoveNewObjects()
 {
-	for (auto& obj : m_pendingObjects)
+	for (auto& obj : m_newObjects)
 		m_objects.emplace_back(std::move(obj));
-	m_pendingObjects.clear();
+	m_newObjects.clear();
 }
 
 void Scene::Update(float elapsedSec)

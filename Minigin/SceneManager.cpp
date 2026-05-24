@@ -1,10 +1,10 @@
 #include "SceneManager.h"
+#include "SceneManager.h"
 #include "Scene.h"
 #include "InputManager.h"
 
 void dae::SceneManager::Update(float elapsedSec)
 {
-	m_activeScene->FlushPending();
 	m_activeScene->Update(elapsedSec);
 }
 
@@ -33,6 +33,11 @@ void dae::SceneManager::Render()
 void dae::SceneManager::RenderUI()
 {
 	m_activeScene->RenderUI();
+}
+
+void dae::SceneManager::MoveNewObjects()
+{
+	m_activeScene->MoveNewObjects();
 }
 
 dae::Scene& dae::SceneManager::CreateScene()

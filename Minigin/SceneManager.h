@@ -2,7 +2,6 @@
 #include <memory>
 #include "Scene.h"
 #include "Singleton.h"
-#include <functional>
 
 namespace dae
 {
@@ -18,6 +17,7 @@ namespace dae
 		void Cleanup();
 		void Render();
 		void RenderUI();
+		void MoveNewObjects();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

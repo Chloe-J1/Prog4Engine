@@ -8,21 +8,16 @@
 #define WIN32_LEAN_AND_MEAN 
 #include <windows.h>
 #endif
-
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include "Minigin.h"
-#include "InputManager.h"
-#include "SceneManager.h"
 #include "Renderer.h"
-#include "ResourceManager.h"
 #include <cstdio>
-#include "EventQueue.h"
-#include "CollisionManager.h"
 #include "WindowConfig.h"
 #include "SoundSystem.h"
 #include "ServiceLocator.h"
+#include "ResourceManager.h"
 
 SDL_Window* g_window{};
 
@@ -99,7 +94,7 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath, int windowWidth, in
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 
-	Renderer::GetInstance().Init(g_window);
+	m_renderer.Init(g_window);
 	ResourceManager::GetInstance().Init(dataPath);
 
 #ifndef __EMSCRIPTEN__
@@ -122,7 +117,7 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath, int windowWidth, in
 dae::Minigin::~Minigin()
 {
 	ServiceLocator::RegisterSoundsystem(nullptr);
-	Renderer::GetInstance().Destroy();
+	m_renderer.Destroy();
 	SDL_DestroyWindow(g_window);
 	g_window = nullptr;
 	MIX_Quit();
@@ -158,23 +153,24 @@ void dae::Minigin::RunOneFrame()
 	m_lag += delta_time;
 
 	const float fixed_time_step = 0.02f;
+	m_sceneManager.MoveNewObjects();
 	m_quit = !InputManager::GetInstance().ProcessInput();
 
 	while (m_lag >= fixed_time_step)
 	{
-		SceneManager::GetInstance().FixedUpdate();
+		m_sceneManager.FixedUpdate();
 		m_lag -= fixed_time_step;
 	}
-	SceneManager::GetInstance().Update(delta_time);
+	m_sceneManager.Update(delta_time);
 
-	CollisionManager::GetInstance().CheckOverlapping();
-	EventQueue::GetInstance().Update();
+	m_collisionManager.CheckOverlapping();
+	m_eventQueue.Update();
 
-	SceneManager::GetInstance().LateUpdate(delta_time);
+	m_sceneManager.LateUpdate(delta_time);
 
-	SceneManager::GetInstance().Cleanup();
+	m_sceneManager.Cleanup();
 
-	Renderer::GetInstance().Render();
+	m_renderer.Render();
 
 	const int ms_per_frame = 16;
 	const auto sleep_time = current_time + std::chrono::milliseconds(ms_per_frame) - std::chrono::high_resolution_clock::now();
