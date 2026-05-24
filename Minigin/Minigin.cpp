@@ -154,7 +154,7 @@ void dae::Minigin::RunOneFrame()
 
 	const float fixed_time_step = 0.02f;
 	m_sceneManager.MoveNewObjects();
-	m_quit = !InputManager::GetInstance().ProcessInput();
+	m_quit = !m_inputManager.ProcessInput();
 
 	while (m_lag >= fixed_time_step)
 	{

@@ -32,5 +32,6 @@ namespace dae
 		CollisionManager& m_collisionManager{ dae::CollisionManager::GetInstance() };
 		EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 		Renderer& m_renderer{ dae::Renderer::GetInstance() };
+		InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 	};
 }

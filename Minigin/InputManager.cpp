@@ -68,6 +68,7 @@ void dae::InputManager::BindCommand(Input button, TriggerEvent triggerEvent, std
 
 void dae::InputManager::UnbindCommand(Input button, TriggerEvent triggerEvent, int controllerIdx)
 {
+	if (controllerIdx < 0 || controllerIdx >= int(m_controllers.size())) return;
 	m_controllers[controllerIdx]->UnbindCommand(button, triggerEvent);
 }
 
