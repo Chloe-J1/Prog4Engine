@@ -21,9 +21,22 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	int pathIdx{ 0 };
 
 	int nrPellets{};
+
+	// Add background
+	std::unique_ptr<dae::GameObject> bg = std::make_unique<dae::GameObject>();
+	bg->AddComponent<dae::RenderComponent>(levelname + ".png");
+	scene.Add(std::move(bg));
+
+	// Level layout
 	if (iFile.is_open())
 	{
 		nlohmann::json data = nlohmann::json::parse(iFile);
+
+		if (not data.contains(levelname))
+		{
+			std::cerr << "Level not found: " << levelname << "\n";
+			return;
+		}
 		for (const auto& line : data[levelname])
 		{
 			std::string row = line;
@@ -85,5 +98,3 @@ std::unique_ptr<dae::GameObject> pacman::LevelLoader::CreatePowerPellet(float x,
 	pellet->SetLocalPosition(x + offset, y + offset);
 	return pellet;
 }
-
-

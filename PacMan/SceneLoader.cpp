@@ -29,12 +29,6 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
-	// Background
-	//***********
-	std::unique_ptr<dae::GameObject> bg = std::make_unique<dae::GameObject>();
-	bg->AddComponent<dae::RenderComponent>("Level_one.png");
-	scene.Add(std::move(bg));
-
 	m_levelLoader.InitLevel(scene, "Data/Levels.json", levelname);
 	
 	// FPS
@@ -52,8 +46,6 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
 	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
 	scene.Add(std::move(fruitSpawnerGo));
-
-	
 }
 
 void pacman::SceneLoader::SingleplayerScene()

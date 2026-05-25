@@ -5,7 +5,6 @@
 #include "EventQueue.h"
 #include "CollisionManager.h"
 
-#include <iostream>
 dae::Hitbox::Hitbox(GameObject* gameObject, int width, int height):
 	Component(gameObject),
 	m_width{width},
