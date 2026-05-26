@@ -79,6 +79,7 @@ namespace dae
 		void SetPositionDirty();
 		std::vector<GameObject*> GetChildren();
 		int GetChildCount() const;
+		GameObject* GetChildAt(int index) const;
 
 		// Destroy
 		void SetIsAlive(bool isAlive);
