@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include "../Minigin/Event.h"
+#include <vector>
+#include <string>
 
 namespace dae
 {
@@ -11,11 +13,12 @@ namespace pacman
 	class GameState
 	{
 	public:
-		virtual ~GameState() {};
+		virtual ~GameState() = default;
 		virtual void OnEnter() {};
 		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&) { return nullptr; };
 		virtual void OnExit() {};
 	};
+
 
 	class MainMenuState final : public GameState
 	{
@@ -24,43 +27,41 @@ namespace pacman
 		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
 	};
 
-	class SingleplayerState final : public GameState
+	class PlayState : public GameState
 	{
 	public:
-		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
-
-	private:
+		virtual ~PlayState() = default;
+		virtual void OnEnter();
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&);
+	protected:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
 		const int m_nrPacman{ 1 };
 		int m_nrDeaths{};
+		int m_levelIdx{ 0 };
+		std::vector<std::string> m_levels{ "Level_one", "Level_two", "Level_three" };
+
+		virtual void LoadScene() = 0;
 	};
 
-	class CoopState final : public GameState
+	class SingleplayerState final : public PlayState
 	{
-	public:
-		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
-
 	private:
-		int m_nrEatenPellets{};
-		int m_totalNrPellets{};
-		const int m_nrPacman{ 2 };
-		int m_nrDeaths{};
+		virtual void LoadScene();
 	};
 
-	class VersusState final : public GameState
+	class CoopState final : public PlayState
 	{
 	public:
-		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
 
 	private:
-		int m_nrEatenPellets{};
-		int m_totalNrPellets{};
-		const int m_nrPacman{ 1 };
-		int m_nrDeaths{};
+		virtual void LoadScene() override;
+	};
+
+	class VersusState final : public PlayState
+	{
+	private:
+		virtual void LoadScene() override;
 	};
 
 	class WinState final : public GameState

@@ -31,22 +31,34 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 	return nullptr;
 }
 
-// SINGLEPLAYER
-void pacman::SingleplayerState::OnEnter()
+// PLAYSTATE
+void pacman::PlayState::OnEnter()
 {
-	SceneLoader::GetInstance().GameScene("Level_three");
-	SceneLoader::GetInstance().SingleplayerScene();
+	SceneLoader::GetInstance().GameScene(m_levels[m_levelIdx]);
+	LoadScene();
 
 	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
 }
 
-std::unique_ptr<pacman::GameState> pacman::SingleplayerState::Notify(dae::GameObject* , const dae::Event& event)
+std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, const dae::Event& event)
 {
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
 		++m_nrEatenPellets;
-		if (m_nrEatenPellets >= m_totalNrPellets)
-			return std::make_unique<pacman::WinState>();
+		if (m_nrEatenPellets >= 5)
+		{
+			++m_levelIdx;
+			if (m_levelIdx >= 3)
+			{
+				return std::make_unique<pacman::WinState>();
+			}
+			else
+			{
+				SceneLoader::GetInstance().GameScene(m_levels[m_levelIdx]);
+				LoadScene();
+			}
+			m_nrEatenPellets = 0;
+		}
 	}
 	else if (event.id == "PLAYER_DIED")
 	{
@@ -58,61 +70,23 @@ std::unique_ptr<pacman::GameState> pacman::SingleplayerState::Notify(dae::GameOb
 	return nullptr;
 }
 
+// SINGLEPLAYER
+void pacman::SingleplayerState::LoadScene()
+{
+	SceneLoader::GetInstance().SingleplayerScene();
+}
 
 //COOP 
-void pacman::CoopState::OnEnter()
+void pacman::CoopState::LoadScene()
 {
-	SceneLoader::GetInstance().GameScene("Level_two");
 	SceneLoader::GetInstance().CoopScene();
-
-	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
-}
-
-std::unique_ptr<pacman::GameState> pacman::CoopState::Notify(dae::GameObject*, const dae::Event& event)
-{
-	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
-	{
-		++m_nrEatenPellets;
-		if (m_nrEatenPellets >= m_totalNrPellets)
-			return std::make_unique<pacman::WinState>();
-	}
-	else if (event.id == "PLAYER_DIED")
-	{
-		++m_nrDeaths;
-		if (m_nrDeaths >= m_nrPacman)
-			return std::make_unique<pacman::LoseState>();
-	}
-
-	return nullptr;
 }
 
 // VERSUS
-void pacman::VersusState::OnEnter()
+void pacman::VersusState::LoadScene()
 {
-	SceneLoader::GetInstance().GameScene("Level_one");
 	SceneLoader::GetInstance().VersusScene();
-
-	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
 }
-
-std::unique_ptr<pacman::GameState> pacman::VersusState::Notify(dae::GameObject* , const dae::Event& event)
-{
-	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
-	{
-		++m_nrEatenPellets;
-		if (m_nrEatenPellets >= m_totalNrPellets)
-			return std::make_unique<pacman::WinState>();
-	}
-	else if (event.id == "PLAYER_DIED")
-	{
-		++m_nrDeaths;
-		if (m_nrDeaths >= m_nrPacman)
-			return std::make_unique<pacman::LoseState>();
-	}
-
-	return nullptr;
-}
-
 
 // maybe don't split in win & lose screen and just make a general end screen that displays info based on the gamemode
 
