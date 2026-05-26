@@ -2,7 +2,7 @@
 #include "Events.h"
 #include "Pellets.h"
 #include "../Minigin/GameObject.h"
-#include <iostream>
+#include "FruitComponent.h"
 
 int pacman::ScoreComponent::m_nrGhostsEaten{ 0 };
 
@@ -44,6 +44,14 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 		m_eventQueue.Invoke(std::move(pickupEvent), GetGameObject());
 
 		other->SetIsAlive(false);
+	}
+	FruitComponent* fruit = other->GetComponent<FruitComponent>();
+	if (fruit != nullptr)
+	{
+		m_score += fruit->GetValue();
+		dae::Event event{ "FRUIT_PICKUP" };
+		event.arg = std::make_unique<ScoreArg>(m_score);
+		m_eventQueue.Invoke(std::move(event), GetGameObject());
 	}
 }
 

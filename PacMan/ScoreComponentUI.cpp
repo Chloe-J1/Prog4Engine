@@ -19,7 +19,7 @@ pacman::ScoreComponentUI::~ScoreComponentUI()
 void pacman::ScoreComponentUI::Notify(dae::GameObject* sender, const dae::Event& event)
 {
 	if (m_pacman != sender) return;
-	if (event.id == "SCORE_CHANGED" || event.id == "POWER_PELLET_PICKUP" || event.id == "PELLET_PICKUP")
+	if (event.id == "SCORE_CHANGED" || event.id == "POWER_PELLET_PICKUP" || event.id == "PELLET_PICKUP" || event.id == "FRUIT_PICKUP")
 	{
 		auto* arg = static_cast<ScoreArg*>(event.arg.get());
 		int score{ arg->score };

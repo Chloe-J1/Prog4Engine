@@ -1,11 +1,15 @@
 #include "FruitSpawner.h"
+#include "../Minigin/Hitbox.h"
+#include "../Minigin/RenderComponent.h"
+#include "FruitComponent.h"
+#include "../Minigin/SpriteComponent.h"
+#include "TargetMoverComponent.h"
 
 pacman::FruitSpawner::FruitSpawner(dae::GameObject* owner, dae::Scene* scene) :
 	dae::Component(owner),
 	m_scene{ scene }
 {
 	dae::EventQueue::GetInstance().AddObserver(this);
-	SpawnFruit();
 }
 
 pacman::FruitSpawner::~FruitSpawner()
@@ -16,9 +20,8 @@ pacman::FruitSpawner::~FruitSpawner()
 std::unique_ptr<dae::GameObject> pacman::FruitSpawner::CreateFruit()
 {
 	std::unique_ptr<dae::GameObject> fruit = std::make_unique<dae::GameObject>();
-	glm::vec2 spawnPos{ 24,24 };
 	std::string spriteFilename{ "Fruit.png" };
-	fruit->SetLocalPosition(spawnPos.x, spawnPos.y);
+	fruit->SetLocalPosition(m_spawnPos);
 	const int size{ 16 };
 	const int nrCols{ 1 };
 	const int nrRows{ 3 };
@@ -26,6 +29,11 @@ std::unique_ptr<dae::GameObject> pacman::FruitSpawner::CreateFruit()
 	fruit->AddComponent<dae::RenderComponent>(spriteFilename);
 	fruit->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	fruit->AddComponent<pacman::FruitComponent>();
+	fruit->AddComponent<pacman::TargetMoverComponent>();
+
+	// Random fruit appearance
+	fruit->GetComponent<dae::SpriteComponent>()->SetRow(rand() % nrRows);
+	
 	return fruit;
 }
 
@@ -36,13 +44,13 @@ void pacman::FruitSpawner::SpawnFruit()
 
 void pacman::FruitSpawner::Notify(dae::GameObject*, const dae::Event& event)
 {
-	if (event.id == "PELLET_PICKUP")
+	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
 		++m_nrPelletsPickedup;
 		if (m_nrPelletsPickedup >= m_nrPelletsForFruitSpawn)
 		{
 			m_nrPelletsPickedup = 0;
-			//SpawnFruit();
+			SpawnFruit();
 		}
 	}
 }

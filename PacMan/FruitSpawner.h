@@ -3,16 +3,9 @@
 #include "../Minigin/Component.h"
 #include "../Minigin/Scene.h"
 #include "../Minigin/GameObject.h"
-#include "../Minigin/Hitbox.h"
-#include "../Minigin/RenderComponent.h"
-#include "../Minigin/SpriteComponent.h"
 #include "../Minigin/Observer.h"
-#include "../Minigin/SceneManager.h"
+#include "Graph.h"
 #include <glm/glm.hpp>
-#include "FruitComponent.h"
-#include "Events.h"
-#include "Pellets.h"
-
 
 namespace pacman
 {
@@ -34,7 +27,8 @@ namespace pacman
 
 
 		dae::Scene* m_scene{};
-		int m_nrPelletsPickedup{ 5 }; // 64
+		int m_nrPelletsPickedup{ 0 };
 		const int m_nrPelletsForFruitSpawn{ 5 };
+		glm::vec2 m_spawnPos{ Graph::GetInstance().GetWorldPos(542) };
 	};
 }
