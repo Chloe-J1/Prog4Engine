@@ -14,9 +14,9 @@ namespace pacman
 	{
 	public:
 		virtual ~GameState() = default;
-		virtual void OnEnter() {};
+		virtual void OnEnter();
 		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&) { return nullptr; };
-		virtual void OnExit() {};
+		virtual void OnExit();
 	};
 
 
@@ -36,7 +36,7 @@ namespace pacman
 	protected:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
-		const int m_nrPacman{ 1 };
+		int m_nrPacman{ 1 };
 		int m_nrDeaths{};
 		int m_levelIdx{ 0 };
 		std::vector<std::string> m_levels{ "Level_one", "Level_two", "Level_three" };
@@ -52,8 +52,8 @@ namespace pacman
 
 	class CoopState final : public PlayState
 	{
-	public:
-
+	protected:
+		int m_nrPacman{ 2 };
 	private:
 		virtual void LoadScene() override;
 	};

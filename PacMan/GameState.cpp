@@ -2,7 +2,16 @@
 #include "ButtonComponent.h"
 #include "SceneLoader.h"
 #include "GamestateManager.h"
-#include <iostream>
+
+
+void pacman::GameState::OnEnter()
+{
+}
+
+void pacman::GameState::OnExit()
+{
+}
+
 // MAIN MENU
 void pacman::MainMenuState::OnEnter()
 {
@@ -45,7 +54,7 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, c
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
 		++m_nrEatenPellets;
-		if (m_nrEatenPellets >= 5)
+		if (m_nrEatenPellets >= m_totalNrPellets)
 		{
 			++m_levelIdx;
 			if (m_levelIdx >= 3)
@@ -129,5 +138,4 @@ std::unique_ptr<pacman::GameState> pacman::LoseState::Notify(dae::GameObject* se
 	}
 	return nullptr;
 }
-
 
