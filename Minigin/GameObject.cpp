@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "GameObject.h"
 #include "Component.h"
 #include <algorithm>
 
@@ -182,6 +183,11 @@ void dae::GameObject::SetPositionDirty()
 std::vector<dae::GameObject*> dae::GameObject::GetChildren()
 {
 	return m_childObjects;
+}
+
+int dae::GameObject::GetChildCount() const
+{
+	return m_childObjects.size();
 }
 
 void dae::GameObject::SetIsAlive(bool isAlive)
