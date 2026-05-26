@@ -14,6 +14,7 @@ namespace pacman
 		void MoveAwayTarget(float elapsedSec);
 		void MoveFrontTarget(float elapsedSec);
 		bool MoveToCell(int gridIdx, float elapsedSec);
+		void Wander(float elapsedSec);
 		
 		void SetTargetObj(dae::GameObject* newTarget);
 	private:
@@ -27,9 +28,15 @@ namespace pacman
 		const float m_spriteWidth;
 		const float m_spriteHeight;
 		Graph& m_graph;
+		int m_nrTilesMoved{};
+		int m_wWidth;
+		int m_wHeight;
+		int m_nrCols;
+		int m_nrRows;
 
 		void ChangeDirection(bool isMovingAway);
 		bool IsInNewCell();
 		void Move(float elapsedSec);
+		int GetRandomGridIdx() const;
 	};
 }

@@ -8,6 +8,24 @@
 #include "../Minigin/Hitbox.h"
 #include "MoveStrategies.h"
 
+void pacman::GhostState::OnEnter(GhostComponent&)
+{
+}
+
+std::unique_ptr<pacman::GhostState> pacman::GhostState::Update(pacman::GhostComponent&, float)
+{
+	return nullptr;
+}
+
+std::unique_ptr<pacman::GhostState> pacman::GhostState::Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event&)
+{
+	return nullptr;
+}
+
+void pacman::GhostState::OnExit(pacman::GhostComponent&)
+{
+}
+
 // FOLLOW TARGET
 void pacman::FollowTargetState::OnEnter(GhostComponent& ghost)
 {
@@ -144,12 +162,13 @@ void pacman::EyeState::OnExit(GhostComponent&)
 	m_hitbox->SetIsEnabled(true);
 }
 
-// IDLE
+// DEATH
 void pacman::DeathState::OnEnter(GhostComponent& ghost)
 {
 	// Move to center box
 	ghost.GetGameObject()->GetTransform().SetLocalPosition(Graph::GetInstance().GetWorldPos(m_centerBoxIdx));
 	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0,1);
+	m_moveComp = ghost.GetGameObject()->GetComponent<pacman::TargetMoverComponent>();
 }
 
 std::unique_ptr<pacman::GhostState> pacman::DeathState::Update(GhostComponent&, float elapsedSec)
@@ -159,6 +178,7 @@ std::unique_ptr<pacman::GhostState> pacman::DeathState::Update(GhostComponent&, 
 	{
 		return std::make_unique<pacman::FollowTargetState>();
 	}
+	m_moveComp->Wander(elapsedSec);
 	return std::unique_ptr<pacman::GhostState>();
 }
 

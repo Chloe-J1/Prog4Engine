@@ -3,15 +3,22 @@
 #include "../Minigin/GameObject.h"
 #include "../Minigin/SpriteComponent.h"
 #include "../Minigin/EventQueue.h"
+#include "../Minigin/WindowConfig.h"
 #include "Events.h"
+
+#include <iostream>
 
 pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner):
 	Component(owner),
 	m_spriteWidth{GetGameObject()->GetComponent<dae::SpriteComponent>()->GetWidth()},
 	m_spriteHeight{GetGameObject()->GetComponent<dae::SpriteComponent>()->GetHeight()},
-	m_graph{Graph::GetInstance()}
+	m_graph{Graph::GetInstance()},
+	m_wWidth{dae::WindowConfig::GetInstance().GetWidth()},
+	m_wHeight{dae::WindowConfig::GetInstance().GetHeight()}
 {
 	m_cellsize = m_graph.GetCellSize();
+	m_nrCols = m_graph.GetNrCols();
+	m_nrRows = m_graph.GetNrRows();
 }
 
 
@@ -42,6 +49,23 @@ bool pacman::TargetMoverComponent::MoveToCell(int gridIdx, float elapsedSec)
 
 	Move(elapsedSec);
 	return false;
+}
+
+// Wander changes the random target after moving X amount of tiles
+void pacman::TargetMoverComponent::Wander(float elapsedSec)
+{
+	const int neededTilesMoved{ 10 };
+	if (IsInNewCell())
+	{
+		++m_nrTilesMoved;
+		if (m_nrTilesMoved >= neededTilesMoved)
+		{
+			m_targetPos = m_graph.GetWorldPos(GetRandomGridIdx());
+		}
+		ChangeDirection(false);
+		std::cout << "Change direction\n";
+	}
+	Move(elapsedSec);
 }
 
 
@@ -173,4 +197,12 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 void pacman::TargetMoverComponent::Move(float elapsedSec)
 {
 	GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
+}
+
+int pacman::TargetMoverComponent::GetRandomGridIdx() const
+{
+	int col = rand() % m_nrCols;
+	int row = rand() % m_nrRows;
+
+	return row * m_nrCols + col;
 }

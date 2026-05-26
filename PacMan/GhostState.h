@@ -20,12 +20,11 @@ namespace pacman
 	class GhostState
 	{
 	public:
-		virtual ~GhostState() {};
-		virtual void OnEnter(GhostComponent&) {};
-		virtual std::unique_ptr<pacman::GhostState> Update(pacman::GhostComponent&, float) { return nullptr; };
-		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event&) { return nullptr; };
-		virtual void OnExit(pacman::GhostComponent&) {};
-
+		virtual ~GhostState() = default;
+		virtual void OnEnter(GhostComponent&);
+		virtual std::unique_ptr<pacman::GhostState> Update(pacman::GhostComponent&, float);
+		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event&);
+		virtual void OnExit(pacman::GhostComponent&);
 	};
 
 	class FollowTargetState final : public GhostState
@@ -79,6 +78,7 @@ namespace pacman
 		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnExit(GhostComponent& ghost) override;
 	private:
+		TargetMoverComponent* m_moveComp{};
 		const int m_centerBoxIdx{ 480 };
 		float m_timer{};
 		const float m_maxDeathTime{ 5.f };

@@ -55,6 +55,10 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 					pathIndices.insert(pathIdx);
 					++nrPellets;
 				}
+				else if (item == 'b')
+				{
+					pathIndices.insert(pathIdx);
+				}
 
 				x += m_cellsize;
 				pathIdx++;
