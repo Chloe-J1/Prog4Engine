@@ -40,3 +40,8 @@ void pacman::MenuManager::UnregisterButton(ButtonComponent* button)
 	if (m_buttons.empty()) return; // Prevent cleanup when singleton already doesn't exist anymore
 	std::erase_if(m_buttons, [&](ButtonComponent* b) { return button == b; });
 }
+
+void pacman::MenuManager::ResetSelected()
+{
+	m_currButtonIdx = 0;
+}

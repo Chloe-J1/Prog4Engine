@@ -2,7 +2,7 @@
 #include "ButtonComponent.h"
 #include "SceneLoader.h"
 #include "GamestateManager.h"
-
+#include "MenuManager.h"
 
 void pacman::GameState::OnEnter()
 {
@@ -140,6 +140,11 @@ std::unique_ptr<pacman::GameState> pacman::LoseState::Notify(dae::GameObject* se
 }
 
 // NAME SELECT
+void pacman::NameSelectState::OnEnter()
+{
+	m_inputManager.DisableController(1);
+}
+
 std::unique_ptr<pacman::GameState> pacman::NameSelectState::Notify(dae::GameObject*, const dae::Event& event)
 {
 	if (event.id == "NAME_SELECTED")
@@ -149,6 +154,17 @@ std::unique_ptr<pacman::GameState> pacman::NameSelectState::Notify(dae::GameObje
 		{
 			return std::make_unique<pacman::MainMenuState>();
 		}
+		else if (m_nrSelectedNames == 1)
+		{
+			m_inputManager.EnableController(1);
+			m_inputManager.DisableController(0);
+		}
 	}
 	return nullptr;
+}
+
+void pacman::NameSelectState::OnExit()
+{
+	m_inputManager.EnableAllControllers();
+	MenuManager::GetInstance().ResetSelected();
 }

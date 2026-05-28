@@ -28,10 +28,16 @@ namespace dae
 		bool IsHold(Input button) const;
 		glm::vec2 GetRightStickValues() const;
 		glm::vec2 GetLeftStickValues() const;
+
+		void EnableController();
+		void DisableController();
+		bool GetIsEnabled() const;
+		int GetControllerIdx() const;
 	private:
 		class ControllerImpl;
 		std::unique_ptr<ControllerImpl> m_impl;
 		std::vector<Bindings> m_controllerBindings;
+		bool m_isEnabled{ true };
 	};
 }
 	

@@ -7,6 +7,7 @@
 #include "../Minigin/Font.h"
 #include "SoundManager.h"
 #include "MoveStrategies.h"
+#include "../Minigin/InputManager.h"
 
 namespace pacman
 {
@@ -35,6 +36,7 @@ namespace pacman
 		
 
 		SoundManager m_soundManager{};
+		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 
 		std::unique_ptr<dae::GameObject> CreatePacman(const glm::vec2& spawnPos, const std::string& spritefile, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
 		std::unique_ptr<dae::GameObject> CreateScoreUI(const glm::vec2& spawnPos, dae::GameObject* pacman);

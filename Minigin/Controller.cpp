@@ -1,4 +1,8 @@
 #include "Controller.h"
+#include "Controller.h"
+#include "Controller.h"
+#include "Controller.h"
+#include "Controller.h"
 
 #if WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -56,6 +60,11 @@ public:
 	{
 		return glm::vec2(m_currentState.Gamepad.sThumbLX, m_currentState.Gamepad.sThumbLY);
 	}
+
+	int GetControllerIdx() const
+	{
+		return m_controllerIndex;
+	}
 private:
     int m_controllerIndex{ 0 };
     XINPUT_STATE m_currentState{};
@@ -109,7 +118,10 @@ public:
 		return glm::vec2{ SDL_GetGamepadAxis(m_gamepad, SDL_GAMEPAD_AXIS_RIGHTX) / (float)SDL_JOYSTICK_AXIS_MAX, SDL_GetGamepadAxis(m_gamepad, SDL_GAMEPAD_AXIS_RIGHTY) / (float)SDL_JOYSTICK_AXIS_MAX };
 	}
 
-
+	int GetControllerIdx() const
+	{
+		return m_controllerIndex;
+	}
 private:
 	int m_controllerIndex;
 	bool m_previousState[SDL_GAMEPAD_BUTTON_COUNT] = {};
@@ -128,6 +140,7 @@ namespace dae
 
 	void Controller::ProcessInput()
 	{
+		if (not m_isEnabled) return;
 		m_impl->ProcessInput();
 
 		for (auto& commands : m_controllerBindings)
@@ -178,6 +191,22 @@ namespace dae
 	glm::vec2 Controller::GetLeftStickValues() const 
 	{ 
 		return m_impl->GetLeftStickValues(); 
+	}
+	void Controller::EnableController()
+	{
+		m_isEnabled = true;
+	}
+	void Controller::DisableController()
+	{
+		m_isEnabled = false;
+	}
+	bool Controller::GetIsEnabled() const
+	{
+		return m_isEnabled;
+	}
+	int Controller::GetControllerIdx() const
+	{
+		return m_impl->GetControllerIdx();
 	}
 	glm::vec2 Controller::GetRightStickValues() const 
 	{ 

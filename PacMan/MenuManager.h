@@ -16,6 +16,8 @@ namespace pacman
 		void RegisterButton(ButtonComponent* button);
 
 		void UnregisterButton(ButtonComponent* button);
+
+		void ResetSelected();
 	private:
 		std::vector<ButtonComponent*> m_buttons;
 		int m_currButtonIdx{ 0 };

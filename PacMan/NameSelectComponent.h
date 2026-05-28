@@ -3,6 +3,7 @@
 #include "../Minigin/Observer.h"
 #include <vector>
 #include "../Minigin/EventQueue.h"
+#include "../Minigin/InputManager.h"
 
 namespace pacman
 {
@@ -23,7 +24,7 @@ namespace pacman
 		std::vector<LetterSelectComponent*> m_letters{};
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 
-		void SavePlayerName(const std::string& name);
 
+		void SavePlayerName(const std::string& name);
 	};
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "../Minigin/Event.h"
-#include <vector>
+#include "../Minigin/InputManager.h"
 #include <string>
 
 namespace dae
@@ -22,10 +22,13 @@ namespace pacman
 	class NameSelectState final : public GameState
 	{
 	public:
+		void OnEnter();
 		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		void OnExit();
 	private:
 		int m_nrSelectedNames{};
 		const int m_maxNrPlayers{ 2 };
+		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 	};
 
 	class MainMenuState final : public GameState

@@ -1,9 +1,9 @@
-#include <SDL3/SDL.h>
 #include "InputManager.h"
+#include "InputManager.h"
+#include <SDL3/SDL.h>
 #include "backends/imgui_impl_sdl3.h"
 #include <iostream>
 #include <algorithm>
-
 
 dae::InputManager::InputManager()
 {
@@ -106,6 +106,36 @@ void dae::InputManager::UnbindAllCommands()
 	{
 		controller->UnbindAllCommands();
 	}
+}
+
+void dae::InputManager::DisableController(int controllerIdx)
+{
+	auto itr = std::find_if(m_controllers.begin(), m_controllers.end(), [=](const std::unique_ptr<Controller>& controller) {
+			return controller.get()->GetControllerIdx() == controllerIdx;
+		});
+
+	if (itr != m_controllers.end())
+	{
+		(*itr)->DisableController();
+	}
+}
+
+void dae::InputManager::EnableController(int controllerIdx)
+{
+	auto itr = std::find_if(m_controllers.begin(), m_controllers.end(), [=](const std::unique_ptr<Controller>& controller) {
+		return controller.get()->GetControllerIdx() == controllerIdx;
+		});
+
+	if (itr != m_controllers.end())
+	{
+		(*itr)->EnableController();
+	}
+}
+
+void dae::InputManager::EnableAllControllers()
+{
+	for (auto& controller : m_controllers)
+		controller->EnableController();
 }
 
 void dae::InputManager::InitializeControllers(int amountOfControllers)
