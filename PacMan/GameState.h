@@ -19,12 +19,20 @@ namespace pacman
 		virtual void OnExit();
 	};
 
+	class NameSelectState final : public GameState
+	{
+	public:
+		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+	private:
+		int m_nrSelectedNames{};
+		const int m_maxNrPlayers{ 2 };
+	};
 
 	class MainMenuState final : public GameState
 	{
 	public:
-		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
+		void OnEnter();
+		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
 	};
 
 	class PlayState : public GameState
@@ -47,7 +55,7 @@ namespace pacman
 	class SingleplayerState final : public PlayState
 	{
 	private:
-		virtual void LoadScene();
+		void LoadScene();
 	};
 
 	class CoopState final : public PlayState
@@ -55,26 +63,26 @@ namespace pacman
 	protected:
 		int m_nrPacman{ 2 };
 	private:
-		virtual void LoadScene() override;
+		void LoadScene();
 	};
 
 	class VersusState final : public PlayState
 	{
 	private:
-		virtual void LoadScene() override;
+		void LoadScene();
 	};
 
 	class WinState final : public GameState
 	{
 	public:
-		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
+		void OnEnter();
+		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
 	};
 
 	class LoseState final : public GameState
 	{
 	public:
-		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event) override;
+		void OnEnter();
+		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
 	};
 }

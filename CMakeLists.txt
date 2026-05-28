@@ -129,7 +129,7 @@ add_library(imgui STATIC
   ${imgui_SOURCE_DIR}/imgui_demo.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp
   ${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp
- )
+)
 
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR} ${sdl3_SOURCE_DIR}/include)
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
@@ -229,7 +229,8 @@ add_executable(${GAME_TARGET}
     PacMan/FPSComponent.cpp
     PacMan/SceneLoader.cpp
     PacMan/PacmanAnimator.cpp
-  )
+    PacMan/LetterSelectComponent.cpp
+    PacMan/NameSelectComponent.cpp)
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
 
@@ -244,6 +245,10 @@ target_include_directories(${GAME_TARGET} PRIVATE
 target_link_libraries(${GAME_TARGET} PRIVATE
   ${ENGINE_TARGET}
   nlohmann_json::nlohmann_json
+)
+
+target_compile_definitions(${GAME_TARGET} PRIVATE
+    DATA_PATH="${CMAKE_SOURCE_DIR}/Data"
 )
 
 if(MSVC)

@@ -28,7 +28,7 @@ namespace pacman
 
 		dae::Scene* m_scene{};
 		int m_nrPelletsPickedup{ 0 };
-		const int m_nrPelletsForFruitSpawn{ 5 };
+		const int m_nrPelletsForFruitSpawn{ 70 };
 		glm::vec2 m_spawnPos{ Graph::GetInstance().GetWorldPos(542) };
 	};
 }

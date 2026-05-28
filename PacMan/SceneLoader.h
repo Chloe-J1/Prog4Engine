@@ -15,10 +15,7 @@ namespace pacman
 	class SceneLoader final : public dae::Singleton<SceneLoader>
 	{
 	public:
-		SceneLoader():
-			m_levelLoader{}
-		{
-		}
+		SceneLoader();
 
 		// Scenes
 		void GameScene(const std::string& levelname);
@@ -28,10 +25,14 @@ namespace pacman
 		void LoseScene();
 		void WinScene();
 		void MenuScene();
+		void NameSelectScene();
 	private:
-		LevelLoader m_levelLoader;
+		LevelLoader m_levelLoader{};
 		const int m_player1CtrlIdx{ 0 };
 		const int m_player2CtrllIdx{ 1 };
+		const int m_wWidth;
+		const int m_wHeight;
+		
 
 		SoundManager m_soundManager{};
 

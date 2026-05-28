@@ -63,7 +63,6 @@ void pacman::TargetMoverComponent::Wander(float elapsedSec)
 			m_targetPos = m_graph.GetWorldPos(GetRandomGridIdx());
 		}
 		ChangeDirection(false);
-		std::cout << "Change direction\n";
 	}
 	Move(elapsedSec);
 }

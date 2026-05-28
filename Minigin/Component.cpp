@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Component.h"
 #include "Component.h"
+#include "Component.h"
 
 
 void dae::Component::Start()
@@ -65,5 +66,9 @@ void dae::Component::SetIsEnabled(bool isEnabled)
 
 dae::Component::Component(GameObject* owner):
 	m_gameObject{owner}
+{
+}
+
+void dae::Component::OnCollision(GameObject*)
 {
 }

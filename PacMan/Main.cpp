@@ -9,16 +9,34 @@
 #include "../Minigin/InputManager.h"
 #include "GamestateManager.h"
 #include "SceneLoader.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
 
 #include <filesystem>
 namespace fs = std::filesystem;
+
+static void ClearCurrentPlayers()
+{
+	std::filesystem::path filePath = std::filesystem::path(DATA_PATH) / "Scores.json";
+
+	nlohmann::json data;
+	std::ifstream iFile(filePath);
+	data = nlohmann::json::parse(iFile);
+	iFile.close();
+
+	data["CurrentPlayers"] = nlohmann::json::array();
+
+	std::ofstream oFile(filePath);
+	oFile << data.dump(4);
+}
 
 static void load()
 {
 	const int nrControllers{ 2 };
 	dae::InputManager::GetInstance().InitializeControllers(nrControllers);
 	pacman::GamestateManager::GetInstance().Init();
-	pacman::SceneLoader::GetInstance().MenuScene();
+	ClearCurrentPlayers();
+	pacman::SceneLoader::GetInstance().NameSelectScene();
 }
 
 int main(int, char*[]) {

@@ -139,3 +139,16 @@ std::unique_ptr<pacman::GameState> pacman::LoseState::Notify(dae::GameObject* se
 	return nullptr;
 }
 
+// NAME SELECT
+std::unique_ptr<pacman::GameState> pacman::NameSelectState::Notify(dae::GameObject*, const dae::Event& event)
+{
+	if (event.id == "NAME_SELECTED")
+	{
+		m_nrSelectedNames++;
+		if (m_nrSelectedNames >= m_maxNrPlayers)
+		{
+			return std::make_unique<pacman::MainMenuState>();
+		}
+	}
+	return nullptr;
+}
