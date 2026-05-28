@@ -41,7 +41,13 @@ namespace pacman
 	class PlayState : public GameState
 	{
 	public:
+		PlayState(int nrPacman);
 		virtual ~PlayState() = default;
+		PlayState(const PlayState& other) = delete;
+		PlayState(PlayState&& other) = delete;
+		PlayState& operator=(const PlayState& other) = delete;
+		PlayState& operator=(PlayState&& other) = delete;
+
 		virtual void OnEnter();
 		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&);
 	protected:
@@ -57,32 +63,29 @@ namespace pacman
 
 	class SingleplayerState final : public PlayState
 	{
+	public:
+		SingleplayerState(int nrPacman);
 	private:
 		void LoadScene();
 	};
 
 	class CoopState final : public PlayState
 	{
-	protected:
-		int m_nrPacman{ 2 };
+	public:
+		CoopState(int nrPacman);
 	private:
 		void LoadScene();
 	};
 
 	class VersusState final : public PlayState
 	{
+	public:
+		VersusState(int nrPacman);
 	private:
 		void LoadScene();
 	};
 
-	class WinState final : public GameState
-	{
-	public:
-		void OnEnter();
-		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
-	};
-
-	class LoseState final : public GameState
+	class EndState final : public GameState
 	{
 	public:
 		void OnEnter();

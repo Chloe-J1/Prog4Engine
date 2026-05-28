@@ -8,7 +8,7 @@ namespace pacman
 	class ScoreComponent final : public dae::Component, public dae::Observer
 	{
 	public:
-		ScoreComponent(dae::GameObject* owner);
+		ScoreComponent(dae::GameObject* owner, int controllerIdx);
 		~ScoreComponent();
 		ScoreComponent(const ScoreComponent& other) = delete;
 		ScoreComponent(ScoreComponent&& other) = delete;
@@ -25,5 +25,9 @@ namespace pacman
 		int m_score{ 0 };
 		static int m_nrGhostsEaten;
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
+		int m_controllerIdx;
+
+
+		void CheckForHighscore();
 	};
 }

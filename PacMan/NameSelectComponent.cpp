@@ -51,10 +51,10 @@ void pacman::NameSelectComponent::SavePlayerName(const std::string& name)
 	iFile.close();
 
 	data["CurrentPlayers"].push_back({
-		{"name", name},
-		{"score", 0}
-		});
+		{"name", name}
+	});
 
 	std::ofstream oFile(filepath);
 	oFile << data.dump(4);
+	oFile.close();
 }

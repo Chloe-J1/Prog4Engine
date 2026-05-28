@@ -25,9 +25,12 @@
 #include "LetterSelectComponent.h"
 #include "NameSelectComponent.h"
 
+
 pacman::SceneLoader::SceneLoader():
 	m_wWidth{ dae::WindowConfig::GetInstance().GetWidth() },
-	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() }
+	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
+	m_levelLoader{std::make_unique<LevelLoader>()},
+	m_highscoreParser{std::make_unique<HighscoreParser>()}
 {
 }
 
@@ -35,7 +38,7 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
-	m_levelLoader.InitLevel(scene, "Data/Levels.json", levelname);
+	m_levelLoader->InitLevel(scene, "Data/Levels.json", levelname);
 	
 	// FPS
 	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
@@ -184,37 +187,22 @@ void pacman::SceneLoader::VersusScene()
 	scene.Add(std::move(ghost));
 }
 
-void pacman::SceneLoader::LoseScene()
-{
-	dae::SceneManager::GetInstance().CreateScene();
-	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
-	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->AddComponent<dae::RenderComponent>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go->AddComponent<dae::TextComponent>("GAME OVER", font);
-	scene.Add(std::move(go));
-
-	// Main menu button
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f }, "Button.png", "LoadMainScene");
-	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Home", font);
-	buttonText->SetParent(button.get(), false);
-	scene.Add(std::move(button));
-	scene.Add(std::move(buttonText));
-}
-
-void pacman::SceneLoader::WinScene()
+void pacman::SceneLoader::EndScene()
 {
 	const int wWidth{ dae::WindowConfig::GetInstance().GetWidth() };
 	const int wHeight{ dae::WindowConfig::GetInstance().GetHeight() };
 
-	dae::SceneManager::GetInstance().CreateScene();
-	dae::Scene& scene = dae::SceneManager::GetInstance().GetActiveScene();
-	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
-	go->AddComponent<dae::RenderComponent>();
+	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
+
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go->AddComponent<dae::TextComponent>("GAME WON + highscore", font);
-	scene.Add(std::move(go));
+	m_highscores = m_highscoreParser->GetHighscores();
+	glm::vec2 drawPos{ 50.f,50.f };
+	const float offset{ 80.f };
+	for (const auto& text : m_highscores)
+	{
+		scene.Add(CreateText(drawPos, text, font));
+		drawPos.y += offset;
+	}
 
 	// Main menu button
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
@@ -228,8 +216,6 @@ void pacman::SceneLoader::WinScene()
 
 void pacman::SceneLoader::MenuScene()
 {
-
-
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
 	// Bind MenuScene commands
@@ -280,7 +266,6 @@ void pacman::SceneLoader::NameSelectScene()
 	m_inputManager.BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 1);
 	m_inputManager.BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 1);
 
-	// TODO: in a loop
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 	std::unique_ptr<dae::GameObject> button1 = CreateButton(glm::vec2{50,70}, "Button.png", "UpP1");
 	std::unique_ptr<dae::GameObject> buttonText1 = CreateText(glm::vec2{ 10,4 }, "Up", font);
@@ -346,7 +331,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreatePacman(const glm::ve
 	//
 	constexpr int playerSize{ 16 };
 	go->AddComponent<dae::Hitbox>(playerSize, playerSize);
-	go->AddComponent<pacman::ScoreComponent>();
+	go->AddComponent<pacman::ScoreComponent>(ctrlIdx);
 	go->AddComponent<pacman::PlayerMovement>(usesKeyboard, usesController, ctrlIdx);
 	go->AddComponent<pacman::HealthComponent>();
 	go->SetLayer("Player");

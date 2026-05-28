@@ -1,13 +1,16 @@
 #pragma once
 #include "../Minigin/Singleton.h"
 #include "../Minigin/GameObject.h"
-#include "LevelLoader.h"
 #include <string>
 #include <glm/glm.hpp>
 #include "../Minigin/Font.h"
 #include "SoundManager.h"
 #include "MoveStrategies.h"
 #include "../Minigin/InputManager.h"
+#include <memory>
+#include "LevelLoader.h"
+#include "HighscoreParser.h"
+#include <vector>
 
 namespace pacman
 {
@@ -23,12 +26,14 @@ namespace pacman
 		void SingleplayerScene();
 		void CoopScene();
 		void VersusScene();
-		void LoseScene();
-		void WinScene();
+		void EndScene();
 		void MenuScene();
 		void NameSelectScene();
 	private:
-		LevelLoader m_levelLoader{};
+		std::unique_ptr<LevelLoader> m_levelLoader;
+		std::unique_ptr<HighscoreParser> m_highscoreParser;
+		std::vector<std::string> m_highscores{};
+
 		const int m_player1CtrlIdx{ 0 };
 		const int m_player2CtrllIdx{ 1 };
 		const int m_wWidth;

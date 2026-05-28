@@ -3,11 +3,14 @@
 #include "Pellets.h"
 #include "../Minigin/GameObject.h"
 #include "FruitComponent.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
 
 int pacman::ScoreComponent::m_nrGhostsEaten{ 0 };
 
-pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner) :
-	Component(owner)
+pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner, int controllerIdx) :
+	Component(owner),
+	m_controllerIdx{ controllerIdx }
 {
 	m_eventQueue.AddObserver(this);
 }
@@ -15,6 +18,9 @@ pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner) :
 pacman::ScoreComponent::~ScoreComponent()
 {
 	m_eventQueue.RemoveObserver(this);
+
+	// New highscore?
+	CheckForHighscore();
 }
 
 int pacman::ScoreComponent::GetScore() const
@@ -65,5 +71,32 @@ void pacman::ScoreComponent::Notify(dae::GameObject*, const dae::Event& event)
 		dae::Event e{ "SCORE_CHANGED" };
 		e.arg = std::make_unique<ScoreArg>(m_score);
 		m_eventQueue.Invoke(std::move(e), GetGameObject());
+	}
+}
+
+void pacman::ScoreComponent::CheckForHighscore()
+{
+	const int m_maxNrHighscores{ 3 };
+	std::filesystem::path filepath = std::filesystem::path(DATA_PATH) / "Scores.json";
+	std::ifstream iFile(filepath);
+
+	nlohmann::json data = nlohmann::json::parse(iFile);
+	auto& highscores = data["Highscores"];
+	if (highscores.size() < m_maxNrHighscores || m_score > highscores.back()["score"])
+	{
+		if(highscores.size() >= m_maxNrHighscores)
+			highscores.erase(m_maxNrHighscores - 1); // remove lowest value
+		std::string playerName = data["CurrentPlayers"][m_controllerIdx]["name"];
+		highscores.push_back({
+			{"name", playerName},
+			{"score", m_score}
+		});
+		std::sort(highscores.begin(), highscores.end(), [](auto val1, auto val2) {
+				return val1["score"] > val2["score"];
+			});
+
+		std::ofstream oFile(filepath);
+		oFile << data.dump(4);
+		oFile.close();
 	}
 }

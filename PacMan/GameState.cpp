@@ -26,18 +26,23 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 
 		if (button->GetName() == "LoadSingleplayerScene")
 		{
-			return std::make_unique<SingleplayerState>();
+			return std::make_unique<SingleplayerState>(1);
 		}
 		else if (button->GetName() == "LoadCoopScene")
 		{
-			return std::make_unique<CoopState>();
+			return std::make_unique<CoopState>(2);
 		}
 		else if (button->GetName() == "LoadVersusScene")
 		{
-			return std::make_unique<VersusState>();
+			return std::make_unique<VersusState>(1);
 		}
 	}
 	return nullptr;
+}
+
+pacman::PlayState::PlayState(int nrPacman):
+	m_nrPacman{nrPacman}
+{
 }
 
 // PLAYSTATE
@@ -59,7 +64,7 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, c
 			++m_levelIdx;
 			if (m_levelIdx >= 3)
 			{
-				return std::make_unique<pacman::WinState>();
+				return std::make_unique<pacman::EndState>();
 			}
 			else
 			{
@@ -73,10 +78,15 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, c
 	{
 		++m_nrDeaths;
 		if (m_nrDeaths >= m_nrPacman)
-			return std::make_unique<pacman::LoseState>();
+			return std::make_unique<pacman::EndState>();
 	}
 
 	return nullptr;
+}
+
+pacman::SingleplayerState::SingleplayerState(int nrPacman):
+	PlayState(nrPacman)
+{
 }
 
 // SINGLEPLAYER
@@ -85,10 +95,20 @@ void pacman::SingleplayerState::LoadScene()
 	SceneLoader::GetInstance().SingleplayerScene();
 }
 
+pacman::CoopState::CoopState(int nrPacman):
+	PlayState(nrPacman)
+{
+}
+
 //COOP 
 void pacman::CoopState::LoadScene()
 {
 	SceneLoader::GetInstance().CoopScene();
+}
+
+pacman::VersusState::VersusState(int nrPacman):
+	PlayState(nrPacman)
+{
 }
 
 // VERSUS
@@ -97,35 +117,13 @@ void pacman::VersusState::LoadScene()
 	SceneLoader::GetInstance().VersusScene();
 }
 
-// maybe don't split in win & lose screen and just make a general end screen that displays info based on the gamemode
-
-// WIN
-void pacman::WinState::OnEnter()
+// END
+void pacman::EndState::OnEnter()
 {
-	SceneLoader::GetInstance().WinScene();
+	SceneLoader::GetInstance().EndScene();
 }
 
-std::unique_ptr<pacman::GameState> pacman::WinState::Notify(dae::GameObject* sender, const dae::Event& event)
-{
-	if (event.id == "BUTTON_PRESSED")
-	{
-		ButtonComponent* button{ sender->GetComponent<ButtonComponent>() };
-
-		if (button->GetName() == "LoadMainScene")
-		{
-			return std::make_unique<pacman::MainMenuState>();
-		}
-	}
-	return nullptr;
-}
-
-// LOSE
-void pacman::LoseState::OnEnter()
-{
-	SceneLoader::GetInstance().LoseScene();
-}
-
-std::unique_ptr<pacman::GameState> pacman::LoseState::Notify(dae::GameObject* sender, const dae::Event& event)
+std::unique_ptr<pacman::GameState> pacman::EndState::Notify(dae::GameObject* sender, const dae::Event& event)
 {
 	if (event.id == "BUTTON_PRESSED")
 	{
