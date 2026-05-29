@@ -23,7 +23,9 @@ namespace pacman
 
 		virtual void Update(float elapsedSec) override;
 	private:
+		const int m_initHealth;
 		int m_health;
+		int m_nrExtraLives{ 3 };
 		const float m_maxInvincibleTime;
 		float m_invincibleTime;
 		bool m_isInvincible;
