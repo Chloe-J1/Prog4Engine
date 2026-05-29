@@ -3,7 +3,6 @@
 #include "../Minigin/Observer.h"
 #include <vector>
 #include "../Minigin/EventQueue.h"
-#include "../Minigin/InputManager.h"
 
 namespace pacman
 {
@@ -11,7 +10,7 @@ namespace pacman
 	class NameSelectComponent final : public dae::Component, public dae::Observer
 	{
 	public:
-		NameSelectComponent(dae::GameObject* owner );
+		NameSelectComponent(dae::GameObject* owner, dae::GameObject* button );
 		~NameSelectComponent();
 		NameSelectComponent(const NameSelectComponent& other) = delete;
 		NameSelectComponent(NameSelectComponent&& other) = delete;
@@ -23,7 +22,7 @@ namespace pacman
 	private:
 		std::vector<LetterSelectComponent*> m_letters{};
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
-
+		dae::GameObject* m_button;
 
 		void SavePlayerName(const std::string& name);
 	};

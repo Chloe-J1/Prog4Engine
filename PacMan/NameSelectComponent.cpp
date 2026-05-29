@@ -4,8 +4,9 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 
-pacman::NameSelectComponent::NameSelectComponent(dae::GameObject* owner):
-	Component(owner)
+pacman::NameSelectComponent::NameSelectComponent(dae::GameObject* owner, dae::GameObject* button):
+	Component(owner),
+	m_button{button}
 {
 	m_eventQueue.AddObserver(this);
 }
@@ -17,22 +18,17 @@ pacman::NameSelectComponent::~NameSelectComponent()
 
 void pacman::NameSelectComponent::Notify(dae::GameObject* sender, const dae::Event& event)
 {
-	if (event.id == "BUTTON_PRESSED")
+	if (event.id == "BUTTON_PRESSED" && sender == m_button)
 	{
-		ButtonComponent* button{ sender->GetComponent<ButtonComponent>() };
-
-		if (button->GetName() == "SelectName")
+		std::string name{};
+		for (const auto& letter : m_letters)
 		{
-			std::string name{};
-			for (const auto& letter : m_letters)
-			{
-				name += letter->GetLetter();
-			}
-			SavePlayerName(name);
-
-			dae::Event e{ "NAME_SELECTED" };
-			m_eventQueue.Invoke(std::move(e), GetGameObject());
+			name += letter->GetLetter();
 		}
+		SavePlayerName(name);
+
+		dae::Event e{ "NAME_SELECTED" };
+		m_eventQueue.Invoke(std::move(e), GetGameObject());
 	}
 }
 

@@ -11,6 +11,8 @@
 #include "LevelLoader.h"
 #include "HighscoreParser.h"
 #include <vector>
+#include <array>
+#include "GamestateManager.h"
  
 namespace pacman
 {
@@ -43,13 +45,14 @@ namespace pacman
 
 		SoundManager m_soundManager{};
 		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
+		GamestateManager& m_gamestateManager{ pacman::GamestateManager::GetInstance() };
 		std::array<LetterSelectComponent*, 3> m_letterComponents{};
 
 		std::unique_ptr<dae::GameObject> CreatePacman(const glm::vec2& spawnPos, const std::string& spritefile, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
 		std::unique_ptr<dae::GameObject> CreateScoreUI(const glm::vec2& spawnPos, dae::GameObject* pacman);
 		std::unique_ptr<dae::GameObject> CreateHealthUI(const glm::vec2& spawnPos, dae::GameObject* pacman);
 		std::unique_ptr<dae::GameObject> CreateGhost(const glm::vec2& spawnPos, const std::string& spritefile, std::unique_ptr<MovementBase> moveStrategy);
-		std::unique_ptr<dae::GameObject> CreateButton(const glm::vec2& spawnPos, const std::string& spritefile, const std::string& name);
+		std::unique_ptr<dae::GameObject> CreateButton(const glm::vec2& spawnPos, const std::string& spritefile);
 		std::unique_ptr<dae::GameObject> CreateText(const glm::vec2& spawnPos, const std::string& text, std::shared_ptr<dae::Font> font);
 	};
 }

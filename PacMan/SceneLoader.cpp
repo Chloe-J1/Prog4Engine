@@ -206,8 +206,9 @@ void pacman::SceneLoader::EndScene()
 
 	// Main menu button
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png", "LoadMainScene");
+	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(wWidth - 72 / 2) / 2.f, float(wHeight - 24 / 2) / 2.f }, "Button.png");
 	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Home", font);
+	m_gamestateManager.SetHomeButton(button.get());
 	buttonText->SetParent(button.get(), false);
 
 	scene.Add(std::move(button));
@@ -228,26 +229,26 @@ void pacman::SceneLoader::MenuScene()
 	
 	// Sinle player button
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
-	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f }, "Button.png", "LoadSingleplayerScene");
+	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f }, "Button.png");
 	std::unique_ptr<dae::GameObject> buttonText = CreateText(glm::vec2{ 10,4 }, "Solo", font);
 	buttonText->SetParent(button.get(), false);
-
+	m_gamestateManager.SetSoloButton(button.get());
 	scene.Add(std::move(button));
 	scene.Add(std::move(buttonText));
 
 	// Co-op button
-	button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f + 60.f}, "Button.png", "LoadCoopScene");
+	button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f + 60.f}, "Button.png");
 	buttonText = CreateText(glm::vec2{ 10,4 }, "Co-op", font);
 	buttonText->SetParent(button.get(), false);
-
+	m_gamestateManager.SetCoopButton(button.get());
 	scene.Add(std::move(button));
 	scene.Add(std::move(buttonText));
 
 	// Versus button
-	button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f + 120.f }, "Button.png", "LoadVersusScene");
+	button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f + 120.f }, "Button.png");
 	buttonText = CreateText(glm::vec2{ 10,4 }, "Versus", font);
 	buttonText->SetParent(button.get(), false);
-
+	m_gamestateManager.SetVersusButton(button.get());
 	scene.Add(std::move(button));
 	scene.Add(std::move(buttonText));
 
@@ -263,22 +264,24 @@ void pacman::SceneLoader::NameSelectScene()
 	// Bind NameSelect commands
 	m_inputManager.BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 0);
 	m_inputManager.BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
+	m_inputManager.BindCommand(SDL_SCANCODE_LEFT, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
+	m_inputManager.BindCommand(SDL_SCANCODE_RIGHT, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
 	m_inputManager.BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 1);
 	m_inputManager.BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 1);
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 	const float startY = 70.f;
-	const float rowHeight = 70.f;
+	const float height = 70.f;
 
 	for (int index = 0; index < m_letterComponents.size(); ++index)
 	{
-		float y = startY + index * rowHeight;
+		float y = startY + index * height;
 
-		auto btnDown = CreateButton(glm::vec2{ 50.f, y }, "Button.png", "");
+		auto btnDown = CreateButton(glm::vec2{ 50.f, y }, "Button.png");
 		auto btnDownText = CreateText(glm::vec2{ 10.f, 4.f }, "Down", font);
 		btnDownText->SetParent(btnDown.get(), false);
 
-		auto btnUp = CreateButton(glm::vec2{ 200.f, y }, "Button.png", "");
+		auto btnUp = CreateButton(glm::vec2{ 200.f, y }, "Button.png");
 		auto btnUpText = CreateText(glm::vec2{ 10.f, 4.f }, "Up", font);
 		btnUpText->SetParent(btnUp.get(), false);
 
@@ -293,20 +296,20 @@ void pacman::SceneLoader::NameSelectScene()
 		scene.Add(std::move(nameLetter));
 	}
 
-	auto selectButton = CreateButton(glm::vec2{ 50.f, 300.f }, "Button.png", "SelectName");
+	auto selectButton = CreateButton(glm::vec2{ 50.f, 300.f }, "Button.png");
 	auto selectText = CreateText(glm::vec2{ 10.f, 4.f }, "Select", font);
 	selectText->SetParent(selectButton.get(), false);
-	selectButton->AddComponent<pacman::NameSelectComponent>();
+	selectButton->AddComponent<pacman::NameSelectComponent>(selectButton.get());
 
 	auto* nameComp = selectButton->GetComponent<NameSelectComponent>();
-	for (auto* lc : m_letterComponents)
-		nameComp->AddLetterComp(lc);
+	for (auto* letterComp : m_letterComponents)
+		nameComp->AddLetterComp(letterComp);
 
 	scene.Add(std::move(selectButton));
 	scene.Add(std::move(selectText));
 
 	auto titleFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
-	scene.Add(std::move(CreateText(glm::vec2{ 20,20 }, "PLAYER ONE can select a name", font)));
+	scene.Add(std::move(CreateText(glm::vec2{ 20,20 }, "SELECT A NAME", font)));
 	scene.Add(std::move(CreateText(glm::vec2{ 20,40 }, "use dpad to choose buttons and press A to interact with the button, press select to confirm name", font)));
 }
 
@@ -386,7 +389,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateGhost(const glm::vec
 	return ghost;
 }
 
-std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateButton(const glm::vec2& spawnPos, const std::string& spritefile, const std::string& name)
+std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateButton(const glm::vec2& spawnPos, const std::string& spritefile)
 {
 	std::unique_ptr<dae::GameObject> go = std::make_unique<dae::GameObject>();
 	go->AddComponent<dae::RenderComponent>(spritefile);
@@ -395,7 +398,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateButton(const glm::ve
 	constexpr int nrRows{ 2 };
 	go->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	//
-	go->AddComponent<ButtonComponent>(name);
+	go->AddComponent<ButtonComponent>();
 
 	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
 	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()), 0);

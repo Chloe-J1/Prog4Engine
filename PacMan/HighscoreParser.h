@@ -7,6 +7,7 @@ namespace pacman
 	{
 	public:
 		const std::vector<std::string>& GetHighscores();
+		void ClearCurrentPlayers();
 	private:
 		std::vector<std::string> m_highscores;
 	};

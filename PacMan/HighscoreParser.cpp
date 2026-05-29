@@ -29,3 +29,18 @@ const std::vector<std::string>& pacman::HighscoreParser::GetHighscores()
 
 	return m_highscores;
 }
+
+void pacman::HighscoreParser::ClearCurrentPlayers()
+{
+	std::filesystem::path filePath = std::filesystem::path(DATA_PATH) / "Scores.json";
+
+	nlohmann::json data;
+	std::ifstream iFile(filePath);
+	data = nlohmann::json::parse(iFile);
+	iFile.close();
+
+	data["CurrentPlayers"] = nlohmann::json::array();
+
+	std::ofstream oFile(filePath);
+	oFile << data.dump(4);
+}

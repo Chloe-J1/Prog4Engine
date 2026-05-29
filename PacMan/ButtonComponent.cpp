@@ -4,10 +4,9 @@
 #include <iostream>
 
 
-pacman::ButtonComponent::ButtonComponent(dae::GameObject* owner, const std::string& name):
+pacman::ButtonComponent::ButtonComponent(dae::GameObject* owner):
 	Component(owner),
-	m_isSelected{false},
-	m_name{name}
+	m_isSelected{false}
 {
 	m_eventQueue = &dae::EventQueue::GetInstance();
 	m_spriteComp = GetGameObject()->GetComponent<dae::SpriteComponent>();
@@ -38,9 +37,4 @@ void pacman::ButtonComponent::ButtonPressed()
 		dae::Event buttonPressed{"BUTTON_PRESSED"};
 		m_eventQueue->Invoke(std::move(buttonPressed), GetGameObject());
 	}
-}
-
-const std::string& pacman::ButtonComponent::GetName() const
-{
-	return m_name;
 }

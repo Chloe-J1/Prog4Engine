@@ -10,13 +10,21 @@ namespace dae
 }
 namespace pacman
 {
+	class GamestateManager;
 	class GameState
 	{
 	public:
+		GameState();
 		virtual ~GameState() = default;
+		GameState(const GameState& other) = delete;
+		GameState(GameState&& other) = delete;
+		GameState& operator=(const GameState& other) = delete;
+		GameState& operator=(GameState&& other) = delete;
 		virtual void OnEnter();
 		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&) { return nullptr; };
 		virtual void OnExit();
+	protected:
+		GamestateManager* m_gamestateManager;
 	};
 
 	class NameSelectState final : public GameState
@@ -36,6 +44,7 @@ namespace pacman
 	public:
 		void OnEnter();
 		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		void OnExit();
 	};
 
 	class PlayState : public GameState
@@ -90,5 +99,6 @@ namespace pacman
 	public:
 		void OnEnter();
 		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		void OnExit();
 	};
 }

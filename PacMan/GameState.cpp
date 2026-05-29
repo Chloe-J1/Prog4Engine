@@ -4,6 +4,11 @@
 #include "GamestateManager.h"
 #include "MenuManager.h"
 
+pacman::GameState::GameState()
+{
+	m_gamestateManager = &GamestateManager::GetInstance();
+}
+
 void pacman::GameState::OnEnter()
 {
 }
@@ -22,22 +27,25 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject
 {
 	if (event.id == "BUTTON_PRESSED")
 	{
-		ButtonComponent* button{ sender->GetComponent<ButtonComponent>() };
-
-		if (button->GetName() == "LoadSingleplayerScene")
+		if (sender == m_gamestateManager->GetSoloButton())
 		{
 			return std::make_unique<SingleplayerState>(1);
 		}
-		else if (button->GetName() == "LoadCoopScene")
+		else if (sender == m_gamestateManager->GetCoopButton())
 		{
 			return std::make_unique<CoopState>(2);
 		}
-		else if (button->GetName() == "LoadVersusScene")
+		else if (sender == m_gamestateManager->GetVersusButton())
 		{
 			return std::make_unique<VersusState>(1);
 		}
 	}
 	return nullptr;
+}
+
+void pacman::MainMenuState::OnExit()
+{
+	m_gamestateManager->ClearButtons();
 }
 
 pacman::PlayState::PlayState(int nrPacman):
@@ -51,7 +59,7 @@ void pacman::PlayState::OnEnter()
 	SceneLoader::GetInstance().GameScene(m_levels[m_levelIdx]);
 	LoadScene();
 
-	m_totalNrPellets = GamestateManager::GetInstance().GetTotalPellets();
+	m_totalNrPellets = m_gamestateManager->GetTotalPellets();
 }
 
 std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, const dae::Event& event)
@@ -127,14 +135,17 @@ std::unique_ptr<pacman::GameState> pacman::EndState::Notify(dae::GameObject* sen
 {
 	if (event.id == "BUTTON_PRESSED")
 	{
-		ButtonComponent* button{ sender->GetComponent<ButtonComponent>() };
-
-		if (button->GetName() == "LoadMainScene")
+		if (sender == m_gamestateManager->GetHomeButton())
 		{
 			return std::make_unique<pacman::MainMenuState>();
 		}
 	}
 	return nullptr;
+}
+
+void pacman::EndState::OnExit()
+{
+	m_gamestateManager->ClearButtons();
 }
 
 // NAME SELECT

@@ -11,7 +11,7 @@ namespace pacman
 	class ButtonComponent : public dae::Component
 	{
 	public:
-		ButtonComponent(dae::GameObject* owner, const std::string& name);
+		ButtonComponent(dae::GameObject* owner);
 		~ButtonComponent();
 		ButtonComponent(const ButtonComponent& other) = delete;
 		ButtonComponent(ButtonComponent&& other) = delete;
@@ -20,10 +20,8 @@ namespace pacman
 
 		void SetIsSelected(bool isSelected);
 		void ButtonPressed();
-		const std::string& GetName() const;
 	private:
 		bool m_isSelected;
-		std::string m_name;
 		dae::EventQueue* m_eventQueue;
 		dae::SpriteComponent* m_spriteComp{};
 	};
