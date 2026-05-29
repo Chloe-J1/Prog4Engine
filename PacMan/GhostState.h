@@ -16,6 +16,7 @@ namespace pacman
 	class GhostComponent;
 	class TargetMoverComponent;
 	class MovementBase;
+	class EatenComponent;
 	
 	class GhostState
 	{
@@ -57,6 +58,7 @@ namespace pacman
 		float m_dizziedTime{ 0.f };
 		const float m_maxDizziedTime{ 5.f };
 		const float m_almostDoneTime{ 3.f };
+		EatenComponent* m_eatenComp{};
 	};
 
 	class EyeState final : public GhostState

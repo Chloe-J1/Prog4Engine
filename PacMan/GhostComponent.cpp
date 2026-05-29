@@ -43,8 +43,6 @@ pacman::MovementBase* pacman::GhostComponent::GetMoveStrategy()
 	return m_moveStrategy.get();
 }
 
-
-
 void pacman::GhostComponent::Update(float elapsedSec)
 {
 	auto newState{ m_ghostState->Update(*this, elapsedSec) };

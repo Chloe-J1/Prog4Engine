@@ -1,6 +1,5 @@
 #pragma once
 #include "../Minigin/Component.h"
-#include "../Minigin/Observer.h"
 namespace dae
 {
 	class EventQueue;
@@ -8,17 +7,12 @@ namespace dae
 
 namespace pacman
 {
-	class EatenComponent final : public dae::Component, public dae::Observer
+	class EatenComponent final : public dae::Component
 	{
 	public:
 		EatenComponent(dae::GameObject* owner);
-		~EatenComponent();
-		EatenComponent(const EatenComponent& other) = delete;
-		EatenComponent(EatenComponent&& other) = delete;
-		EatenComponent& operator=(const EatenComponent& other) = delete;
-		EatenComponent& operator=(EatenComponent&& other) = delete;
 
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
+		void SetVulnerable(bool isVulnerable);
 	private:
 		virtual void OnCollision(dae::GameObject* other) override;
 		bool m_isVulnerable{ false };

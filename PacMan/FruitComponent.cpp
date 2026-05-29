@@ -1,7 +1,7 @@
 #include "FruitComponent.h"
 
 #include "../Minigin/WindowConfig.h"
-#include <string>
+#include "HealthComponent.h"
 #include <glm/glm.hpp>
 #include "../Minigin/SpriteComponent.h"
 #include "TargetMoverComponent.h"
@@ -29,7 +29,7 @@ int pacman::FruitComponent::GetValue() const
 
 void pacman::FruitComponent::OnCollision(dae::GameObject* other)
 {
-	if (other->GetLayer() == "Player")
+	if (auto player = other->GetComponent<HealthComponent>())
 	{
 		// Move to bottom right pos based on nrfruit
 		glm::vec2 spawnPos{ m_windowWidth, m_windowHeight };

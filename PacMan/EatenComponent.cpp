@@ -1,34 +1,22 @@
 #include "EatenComponent.h"
 #include "../Minigin/EventQueue.h"
+#include  "HealthComponent.h"
 #include "Events.h"
 
 pacman::EatenComponent::EatenComponent(dae::GameObject* owner):
 	Component(owner)
 {
 	m_eventQueue = &dae::EventQueue::GetInstance();
-	m_eventQueue->AddObserver(this);
 }
 
-pacman::EatenComponent::~EatenComponent()
+void pacman::EatenComponent::SetVulnerable(bool isVulnerable)
 {
-	m_eventQueue->RemoveObserver(this);
-}
-
-void pacman::EatenComponent::Notify(dae::GameObject*, const dae::Event& event)
-{
-	if (event.id == "POWER_PELLET_PICKUP")
-	{
-		m_isVulnerable = true;
-	}
-	else if (event.id == "NOT_DIZZIED")
-	{
-		m_isVulnerable = false;
-	}
+	m_isVulnerable = isVulnerable;
 }
 
 void pacman::EatenComponent::OnCollision(dae::GameObject* other)
 {
-	if (other->GetLayer() == "Player")
+	if (auto player = other->GetComponent<HealthComponent>())
 	{
 		if (m_isVulnerable)
 		{

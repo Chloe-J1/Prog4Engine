@@ -7,6 +7,7 @@
 #include "Events.h"
 #include "../Minigin/Hitbox.h"
 #include "MoveStrategies.h"
+#include "EatenComponent.h"
 
 void pacman::GhostState::OnEnter(GhostComponent&)
 {
@@ -98,6 +99,8 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 		m_isNonAIStrategy = true;
 	}
 	m_moveStrategy->OnEnter();
+	m_eatenComp = m_ghost->GetComponent<EatenComponent>();
+	m_eatenComp->SetVulnerable(true);
 }
 
 std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostComponent&,float elapsedSec)
@@ -144,6 +147,7 @@ void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
 	m_dizziedTime = 0;
 
 	m_moveStrategy->OnExit();
+	m_eatenComp->SetVulnerable(false);
 }
 
 // EYES

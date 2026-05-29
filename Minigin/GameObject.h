@@ -84,10 +84,6 @@ namespace dae
 		// Destroy
 		void SetIsAlive(bool isAlive);
 		bool GetIsAlive();
-		
-		// Collision
-		void SetLayer(const std::string& layer);
-		const std::string& GetLayer() const;
 
 		GameObject();
 		~GameObject();
@@ -105,8 +101,6 @@ namespace dae
 		
 		void RemoveChild(GameObject* child);
 		void AddChild(GameObject* child);
-
-		std::string m_layer{"default"};
 	};
 	
 }

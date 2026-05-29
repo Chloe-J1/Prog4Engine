@@ -40,7 +40,7 @@ void pacman::HealthComponent::OnCollision(dae::GameObject* other)
 
 void pacman::HealthComponent::Notify(dae::GameObject*, const dae::Event& event)
 {
-	if (event.id == "POWER_PELLET_PICKUP")
+	if (event.id == "DIZZIED")
 	{
 		m_canTakeDamage = false;
 	}
