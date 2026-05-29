@@ -25,7 +25,7 @@ pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<M
 void pacman::GhostComponent::Start()
 {
 	m_targets = dae::SceneManager::GetInstance().GetActiveScene().FindObjectsWithComponent<HealthComponent>();
-	GetGameObject()->GetComponent<TargetMoverComponent>()->SetTargetObj(m_targets[0]);
+	GetGameObject()->GetComponent<TargetMoverComponent>()->SetTargetObj(m_targets[rand() % m_targets.size()]);
 }
 
 pacman::GhostComponent::~GhostComponent()
