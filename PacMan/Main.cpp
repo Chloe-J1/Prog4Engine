@@ -11,7 +11,6 @@
 #include "SceneLoader.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
-
 #include <filesystem>
 namespace fs = std::filesystem;
 

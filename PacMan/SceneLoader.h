@@ -11,11 +11,12 @@
 #include "LevelLoader.h"
 #include "HighscoreParser.h"
 #include <vector>
-
+ 
 namespace pacman
 {
 	class ScoreComponent;
 	class HealthComponent;
+	class LetterSelectComponent;
 	class SceneLoader final : public dae::Singleton<SceneLoader>
 	{
 	public:
@@ -42,6 +43,7 @@ namespace pacman
 
 		SoundManager m_soundManager{};
 		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
+		std::array<LetterSelectComponent*, 3> m_letterComponents{};
 
 		std::unique_ptr<dae::GameObject> CreatePacman(const glm::vec2& spawnPos, const std::string& spritefile, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
 		std::unique_ptr<dae::GameObject> CreateScoreUI(const glm::vec2& spawnPos, dae::GameObject* pacman);
