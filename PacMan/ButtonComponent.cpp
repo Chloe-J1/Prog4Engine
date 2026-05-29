@@ -36,5 +36,12 @@ void pacman::ButtonComponent::ButtonPressed()
 	{
 		dae::Event buttonPressed{"BUTTON_PRESSED"};
 		m_eventQueue->Invoke(std::move(buttonPressed), GetGameObject());
+		if(m_onClick)
+			m_onClick();
 	}
+}
+
+void pacman::ButtonComponent::OnClick(std::function<void()> callback)
+{
+	m_onClick = callback;
 }

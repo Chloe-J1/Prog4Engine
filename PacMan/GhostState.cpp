@@ -17,8 +17,12 @@ std::unique_ptr<pacman::GhostState> pacman::GhostState::Update(pacman::GhostComp
 	return nullptr;
 }
 
-std::unique_ptr<pacman::GhostState> pacman::GhostState::Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event&)
+std::unique_ptr<pacman::GhostState> pacman::GhostState::Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event& event)
 {
+	if (event.id == "PLAYER_TAKES_DAMAGE")
+	{
+		return std::make_unique<DeathState>();
+	}
 	return nullptr;
 }
 
@@ -45,6 +49,9 @@ std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Update(GhostCompo
 
 std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event)
 {
+	auto state = GhostState::Notify(ghost, sender, event);
+	if (state != nullptr) return state;
+
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
 		return std::make_unique<DizziedState>();
@@ -112,8 +119,10 @@ std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostCo
 	return nullptr;
 }
 
-std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& , dae::GameObject*, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event)
 {
+	auto state = GhostState::Notify(ghost, sender, event);
+	if (state != nullptr) return state;
 	if (event.id == "GHOST_DIED")
 	{
 		auto* arg = static_cast<GhostDiedArg*>(event.arg.get());

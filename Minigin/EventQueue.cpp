@@ -30,7 +30,6 @@ void dae::EventQueue::Update()
 			if (m_observers[i] != nullptr)
 				m_observers[i]->Notify(m_eventQueue.front().sender, m_eventQueue.front().event);
 		}
-		std::erase(m_observers, nullptr);
 		m_eventQueue.pop();
 	}
 }

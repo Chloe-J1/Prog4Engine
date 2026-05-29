@@ -230,7 +230,8 @@ add_executable(${GAME_TARGET}
     PacMan/PacmanAnimator.cpp
     PacMan/LetterSelectComponent.cpp
     PacMan/NameSelectComponent.cpp
-    PacMan/HighscoreParser.cpp)
+    PacMan/HighscoreParser.cpp
+    PacMan/RespawnComponent.cpp)
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
 

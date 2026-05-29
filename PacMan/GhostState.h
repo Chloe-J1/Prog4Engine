@@ -22,9 +22,9 @@ namespace pacman
 	public:
 		virtual ~GhostState() = default;
 		virtual void OnEnter(GhostComponent&);
-		virtual std::unique_ptr<pacman::GhostState> Update(pacman::GhostComponent&, float);
-		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event&);
-		virtual void OnExit(pacman::GhostComponent&);
+		virtual std::unique_ptr<pacman::GhostState> Update(pacman::GhostComponent& ghost, float elapsedSec);
+		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event);
+		virtual void OnExit(pacman::GhostComponent& ghost);
 	};
 
 	class FollowTargetState final : public GhostState
@@ -81,7 +81,7 @@ namespace pacman
 		TargetMoverComponent* m_moveComp{};
 		const int m_centerBoxIdx{ 480 };
 		float m_timer{};
-		const float m_maxDeathTime{ 5.f };
+		const float m_maxDeathTime{ float(rand() % 3) + 5.f};
 		glm::vec2 m_respawnPos{Graph::GetInstance().GetWorldPos(419)};
 	};
 

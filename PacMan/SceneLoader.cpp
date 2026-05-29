@@ -24,6 +24,7 @@
 #include "PacmanAnimator.h"
 #include "LetterSelectComponent.h"
 #include "NameSelectComponent.h"
+#include "RespawnComponent.h"
 
 
 pacman::SceneLoader::SceneLoader():
@@ -331,6 +332,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreatePacman(const glm::ve
 	go->AddComponent<pacman::ScoreComponent>(ctrlIdx);
 	go->AddComponent<pacman::PlayerMovement>(usesKeyboard, usesController, ctrlIdx);
 	go->AddComponent<pacman::HealthComponent>();
+	go->AddComponent<pacman::RespawnComponent>(spawnPos);
 	go->SetLayer("Player");
 	go->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return go;
