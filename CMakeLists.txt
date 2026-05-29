@@ -75,7 +75,7 @@ if(NOT SDL3_ttf_FOUND)
 endif()
 
 # add sdl3_mixer
-find_package(SDL3_mixer 3.2.2 CONFIG QUIET)
+find_package(SDL3_mixer 3.2.0 CONFIG QUIET)
 if(NOT SDL3_mixer_FOUND)
     FetchContent_Declare(
         SDL3_mixer

@@ -9,16 +9,16 @@
     ],
     "Highscores": [
         {
+            "name": "AA",
+            "score": 2550
+        },
+        {
             "name": "DE",
             "score": 1870
         },
         {
             "name": "DA",
             "score": 930
-        },
-        {
-            "name": "AB",
-            "score": 390
         }
     ]
 }
