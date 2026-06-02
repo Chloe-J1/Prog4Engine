@@ -3,7 +3,7 @@
 #include <string>
 namespace dae
 {
-	class WindowConfig : public Singleton<WindowConfig>
+	class WindowConfig final : public Singleton<WindowConfig>
 	{
 	public:
 

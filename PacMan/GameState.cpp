@@ -2,7 +2,6 @@
 #include "SceneLoader.h"
 #include "GamestateManager.h"
 #include "MenuManager.h"
-#include <iostream>
 
 pacman::GameState::GameState()
 {

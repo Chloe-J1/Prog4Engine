@@ -1,9 +1,5 @@
 #include "Scene.h"
-#include "Scene.h"
-#include "Scene.h"
 #include <algorithm>
-#include "Scene.h"
-#include "RenderComponent.h"
 
 using namespace dae;
 

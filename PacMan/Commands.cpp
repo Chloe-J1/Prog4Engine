@@ -1,7 +1,7 @@
 #include "Commands.h"
 #include "MenuManager.h"
 #include "ButtonComponent.h"
-#include "../Minigin/ServiceLocator.h"
+
 // MOVE
 //********
 pacman::Move::Move(dae::GameObject* gameObject, const glm::vec2& direction, pacman::PlayerMovement* moveComp) :

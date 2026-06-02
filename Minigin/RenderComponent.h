@@ -8,7 +8,7 @@ namespace dae
 {
 	class Texture2D;
 	class GameObject;
-	class RenderComponent : public Component
+	class RenderComponent final : public Component
 	{
 	public:
 
@@ -25,11 +25,6 @@ namespace dae
 
 		RenderComponent(GameObject* owner, const std::string& filepath);
 		RenderComponent(GameObject* owner);
-		virtual ~RenderComponent() = default;
-		RenderComponent(const RenderComponent& other) = delete;
-		RenderComponent(RenderComponent&& other) = delete;
-		RenderComponent& operator=(const RenderComponent& other) = delete;
-		RenderComponent& operator=(RenderComponent&& other) = delete;
 	private:
 		std::shared_ptr<Texture2D> m_texture{};
 

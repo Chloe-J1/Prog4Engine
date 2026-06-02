@@ -1,8 +1,4 @@
 #include "Controller.h"
-#include "Controller.h"
-#include "Controller.h"
-#include "Controller.h"
-#include "Controller.h"
 
 #if WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -10,7 +6,6 @@
 #include <XInput.h>
 #include <algorithm>
 
-#include <iostream>
 
 
 class dae::Controller::ControllerImpl

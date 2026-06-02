@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include <iostream>
 namespace pacman
 {
 	class BasePellet : public dae::Component

@@ -2,11 +2,11 @@
 #include "../Minigin/Component.h"
 #include "../Minigin/EventQueue.h"
 #include "../Minigin/SpriteComponent.h"
-#include <functional>
+
 namespace pacman
 {
 	class GameObject;
-	class ButtonComponent : public dae::Component
+	class ButtonComponent final : public dae::Component
 	{
 	public:
 		ButtonComponent(dae::GameObject* owner);

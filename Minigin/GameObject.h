@@ -4,7 +4,6 @@
 #include "Component.h"
 #include <glm/glm.hpp>
 #include "Transform.h"
-#include <string>
 
 namespace dae
 {

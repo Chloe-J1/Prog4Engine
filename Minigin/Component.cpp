@@ -1,8 +1,4 @@
 #include "Component.h"
-#include "Component.h"
-#include "Component.h"
-#include "Component.h"
-#include "Component.h"
 
 
 void dae::Component::Start()

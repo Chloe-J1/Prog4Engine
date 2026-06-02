@@ -2,8 +2,6 @@
 #include <memory>
 #include <vector>
 #include "GameObject.h"
-#include <vector>
-#include <string>
 
 namespace dae
 {

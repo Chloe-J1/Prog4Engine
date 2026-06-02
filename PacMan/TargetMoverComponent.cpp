@@ -6,7 +6,6 @@
 #include "../Minigin/WindowConfig.h"
 #include "Events.h"
 
-#include <iostream>
 
 pacman::TargetMoverComponent::TargetMoverComponent(dae::GameObject* owner):
 	Component(owner),

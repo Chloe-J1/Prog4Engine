@@ -1,7 +1,5 @@
 #include "Hitbox.h"
-#include "Hitbox.h"
 #include "GameObject.h"
-#include "Event.h"
 #include "EventQueue.h"
 #include "CollisionManager.h"
 

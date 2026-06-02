@@ -2,6 +2,7 @@
 #include "../Minigin/GameObject.h"
 #include "../Minigin/Scene.h"
 #include "Graph.h"
+#include <string>
 
 namespace pacman
 {
