@@ -158,13 +158,13 @@ void dae::GameObject::RemoveChild(GameObject* child)
 	if (child == nullptr) return;
 
 	auto itr = std::find(m_childObjects.begin(), m_childObjects.end(), child);
-
-	
 	if (itr == m_childObjects.end()) return; // child not in container
 
 
 	// no longer child object of this parent
 	m_childObjects.erase(itr);
+	child->m_parent = nullptr;
+	child->GetTransform().SetPositionDirty();
 }
 
 void dae::GameObject::AddChild(GameObject* child)
