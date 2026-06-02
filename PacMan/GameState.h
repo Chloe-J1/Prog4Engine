@@ -21,7 +21,7 @@ namespace pacman
 		GameState& operator=(const GameState& other) = delete;
 		GameState& operator=(GameState&& other) = delete;
 		virtual void OnEnter();
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&) { return nullptr; };
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&);
 		virtual void OnExit();
 	protected:
 		GamestateManager* m_gamestateManager;
@@ -58,7 +58,7 @@ namespace pacman
 		PlayState& operator=(PlayState&& other) = delete;
 
 		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&);
+		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&) override;
 	protected:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};

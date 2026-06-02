@@ -12,6 +12,11 @@ void pacman::GameState::OnEnter()
 {
 }
 
+std::unique_ptr<pacman::GameState> pacman::GameState::Notify(dae::GameObject*, const dae::Event&)
+{
+	return nullptr;
+}
+
 void pacman::GameState::OnExit()
 {
 }
