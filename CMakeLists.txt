@@ -163,7 +163,7 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/CollisionManager.cpp
   Minigin/SoundSystem.cpp
   Minigin/ServiceLocator.cpp
-  Minigin/DebugDraw.cpp
+  "Minigin/Draw.cpp"
   Minigin/WindowConfig.cpp
   Minigin/Subject.cpp
   Minigin/InputData.cpp

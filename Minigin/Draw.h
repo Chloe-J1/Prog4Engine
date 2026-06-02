@@ -5,7 +5,7 @@
 
 namespace dae
 {
-	class DebugDraw final : public Singleton<DebugDraw>
+	class Draw final : public Singleton<Draw>
 	{
 	public:
 		void FillRect(const glm::vec2& pos, float width, float height);

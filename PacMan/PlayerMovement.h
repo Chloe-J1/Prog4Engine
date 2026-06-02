@@ -23,8 +23,7 @@ namespace pacman
 		
 
 		void ChangeDirection(const glm::vec2& direction);
-		virtual void Update(float elapsedSec) override;
-		virtual void Render() const override;
+		void Update(float elapsedSec);
 	private:
 		const float m_speed;
 
@@ -43,7 +42,6 @@ namespace pacman
 		
 		float m_playerWidth;
 		float m_playerHeight;
-		glm::vec2 m_furthestPos{};
 
 		void WarpTunnels();
 		glm::vec2 GetCenterPos() const;

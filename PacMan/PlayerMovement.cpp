@@ -5,7 +5,6 @@
 #include "Commands.h"
 #include <memory>
 #include "Graph.h"
-#include "../Minigin/DebugDraw.h"
 #include "../Minigin/EventQueue.h"
 #include "Events.h"
 
@@ -82,14 +81,6 @@ void pacman::PlayerMovement::Update(float elapsedSec)
 	WallCheck();
 }
 
-void pacman::PlayerMovement::Render() const
-{
-	const int size{ 3 };
-	dae::DebugDraw::GetInstance().SetColor(255,0,0);
-	dae::DebugDraw::GetInstance().FillRect(m_furthestPos, size, size);
-}
-
-
 glm::vec2 pacman::PlayerMovement::GetCenterPos() const
 {
 	glm::vec2 center{ GetGameObject()->GetWorldPosition() };
@@ -136,7 +127,7 @@ void pacman::PlayerMovement::WallCheck()
 	centerPos.x += halfSpriteWidth;
 	centerPos.y += halfSpriteHeight;
 
-	m_furthestPos = centerPos + m_currDirection * glm::vec2{halfSpriteWidth, halfSpriteHeight};
+	glm::vec2 m_furthestPos{ centerPos + m_currDirection * glm::vec2{halfSpriteWidth, halfSpriteHeight} };
 	const float epsilon{ 3.f };
 	if (m_furthestPos.x < epsilon || m_furthestPos.x > m_wWidth - epsilon || m_furthestPos.y < epsilon || m_furthestPos.y > m_wHeight - epsilon) return; // Outside of screen = use warp tunnels
 
