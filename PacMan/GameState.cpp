@@ -1,8 +1,8 @@
 #include "GameState.h"
-#include "ButtonComponent.h"
 #include "SceneLoader.h"
 #include "GamestateManager.h"
 #include "MenuManager.h"
+#include <iostream>
 
 pacman::GameState::GameState()
 {
@@ -67,7 +67,7 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, c
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
 		++m_nrEatenPellets;
-		if (m_nrEatenPellets >= m_totalNrPellets)
+		if (m_nrEatenPellets >= 15)
 		{
 			++m_levelIdx;
 			if (m_levelIdx >= 3)
@@ -88,7 +88,28 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, c
 		if (m_nrDeaths >= m_nrPacman)
 			return std::make_unique<pacman::EndState>();
 	}
+	else if (event.id == "NEXT_LEVEL")
+	{
+		static int count = 0;
+		NextLevel();
+	}
 
+	return nullptr;
+}
+
+std::unique_ptr<pacman::GameState> pacman::PlayState::NextLevel()
+{
+	++m_levelIdx;
+	if (m_levelIdx >= 3)
+	{
+		return std::make_unique<pacman::EndState>();
+	}
+	else
+	{
+		SceneLoader::GetInstance().GameScene(m_levels[m_levelIdx]);
+		LoadScene();
+	}
+	m_nrEatenPellets = 0;
 	return nullptr;
 }
 

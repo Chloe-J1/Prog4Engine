@@ -12,6 +12,7 @@ const std::vector<std::string>& pacman::HighscoreParser::GetHighscores()
 	{
 		nlohmann::json data = nlohmann::json::parse(iFile);
 		std::string highscoreText{};
+		m_highscores.clear();
 		
 		for (const auto& line : data["Highscores"])
 		{

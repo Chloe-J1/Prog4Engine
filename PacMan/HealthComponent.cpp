@@ -63,8 +63,6 @@ void pacman::HealthComponent::Update(float elapsedSec)
 	}
 }
 
-
-
 void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 {
 	if (not m_isInvincible && m_canTakeDamage)

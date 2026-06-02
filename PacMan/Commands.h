@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include "../PacMan/PlayerMovement.h"
 #include "../Minigin/Command.h"	
-
+#include "../Minigin/EventQueue.h"
 
 namespace pacman
 {
@@ -11,12 +11,7 @@ namespace pacman
 	class Move final : public dae::GameObjectCommand
 	{
 	public:
-		Move(dae::GameObject* gameObject, const glm::vec2& direction, pacman::PlayerMovement* moveComp) :
-			GameObjectCommand(gameObject),
-			m_direction{direction},
-			m_moveComp(moveComp)
-		{
-		}
+		Move(dae::GameObject* gameObject, const glm::vec2& direction, pacman::PlayerMovement* moveComp);
 		virtual void Execute() override;
 		
 	private:
@@ -41,10 +36,26 @@ namespace pacman
 	class PressButton final : public dae::GameObjectCommand
 	{
 	public:
-		PressButton(dae::GameObject* gameObject):
-			GameObjectCommand(gameObject)
-		{ }
+		PressButton(dae::GameObject* gameObject);
 
 		virtual void Execute() override;
+	};
+
+	// CHEAT COMMANDS
+	//********
+	class NextLevel final : public dae::Command
+	{
+	public:
+		virtual void Execute() override;
+	private:
+		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
+	};
+
+	class ToggleSound final : public dae::Command
+	{
+	public:
+		virtual void Execute() override;
+	private:
+		bool m_isOn{ true };
 	};
 }

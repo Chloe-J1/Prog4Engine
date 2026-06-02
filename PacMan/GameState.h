@@ -57,7 +57,7 @@ namespace pacman
 		PlayState& operator=(const PlayState& other) = delete;
 		PlayState& operator=(PlayState&& other) = delete;
 
-		virtual void OnEnter();
+		virtual void OnEnter() override;
 		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&);
 	protected:
 		int m_nrEatenPellets{};
@@ -68,6 +68,8 @@ namespace pacman
 		std::vector<std::string> m_levels{ "Level_one", "Level_two", "Level_three" };
 
 		virtual void LoadScene() = 0;
+	private:
+		std::unique_ptr<pacman::GameState> NextLevel();
 	};
 
 	class SingleplayerState final : public PlayState

@@ -56,6 +56,9 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
 	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
 	scene.Add(std::move(fruitSpawnerGo));
+
+	// Skip level cmd
+	m_inputManager.BindCommand(SDL_SCANCODE_F1, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextLevel>());
 }
 
 void pacman::SceneLoader::SingleplayerScene()
@@ -261,6 +264,9 @@ void pacman::SceneLoader::MenuScene()
 void pacman::SceneLoader::NameSelectScene()
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
+
+	// Mute sound command
+	m_inputManager.BindCommand(SDL_SCANCODE_F2, dae::TriggerEvent::PressedThisFrame, std::make_unique<ToggleSound>());
 
 	// Bind NameSelect commands
 	m_inputManager.BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 0);
