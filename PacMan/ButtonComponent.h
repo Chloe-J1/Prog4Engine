@@ -18,11 +18,9 @@ namespace pacman
 
 		void SetIsSelected(bool isSelected);
 		void ButtonPressed();
-		void OnClick(std::function<void()> callback);
 	private:
 		bool m_isSelected;
 		dae::EventQueue* m_eventQueue;
 		dae::SpriteComponent* m_spriteComp{};
-		std::function<void()> m_onClick;
 	};
 }
