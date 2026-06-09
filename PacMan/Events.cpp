@@ -1,12 +1,14 @@
 #include "Events.h"
 
-pacman::ScoreArg::ScoreArg(int _score):
-	score{_score}
+pacman::ScoreArg::ScoreArg(int _score, dae::GameObject* _sender):
+	score{_score},
+	sender{_sender}
 {
 }
 
-pacman::UpdateHealthArg::UpdateHealthArg(int _health) :
-	health{ _health }
+pacman::UpdateHealthArg::UpdateHealthArg(int _health, dae::GameObject* _sender) :
+	health{ _health },
+	sender{_sender}
 {
 }
 

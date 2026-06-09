@@ -19,15 +19,17 @@ pacman::HealthComponentUI::~HealthComponentUI()
 
 void pacman::HealthComponentUI::Notify(const dae::Event& event)
 {
-	//if (sender != m_pacman) return;
 	if (event.id == "PLAYER_TAKES_DAMAGE")
 	{
 		auto* healthArg = static_cast<UpdateHealthArg*>(event.arg.get());
 		int health{ healthArg->health };
-		m_spriteComp->SetRow(health - 1);
+		if(healthArg->sender == m_pacman)
+			m_spriteComp->SetRow(health - 1);
 	}
 	else if (event.id == "PLAYER_DIED")
 	{
-		GetGameObject()->SetIsAlive(false);
+		auto* arg = static_cast<SenderArg*>(event.arg.get());
+		if (arg->sender == m_pacman)
+			GetGameObject()->SetIsAlive(false);
 	}
 }

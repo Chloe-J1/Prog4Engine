@@ -5,6 +5,7 @@
 #include "../Minigin/SceneManager.h"
 #include "HealthComponent.h"
 #include <utility>
+#include "Events.h"
 #include "PlayerMovement.h"
 
 pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy):
@@ -59,10 +60,12 @@ void pacman::GhostComponent::Notify(const dae::Event& event)
 	if (event.id == "PLAYER_DIED")
 	{
 		// Find new target
-		//(sender);
+		auto* arg = static_cast<SenderArg*>(event.arg.get());
+		RemoveTarget(arg->sender);
 		if (m_targets.size() > 0)
 		{
-			GetGameObject()->GetComponent<pacman::TargetMoverComponent>()->SetTargetObj(m_targets[0]);
+			int rndIndex{ int(rand() % m_targets.size()) };
+			GetGameObject()->GetComponent<pacman::TargetMoverComponent>()->SetTargetObj(m_targets[rndIndex]);
 		}
 	}
 	

@@ -6,8 +6,9 @@ namespace pacman
 	struct ScoreArg final : dae::EventArg
 	{
 		int score;
+		dae::GameObject* sender;
 
-		ScoreArg(int _score);
+		ScoreArg(int _score, dae::GameObject* _sender);
 
 		virtual ~ScoreArg() = default;
 		ScoreArg(const ScoreArg& other) = delete;
@@ -19,8 +20,9 @@ namespace pacman
 	struct UpdateHealthArg final : dae::EventArg
 	{
 		int health;
+		dae::GameObject* sender;
 
-		UpdateHealthArg(int _health);
+		UpdateHealthArg(int _health, dae::GameObject* _sender);
 
 		virtual ~UpdateHealthArg() = default;
 		UpdateHealthArg(const UpdateHealthArg& other) = delete;

@@ -74,7 +74,7 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(const dae::Event& e
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
 		++m_nrEatenPellets;
-		if (m_nrEatenPellets >= 15)
+		if (m_nrEatenPellets >= m_totalNrPellets)
 		{
 			++m_levelIdx;
 			if (m_levelIdx >= 3)
