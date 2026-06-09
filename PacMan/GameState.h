@@ -21,7 +21,7 @@ namespace pacman
 		GameState& operator=(const GameState& other) = delete;
 		GameState& operator=(GameState&& other) = delete;
 		virtual void OnEnter();
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&);
+		virtual std::unique_ptr<pacman::GameState> Notify(const dae::Event&);
 		virtual void OnExit();
 	protected:
 		GamestateManager* m_gamestateManager;
@@ -31,7 +31,7 @@ namespace pacman
 	{
 	public:
 		void OnEnter();
-		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		std::unique_ptr<pacman::GameState> Notify(const dae::Event& event);
 		void OnExit();
 	private:
 		int m_nrSelectedNames{};
@@ -43,7 +43,7 @@ namespace pacman
 	{
 	public:
 		void OnEnter();
-		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		std::unique_ptr<pacman::GameState> Notify(const dae::Event& event);
 		void OnExit();
 	};
 
@@ -58,7 +58,7 @@ namespace pacman
 		PlayState& operator=(PlayState&& other) = delete;
 
 		virtual void OnEnter() override;
-		virtual std::unique_ptr<pacman::GameState> Notify(dae::GameObject*, const dae::Event&) override;
+		virtual std::unique_ptr<pacman::GameState> Notify(const dae::Event&) override;
 	protected:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
@@ -100,7 +100,7 @@ namespace pacman
 	{
 	public:
 		void OnEnter();
-		std::unique_ptr<pacman::GameState> Notify(dae::GameObject* sender, const dae::Event& event);
+		std::unique_ptr<pacman::GameState> Notify(const dae::Event& event);
 		void OnExit();
 	};
 }

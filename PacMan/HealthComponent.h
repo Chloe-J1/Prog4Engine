@@ -1,12 +1,12 @@
 #pragma once
 #include "Component.h"
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 #include "../Minigin/EventQueue.h"
 
 namespace pacman
 {
 	class GhostComponent;
-	class HealthComponent final : public dae::Component, public dae::IObserver
+	class HealthComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		HealthComponent(dae::GameObject* owner, int health = 4);
@@ -19,7 +19,7 @@ namespace pacman
 		void TakeDamage(int amount);
 		int GetHealth() const;
 		virtual void OnCollision(dae::GameObject* other) override;
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
+		virtual void Notify(const dae::Event& event) override;
 
 		virtual void Update(float elapsedSec) override;
 	private:

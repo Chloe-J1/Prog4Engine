@@ -11,12 +11,12 @@ pacman::HealthComponent::HealthComponent(dae::GameObject* owner, int health):
 	m_isInvincible{false},
 	m_canTakeDamage{true}
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::HealthComponent::~HealthComponent()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
 void pacman::HealthComponent::TakeDamage(int amount)
@@ -38,7 +38,7 @@ void pacman::HealthComponent::OnCollision(dae::GameObject* other)
 	}
 }
 
-void pacman::HealthComponent::Notify(dae::GameObject*, const dae::Event& event)
+void pacman::HealthComponent::Notify(const dae::Event& event)
 {
 	if (event.id == "DIZZIED")
 	{
@@ -77,7 +77,7 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 			if (m_nrExtraLives <= 0)
 			{
 				dae::Event event{ "PLAYER_DIED" };
-				m_eventQueue.Invoke(std::move(event), GetGameObject());
+				m_eventQueue.Invoke(std::move(event));
 				GetGameObject()->SetIsAlive(false);
 			}
 			--m_nrExtraLives;
@@ -85,7 +85,7 @@ void pacman::HealthComponent::HandleDamage(pacman::GhostComponent* ghost)
 		}
 
 		takeDamageEvent.arg = std::make_unique<UpdateHealthArg>(m_health);
-		dae::EventQueue::GetInstance().Invoke(std::move(takeDamageEvent), GetGameObject());
+		dae::EventQueue::GetInstance().Invoke(std::move(takeDamageEvent));
 
 		m_isInvincible = true;
 		

@@ -1,20 +1,20 @@
 #pragma once
 #include "../Minigin/Component.h"
 #include "../Minigin/EventQueue.h"
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 #include <vector>
 #include <string>
 
 namespace pacman
 {
 	class LetterSelectComponent;
-	class NameSelectComponent final : public dae::Component, public dae::IObserver
+	class NameSelectComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		NameSelectComponent(dae::GameObject* owner, dae::GameObject* button );
 		~NameSelectComponent();
 
-		void Notify(dae::GameObject* sender, const dae::Event& event);
+		void Notify(const dae::Event& event);
 		void AddLetterComp(LetterSelectComponent* letterComp);
 	private:
 		std::vector<LetterSelectComponent*> m_letters{};

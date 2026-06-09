@@ -23,7 +23,7 @@ void pacman::EatenComponent::OnCollision(dae::GameObject* other)
 			dae::Event deathEvent{"GHOST_DIED"};
 			std::unique_ptr<GhostDiedArg> arg = std::make_unique<GhostDiedArg>(GetGameObject());
 			deathEvent.arg = std::move(arg);
-			m_eventQueue->Invoke(std::move(deathEvent), GetGameObject());
+			m_eventQueue->Invoke(std::move(deathEvent));
 		}
 	}
 }

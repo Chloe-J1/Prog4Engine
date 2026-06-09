@@ -10,12 +10,18 @@ pacman::UpdateHealthArg::UpdateHealthArg(int _health) :
 {
 }
 
-pacman::DirectionChangedArg::DirectionChangedArg(glm::vec2 _direction) :
-	direction{ _direction }
+pacman::DirectionChangedArg::DirectionChangedArg(glm::vec2 _direction, dae::GameObject* _sender) :
+	direction{ _direction },
+	sender{_sender}
 {
 }
 
 pacman::GhostDiedArg::GhostDiedArg(dae::GameObject* _ghost) :
 	ghost{ _ghost }
+{
+}
+
+pacman::SenderArg::SenderArg(dae::GameObject* _sender):
+	sender{_sender}
 {
 }

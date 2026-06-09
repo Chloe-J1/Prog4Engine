@@ -18,7 +18,7 @@ pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<M
 		strategy->Init(GetGameObject()->GetComponent<PlayerMovement>());
 	}
 	m_ghostState->OnEnter(*this);
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 	m_moveStrategy->Init(GetGameObject()->GetComponent<TargetMoverComponent>());
 }
 
@@ -30,7 +30,7 @@ void pacman::GhostComponent::Start()
 
 pacman::GhostComponent::~GhostComponent()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
 int pacman::GhostComponent::GetDamage() const
@@ -54,12 +54,12 @@ void pacman::GhostComponent::Update(float elapsedSec)
 	}
 }
 
-void pacman::GhostComponent::Notify(dae::GameObject* sender, const dae::Event& event)
+void pacman::GhostComponent::Notify(const dae::Event& event)
 {
 	if (event.id == "PLAYER_DIED")
 	{
 		// Find new target
-		RemoveTarget(sender);
+		//(sender);
 		if (m_targets.size() > 0)
 		{
 			GetGameObject()->GetComponent<pacman::TargetMoverComponent>()->SetTargetObj(m_targets[0]);
@@ -67,7 +67,7 @@ void pacman::GhostComponent::Notify(dae::GameObject* sender, const dae::Event& e
 	}
 	
 
-	auto newState{ m_ghostState->Notify(*this, sender, event)};
+	auto newState{ m_ghostState->Notify(*this, event)};
 	if (newState != nullptr)
 	{
 		m_ghostState->OnExit(*this);

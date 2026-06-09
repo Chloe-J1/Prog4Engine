@@ -8,25 +8,20 @@
 
 namespace dae
 {
-	class IObserver;
+	class IEventHandler;
 	class EventQueue : public Singleton<EventQueue>
 	{
 	public:
-		void AddObserver(IObserver* observer);
+		void AddEventHandler(IEventHandler* observer);
 
-		void RemoveObserver(IObserver* observer);
+		void RemoveEventHandler(IEventHandler* observer);
 
-		void Invoke(Event event, GameObject* sender);
+		void Invoke(Event event);
 
 
 		void Update();
 	private:
-		struct QueuedEventData
-		{
-			Event event;
-			GameObject* sender;
-		};
-		std::queue<QueuedEventData> m_eventQueue;
-		std::vector<IObserver*> m_observers{};
+		std::queue<Event> m_eventQueue;
+		std::vector<IEventHandler*> m_eventHandlers{};
 	};
 }

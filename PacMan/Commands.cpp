@@ -41,7 +41,7 @@ void pacman::PressButton::Execute()
 void pacman::NextLevel::Execute()
 {
 	dae::Event event{ "NEXT_LEVEL" };
-	m_eventQueue.Invoke(std::move(event), nullptr);
+	m_eventQueue.Invoke(std::move(event));
 }
 
 void pacman::ToggleSound::Execute()

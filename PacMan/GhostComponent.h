@@ -3,13 +3,13 @@
 #include "GameObject.h"
 #include "GhostState.h"
 #include <memory>
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 #include <vector>
 #include "MoveStrategies.h"
 
 namespace pacman
 {
-	class GhostComponent final : public dae::Component, public dae::IObserver
+	class GhostComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy);
@@ -25,7 +25,7 @@ namespace pacman
 		virtual void Start() override;
 		virtual void Update(float elapsedSec) override;
 
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
+		virtual void Notify(const dae::Event& event) override;
 	private:
 		int m_damage;
 		std::unique_ptr<GhostState> m_ghostState;

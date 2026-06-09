@@ -8,17 +8,17 @@ pacman::ScoreComponentUI::ScoreComponentUI(dae::GameObject* owner, dae::GameObje
 	m_pacman{pacman}
 {
 	m_textComponent = owner->GetComponent<dae::TextComponent>();
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::ScoreComponentUI::~ScoreComponentUI()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
-void pacman::ScoreComponentUI::Notify(dae::GameObject* sender, const dae::Event& event)
+void pacman::ScoreComponentUI::Notify(const dae::Event& event)
 {
-	if (m_pacman != sender) return;
+	/*if (m_pacman != sender) return;*/
 	if (event.id == "SCORE_CHANGED" || event.id == "POWER_PELLET_PICKUP" || event.id == "PELLET_PICKUP" || event.id == "FRUIT_PICKUP")
 	{
 		auto* arg = static_cast<ScoreArg*>(event.arg.get());

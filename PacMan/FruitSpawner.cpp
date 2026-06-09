@@ -9,12 +9,12 @@ pacman::FruitSpawner::FruitSpawner(dae::GameObject* owner, dae::Scene* scene) :
 	dae::Component(owner),
 	m_scene{ scene }
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::FruitSpawner::~FruitSpawner()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
 std::unique_ptr<dae::GameObject> pacman::FruitSpawner::CreateFruit()
@@ -42,7 +42,7 @@ void pacman::FruitSpawner::SpawnFruit()
 	m_scene->Add(CreateFruit());
 }
 
-void pacman::FruitSpawner::Notify(dae::GameObject*, const dae::Event& event)
+void pacman::FruitSpawner::Notify(const dae::Event& event)
 {
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{

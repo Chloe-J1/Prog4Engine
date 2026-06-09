@@ -1,13 +1,13 @@
 #pragma once
 #include "../Minigin/Component.h"
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 namespace dae
 {
 	class SpriteComponent;
 }
 namespace pacman
 {
-	class PacmanAnimator final : public dae::Component, public dae::IObserver
+	class PacmanAnimator final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		PacmanAnimator(dae::GameObject* owner);
@@ -17,7 +17,7 @@ namespace pacman
 		PacmanAnimator& operator=(const PacmanAnimator& other) = delete;
 		PacmanAnimator& operator=(PacmanAnimator&& other) = delete;
 
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event);
+		void Notify(const dae::Event& event);
 	private:
 		dae::SpriteComponent* m_spriteComp;
 	};

@@ -4,7 +4,7 @@
 
 pacman::SoundManager::SoundManager()
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 
 	dae::ISoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
 	ss->RegisterSound("damage", "Data/Sound/death_1.wav");
@@ -15,7 +15,12 @@ pacman::SoundManager::SoundManager()
 	ss->RegisterSound("ghost_died", "Data/Sound/ms_eat_ghost.wav");
 }
 
-void pacman::SoundManager::Notify(dae::GameObject*, const dae::Event& event)
+pacman::SoundManager::~SoundManager()
+{
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
+}
+
+void pacman::SoundManager::Notify(const dae::Event& event)
 {
 	const float volume{ 50 };
 	dae::ISoundSystem* ss = dae::ServiceLocator::GetSoundSystem();

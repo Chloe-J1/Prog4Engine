@@ -12,12 +12,12 @@ pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner, int controllerIdx
 	Component(owner),
 	m_controllerIdx{ controllerIdx }
 {
-	m_eventQueue.AddObserver(this);
+	m_eventQueue.AddEventHandler(this);
 }
 
 pacman::ScoreComponent::~ScoreComponent()
 {
-	m_eventQueue.RemoveObserver(this);
+	m_eventQueue.RemoveEventHandler(this);
 
 	// New highscore?
 	CheckForHighscore();
@@ -47,7 +47,7 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 
 		dae::Event pickupEvent{ eventID };
 		pickupEvent.arg = std::make_unique<ScoreArg>(m_score);
-		m_eventQueue.Invoke(std::move(pickupEvent), GetGameObject());
+		m_eventQueue.Invoke(std::move(pickupEvent));
 
 		other->SetIsAlive(false);
 	}
@@ -57,11 +57,11 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 		m_score += fruit->GetValue();
 		dae::Event event{ "FRUIT_PICKUP" };
 		event.arg = std::make_unique<ScoreArg>(m_score);
-		m_eventQueue.Invoke(std::move(event), GetGameObject());
+		m_eventQueue.Invoke(std::move(event));
 	}
 }
 
-void pacman::ScoreComponent::Notify(dae::GameObject*, const dae::Event& event)
+void pacman::ScoreComponent::Notify(const dae::Event& event)
 {
 	if (event.id == "GHOST_DIED")
 	{
@@ -70,7 +70,7 @@ void pacman::ScoreComponent::Notify(dae::GameObject*, const dae::Event& event)
 		m_score += baseValue * m_nrGhostsEaten;
 		dae::Event e{ "SCORE_CHANGED" };
 		e.arg = std::make_unique<ScoreArg>(m_score);
-		m_eventQueue.Invoke(std::move(e), GetGameObject());
+		m_eventQueue.Invoke(std::move(e));
 	}
 }
 

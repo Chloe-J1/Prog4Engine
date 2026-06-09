@@ -32,8 +32,9 @@ namespace pacman
 	struct DirectionChangedArg final : dae::EventArg
 	{
 		glm::vec2 direction;
+		dae::GameObject* sender;
 
-		DirectionChangedArg(glm::vec2 _direction);
+		DirectionChangedArg(glm::vec2 _direction, dae::GameObject* _sender);
 
 		virtual ~DirectionChangedArg() = default;
 		DirectionChangedArg(const DirectionChangedArg& other) = delete;
@@ -53,5 +54,17 @@ namespace pacman
 		GhostDiedArg(GhostDiedArg&& other) = delete;
 		GhostDiedArg& operator=(const GhostDiedArg& other) = delete;
 		GhostDiedArg& operator=(GhostDiedArg&& other) = delete;
+	};
+
+	struct SenderArg final : dae::EventArg
+	{
+		dae::GameObject* sender;
+
+		SenderArg(dae::GameObject* _sender);
+		virtual ~SenderArg() = default;
+		SenderArg(const SenderArg& other) = delete;
+		SenderArg(SenderArg&& other) = delete;
+		SenderArg& operator=(const SenderArg& other) = delete;
+		SenderArg& operator=(SenderArg&& other) = delete;
 	};
 }

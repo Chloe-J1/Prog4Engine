@@ -2,7 +2,6 @@
 #include <algorithm>
 #include "../Minigin/GameObject.h"
 #include "../Minigin/SpriteComponent.h"
-#include "../Minigin/EventQueue.h"
 #include "../Minigin/WindowConfig.h"
 #include "Events.h"
 
@@ -188,8 +187,8 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 		}
 
 		dae::Event e{ "DIRECTION_CHANGED" };
-		e.arg = std::make_unique<DirectionChangedArg>(m_nextDir);
-		dae::EventQueue::GetInstance().Invoke(std::move(e), GetGameObject());
+		e.arg = std::make_unique<pacman::DirectionChangedArg>(m_nextDir, GetGameObject());
+		m_eventQueue.Invoke(std::move(e));
 	}
 }
 void pacman::TargetMoverComponent::Move(float elapsedSec)

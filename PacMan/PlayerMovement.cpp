@@ -68,8 +68,8 @@ void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 		m_currDirection = direction;
 		SnapToCell(gridIdx, direction);
 		dae::Event e{ "DIRECTION_CHANGED" };
-		e.arg = std::make_unique<DirectionChangedArg>(m_currDirection);
-		dae::EventQueue::GetInstance().Invoke(std::move(e), GetGameObject());
+		e.arg = std::make_unique<DirectionChangedArg>(m_currDirection, GetGameObject());
+		dae::EventQueue::GetInstance().Invoke(std::move(e));
 	}
 }
 

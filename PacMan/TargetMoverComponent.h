@@ -3,6 +3,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Graph.h"
+#include "../Minigin/EventQueue.h"
 
 namespace pacman
 {
@@ -33,6 +34,7 @@ namespace pacman
 		int m_wHeight;
 		int m_nrCols;
 		int m_nrRows;
+		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 
 		void ChangeDirection(bool isMovingAway);
 		bool IsInNewCell();

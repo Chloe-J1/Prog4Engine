@@ -2,25 +2,29 @@
 #include "LetterSelectComponent.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include "Events.h"
 #include "../Minigin/GameObject.h"
 
 pacman::NameSelectComponent::NameSelectComponent(dae::GameObject* owner, dae::GameObject* button):
 	Component(owner),
 	m_button{button}
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::NameSelectComponent::~NameSelectComponent()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
 
-void pacman::NameSelectComponent::Notify(dae::GameObject* sender, const dae::Event& event)
+void pacman::NameSelectComponent::Notify(const dae::Event& event)
 {
-	if (event.id == "BUTTON_PRESSED" && sender == m_button)
+	if (event.id == "BUTTON_PRESSED")
 	{
+		auto* arg = static_cast<SenderArg*>(event.arg.get());
+		dae::GameObject* sender{ arg->sender };
+		if (sender != m_button) return;
 		std::string name{};
 		for (const auto& letter : m_letters)
 		{
@@ -29,7 +33,7 @@ void pacman::NameSelectComponent::Notify(dae::GameObject* sender, const dae::Eve
 		SavePlayerName(name);
 
 		dae::Event e{ "NAME_SELECTED" };
-		m_eventQueue.Invoke(std::move(e), GetGameObject());
+		m_eventQueue.Invoke(std::move(e));
 	}
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "../Minigin/Component.h"
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 #include <array>
 namespace dae
 {
@@ -8,7 +8,7 @@ namespace dae
 }
 namespace pacman
 {
-	class LetterSelectComponent final : public dae::Component, public dae::IObserver
+	class LetterSelectComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		LetterSelectComponent(dae::GameObject* owner, dae::GameObject* upButton, dae::GameObject* downButton);
@@ -19,7 +19,7 @@ namespace pacman
 		LetterSelectComponent& operator=(LetterSelectComponent&& other) = delete;
 
 		virtual void Start() override;
-		void Notify(dae::GameObject* sender, const dae::Event& event);
+		void Notify(const dae::Event& event);
 		char GetLetter() const;
 	private:
 		dae::TextComponent* m_textComp{};

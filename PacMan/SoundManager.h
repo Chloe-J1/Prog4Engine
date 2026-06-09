@@ -1,23 +1,20 @@
 #pragma once
 #include "../Minigin/EventQueue.h"
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 
 
 namespace pacman
 {
-	class SoundManager : public dae::IObserver
+	class SoundManager final : public dae::IEventHandler
 	{
 	public:
 		SoundManager();
-		~SoundManager()
-		{
-			dae::EventQueue::GetInstance().RemoveObserver(this);
-		}
+		~SoundManager();
 		SoundManager(const SoundManager& other) = delete;
 		SoundManager(SoundManager&& other) = delete;
 		SoundManager& operator=(const SoundManager& other) = delete;
 		SoundManager& operator=(SoundManager&& other) = delete;
 
-		virtual void Notify(dae::GameObject*, const dae::Event& event) override;
+		void Notify(const dae::Event& event);
 	};
 }

@@ -24,7 +24,7 @@ namespace pacman
 		virtual ~GhostState() = default;
 		virtual void OnEnter(GhostComponent&);
 		virtual std::unique_ptr<pacman::GhostState> Update(pacman::GhostComponent& ghost, float elapsedSec);
-		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event);
+		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, const dae::Event& event);
 		virtual void OnExit(pacman::GhostComponent& ghost);
 	};
 
@@ -33,7 +33,7 @@ namespace pacman
 	public:
 		virtual void OnEnter(GhostComponent& ghost) override;
 		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
-		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event) override;
+		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, const dae::Event& event) override;
 		virtual void OnExit(pacman::GhostComponent&) override;
 
 	private:
@@ -48,7 +48,7 @@ namespace pacman
 		virtual std::unique_ptr<pacman::GhostState> Update(GhostComponent& ghost, float elapsedSec) override;
 		virtual void OnExit(pacman::GhostComponent& ghost) override;
 
-		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event) override;
+		virtual std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, const dae::Event& event) override;
 	private:
 		TargetMoverComponent* m_moveComp{};
 		MovementBase* m_moveStrategy{ nullptr };

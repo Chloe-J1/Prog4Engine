@@ -18,7 +18,7 @@ std::unique_ptr<pacman::GhostState> pacman::GhostState::Update(pacman::GhostComp
 	return nullptr;
 }
 
-std::unique_ptr<pacman::GhostState> pacman::GhostState::Notify(pacman::GhostComponent&, dae::GameObject*, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::GhostState::Notify(pacman::GhostComponent&, const dae::Event& event)
 {
 	if (event.id == "PLAYER_TAKES_DAMAGE")
 	{
@@ -48,33 +48,36 @@ std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Update(GhostCompo
 
 
 
-std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::FollowTargetState::Notify(pacman::GhostComponent& ghost, const dae::Event& event)
 {
-	auto state = GhostState::Notify(ghost, sender, event);
+	auto state = GhostState::Notify(ghost, event);
 	if (state != nullptr) return state;
 
 	if (event.id == "POWER_PELLET_PICKUP")
 	{
 		return std::make_unique<DizziedState>();
 	}
-	else if (event.id == "DIRECTION_CHANGED" && sender == ghost.GetGameObject())
+	else if (event.id == "DIRECTION_CHANGED")
 	{
 		DirectionChangedArg* arg{ static_cast<pacman::DirectionChangedArg*>(event.arg.get()) };
-		if (arg->direction.x == 1) // right
+		if (arg->sender == ghost.GetGameObject())
 		{
-			m_spriteComp->SetRow(0);
-		}
-		else if (arg->direction.x == -1) // left
-		{
-			m_spriteComp->SetRow(1);
-		}
-		else if (arg->direction.y == -1) // up
-		{
-			m_spriteComp->SetRow(2);
-		}
-		else // down
-		{
-			m_spriteComp->SetRow(3);
+			if (arg->direction.x == 1) // right
+			{
+				m_spriteComp->SetRow(0);
+			}
+			else if (arg->direction.x == -1) // left
+			{
+				m_spriteComp->SetRow(1);
+			}
+			else if (arg->direction.y == -1) // up
+			{
+				m_spriteComp->SetRow(2);
+			}
+			else // down
+			{
+				m_spriteComp->SetRow(3);
+			}
 		}
 	}
 	return nullptr;
@@ -122,9 +125,9 @@ std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostCo
 	return nullptr;
 }
 
-std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& ghost, dae::GameObject* sender, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& ghost, const dae::Event& event)
 {
-	auto state = GhostState::Notify(ghost, sender, event);
+	auto state = GhostState::Notify(ghost, event);
 	if (state != nullptr) return state;
 	if (event.id == "GHOST_DIED")
 	{
@@ -137,12 +140,12 @@ std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostCo
 	return nullptr;
 }
 
-void pacman::DizziedState::OnExit(pacman::GhostComponent& ghost)
+void pacman::DizziedState::OnExit(pacman::GhostComponent&)
 {
 	if (m_dizziedTime >= m_maxDizziedTime) // ALL ghost are no longer in the dizzied state
 	{
 		dae::Event event = dae::Event{ "NOT_DIZZIED" };
-		dae::EventQueue::GetInstance().Invoke(std::move(event), ghost.GetGameObject());
+		dae::EventQueue::GetInstance().Invoke(std::move(event));
 	}
 	m_dizziedTime = 0;
 

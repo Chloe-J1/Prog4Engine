@@ -2,10 +2,10 @@
 #include "../Minigin/Singleton.h"
 #include "GameState.h"
 #include <memory>
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 namespace pacman
 {
-	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::IObserver
+	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::IEventHandler
 	{
 	public:
 		GamestateManager();
@@ -18,7 +18,7 @@ namespace pacman
 		void Init();
 		void SetTotalPellets(int value);
 		int GetTotalPellets() const;
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
+		void Notify(const dae::Event& event);
 
 		void SetSoloButton(dae::GameObject* btn);
 		void SetCoopButton(dae::GameObject* btn);

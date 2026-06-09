@@ -1,11 +1,11 @@
 #pragma once
 #include "Component.h"
 #include "../Minigin/EventQueue.h"
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 
 namespace pacman
 {
-	class ScoreComponent final : public dae::Component, public dae::IObserver
+	class ScoreComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		ScoreComponent(dae::GameObject* owner, int controllerIdx);
@@ -19,7 +19,7 @@ namespace pacman
 
 		
 		virtual void OnCollision(dae::GameObject* other) override;
-		virtual void Notify(dae::GameObject* sender, const dae::Event& event) override;
+		virtual void Notify(const dae::Event& event) override;
 
 	private:
 		int m_score{ 0 };

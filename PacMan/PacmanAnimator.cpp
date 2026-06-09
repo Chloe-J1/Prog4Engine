@@ -8,19 +8,20 @@ pacman::PacmanAnimator::PacmanAnimator(dae::GameObject* owner) :
 	Component(owner),
 	m_spriteComp{GetGameObject()->GetComponent<dae::SpriteComponent>()}
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::PacmanAnimator::~PacmanAnimator()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
-void pacman::PacmanAnimator::Notify(dae::GameObject* sender, const dae::Event& event)
+void pacman::PacmanAnimator::Notify(const dae::Event& event)
 {
-	if (event.id == "DIRECTION_CHANGED" && sender == GetGameObject())
+	if (event.id == "DIRECTION_CHANGED")
 	{
 		DirectionChangedArg* arg{ static_cast<pacman::DirectionChangedArg*>(event.arg.get()) };
+		if (arg->sender != GetGameObject()) return;
 		if (arg->direction.x == 1) // right
 		{
 			m_spriteComp->SetRow(0);

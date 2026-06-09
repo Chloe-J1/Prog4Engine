@@ -1,12 +1,12 @@
 #pragma once
 #include "Component.h"
-#include "IObserver.h"
+#include "IEventHandler.h"
 #include "TextComponent.h"
 
 
 namespace pacman
 {
-	class ScoreComponentUI : public dae::Component, public dae::IObserver
+	class ScoreComponentUI final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		ScoreComponentUI(dae::GameObject* owner, dae::GameObject* pacman);
@@ -17,7 +17,7 @@ namespace pacman
 		ScoreComponentUI& operator=(ScoreComponentUI&& other) = delete;
 
 
-		virtual void Notify(dae::GameObject*, const dae::Event& event) override;
+		void Notify(const dae::Event& event);
 		
 
 	private:

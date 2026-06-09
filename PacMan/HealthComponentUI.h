@@ -1,10 +1,10 @@
 #pragma once
 #include "Component.h"
-#include "IObserver.h"
+#include "IEventHandler.h"
 #include "SpriteComponent.h"
 namespace pacman
 {
-	class HealthComponentUI final : public dae::Component, public dae::IObserver
+	class HealthComponentUI final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		HealthComponentUI(dae::GameObject* owner, dae::GameObject* pacman);
@@ -14,7 +14,7 @@ namespace pacman
 		HealthComponentUI& operator=(const HealthComponentUI& other) = delete;
 		HealthComponentUI& operator=(HealthComponentUI&& other) = delete;
 
-		virtual void Notify(dae::GameObject* gameObject, const dae::Event& event) override;
+		virtual void Notify(const dae::Event& event) override;
 	private:
 		dae::SpriteComponent* m_spriteComp;
 		dae::GameObject* m_pacman;

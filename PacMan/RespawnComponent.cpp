@@ -5,15 +5,15 @@ pacman::RespawnComponent::RespawnComponent(dae::GameObject* owner, const glm::ve
 	Component(owner),
 	m_respawnPos{respawnPos}
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::RespawnComponent::~RespawnComponent()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
-void pacman::RespawnComponent::Notify(dae::GameObject*, const dae::Event& event)
+void pacman::RespawnComponent::Notify(const dae::Event& event)
 {
 	if (event.id == "PLAYER_TAKES_DAMAGE")
 	{

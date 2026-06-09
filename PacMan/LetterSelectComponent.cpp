@@ -2,6 +2,7 @@
 #include "../Minigin/TextComponent.h"
 #include "../Minigin/GameObject.h"
 #include "../Minigin/EventQueue.h"
+#include "Events.h"
 #include <string>
 
 const std::array<char, 26> pacman::LetterSelectComponent::m_possibleLetters = { 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z' };
@@ -11,12 +12,12 @@ pacman::LetterSelectComponent::LetterSelectComponent(dae::GameObject* owner, dae
 	m_upButton{upButton},
 	m_downButton{downButton}
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::LetterSelectComponent::~LetterSelectComponent()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
 void pacman::LetterSelectComponent::Start()
@@ -24,10 +25,12 @@ void pacman::LetterSelectComponent::Start()
 	m_textComp = GetGameObject()->GetComponent<dae::TextComponent>();
 }
 
-void pacman::LetterSelectComponent::Notify(dae::GameObject* sender, const dae::Event& event)
+void pacman::LetterSelectComponent::Notify(const dae::Event& event)
 {
 	if (event.id == "BUTTON_PRESSED")
 	{
+		auto* arg = static_cast<SenderArg*>(event.arg.get());
+		dae::GameObject* sender{ arg->sender };
 		if (sender == m_downButton)
 		{
 			if (m_selectedLetterIdx <= 0) return;

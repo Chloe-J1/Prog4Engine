@@ -1,11 +1,11 @@
 #pragma once
 #include "../Minigin/Component.h"
 #include <glm/glm.hpp>
-#include "../Minigin/IObserver.h"
+#include "../Minigin/IEventHandler.h"
 
 namespace pacman
 {
-	class RespawnComponent final : public dae::Component, public dae::IObserver
+	class RespawnComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		RespawnComponent(dae::GameObject* owner, const glm::vec2& respawnPos);
@@ -15,7 +15,7 @@ namespace pacman
 		RespawnComponent& operator=(const RespawnComponent& other) = delete;
 		RespawnComponent& operator=(RespawnComponent&& other) = delete;
 
-		void Notify(dae::GameObject* sender, const dae::Event& event);
+		void Notify(const dae::Event& event);
 	private:
 		glm::vec2 m_respawnPos;
 	};

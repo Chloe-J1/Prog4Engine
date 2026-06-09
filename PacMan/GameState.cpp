@@ -2,6 +2,7 @@
 #include "SceneLoader.h"
 #include "GamestateManager.h"
 #include "MenuManager.h"
+#include "Events.h"
 
 pacman::GameState::GameState()
 {
@@ -12,7 +13,7 @@ void pacman::GameState::OnEnter()
 {
 }
 
-std::unique_ptr<pacman::GameState> pacman::GameState::Notify(dae::GameObject*, const dae::Event&)
+std::unique_ptr<pacman::GameState> pacman::GameState::Notify(const dae::Event&)
 {
 	return nullptr;
 }
@@ -27,10 +28,12 @@ void pacman::MainMenuState::OnEnter()
 	SceneLoader::GetInstance().MenuScene();
 }
 
-std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(dae::GameObject* sender, const dae::Event& event)
+std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(const dae::Event& event)
 {
 	if (event.id == "BUTTON_PRESSED")
 	{
+		auto* arg = static_cast<SenderArg*>(event.arg.get());
+		dae::GameObject* sender{ arg->sender };
 		if (sender == m_gamestateManager->GetSoloButton())
 		{
 			return std::make_unique<SingleplayerState>(1);
@@ -66,7 +69,7 @@ void pacman::PlayState::OnEnter()
 	m_totalNrPellets = m_gamestateManager->GetTotalPellets();
 }
 
-std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(dae::GameObject*, const dae::Event& event)
+std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(const dae::Event& event)
 {
 	if (event.id == "PELLET_PICKUP" || event.id == "POWER_PELLET_PICKUP")
 	{
@@ -156,10 +159,12 @@ void pacman::EndState::OnEnter()
 	SceneLoader::GetInstance().EndScene();
 }
 
-std::unique_ptr<pacman::GameState> pacman::EndState::Notify(dae::GameObject* sender, const dae::Event& event)
+std::unique_ptr<pacman::GameState> pacman::EndState::Notify(const dae::Event& event)
 {
 	if (event.id == "BUTTON_PRESSED")
 	{
+		auto* arg = static_cast<SenderArg*>(event.arg.get());
+		dae::GameObject* sender{ arg->sender };
 		if (sender == m_gamestateManager->GetHomeButton())
 		{
 			return std::make_unique<pacman::MainMenuState>();
@@ -179,7 +184,7 @@ void pacman::NameSelectState::OnEnter()
 	m_inputManager.DisableController(1);
 }
 
-std::unique_ptr<pacman::GameState> pacman::NameSelectState::Notify(dae::GameObject*, const dae::Event& event)
+std::unique_ptr<pacman::GameState> pacman::NameSelectState::Notify(const dae::Event& event)
 {
 	if (event.id == "NAME_SELECTED")
 	{

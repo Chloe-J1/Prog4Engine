@@ -1,6 +1,8 @@
 #include "ButtonComponent.h"
 #include "MenuManager.h"
 #include "../Minigin/Event.h"
+#include "Events.h"
+#include <memory>
 #include <iostream>
 
 
@@ -35,6 +37,7 @@ void pacman::ButtonComponent::ButtonPressed()
 	if (m_isSelected)
 	{
 		dae::Event buttonPressed{"BUTTON_PRESSED"};
-		m_eventQueue->Invoke(std::move(buttonPressed), GetGameObject());
+		buttonPressed.arg = std::make_unique<pacman::SenderArg>(GetGameObject());
+		m_eventQueue->Invoke(std::move(buttonPressed));
 	}
 }

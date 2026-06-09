@@ -3,12 +3,12 @@
 
 pacman::GamestateManager::GamestateManager()
 {
-	dae::EventQueue::GetInstance().AddObserver(this);
+	dae::EventQueue::GetInstance().AddEventHandler(this);
 }
 
 pacman::GamestateManager::~GamestateManager()
 {
-	dae::EventQueue::GetInstance().RemoveObserver(this);
+	dae::EventQueue::GetInstance().RemoveEventHandler(this);
 }
 
 void pacman::GamestateManager::Init()
@@ -27,9 +27,9 @@ int pacman::GamestateManager::GetTotalPellets() const
 	return m_totalPellets;
 }
 
-void pacman::GamestateManager::Notify(dae::GameObject* sender, const dae::Event& event)
+void pacman::GamestateManager::Notify(const dae::Event& event)
 {
-	auto newState{ m_gameState->Notify(sender, event) };
+	auto newState{ m_gameState->Notify(event) };
 	if (newState != nullptr)
 	{
 		m_gameState->OnExit();
