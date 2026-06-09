@@ -11,16 +11,16 @@ namespace dae
 	};
 
 	// Interface used for sound service locator
-	class SoundSystem
+	class ISoundSystem
 	{
 	public:
-		virtual ~SoundSystem() = default;
+		virtual ~ISoundSystem() = default;
 		virtual void Play(const std::string& soundId, const float volume) = 0;
 		virtual void RegisterSound(const std::string& id, const std::string& path) = 0;
 	};
 
 	// Null sound system
-	class NullSoundSystem final : public SoundSystem
+	class NullSoundSystem final : public ISoundSystem
 	{
 	public:
 		virtual void Play(const std::string&, const float) override {};
@@ -28,7 +28,7 @@ namespace dae
 	};
 
 	// SDL sound system
-	class SDLSoundSystem final : public SoundSystem
+	class SDLSoundSystem final : public ISoundSystem
 	{
 	public:
 		SDLSoundSystem();
@@ -46,11 +46,11 @@ namespace dae
 	};
 
 	// Logging sound system
-	class LoggingSoundSystem final : public SoundSystem
+	class LoggingSoundSystem final : public ISoundSystem
 	{
-		std::unique_ptr<SoundSystem> m_realSoundSys;
+		std::unique_ptr<ISoundSystem> m_realSoundSys;
 	public:
-		LoggingSoundSystem(std::unique_ptr<SoundSystem>&& soundSys);
+		LoggingSoundSystem(std::unique_ptr<ISoundSystem>&& soundSys);
 		virtual ~LoggingSoundSystem() = default;
 		LoggingSoundSystem(const LoggingSoundSystem& other) = delete;
 		LoggingSoundSystem(LoggingSoundSystem&& other) = delete;

@@ -1,12 +1,12 @@
 #include "Subject.h"
 #include <algorithm>
 
-void dae::Subject::AddObserver(Observer* observer)
+void dae::Subject::AddObserver(IObserver* observer)
 {
 	m_observers.emplace_back(observer);
 }
 
-void dae::Subject::RemoveObserver(Observer* observer)
+void dae::Subject::RemoveObserver(IObserver* observer)
 {
 	auto itr = std::find(m_observers.begin(), m_observers.end(), observer);
 

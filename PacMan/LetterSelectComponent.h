@@ -1,6 +1,6 @@
 #pragma once
 #include "../Minigin/Component.h"
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 #include <array>
 namespace dae
 {
@@ -8,7 +8,7 @@ namespace dae
 }
 namespace pacman
 {
-	class LetterSelectComponent final : public dae::Component, public dae::Observer
+	class LetterSelectComponent final : public dae::Component, public dae::IObserver
 	{
 	public:
 		LetterSelectComponent(dae::GameObject* owner, dae::GameObject* upButton, dae::GameObject* downButton);

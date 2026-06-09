@@ -8,13 +8,13 @@
 
 namespace dae
 {
-	class Observer;
+	class IObserver;
 	class EventQueue : public Singleton<EventQueue>
 	{
 	public:
-		void AddObserver(Observer* observer);
+		void AddObserver(IObserver* observer);
 
-		void RemoveObserver(Observer* observer);
+		void RemoveObserver(IObserver* observer);
 
 		void Invoke(Event event, GameObject* sender);
 
@@ -27,6 +27,6 @@ namespace dae
 			GameObject* sender;
 		};
 		std::queue<QueuedEventData> m_eventQueue;
-		std::vector<Observer*> m_observers{};
+		std::vector<IObserver*> m_observers{};
 	};
 }

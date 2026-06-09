@@ -5,9 +5,9 @@ namespace dae
 {
 	class ServiceLocator final
 	{
-		inline static std::unique_ptr<SoundSystem> m_soundSysInstance;
+		inline static std::unique_ptr<ISoundSystem> m_soundSysInstance;
 	public:
-		static SoundSystem* GetSoundSystem();
-		static void RegisterSoundsystem(std::unique_ptr<SoundSystem>&& soundSys);
+		static ISoundSystem* GetSoundSystem();
+		static void RegisterSoundsystem(std::unique_ptr<ISoundSystem>&& soundSys);
 	};
 }

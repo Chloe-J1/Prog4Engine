@@ -18,7 +18,7 @@ namespace dae
 
 	//************
 
-	struct Event
+	struct Event final
 	{
 		const std::string id;
 		std::unique_ptr<EventArg> arg;

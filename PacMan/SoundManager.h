@@ -1,11 +1,11 @@
 #pragma once
 #include "../Minigin/EventQueue.h"
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 
 
 namespace pacman
 {
-	class SoundManager : public dae::Observer
+	class SoundManager : public dae::IObserver
 	{
 	public:
 		SoundManager();

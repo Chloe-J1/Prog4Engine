@@ -135,7 +135,7 @@ void dae::SDLSoundSystem::RegisterSound(const std::string& id, const std::string
 
 // LoggingSoundSystem
 //***************
-dae::LoggingSoundSystem::LoggingSoundSystem(std::unique_ptr<SoundSystem>&& soundSys):
+dae::LoggingSoundSystem::LoggingSoundSystem(std::unique_ptr<ISoundSystem>&& soundSys):
 	m_realSoundSys{std::move(soundSys)}
 {
 }

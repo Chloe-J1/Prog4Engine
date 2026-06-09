@@ -1,12 +1,12 @@
 #pragma once
 #include "Component.h"
-#include "Observer.h"
+#include "IObserver.h"
 #include "TextComponent.h"
 
 
 namespace pacman
 {
-	class ScoreComponentUI : public dae::Component, public dae::Observer
+	class ScoreComponentUI : public dae::Component, public dae::IObserver
 	{
 	public:
 		ScoreComponentUI(dae::GameObject* owner, dae::GameObject* pacman);

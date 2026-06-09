@@ -1,12 +1,12 @@
 #pragma once
 #include "Component.h"
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 #include "../Minigin/EventQueue.h"
 
 namespace pacman
 {
 	class GhostComponent;
-	class HealthComponent final : public dae::Component, public dae::Observer
+	class HealthComponent final : public dae::Component, public dae::IObserver
 	{
 	public:
 		HealthComponent(dae::GameObject* owner, int health = 4);

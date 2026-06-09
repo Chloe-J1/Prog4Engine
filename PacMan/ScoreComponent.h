@@ -1,11 +1,11 @@
 #pragma once
 #include "Component.h"
 #include "../Minigin/EventQueue.h"
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 
 namespace pacman
 {
-	class ScoreComponent final : public dae::Component, public dae::Observer
+	class ScoreComponent final : public dae::Component, public dae::IObserver
 	{
 	public:
 		ScoreComponent(dae::GameObject* owner, int controllerIdx);

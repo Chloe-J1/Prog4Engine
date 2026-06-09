@@ -6,7 +6,7 @@ pacman::SoundManager::SoundManager()
 {
 	dae::EventQueue::GetInstance().AddObserver(this);
 
-	dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
+	dae::ISoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
 	ss->RegisterSound("damage", "Data/Sound/death_1.wav");
 	ss->RegisterSound("button", "Data/Sound/button.mp3");
 	ss->RegisterSound("pellet_pickup", "Data/Sound/eat_dot.wav");
@@ -18,7 +18,7 @@ pacman::SoundManager::SoundManager()
 void pacman::SoundManager::Notify(dae::GameObject*, const dae::Event& event)
 {
 	const float volume{ 50 };
-	dae::SoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
+	dae::ISoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
 	if (event.id == "PLAYER_TAKES_DAMAGE")
 	{
 		ss->Play("damage", volume);

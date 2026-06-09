@@ -1,11 +1,11 @@
 #pragma once
 #include "../Minigin/Component.h"
 #include <glm/glm.hpp>
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 
 namespace pacman
 {
-	class RespawnComponent final : public dae::Component, public dae::Observer
+	class RespawnComponent final : public dae::Component, public dae::IObserver
 	{
 	public:
 		RespawnComponent(dae::GameObject* owner, const glm::vec2& respawnPos);

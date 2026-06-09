@@ -1,5 +1,5 @@
 #pragma once
-#include "Observer.h"
+#include "IObserver.h"
 #include <vector>
 
 namespace dae
@@ -7,12 +7,12 @@ namespace dae
 	class Subject
 	{
 	public:
-		void AddObserver(Observer* observer);
+		void AddObserver(IObserver* observer);
 
-		void RemoveObserver(Observer* observer);
+		void RemoveObserver(IObserver* observer);
 
 		void NotifyObservers(GameObject* gameObject, Event event);
 	private:
-		std::vector<Observer*> m_observers;
+		std::vector<IObserver*> m_observers;
 	};
 }

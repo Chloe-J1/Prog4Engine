@@ -1,11 +1,11 @@
 #include "ServiceLocator.h"
 
-dae::SoundSystem* dae::ServiceLocator::GetSoundSystem()
+dae::ISoundSystem* dae::ServiceLocator::GetSoundSystem()
 {
 	return m_soundSysInstance.get();
 }
 
-void dae::ServiceLocator::RegisterSoundsystem(std::unique_ptr<SoundSystem>&& soundSys)
+void dae::ServiceLocator::RegisterSoundsystem(std::unique_ptr<ISoundSystem>&& soundSys)
 {
 	if (soundSys == nullptr)
 	{

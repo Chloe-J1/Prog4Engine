@@ -143,10 +143,6 @@ bool dae::GameObject::IsChild(GameObject* parent)
 	{
 		if (child == parent)
 			return true;
-		if (child->IsChild(parent))
-		{
-			return true;
-		}
 	}
 	return false;
 }

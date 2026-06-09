@@ -1,13 +1,13 @@
 #pragma once
 #include "../Minigin/Component.h"
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 namespace dae
 {
 	class SpriteComponent;
 }
 namespace pacman
 {
-	class PacmanAnimator final : public dae::Component, public dae::Observer
+	class PacmanAnimator final : public dae::Component, public dae::IObserver
 	{
 	public:
 		PacmanAnimator(dae::GameObject* owner);

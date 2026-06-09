@@ -1,10 +1,10 @@
 #pragma once
 #include "Component.h"
-#include "Observer.h"
+#include "IObserver.h"
 #include "SpriteComponent.h"
 namespace pacman
 {
-	class HealthComponentUI final : public dae::Component, public dae::Observer
+	class HealthComponentUI final : public dae::Component, public dae::IObserver
 	{
 	public:
 		HealthComponentUI(dae::GameObject* owner, dae::GameObject* pacman);

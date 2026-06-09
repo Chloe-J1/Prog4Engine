@@ -3,13 +3,13 @@
 #include "../Minigin/Component.h"
 #include "../Minigin/Scene.h"
 #include "../Minigin/GameObject.h"
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 #include "Graph.h"
 #include <glm/glm.hpp>
 
 namespace pacman
 {
-	class FruitSpawner final : public dae::Component, public dae::Observer
+	class FruitSpawner final : public dae::Component, public dae::IObserver
 	{
 	public:
 		FruitSpawner(dae::GameObject* owner, dae::Scene* scene);

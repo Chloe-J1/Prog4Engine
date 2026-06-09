@@ -3,13 +3,13 @@
 #include "GameObject.h"
 #include "GhostState.h"
 #include <memory>
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 #include <vector>
 #include "MoveStrategies.h"
 
 namespace pacman
 {
-	class GhostComponent final : public dae::Component, public dae::Observer
+	class GhostComponent final : public dae::Component, public dae::IObserver
 	{
 	public:
 		GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy);

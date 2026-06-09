@@ -14,7 +14,7 @@ namespace pacman
 		virtual void OnExit() {};
 		void Init(TargetMoverComponent* moveComp);
 	protected:
-		TargetMoverComponent* m_moveComp{}; // ctor?
+		TargetMoverComponent* m_moveComp{};
 	};
 
 	class ChaseMovement final : public MovementBase

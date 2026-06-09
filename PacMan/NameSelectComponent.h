@@ -1,14 +1,14 @@
 #pragma once
 #include "../Minigin/Component.h"
 #include "../Minigin/EventQueue.h"
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 #include <vector>
 #include <string>
 
 namespace pacman
 {
 	class LetterSelectComponent;
-	class NameSelectComponent final : public dae::Component, public dae::Observer
+	class NameSelectComponent final : public dae::Component, public dae::IObserver
 	{
 	public:
 		NameSelectComponent(dae::GameObject* owner, dae::GameObject* button );

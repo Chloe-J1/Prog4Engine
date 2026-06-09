@@ -1,13 +1,13 @@
 #include "EventQueue.h"
 #include <algorithm>
-#include "Observer.h"
+#include "IObserver.h"
 
-void dae::EventQueue::AddObserver(Observer* observer)
+void dae::EventQueue::AddObserver(IObserver* observer)
 {
 	m_observers.emplace_back(observer);
 }
 
-void dae::EventQueue::RemoveObserver(Observer* observer)
+void dae::EventQueue::RemoveObserver(IObserver* observer)
 {
 	auto itr = std::find(m_observers.begin(), m_observers.end(), observer);
 

@@ -2,10 +2,10 @@
 #include "../Minigin/Singleton.h"
 #include "GameState.h"
 #include <memory>
-#include "../Minigin/Observer.h"
+#include "../Minigin/IObserver.h"
 namespace pacman
 {
-	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::Observer
+	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::IObserver
 	{
 	public:
 		GamestateManager();
