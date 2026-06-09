@@ -29,7 +29,7 @@ int pacman::FruitComponent::GetValue() const
 
 void pacman::FruitComponent::OnCollision(dae::GameObject* other)
 {
-	if (auto player = other->GetComponent<HealthComponent>())
+	if (other->GetComponent<HealthComponent>()) // check collision with pacman
 	{
 		// Move to bottom right pos based on nrfruit
 		glm::vec2 spawnPos{ m_windowWidth, m_windowHeight };
