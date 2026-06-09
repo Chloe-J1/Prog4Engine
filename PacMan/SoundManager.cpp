@@ -6,13 +6,7 @@ pacman::SoundManager::SoundManager()
 {
 	dae::EventQueue::GetInstance().AddEventHandler(this);
 
-	dae::ISoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
-	ss->RegisterSound("damage", "Data/Sound/death_1.wav");
-	ss->RegisterSound("button", "Data/Sound/button.mp3");
-	ss->RegisterSound("pellet_pickup", "Data/Sound/eat_dot.wav");
-	ss->RegisterSound("fruit_pickup", "Data/Sound/eat_fruit.wav");
-	ss->RegisterSound("player_died", "Data/Sound/ms_death.wav");
-	ss->RegisterSound("ghost_died", "Data/Sound/ms_eat_ghost.wav");
+	RegisterSound();
 }
 
 pacman::SoundManager::~SoundManager()
@@ -48,4 +42,15 @@ void pacman::SoundManager::Notify(const dae::Event& event)
 	{
 		ss->Play("ghost_died", volume);
 	}
+}
+
+void pacman::SoundManager::RegisterSound()
+{
+	dae::ISoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
+	ss->RegisterSound("damage", "Data/Sound/death_1.wav");
+	ss->RegisterSound("button", "Data/Sound/button.mp3");
+	ss->RegisterSound("pellet_pickup", "Data/Sound/eat_dot.wav");
+	ss->RegisterSound("fruit_pickup", "Data/Sound/eat_fruit.wav");
+	ss->RegisterSound("player_died", "Data/Sound/ms_death.wav");
+	ss->RegisterSound("ghost_died", "Data/Sound/ms_eat_ghost.wav");
 }

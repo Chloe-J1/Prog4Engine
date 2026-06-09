@@ -2,6 +2,7 @@
 #include "SceneLoader.h"
 #include "GamestateManager.h"
 #include "MenuManager.h"
+#include "Commands.h"
 #include "Events.h"
 
 pacman::GameState::GameState()
@@ -26,6 +27,14 @@ void pacman::GameState::OnExit()
 void pacman::MainMenuState::OnEnter()
 {
 	SceneLoader::GetInstance().MenuScene();
+
+	// Bind MenuScene commands
+	m_inputManager.BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 0);
+	m_inputManager.BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 1);
+	m_inputManager.BindCommand(SDL_SCANCODE_UP, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
+	m_inputManager.BindCommand(SDL_SCANCODE_DOWN, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
+	m_inputManager.BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
+	m_inputManager.BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 1);
 }
 
 std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(const dae::Event& event)
@@ -53,6 +62,13 @@ std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(const dae::Even
 void pacman::MainMenuState::OnExit()
 {
 	m_gamestateManager->ClearButtons();
+
+	m_inputManager.UnbindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, 0);
+	m_inputManager.UnbindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, 1);
+	m_inputManager.UnbindCommand(SDL_SCANCODE_UP, dae::TriggerEvent::PressedThisFrame);
+	m_inputManager.UnbindCommand(SDL_SCANCODE_DOWN, dae::TriggerEvent::PressedThisFrame);
+	m_inputManager.UnbindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, 0);
+	m_inputManager.UnbindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, 1);
 }
 
 pacman::PlayState::PlayState(int nrPacman):
@@ -67,6 +83,9 @@ void pacman::PlayState::OnEnter()
 	LoadScene();
 
 	m_totalNrPellets = m_gamestateManager->GetTotalPellets();
+
+	// Skip level cmd
+	m_inputManager.BindCommand(SDL_SCANCODE_F1, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextLevel>());
 }
 
 std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(const dae::Event& event)
@@ -104,6 +123,11 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(const dae::Event& e
 	return nullptr;
 }
 
+void pacman::PlayState::OnExit()
+{
+	m_inputManager.UnbindCommand(SDL_SCANCODE_F1, dae::TriggerEvent::PressedThisFrame);
+}
+
 std::unique_ptr<pacman::GameState> pacman::PlayState::NextLevel()
 {
 	++m_levelIdx;
@@ -120,12 +144,12 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::NextLevel()
 	return nullptr;
 }
 
+// SINGLEPLAYER
 pacman::SingleplayerState::SingleplayerState(int nrPacman):
 	PlayState(nrPacman)
 {
 }
 
-// SINGLEPLAYER
 void pacman::SingleplayerState::LoadScene()
 {
 	SceneLoader::GetInstance().SingleplayerScene();
@@ -181,6 +205,14 @@ void pacman::EndState::OnExit()
 // NAME SELECT
 void pacman::NameSelectState::OnEnter()
 {
+	// Bind NameSelect commands
+	m_inputManager.BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 0);
+	m_inputManager.BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
+	m_inputManager.BindCommand(SDL_SCANCODE_LEFT, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
+	m_inputManager.BindCommand(SDL_SCANCODE_RIGHT, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
+	m_inputManager.BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 1);
+	m_inputManager.BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 1);
+	
 	m_inputManager.DisableController(1);
 }
 
@@ -206,4 +238,11 @@ void pacman::NameSelectState::OnExit()
 {
 	m_inputManager.EnableAllControllers();
 	MenuManager::GetInstance().ResetSelected();
+
+	m_inputManager.UnbindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, 0);
+	m_inputManager.UnbindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, 0);
+	m_inputManager.UnbindCommand(SDL_SCANCODE_LEFT, dae::TriggerEvent::PressedThisFrame);
+	m_inputManager.UnbindCommand(SDL_SCANCODE_RIGHT, dae::TriggerEvent::PressedThisFrame);
+	m_inputManager.UnbindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, 1);
+	m_inputManager.UnbindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, 1);
 }

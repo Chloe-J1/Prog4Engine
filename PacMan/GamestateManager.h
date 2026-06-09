@@ -3,6 +3,7 @@
 #include "GameState.h"
 #include <memory>
 #include "../Minigin/IEventHandler.h"
+#include "../Minigin/InputManager.h"
 namespace pacman
 {
 	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::IEventHandler
@@ -37,5 +38,7 @@ namespace pacman
 		dae::GameObject* m_coopButton{};
 		dae::GameObject* m_versusButton{};
 		dae::GameObject* m_homeButton{};
+
+		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 	};
 }

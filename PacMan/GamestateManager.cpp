@@ -1,14 +1,20 @@
 #include "GamestateManager.h"
 #include "../Minigin/EventQueue.h"
+#include "Commands.h"
+#include <memory>
+#include "GameState.h"
+#include <InputData.h>
 
 pacman::GamestateManager::GamestateManager()
 {
 	dae::EventQueue::GetInstance().AddEventHandler(this);
+	m_inputManager.BindCommand(SDL_SCANCODE_F2, dae::TriggerEvent::PressedThisFrame, std::make_unique<ToggleSound>());
 }
 
 pacman::GamestateManager::~GamestateManager()
 {
 	dae::EventQueue::GetInstance().RemoveEventHandler(this);
+	m_inputManager.UnbindCommand(SDL_SCANCODE_F2, dae::TriggerEvent::PressedThisFrame);
 }
 
 void pacman::GamestateManager::Init()

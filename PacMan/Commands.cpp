@@ -1,6 +1,9 @@
 #include "Commands.h"
 #include "MenuManager.h"
 #include "ButtonComponent.h"
+#include "../Minigin/ServiceLocator.h"
+#include "../Minigin/SoundSystem.h"
+#include <memory>
 
 // MOVE
 //********
@@ -47,12 +50,17 @@ void pacman::NextLevel::Execute()
 void pacman::ToggleSound::Execute()
 {
 	m_isOn = !m_isOn;
-	/*if (m_isOn)
+	if (m_isOn)
 	{
-		dae::ServiceLocator::RegisterSoundsystem(nullptr);
+#ifdef _DEBUG
+		dae::ServiceLocator::RegisterSoundsystem(std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
+#else
+		dae::ServiceLocator::RegisterSoundsystem(std::make_unique<dae::SDLSoundSystem>());
+#endif
+		m_soundManager.RegisterSound();
 	}
 	else
 	{
-		dae::ServiceLocator::RegisterSoundsystem(std::make_unique<dae::SoundSystem>());
-	}*/
+		dae::ServiceLocator::RegisterSoundsystem(std::make_unique<dae::NullSoundSystem>());
+	}
 }

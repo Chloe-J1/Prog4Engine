@@ -45,6 +45,9 @@ namespace pacman
 		void OnEnter();
 		std::unique_ptr<pacman::GameState> Notify(const dae::Event& event);
 		void OnExit();
+
+	private:
+		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 	};
 
 	class PlayState : public GameState
@@ -59,6 +62,7 @@ namespace pacman
 
 		virtual void OnEnter() override;
 		virtual std::unique_ptr<pacman::GameState> Notify(const dae::Event&) override;
+		virtual void OnExit() override;
 	protected:
 		int m_nrEatenPellets{};
 		int m_totalNrPellets{};
@@ -66,6 +70,7 @@ namespace pacman
 		int m_nrDeaths{};
 		int m_levelIdx{ 0 };
 		std::vector<std::string> m_levels{ "Level_one", "Level_two", "Level_three" };
+		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 
 		virtual void LoadScene() = 0;
 	private:

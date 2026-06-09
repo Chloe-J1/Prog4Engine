@@ -3,6 +3,7 @@
 #include "../PacMan/PlayerMovement.h"
 #include "../Minigin/Command.h"	
 #include "../Minigin/EventQueue.h"
+#include "SoundManager.h"
 
 namespace pacman
 {
@@ -51,11 +52,14 @@ namespace pacman
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 	};
 
+	// SOUND TOGGLE
+	//********
 	class ToggleSound final : public dae::Command
 	{
 	public:
 		virtual void Execute() override;
 	private:
 		bool m_isOn{ true };
+		SoundManager& m_soundManager{ SoundManager::GetInstance() };
 	};
 }

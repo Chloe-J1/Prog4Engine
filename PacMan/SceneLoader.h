@@ -4,7 +4,6 @@
 #include <string>
 #include <glm/glm.hpp>
 #include "../Minigin/Font.h"
-#include "SoundManager.h"
 #include "MoveStrategies.h"
 #include "../Minigin/InputManager.h"
 #include <memory>
@@ -42,8 +41,6 @@ namespace pacman
 		const int m_wWidth;
 		const int m_wHeight;
 		
-
-		SoundManager m_soundManager{};
 		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 		GamestateManager& m_gamestateManager{ pacman::GamestateManager::GetInstance() };
 		std::array<LetterSelectComponent*, 3> m_letterComponents{};

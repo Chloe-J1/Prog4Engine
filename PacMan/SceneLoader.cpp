@@ -56,9 +56,6 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
 	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
 	scene.Add(std::move(fruitSpawnerGo));
-
-	// Skip level cmd
-	m_inputManager.BindCommand(SDL_SCANCODE_F1, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextLevel>());
 }
 
 void pacman::SceneLoader::SingleplayerScene()
@@ -223,14 +220,6 @@ void pacman::SceneLoader::MenuScene()
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
-	// Bind MenuScene commands
-	m_inputManager.BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 0);
-	m_inputManager.BindCommand(SDL_SCANCODE_UP, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
-	m_inputManager.BindCommand(SDL_SCANCODE_DOWN, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
-	m_inputManager.BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
-	m_inputManager.BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 1);
-	m_inputManager.BindCommand(dae::Input::DPad_Up, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 1);
-	
 	// Sinle player button
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 	std::unique_ptr<dae::GameObject> button = CreateButton(glm::vec2{ float(m_wWidth - 72 / 2) / 2.f, float(m_wHeight - 24 / 2) / 2.f }, "Button.png");
@@ -264,17 +253,6 @@ void pacman::SceneLoader::MenuScene()
 void pacman::SceneLoader::NameSelectScene()
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
-
-	// Mute sound command
-	m_inputManager.BindCommand(SDL_SCANCODE_F2, dae::TriggerEvent::PressedThisFrame, std::make_unique<ToggleSound>());
-
-	// Bind NameSelect commands
-	m_inputManager.BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 0);
-	m_inputManager.BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
-	m_inputManager.BindCommand(SDL_SCANCODE_LEFT, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>());
-	m_inputManager.BindCommand(SDL_SCANCODE_RIGHT, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
-	m_inputManager.BindCommand(dae::Input::DPad_Left, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PreviousButton>(), 1);
-	m_inputManager.BindCommand(dae::Input::DPad_Right, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 1);
 
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 17);
 	const float startY = 70.f;
@@ -406,10 +384,6 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateButton(const glm::ve
 	go->AddComponent<dae::SpriteComponent>(nrCols, nrRows);
 	//
 	go->AddComponent<ButtonComponent>();
-
-	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_SPACE, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()));
-	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()), 0);
-	dae::InputManager::GetInstance().BindCommand(dae::Input::Button_A, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::PressButton>(go.get()), 1);
 
 	go->SetLocalPosition(spawnPos.x, spawnPos.y);
 

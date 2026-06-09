@@ -1,6 +1,5 @@
 #include "SceneManager.h"
 #include "Scene.h"
-#include "InputManager.h"
 
 void dae::SceneManager::Update(float elapsedSec)
 {
@@ -41,8 +40,6 @@ void dae::SceneManager::MoveNewObjects()
 
 dae::Scene& dae::SceneManager::CreateScene()
 {
-	InputManager::GetInstance().UnbindAllCommands();
-
 	m_activeScene = std::unique_ptr<Scene>(new Scene());
 	return *m_activeScene;
 }
