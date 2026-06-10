@@ -25,9 +25,9 @@
 
 
 pacman::SceneLoader::SceneLoader():
+	m_levelLoader{std::make_unique<LevelLoader>()},
 	m_wWidth{ dae::WindowConfig::GetInstance().GetWidth() },
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
-	m_levelLoader{std::make_unique<LevelLoader>()},
 	m_highscoreParser{std::make_unique<HighscoreParser>()}
 {
 }
@@ -266,7 +266,7 @@ void pacman::SceneLoader::NameSelectScene()
 	const float startY = 70.f;
 	const float height = 70.f;
 
-	for (int index = 0; index < m_letterComponents.size(); ++index)
+	for (int index = 0; index < (int)m_letterComponents.size(); ++index)
 	{
 		float y = startY + index * height;
 
@@ -302,8 +302,8 @@ void pacman::SceneLoader::NameSelectScene()
 	scene.Add(std::move(selectText));
 
 	auto titleFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
-	scene.Add(std::move(CreateText(glm::vec2{ 20,20 }, "SELECT A NAME", font)));
-	scene.Add(std::move(CreateText(glm::vec2{ 20,40 }, "use dpad to choose buttons and press A to interact with the button, press select to confirm name", font)));
+	scene.Add(CreateText(glm::vec2{ 20,20 }, "SELECT A NAME", font));
+	scene.Add(CreateText(glm::vec2{ 20,40 }, "use dpad to choose buttons and press A to interact with the button, press select to confirm name", font));
 }
 
 // Helper functions
