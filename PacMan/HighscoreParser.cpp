@@ -10,7 +10,16 @@ const std::vector<std::string>& pacman::HighscoreParser::GetScores(const std::st
 
 	if (iFile.is_open())
 	{
-		nlohmann::json data = nlohmann::json::parse(iFile);
+		nlohmann::json data;
+		try
+		{
+			data = nlohmann::json::parse(iFile);
+		}
+		catch (const nlohmann::json::parse_error& e)
+		{
+			std::cerr << "JSON parse error in " << filename << ": " << e.what() << "\n";
+			return m_scores;
+		}
 		std::string highscoreText{};
 		m_scores.clear();
 		
@@ -35,9 +44,16 @@ void pacman::HighscoreParser::ClearCurrentPlayers()
 {
 	std::filesystem::path filePath = std::filesystem::path(DATA_PATH) / "Scores.json";
 
-	nlohmann::json data;
 	std::ifstream iFile(filePath);
-	data = nlohmann::json::parse(iFile);
+	nlohmann::json data;
+	try
+	{
+		data = nlohmann::json::parse(iFile);
+	}
+	catch (const nlohmann::json::parse_error& e)
+	{
+		std::cerr << "JSON parse error in " << filePath << ": " << e.what() << "\n";
+	}
 	iFile.close();
 
 	data["CurrentPlayers"] = nlohmann::json::array();
@@ -51,9 +67,16 @@ void pacman::HighscoreParser::ClearScores()
 {
 	std::filesystem::path filePath = std::filesystem::path(DATA_PATH) / "Scores.json";
 
-	nlohmann::json data;
 	std::ifstream iFile(filePath);
-	data = nlohmann::json::parse(iFile);
+	nlohmann::json data;
+	try
+	{
+		data = nlohmann::json::parse(iFile);
+	}
+	catch (const nlohmann::json::parse_error& e)
+	{
+		std::cerr << "JSON parse error in " << filePath << ": " << e.what() << "\n";
+	}
 	iFile.close();
 
 	auto& players = data["CurrentPlayers"];

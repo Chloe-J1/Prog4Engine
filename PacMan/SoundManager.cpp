@@ -16,7 +16,7 @@ pacman::SoundManager::~SoundManager()
 
 void pacman::SoundManager::Notify(const dae::Event& event)
 {
-	const float volume{ 50 };
+	const float volume{ 1 };
 	dae::ISoundSystem* ss = dae::ServiceLocator::GetSoundSystem();
 	if (event.id == "PLAYER_TAKES_DAMAGE")
 	{
@@ -42,6 +42,10 @@ void pacman::SoundManager::Notify(const dae::Event& event)
 	{
 		ss->Play("ghost_died", volume);
 	}
+	else if (event.id == "MAIN_MENU")
+	{
+		ss->Play("start", volume);
+	}
 }
 
 void pacman::SoundManager::RegisterSound()
@@ -53,4 +57,5 @@ void pacman::SoundManager::RegisterSound()
 	ss->RegisterSound("fruit_pickup", "Data/Sound/eat_fruit.wav");
 	ss->RegisterSound("player_died", "Data/Sound/ms_death.wav");
 	ss->RegisterSound("ghost_died", "Data/Sound/ms_eat_ghost.wav");
+	ss->RegisterSound("start", "Data/Sound/ms_start.wav");
 }

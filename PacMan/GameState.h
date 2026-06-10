@@ -4,6 +4,7 @@
 #include "../Minigin/InputManager.h"
 #include <string>
 #include "HighscoreParser.h"
+#include "../Minigin/EventQueue.h"
 
 namespace dae
 {
@@ -49,6 +50,7 @@ namespace pacman
 
 	private:
 		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
+		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 	};
 
 	class PlayState : public GameState

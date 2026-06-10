@@ -36,6 +36,8 @@ void pacman::MainMenuState::OnEnter()
 	m_inputManager.BindCommand(SDL_SCANCODE_DOWN, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>());
 	m_inputManager.BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 0);
 	m_inputManager.BindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::NextButton>(), 1);
+
+	m_eventQueue.Invoke(dae::Event{ "MAIN_MENU" });
 }
 
 std::unique_ptr<pacman::GameState> pacman::MainMenuState::Notify(const dae::Event& event)

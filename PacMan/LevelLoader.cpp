@@ -14,6 +14,11 @@
 void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filename, const std::string& levelname)
 {
 	std::ifstream iFile(filename);
+	if (iFile.is_open() == false)
+	{
+		std::cerr << "Can't open file: " << filename << "\n";
+		return;
+	}
 	float x{};
 	float y{};
 
@@ -28,51 +33,54 @@ void pacman::LevelLoader::InitLevel(dae::Scene& scene, const std::string& filena
 	scene.Add(std::move(bg));
 
 	// Level layout
-	if (iFile.is_open())
-	{
-		nlohmann::json data = nlohmann::json::parse(iFile);
 
-		if (not data.contains(levelname))
+	nlohmann::json data;
+	try
+	{
+		data = nlohmann::json::parse(iFile);
+	}
+	catch (const nlohmann::json::parse_error& e)
+	{
+		std::cerr << "JSON parse error in " << filename << ": " << e.what() << "\n";
+		return;
+	}
+
+	if (not data.contains(levelname))
+	{
+		std::cerr << "Level not found: " << levelname << "\n";
+		return;
+	}
+	for (const auto& line : data[levelname])
+	{
+		std::string row = line;
+		for (const auto& item : row)
 		{
-			std::cerr << "Level not found: " << levelname << "\n";
-			return;
-		}
-		for (const auto& line : data[levelname])
-		{
-			std::string row = line;
-			for (const auto& item : row)
+			if (item == ',') continue; // ignore
+			if (item == 'p')
 			{
-				if (item == ',') continue; // ignore
-				if (item == 'p')
-				{
-					scene.Add(CreatePellet(x, y));
-					pathIndices.insert(pathIdx);
-					++nrPellets;
-				}
-				else if (item == 'P')
-				{
-					scene.Add(CreatePowerPellet(x, y));
-					pathIndices.insert(pathIdx);
-					++nrPellets;
-				}
-				else if (item == 'b')
-				{
-					pathIndices.insert(pathIdx);
-				}
-
-				x += m_cellsize;
-				pathIdx++;
+				scene.Add(CreatePellet(x, y));
+				pathIndices.insert(pathIdx);
+				++nrPellets;
 			}
-			y += m_cellsize;
-			x = 0;
-		}
+			else if (item == 'P')
+			{
+				scene.Add(CreatePowerPellet(x, y));
+				pathIndices.insert(pathIdx);
+				++nrPellets;
+			}
+			else if (item == 'b')
+			{
+				pathIndices.insert(pathIdx);
+			}
 
-		iFile.close();
+			x += m_cellsize;
+			pathIdx++;
+		}
+		y += m_cellsize;
+		x = 0;
 	}
-	else
-	{
-		std::cerr << "Can't open file " << filename << "\n";
-	}
+
+	iFile.close();
 
 	// Give the graph all walkable indices
 	Graph::GetInstance().SetNeighbors(pathIndices);
