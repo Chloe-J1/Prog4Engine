@@ -217,7 +217,6 @@ add_executable(${GAME_TARGET}
     PacMan/TargetMoverComponent.cpp
     PacMan/FruitComponent.cpp
     PacMan/FruitSpawner.cpp
-    PacMan/EatenComponent.cpp
     PacMan/MoveStrategies.cpp
     PacMan/GameState.cpp
     PacMan/GamestateManager.cpp

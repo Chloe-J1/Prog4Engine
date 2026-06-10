@@ -22,10 +22,11 @@ namespace pacman
 		int GetDamage() const;
 		MovementBase* GetMoveStrategy();
 
-		virtual void Start() override;
-		virtual void Update(float elapsedSec) override;
+		void Start();
+		void Update(float elapsedSec);
 
-		virtual void Notify(const dae::Event& event) override;
+		void Notify(const dae::Event& event);
+		void OnCollision(dae::GameObject* other);
 	private:
 		int m_damage;
 		std::unique_ptr<GhostState> m_ghostState;

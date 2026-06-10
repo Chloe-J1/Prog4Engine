@@ -2,25 +2,25 @@
     "CurrentPlayers": [
         {
             "name": "AAA",
-            "score": 10
+            "score": 3270
         },
         {
             "name": "AAA",
-            "score": 10
+            "score": 0
         }
     ],
     "Highscores": [
         {
+            "name": "AAA",
+            "score": 3270
+        },
+        {
+            "name": "AAA",
+            "score": 2330
+        },
+        {
             "name": "CCA",
             "score": 570
-        },
-        {
-            "name": "ABC",
-            "score": 410
-        },
-        {
-            "name": "ABA",
-            "score": 340
         }
     ]
 }

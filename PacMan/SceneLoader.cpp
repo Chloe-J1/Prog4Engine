@@ -6,8 +6,6 @@
 #include "../Minigin/WindowConfig.h"
 #include "../Minigin/Hitbox.h"
 
-
-#include "Commands.h"
 #include "PlayerMovement.h"
 #include "Scene.h"
 #include "FPSComponent.h"
@@ -20,7 +18,6 @@
 #include "ButtonComponent.h"
 #include "FruitSpawner.h"
 #include "TargetMoverComponent.h"
-#include "EatenComponent.h"
 #include "PacmanAnimator.h"
 #include "LetterSelectComponent.h"
 #include "NameSelectComponent.h"
@@ -379,7 +376,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateGhost(const glm::vec
 		ghost->AddComponent<pacman::PlayerMovement>(false, true, 1);
 	}
 	ghost->AddComponent<pacman::GhostComponent>(std::move(moveStrategy));
-	ghost->AddComponent<pacman::EatenComponent>();
+	/*ghost->AddComponent<pacman::EatenComponent>();*/
 	
 	ghost->SetLocalPosition(spawnPos.x, spawnPos.y);
 	return ghost;

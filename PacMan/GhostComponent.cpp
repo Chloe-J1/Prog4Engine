@@ -68,9 +68,19 @@ void pacman::GhostComponent::Notify(const dae::Event& event)
 			GetGameObject()->GetComponent<pacman::TargetMoverComponent>()->SetTargetObj(m_targets[rndIndex]);
 		}
 	}
-	
 
 	auto newState{ m_ghostState->Notify(*this, event)};
+	if (newState != nullptr)
+	{
+		m_ghostState->OnExit(*this);
+		m_ghostState = std::move(newState);
+		m_ghostState->OnEnter(*this);
+	}
+}
+
+void pacman::GhostComponent::OnCollision(dae::GameObject* other)
+{
+	auto newState{ m_ghostState->OnCollision(*this, other) };
 	if (newState != nullptr)
 	{
 		m_ghostState->OnExit(*this);

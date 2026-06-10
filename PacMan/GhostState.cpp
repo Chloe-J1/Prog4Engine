@@ -8,6 +8,7 @@
 #include "../Minigin/Hitbox.h"
 #include "MoveStrategies.h"
 #include "EatenComponent.h"
+#include "HealthComponent.h"
 
 void pacman::GhostState::OnEnter(GhostComponent&)
 {
@@ -25,6 +26,11 @@ std::unique_ptr<pacman::GhostState> pacman::GhostState::Notify(pacman::GhostComp
 		return std::make_unique<DeathState>();
 	}
 	return nullptr;
+}
+
+std::unique_ptr<pacman::GhostState> pacman::GhostState::OnCollision(pacman::GhostComponent&, dae::GameObject*)
+{
+	return std::unique_ptr<pacman::GhostState>();
 }
 
 void pacman::GhostState::OnExit(pacman::GhostComponent&)
@@ -102,8 +108,6 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 		m_isNonAIStrategy = true;
 	}
 	m_moveStrategy->OnEnter();
-	m_eatenComp = m_ghost->GetComponent<EatenComponent>();
-	m_eatenComp->SetVulnerable(true);
 
 	dae::Event event = dae::Event{ "DIZZIED" };
 	dae::EventQueue::GetInstance().Invoke(std::move(event));
@@ -128,17 +132,15 @@ std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostCo
 	return nullptr;
 }
 
-std::unique_ptr<pacman::GhostState> pacman::DizziedState::Notify(pacman::GhostComponent& ghost, const dae::Event& event)
+std::unique_ptr<pacman::GhostState> pacman::DizziedState::OnCollision(pacman::GhostComponent& ghost, dae::GameObject* other)
 {
-	auto state = GhostState::Notify(ghost, event);
-	if (state != nullptr) return state;
-	if (event.id == "GHOST_DIED")
+	if (other->GetComponent<HealthComponent>()) // check if colliding with player
 	{
-		auto* arg = static_cast<GhostDiedArg*>(event.arg.get());
-		if (arg->ghost == m_ghost)
-		{
-			return std::make_unique<EyeState>();
-		}
+		dae::Event deathEvent{ "GHOST_DIED" };
+		std::unique_ptr<GhostDiedArg> arg = std::make_unique<GhostDiedArg>(ghost.GetGameObject(), other);
+		deathEvent.arg = std::move(arg);
+		m_eventQueue.Invoke(std::move(deathEvent));
+		return std::make_unique<EyeState>();
 	}
 	return nullptr;
 }
@@ -153,7 +155,6 @@ void pacman::DizziedState::OnExit(pacman::GhostComponent&)
 	m_dizziedTime = 0;
 
 	m_moveStrategy->OnExit();
-	m_eatenComp->SetVulnerable(false);
 }
 
 // EYES
