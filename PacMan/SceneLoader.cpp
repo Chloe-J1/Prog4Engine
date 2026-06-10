@@ -36,7 +36,7 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 {
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
-	m_levelLoader->InitLevel(scene, "Data/Levels.json", levelname);
+	m_levelLoader->InitLevel(scene, levelname);
 	
 	// FPS
 	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
