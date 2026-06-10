@@ -3,6 +3,7 @@
 #include "../Minigin/Event.h"
 #include "../Minigin/InputManager.h"
 #include <string>
+#include "HighscoreParser.h"
 
 namespace dae
 {
@@ -107,5 +108,7 @@ namespace pacman
 		void OnEnter();
 		std::unique_ptr<pacman::GameState> Notify(const dae::Event& event);
 		void OnExit();
+	private:
+		HighscoreParser m_highscoreParser{};
 	};
 }

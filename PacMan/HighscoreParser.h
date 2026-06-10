@@ -6,9 +6,10 @@ namespace pacman
 	class HighscoreParser final
 	{
 	public:
-		const std::vector<std::string>& GetHighscores();
+		const std::vector<std::string>& GetScores(const std::string& type);
 		void ClearCurrentPlayers();
+		void ClearScores();
 	private:
-		std::vector<std::string> m_highscores;
+		std::vector<std::string> m_scores;
 	};
 }

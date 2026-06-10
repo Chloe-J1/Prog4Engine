@@ -4,6 +4,7 @@
 #include "MenuManager.h"
 #include "Commands.h"
 #include "Events.h"
+#include <iostream>
 
 pacman::GameState::GameState()
 {
@@ -116,8 +117,7 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(const dae::Event& e
 	}
 	else if (event.id == "NEXT_LEVEL")
 	{
-		static int count = 0;
-		NextLevel();
+		return NextLevel();
 	}
 
 	return nullptr;
@@ -131,7 +131,7 @@ void pacman::PlayState::OnExit()
 std::unique_ptr<pacman::GameState> pacman::PlayState::NextLevel()
 {
 	++m_levelIdx;
-	if (m_levelIdx >= 3)
+	if (m_levelIdx > 2)
 	{
 		return std::make_unique<pacman::EndState>();
 	}
@@ -200,6 +200,7 @@ std::unique_ptr<pacman::GameState> pacman::EndState::Notify(const dae::Event& ev
 void pacman::EndState::OnExit()
 {
 	m_gamestateManager->ClearButtons();
+	m_highscoreParser.ClearScores();
 }
 
 // NAME SELECT

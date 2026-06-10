@@ -34,7 +34,7 @@ namespace pacman
 	private:
 		std::unique_ptr<LevelLoader> m_levelLoader;
 		std::unique_ptr<HighscoreParser> m_highscoreParser;
-		std::vector<std::string> m_highscores{};
+		std::vector<std::string> m_scores{};
 
 		const int m_player1CtrlIdx{ 0 };
 		const int m_player2CtrllIdx{ 1 };

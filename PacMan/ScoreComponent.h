@@ -28,6 +28,7 @@ namespace pacman
 		int m_controllerIdx;
 
 
+		void SaveScore();
 		void CheckForHighscore();
 	};
 }

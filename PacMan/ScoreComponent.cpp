@@ -18,8 +18,7 @@ pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner, int controllerIdx
 pacman::ScoreComponent::~ScoreComponent()
 {
 	m_eventQueue.RemoveEventHandler(this);
-
-	// New highscore?
+	SaveScore();
 	CheckForHighscore();
 }
 
@@ -74,6 +73,23 @@ void pacman::ScoreComponent::Notify(const dae::Event& event)
 	}
 }
 
+void pacman::ScoreComponent::SaveScore()
+{
+	std::filesystem::path filepath = std::filesystem::path(DATA_PATH) / "Scores.json";
+	std::ifstream iFile(filepath);
+
+	nlohmann::json data = nlohmann::json::parse(iFile);
+	auto& currentPlayers = data["CurrentPlayers"];
+	int prevScore{ currentPlayers[m_controllerIdx]["score"] };
+	int newScore{ prevScore + m_score };
+	currentPlayers[m_controllerIdx]["score"] = newScore;
+	iFile.close();
+
+	std::ofstream oFile(filepath);
+	oFile << data.dump(4);
+	oFile.close();
+}
+
 void pacman::ScoreComponent::CheckForHighscore()
 {
 	const int m_maxNrHighscores{ 3 };
@@ -82,6 +98,7 @@ void pacman::ScoreComponent::CheckForHighscore()
 
 	nlohmann::json data = nlohmann::json::parse(iFile);
 	auto& highscores = data["Highscores"];
+	iFile.close();
 	if (highscores.size() < m_maxNrHighscores || m_score > highscores.back()["score"])
 	{
 		if(highscores.size() >= m_maxNrHighscores)

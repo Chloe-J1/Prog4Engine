@@ -195,11 +195,22 @@ void pacman::SceneLoader::EndScene()
 
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
+	// Highscores
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	m_highscores = m_highscoreParser->GetHighscores();
+	m_scores = m_highscoreParser->GetScores("Highscores");
 	glm::vec2 drawPos{ 50.f,50.f };
 	const float offset{ 80.f };
-	for (const auto& text : m_highscores)
+	for (const auto& text : m_scores)
+	{
+		scene.Add(CreateText(drawPos, text, font));
+		drawPos.y += offset;
+	}
+	// Scores
+	m_scores.clear();
+	m_scores = m_highscoreParser->GetScores("CurrentPlayers");
+	
+	drawPos = glm::vec2{ 50.f, 300.f };
+	for (const auto& text : m_scores)
 	{
 		scene.Add(CreateText(drawPos, text, font));
 		drawPos.y += offset;
