@@ -208,7 +208,6 @@ add_executable(${GAME_TARGET}
     PacMan/MenuManager.cpp
     PacMan/ButtonComponent.cpp
     PacMan/Events.cpp
-    PacMan/SoundManager.h
     PacMan/GamestateManager.cpp
     PacMan/Graph.cpp
     PacMan/LevelLoader.cpp

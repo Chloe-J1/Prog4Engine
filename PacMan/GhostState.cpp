@@ -7,7 +7,6 @@
 #include "Events.h"
 #include "../Minigin/Hitbox.h"
 #include "MoveStrategies.h"
-#include "EatenComponent.h"
 #include "HealthComponent.h"
 
 void pacman::GhostState::OnEnter(GhostComponent&)
