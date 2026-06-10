@@ -21,7 +21,7 @@ void pacman::EatenComponent::OnCollision(dae::GameObject* other)
 		if (m_isVulnerable)
 		{
 			dae::Event deathEvent{"GHOST_DIED"};
-			std::unique_ptr<GhostDiedArg> arg = std::make_unique<GhostDiedArg>(GetGameObject());
+			std::unique_ptr<GhostDiedArg> arg = std::make_unique<GhostDiedArg>(GetGameObject(), other);
 			deathEvent.arg = std::move(arg);
 			m_eventQueue->Invoke(std::move(deathEvent));
 		}

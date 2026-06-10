@@ -48,8 +48,9 @@ namespace pacman
 	struct GhostDiedArg final : dae::EventArg
 	{
 		dae::GameObject* ghost;
+		dae::GameObject* killer;
 
-		GhostDiedArg(dae::GameObject* _ghost);
+		GhostDiedArg(dae::GameObject* _ghost, dae::GameObject* _killer);
 
 		virtual ~GhostDiedArg() = default;
 		GhostDiedArg(const GhostDiedArg& other) = delete;

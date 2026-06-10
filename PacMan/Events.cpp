@@ -18,8 +18,9 @@ pacman::DirectionChangedArg::DirectionChangedArg(glm::vec2 _direction, dae::Game
 {
 }
 
-pacman::GhostDiedArg::GhostDiedArg(dae::GameObject* _ghost) :
-	ghost{ _ghost }
+pacman::GhostDiedArg::GhostDiedArg(dae::GameObject* _ghost, dae::GameObject* _killer) :
+	ghost{ _ghost },
+	killer{_killer}
 {
 }
 

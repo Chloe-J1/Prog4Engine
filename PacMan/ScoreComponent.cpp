@@ -65,11 +65,15 @@ void pacman::ScoreComponent::Notify(const dae::Event& event)
 	if (event.id == "GHOST_DIED")
 	{
 		const int baseValue{ 200 };
-		++m_nrGhostsEaten;
-		m_score += baseValue * m_nrGhostsEaten;
-		dae::Event e{ "SCORE_CHANGED" };
-		e.arg = std::make_unique<ScoreArg>(m_score, GetGameObject());
-		m_eventQueue.Invoke(std::move(e));
+		auto* arg = static_cast<GhostDiedArg*>(event.arg.get());
+		if (arg->killer == GetGameObject())
+		{
+			++m_nrGhostsEaten;
+			m_score += baseValue * m_nrGhostsEaten;
+			dae::Event e{ "SCORE_CHANGED" };
+			e.arg = std::make_unique<ScoreArg>(m_score, GetGameObject());
+			m_eventQueue.Invoke(std::move(e));
+		}
 	}
 }
 
