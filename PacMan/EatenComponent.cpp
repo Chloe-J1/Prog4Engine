@@ -16,7 +16,7 @@ void pacman::EatenComponent::SetVulnerable(bool isVulnerable)
 
 void pacman::EatenComponent::OnCollision(dae::GameObject* other)
 {
-	if (auto player = other->GetComponent<HealthComponent>())
+	if (other->GetComponent<HealthComponent>()) // check if colliding with player
 	{
 		if (m_isVulnerable)
 		{
