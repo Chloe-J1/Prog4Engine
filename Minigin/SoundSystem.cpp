@@ -33,7 +33,7 @@ public:
 
 	void Play(const std::string& soundId, const float volume)
 	{
-		std::lock_guard<std::mutex> lock(m_mutex); // Maybe wrong
+		std::lock_guard<std::mutex> lock(m_mutex);
 		m_pendingRequests.push(SoundMessage{ soundId, volume });
 		m_conditionVar.notify_one();
 	}
@@ -111,8 +111,6 @@ private:
 	std::condition_variable m_conditionVar;
 	std::queue<SoundMessage> m_pendingRequests;
 	std::unordered_map<std::string, std::unique_ptr<Sound>> m_soundMap;
-
-	
 };
 
 // Shared
