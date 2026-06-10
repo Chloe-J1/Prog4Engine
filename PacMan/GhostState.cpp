@@ -104,6 +104,9 @@ void pacman::DizziedState::OnEnter(pacman::GhostComponent& ghost)
 	m_moveStrategy->OnEnter();
 	m_eatenComp = m_ghost->GetComponent<EatenComponent>();
 	m_eatenComp->SetVulnerable(true);
+
+	dae::Event event = dae::Event{ "DIZZIED" };
+	dae::EventQueue::GetInstance().Invoke(std::move(event));
 }
 
 std::unique_ptr<pacman::GhostState> pacman::DizziedState::Update(pacman::GhostComponent&,float elapsedSec)

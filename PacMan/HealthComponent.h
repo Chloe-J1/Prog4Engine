@@ -18,10 +18,10 @@ namespace pacman
 
 		void TakeDamage(int amount);
 		int GetHealth() const;
-		virtual void OnCollision(dae::GameObject* other) override;
-		virtual void Notify(const dae::Event& event) override;
+		void OnCollision(dae::GameObject* other);
+		void Notify(const dae::Event& event);
 
-		virtual void Update(float elapsedSec) override;
+		void Update(float elapsedSec);
 	private:
 		const int m_initHealth;
 		int m_health;
