@@ -33,20 +33,21 @@ void pacman::TargetMoverComponent::MoveFrontTarget(float elapsedSec)
 	Move(elapsedSec);
 }
 
-bool pacman::TargetMoverComponent::MoveToCell(int gridIdx, float elapsedSec)
+bool pacman::TargetMoverComponent::MoveToCell(int, float elapsedSec)
 {
-	if (IsInNewCell() && m_targetObj->GetIsAlive())
+	if (m_pathIdx == m_path.size())
 	{
-		if (m_gridIdx == gridIdx)
-		{
-			return true;
-		}
-		m_targetPos = m_graph.GetWorldPos(gridIdx);
-		ChangeDirection(false);
+		m_path.clear();
+		m_pathIdx = 0;
+		return true;
 	}
-
-	Move(elapsedSec);
+	FollowPath(elapsedSec);
 	return false;
+}
+
+void pacman::TargetMoverComponent::CalcPath(int gridIdx)
+{
+	m_path = FindPath(GetGameObject()->GetWorldPosition(), m_graph.GetWorldPos(gridIdx));
 }
 
 // Wander changes the random target after moving X amount of tiles
@@ -94,6 +95,18 @@ void pacman::TargetMoverComponent::SetTargetObj(dae::GameObject* newTarget)
 	m_targetObj = newTarget;
 }
 
+void pacman::TargetMoverComponent::Render() const
+{
+#ifdef _DEBUG
+	if (m_path.empty()) return;
+	for (const auto& pos : m_path)
+	{
+		m_drawHelper.SetColor(0, 255, 0, 1);
+		m_drawHelper.DrawRect(pos, (float)m_cellsize, (float)m_cellsize);
+	}
+#endif // _DEBUG
+}
+
 bool pacman::TargetMoverComponent::IsInNewCell()
 {
 	const float halfSpriteWidth{ m_spriteWidth / 2.f };
@@ -111,6 +124,114 @@ bool pacman::TargetMoverComponent::IsInNewCell()
 		return true;
 	}
 	return false;
+}
+
+void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
+{
+	if (m_path.empty()) return; // No path so early exit
+
+	glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
+	float distance = glm::length(direction);
+
+	const float threshold = 1.f;
+	if (distance <= threshold)
+	{
+		// Snap exact op waypoint
+		glm::vec2 correction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
+		GetGameObject()->AddLocalPosition(correction);
+
+		++m_pathIdx;
+
+		if (m_pathIdx >= m_path.size())
+			return;
+	}
+	else
+	{
+		glm::vec2 currentPos = GetGameObject()->GetWorldPosition();
+		glm::vec2 diff = m_path[m_pathIdx] - currentPos;
+
+		if (abs(diff.x) > 1.f)
+		{
+			m_nextDir =
+			{
+				(diff.x > 0.f) ? 1.f : -1.f,
+				0.f
+			};
+		}
+		else if (abs(diff.y) > 1.f)
+		{
+			m_nextDir =
+			{
+				0.f,
+				(diff.y > 0.f) ? 1.f : -1.f
+			};
+		}
+
+		GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
+
+	}
+}
+
+std::vector<glm::vec2> pacman::TargetMoverComponent::FindPath(const glm::vec2& startPos, const glm::vec2& destinationPos) const
+{
+	int nodeIdx{ m_graph.GetGridIdx(startPos) };
+	int destIdx{ m_graph.GetGridIdx(destinationPos) };
+
+	if (!m_graph.HasIndex(nodeIdx) || !m_graph.HasIndex(destIdx))
+		return {};
+
+	std::vector<glm::vec2> path{};
+	std::unordered_set<int> visited; // Nodes for which the neighbors need to be checked next 
+	std::unordered_map<int, int> parent; // Nodes that have been checked 
+	std::queue<int> queue;
+
+	queue.push(nodeIdx);
+	visited.insert(m_graph.GetGridIdx(startPos));
+
+	while (!queue.empty())
+	{
+		nodeIdx = queue.front();
+		queue.pop();
+
+
+		if (nodeIdx == destIdx)
+			return ReconstructPath(parent, m_graph.GetGridIdx(startPos), destIdx);
+
+		for (int neighbor : m_graph.GetNeighbors(nodeIdx))
+		{
+			if (visited.contains(neighbor) == false)
+			{
+				visited.insert(neighbor);
+				parent[neighbor] = nodeIdx;
+				queue.push(neighbor);
+			}
+		}
+	}
+
+	return path; // no path found
+}
+
+std::vector<glm::vec2> pacman::TargetMoverComponent::ReconstructPath(std::unordered_map<int, int>& parentMap, int startIdx, int destIdx) const
+{
+	glm::vec2 current = m_graph.GetWorldPos(destIdx);
+	std::vector<glm::vec2> path;
+	int currentIdx = destIdx;
+
+	while (currentIdx != startIdx)
+	{
+		path.push_back(m_graph.GetWorldPos(currentIdx));
+
+		auto it = parentMap.find(currentIdx);
+		if (it == parentMap.end())
+			return {};
+
+		currentIdx = it->second;
+	}
+
+	path.push_back(m_graph.GetWorldPos(startIdx));
+	std::ranges::reverse(path.begin(), path.end());
+
+	return path;
 }
 
 void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)

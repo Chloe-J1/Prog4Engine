@@ -2,6 +2,18 @@
 #include "TargetMoverComponent.h"
 #include "PlayerMovement.h"
 
+void pacman::MovementBase::OnEnter()
+{
+}
+
+void pacman::MovementBase::Move(float)
+{
+}
+
+void pacman::MovementBase::OnExit()
+{
+}
+
 void pacman::MovementBase::Init(TargetMoverComponent* moveComp) // TODO: pass through context
 {
 	m_moveComp = moveComp;

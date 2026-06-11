@@ -162,6 +162,7 @@ void pacman::EyeState::OnEnter(GhostComponent& ghost)
 {
 	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(6, 1);
 	m_moveComp = ghost.GetGameObject()->GetComponent<pacman::TargetMoverComponent>();
+	m_moveComp->CalcPath(m_targetIdx);
 	m_hitbox = ghost.GetGameObject()->GetComponent<dae::Hitbox>();
 	m_hitbox->SetIsEnabled(false);
 }

@@ -9,9 +9,9 @@ namespace pacman
 	{
 	public:
 		virtual ~MovementBase() = default;
-		virtual void OnEnter() {};
-		virtual void Move(float) {};
-		virtual void OnExit() {};
+		virtual void OnEnter();
+		virtual void Move(float elapsedSec);
+		virtual void OnExit();
 		void Init(TargetMoverComponent* moveComp);
 	protected:
 		TargetMoverComponent* m_moveComp{};

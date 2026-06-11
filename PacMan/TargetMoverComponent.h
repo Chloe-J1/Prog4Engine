@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include "Graph.h"
 #include "../Minigin/EventQueue.h"
+#include "../Minigin/Draw.h"
 
 namespace pacman
 {
@@ -15,9 +16,11 @@ namespace pacman
 		void MoveAwayTarget(float elapsedSec);
 		void MoveFrontTarget(float elapsedSec);
 		bool MoveToCell(int gridIdx, float elapsedSec);
+		void CalcPath(int gridIdx);
 		void Wander(float elapsedSec);
 		
 		void SetTargetObj(dae::GameObject* newTarget);
+		void Render() const;
 	private:
 		float m_moveSpeed{ 50.f };
 		dae::GameObject* m_targetObj{};
@@ -35,6 +38,16 @@ namespace pacman
 		int m_nrCols;
 		int m_nrRows;
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
+
+		// BFS
+		std::vector<glm::vec2> m_path;
+		int m_pathIdx{ 0 };
+
+		void FollowPath(float elapsedSec);
+		std::vector<glm::vec2> FindPath(const glm::vec2& startPos, const glm::vec2& destinationPos) const;
+		std::vector<glm::vec2> ReconstructPath(std::unordered_map<int, int>& parentMap, int startIdx, int destIdx) const;
+		dae::Draw& m_drawHelper{ dae::Draw::GetInstance() };
+
 
 		void ChangeDirection(bool isMovingAway);
 		bool IsInNewCell();
