@@ -155,8 +155,8 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/Texture2D.cpp
   Minigin/Transform.cpp
   Minigin/RenderComponent.cpp
-  Minigin/RotationComponent.cpp
-  Minigin/GraphComponent.cpp
+  
+  
   Minigin/Controller.cpp
   Minigin/SpriteComponent.cpp
   Minigin/Hitbox.cpp

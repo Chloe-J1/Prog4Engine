@@ -21,7 +21,7 @@ namespace pacman
 		virtual void Notify(const dae::Event& event) override;
 		char GetLetter() const;
 	private:
-		void Start();
+		virtual void Start() override;
 		dae::TextComponent* m_textComp{};
 		dae::GameObject* m_upButton;
 		dae::GameObject* m_downButton;
