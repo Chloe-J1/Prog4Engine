@@ -22,10 +22,6 @@ public:
 	void RegisterSound(const std::string&, const std::string&)
 	{
 	}
-
-	void ProcessRequests()
-	{
-	}
 private:
 
 };

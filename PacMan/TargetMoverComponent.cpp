@@ -216,7 +216,7 @@ std::vector<glm::vec2> pacman::TargetMoverComponent::ReconstructPath(std::unorde
 	}
 
 	path.push_back(m_graph.GetWorldPos(startIdx));
-	std::ranges::reverse(path.begin(), path.end());
+	std::reverse(path.begin(), path.end());
 
 	return path;
 }
