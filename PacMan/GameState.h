@@ -111,6 +111,6 @@ namespace pacman
 		std::unique_ptr<pacman::GameState> Notify(const dae::Event& event);
 		void OnExit();
 	private:
-		HighscoreParser m_highscoreParser{};
+		HighscoreParser& m_highscoreParser{HighscoreParser::GetInstance()};
 	};
 }

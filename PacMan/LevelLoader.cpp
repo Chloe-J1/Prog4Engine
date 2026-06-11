@@ -88,7 +88,6 @@ void pacman::LevelLoader::ParseBin(dae::Scene& scene, const std::string& levelna
 
 				x += m_cellsize;
 				++pathIdx;
-				std::cout << x << "\n";
 			}
 			y += m_cellsize;
 			x = 0;

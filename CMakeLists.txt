@@ -199,7 +199,7 @@ else()
 endif()
 
 # GAME
-add_executable(${GAME_TARGET}
+add_executable(${GAME_TARGET} ${TARGET_PARAM}
     PacMan/Main.cpp
     PacMan/Commands.cpp
     PacMan/HealthComponentUI.cpp

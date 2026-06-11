@@ -23,15 +23,13 @@
 #include "NameSelectComponent.h"
 #include "RespawnComponent.h"
 #include <memory>
-#include "HighscoreParser.h"
 #include <string>
 
 
 pacman::SceneLoader::SceneLoader():
 	m_wWidth{ dae::WindowConfig::GetInstance().GetWidth() },
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
-	m_levelLoader{std::make_unique<LevelLoader>()},
-	m_highscoreParser{std::make_unique<HighscoreParser>()}
+	m_levelLoader{std::make_unique<LevelLoader>()}
 {
 }
 
@@ -197,7 +195,7 @@ void pacman::SceneLoader::EndScene()
 
 	// Highscores
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	m_scores = m_highscoreParser->GetScores("Highscores");
+	m_scores = m_highscoreParser.GetScores("Highscores");
 	glm::vec2 drawPos{ 50.f,50.f };
 	const float offset{ 80.f };
 	for (const auto& text : m_scores)
@@ -207,7 +205,7 @@ void pacman::SceneLoader::EndScene()
 	}
 	// Scores
 	m_scores.clear();
-	m_scores = m_highscoreParser->GetScores("CurrentPlayers");
+	m_scores = m_highscoreParser.GetScores("CurrentPlayers");
 	
 	drawPos = glm::vec2{ 50.f, 300.f };
 	for (const auto& text : m_scores)

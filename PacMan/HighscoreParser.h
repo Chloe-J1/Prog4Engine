@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "../Minigin/Singleton.h"
 namespace pacman
 {
-	class HighscoreParser final
+	class HighscoreParser final : public dae::Singleton<HighscoreParser>
 	{
 	public:
 		const std::vector<std::string>& GetScores(const std::string& type);

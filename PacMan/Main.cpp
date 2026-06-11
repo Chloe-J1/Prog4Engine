@@ -18,8 +18,7 @@ static void load()
 	const int nrControllers{ 2 };
 	dae::InputManager::GetInstance().InitializeControllers(nrControllers);
 	pacman::GamestateManager::GetInstance().Init();
-	pacman::HighscoreParser hParser{};
-	hParser.ClearCurrentPlayers();
+	pacman::HighscoreParser::GetInstance().ClearCurrentPlayers();
 	pacman::SceneLoader::GetInstance().NameSelectScene();
 }
 

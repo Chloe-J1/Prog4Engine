@@ -97,7 +97,7 @@ dae::Minigin::Minigin(const std::filesystem::path& dataPath, int windowWidth, in
 	m_renderer.Init(g_window);
 	ResourceManager::GetInstance().Init(dataPath);
 
-#ifndef __EMSCRIPTEN__
+#if not defined(__EMSCRIPTEN__) && defined(_DEBUG)
 	// CONSOL WINDOW
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);

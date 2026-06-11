@@ -35,7 +35,7 @@ namespace pacman
 		const int m_wWidth;
 		const int m_wHeight;
 		std::unique_ptr<LevelLoader> m_levelLoader;
-		std::unique_ptr<HighscoreParser> m_highscoreParser;
+		HighscoreParser& m_highscoreParser{HighscoreParser::GetInstance()};
 		std::vector<std::string> m_scores{};
 
 		const int m_player1CtrlIdx{ 0 };
