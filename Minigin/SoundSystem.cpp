@@ -11,6 +11,26 @@
 //***************
 
 // SDL
+#ifdef __EMSCRIPTEN__
+class dae::SDLSoundSystem::SoundSystemImpl final
+{
+public:
+	void Play(const std::string& soundId, const float volume)
+	{
+	}
+
+	void RegisterSound(const std::string& id, const std::string& path)
+	{
+	}
+
+	void ProcessRequests(std::stop_token stopToken)
+	{
+	}
+private:
+
+};
+
+#else
 class dae::SDLSoundSystem::SoundSystemImpl final
 {
 public:
@@ -30,6 +50,10 @@ public:
 		m_soundMap.clear(); // Clear all sound before destroying mixer
 		MIX_DestroyMixer(m_mixer);
 	}
+	SoundSystemImpl(const SoundSystemImpl& other) = delete;
+	SoundSystemImpl(SoundSystemImpl&& other) = delete;
+	SoundSystemImpl& operator=(const SoundSystemImpl& other) = delete;
+	SoundSystemImpl& operator=(SoundSystemImpl&& other) = delete;
 
 	void Play(const std::string& soundId, const float volume)
 	{
@@ -75,11 +99,11 @@ private:
 	class Sound {
 	public:
 		Sound(const std::string& path, MIX_Mixer* mixer)
-			: m_mixer(mixer), m_filepath(path) 
+			: m_mixer(mixer), m_filepath(path)
 		{
 		}
 
-		~Sound() 
+		~Sound()
 		{
 			for (const auto& track : m_tracks)
 			{
@@ -99,11 +123,11 @@ private:
 
 		void SetVolume(float volume)
 		{
-			for(auto& track : m_tracks)
+			for (auto& track : m_tracks)
 				MIX_SetTrackGain(track, volume);
 		}
 
-		void Play() 
+		void Play()
 		{
 			for (auto& track : m_tracks)
 			{
@@ -133,6 +157,7 @@ private:
 	std::queue<SoundMessage> m_pendingRequests;
 	std::unordered_map<std::string, std::unique_ptr<Sound>> m_soundMap;
 };
+#endif
 
 // Shared
 dae::SDLSoundSystem::SDLSoundSystem():

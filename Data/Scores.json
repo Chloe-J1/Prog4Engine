@@ -1,5 +1,14 @@
 {
-    "CurrentPlayers": [],
+    "CurrentPlayers": [
+        {
+            "name": "AAA",
+            "score": 0
+        },
+        {
+            "name": "AAA",
+            "score": 0
+        }
+    ],
     "Highscores": [
         {
             "name": "AAA",
