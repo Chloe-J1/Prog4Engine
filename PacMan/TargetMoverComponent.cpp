@@ -35,7 +35,7 @@ void pacman::TargetMoverComponent::MoveFrontTarget(float elapsedSec)
 
 bool pacman::TargetMoverComponent::MoveToCell(int, float elapsedSec)
 {
-	if (m_pathIdx == m_path.size())
+	if (m_pathIdx >= m_path.size())
 	{
 		m_path.clear();
 		m_pathIdx = 0;
@@ -47,7 +47,13 @@ bool pacman::TargetMoverComponent::MoveToCell(int, float elapsedSec)
 
 void pacman::TargetMoverComponent::CalcPath(int gridIdx)
 {
-	m_path = FindPath(GetGameObject()->GetWorldPosition(), m_graph.GetWorldPos(gridIdx));
+	glm::vec2 centerPos = GetGameObject()->GetWorldPosition();
+	
+	centerPos.x += m_spriteWidth / 2.f;
+	centerPos.y += m_spriteHeight / 2.f;
+
+	m_path = FindPath(centerPos, m_graph.GetWorldPos(gridIdx));
+	m_pathIdx = 0;
 }
 
 // Wander changes the random target after moving X amount of tiles
@@ -128,7 +134,7 @@ bool pacman::TargetMoverComponent::IsInNewCell()
 
 void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 {
-	if (m_path.empty()) return; // No path so early exit
+	if (m_path.empty() || m_pathIdx >= m_path.size()) return;
 
 	glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
 	float distance = glm::length(direction);
@@ -187,7 +193,7 @@ std::vector<glm::vec2> pacman::TargetMoverComponent::FindPath(const glm::vec2& s
 
 	queue.push(nodeIdx);
 	visited.insert(m_graph.GetGridIdx(startPos));
-
+	
 	while (!queue.empty())
 	{
 		nodeIdx = queue.front();

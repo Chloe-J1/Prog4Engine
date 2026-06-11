@@ -81,9 +81,6 @@ void pacman::Graph::SetNeighbors(const std::unordered_set<int>& indices)
 	}
 }
 
-
-
-
 bool pacman::Graph::HasIndex(int gridIdx) const
 {
 	return m_graph.contains(gridIdx);
