@@ -252,6 +252,7 @@ target_compile_definitions(${GAME_TARGET} PRIVATE
 )
 
 if(MSVC)
+# compile at warning level 4 + treat warnings as errors
   target_compile_options(${GAME_TARGET} PRIVATE /W4 /WX)
 else()
   target_compile_options(${GAME_TARGET} PRIVATE -Wall -Wextra -Werror)

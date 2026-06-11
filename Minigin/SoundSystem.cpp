@@ -15,15 +15,15 @@
 class dae::SDLSoundSystem::SoundSystemImpl final
 {
 public:
-	void Play(const std::string& soundId, const float volume)
+	void Play(const std::string&, const float)
 	{
 	}
 
-	void RegisterSound(const std::string& id, const std::string& path)
+	void RegisterSound(const std::string&, const std::string&)
 	{
 	}
 
-	void ProcessRequests(std::stop_token stopToken)
+	void ProcessRequests()
 	{
 	}
 private:
