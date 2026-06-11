@@ -86,10 +86,10 @@ void pacman::SceneLoader::SingleplayerScene()
 	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
+	ghost = CreateGhost(glm::vec2{ 696,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
+	ghost = CreateGhost(glm::vec2{ 660,696 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
 	scene.Add(std::move(ghost));
 }
 
