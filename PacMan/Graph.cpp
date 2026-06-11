@@ -36,7 +36,6 @@ const std::unordered_map<int, std::vector<int>>& pacman::Graph::GetGraph() const
 void pacman::Graph::SetNeighbors(const std::unordered_set<int>& indices)
 {
 	m_graph.clear();
-	std::cout << "SetNeighbors called with " << indices.size() << " indices\n";
 	for (int index : indices)
 		m_graph[index]; // Add keys of indices that are walkable
 

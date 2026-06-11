@@ -53,5 +53,6 @@ namespace pacman
 		bool IsInNewCell();
 		void Move(float elapsedSec);
 		int GetRandomGridIdx() const;
+		void CalcNextDir(const glm::vec2& difference);
 	};
 }

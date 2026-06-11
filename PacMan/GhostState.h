@@ -57,7 +57,7 @@ namespace pacman
 		dae::SpriteComponent* m_spriteComp{};
 		dae::GameObject* m_ghost{};
 		float m_dizziedTime{ 0.f };
-		const float m_maxDizziedTime{ 100.f };
+		const float m_maxDizziedTime{ 7.f };
 		const float m_almostDoneTime{ 3.f };
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 	};

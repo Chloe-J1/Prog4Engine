@@ -134,7 +134,7 @@ bool pacman::TargetMoverComponent::IsInNewCell()
 
 void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 {
-	if (m_path.empty() || m_pathIdx >= m_path.size()) return;
+	if (m_path.empty() || m_pathIdx >= (int)m_path.size()) return;
 
 	glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
 	float distance = glm::length(direction);
@@ -148,7 +148,7 @@ void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 
 		++m_pathIdx;
 
-		if (m_pathIdx >= m_path.size())
+		if (m_pathIdx >= (int)m_path.size())
 			return;
 	}
 	else
@@ -156,25 +156,8 @@ void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 		glm::vec2 currentPos = GetGameObject()->GetWorldPosition();
 		glm::vec2 diff = m_path[m_pathIdx] - currentPos;
 
-		if (abs(diff.x) > 1.f)
-		{
-			m_nextDir =
-			{
-				(diff.x > 0.f) ? 1.f : -1.f,
-				0.f
-			};
-		}
-		else if (abs(diff.y) > 1.f)
-		{
-			m_nextDir =
-			{
-				0.f,
-				(diff.y > 0.f) ? 1.f : -1.f
-			};
-		}
-
-		GetGameObject()->AddLocalPosition(m_nextDir * m_moveSpeed * elapsedSec);
-
+		CalcNextDir(diff);
+		Move(elapsedSec);
 	}
 }
 
@@ -199,7 +182,6 @@ std::vector<glm::vec2> pacman::TargetMoverComponent::FindPath(const glm::vec2& s
 		nodeIdx = queue.front();
 		queue.pop();
 
-
 		if (nodeIdx == destIdx)
 			return ReconstructPath(parent, m_graph.GetGridIdx(startPos), destIdx);
 
@@ -219,7 +201,6 @@ std::vector<glm::vec2> pacman::TargetMoverComponent::FindPath(const glm::vec2& s
 
 std::vector<glm::vec2> pacman::TargetMoverComponent::ReconstructPath(std::unordered_map<int, int>& parentMap, int startIdx, int destIdx) const
 {
-	glm::vec2 current = m_graph.GetWorldPos(destIdx);
 	std::vector<glm::vec2> path;
 	int currentIdx = destIdx;
 
@@ -287,31 +268,7 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 		glm::vec2 neighborPos = m_graph.GetWorldPos(bestIdx);
 		glm::vec2 ownGridPos = m_graph.GetWorldPos(m_gridIdx);
 		glm::vec2 diff = neighborPos - ownGridPos;
-
-		if (abs(diff.x) > abs(diff.y))
-		{
-			// Horizonal
-			if (diff.x > 0)
-			{
-				m_nextDir = glm::vec2{ 1, 0 };
-			}
-			else
-			{
-				m_nextDir = glm::vec2{ -1, 0 };
-			}
-		}
-		else
-		{
-			// Vertical
-			if (diff.y < 0)
-			{
-				m_nextDir = glm::vec2{ 0, -1 };
-			}
-			else
-			{
-				m_nextDir = glm::vec2{ 0, 1 };
-			}
-		}
+		CalcNextDir(diff);
 
 		dae::Event e{ "DIRECTION_CHANGED" };
 		e.arg = std::make_unique<pacman::DirectionChangedArg>(m_nextDir, GetGameObject());
@@ -329,4 +286,32 @@ int pacman::TargetMoverComponent::GetRandomGridIdx() const
 	int row = rand() % m_nrRows;
 
 	return row * m_nrCols + col;
+}
+
+void pacman::TargetMoverComponent::CalcNextDir(const glm::vec2& difference)
+{
+	if (abs(difference.x) > abs(difference.y))
+	{
+		// Horizonal
+		if (difference.x > 0)
+		{
+			m_nextDir = glm::vec2{ 1, 0 };
+		}
+		else
+		{
+			m_nextDir = glm::vec2{ -1, 0 };
+		}
+	}
+	else
+	{
+		// Vertical
+		if (difference.y < 0)
+		{
+			m_nextDir = glm::vec2{ 0, -1 };
+		}
+		else
+		{
+			m_nextDir = glm::vec2{ 0, 1 };
+		}
+	}
 }
