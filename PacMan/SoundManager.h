@@ -2,6 +2,7 @@
 #include "../Minigin/EventQueue.h"
 #include "../Minigin/IEventHandler.h"
 #include "../Minigin/Singleton.h"
+#include <Event.h>
 
 namespace pacman
 {
@@ -17,5 +18,7 @@ namespace pacman
 
 		void Notify(const dae::Event& event);
 		void RegisterSound();
+	private:
+		bool m_isPlayingFrightened{ false };
 	};
 }

@@ -25,6 +25,7 @@ namespace dae
 		virtual ~ISoundSystem() = default;
 		virtual void Play(const std::string& soundId, const float volume) = 0;
 		virtual void Stop(const std::string& soundId) = 0;
+		virtual void Loop(const std::string& soundId, const float volume) = 0;
 		virtual void RegisterSound(const std::string& id, const std::string& path) = 0;
 	};
 
@@ -34,6 +35,7 @@ namespace dae
 	public:
 		void Play(const std::string& soundId, const float volume);
 		void Stop(const std::string& soundId);
+		void Loop(const std::string& soundId, const float volume);
 		void RegisterSound(const std::string& soundId, const std::string& path);
 	};
 
@@ -48,9 +50,10 @@ namespace dae
 		SDLSoundSystem& operator=(const SDLSoundSystem& other) = delete;
 		SDLSoundSystem& operator=(SDLSoundSystem&& other) = delete;
 
-		virtual void Play(const std::string& soundId, const float volume) override;
-		virtual void Stop(const std::string& soundId) override;
-		virtual void RegisterSound(const std::string& id, const std::string& path) override;
+		void Play(const std::string& soundId, const float volume);
+		void Stop(const std::string& soundId);
+		void Loop(const std::string& soundId, const float volume);
+		void RegisterSound(const std::string& id, const std::string& path);
 	private:
 		class SoundSystemImpl;
 		std::unique_ptr<SoundSystemImpl> m_impl;
@@ -68,8 +71,9 @@ namespace dae
 		LoggingSoundSystem& operator=(const LoggingSoundSystem& other) = delete;
 		LoggingSoundSystem& operator=(LoggingSoundSystem&& other) = delete;
 
-		virtual void Play(const std::string& soundId, const float volume) override;
-		virtual void Stop(const std::string& soundId) override;
-		virtual void RegisterSound(const std::string& id, const std::string& path) override;
+		void Play(const std::string& soundId, const float volume);
+		void Loop(const std::string& soundId, const float volume);
+		void Stop(const std::string& soundId);
+		void RegisterSound(const std::string& id, const std::string& path);
 	};
 }

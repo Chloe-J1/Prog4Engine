@@ -1,6 +1,4 @@
 #include "SoundSystem.h"
-#include "SoundSystem.h"
-#include "SoundSystem.h"
 #include <iostream>
 #include <unordered_map>
 #include <queue>
@@ -8,6 +6,7 @@
 #include <mutex>
 #include <SDL3_mixer/SDL_mixer.h>
 #include <memory>
+#include <algorithm>
 // Null
 //***************
 void dae::NullSoundSystem::Play(const std::string&, const float)
@@ -15,6 +14,10 @@ void dae::NullSoundSystem::Play(const std::string&, const float)
 
 void dae::NullSoundSystem::Stop(const std::string&)
 {}
+
+void dae::NullSoundSystem::Loop(const std::string&, const float)
+{
+}
 
 void dae::NullSoundSystem::RegisterSound(const std::string&, const std::string&)
 {}
@@ -28,6 +31,10 @@ class dae::SDLSoundSystem::SoundSystemImpl final
 {
 public:
 	void Play(const std::string&, const float)
+	{
+	}
+
+	void Loop(const std::string&, const float)
 	{
 	}
 
@@ -73,6 +80,13 @@ public:
 		m_conditionVar.notify_one();
 	}
 
+	void Loop(const std::string& soundId, const float volume)
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_pendingRequests.push(SoundMessage{ soundId, "Loop", volume });
+		m_conditionVar.notify_one();
+	}
+
 	void Stop(const std::string& soundId)
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
@@ -98,12 +112,12 @@ public:
 			while (not m_pendingRequests.empty())
 			{
 				SoundMessage message = m_pendingRequests.front();
-				if (not m_soundMap.contains(message.id)) continue;
 
 				// Play sound
-				auto& sound = m_soundMap[message.id];
+				auto& sound = m_soundMap.at(message.id);
 
 				m_pendingRequests.pop();
+				if (not m_soundMap.contains(message.id)) continue;
 
 				lock.unlock();
 				if (message.type == "Play")
@@ -111,11 +125,18 @@ public:
 					if (not sound->IsLoaded())
 						sound->Load();
 					sound->SetVolume(message.volume);
-					sound->Play();
+					sound->Play(false);
 				}
 				else if (message.type == "Stop")
 				{
 					sound->Stop();
+				}
+				else if (message.type == "Loop")
+				{
+					if (not sound->IsLoaded())
+						sound->Load();
+					sound->SetVolume(message.volume);
+					sound->Play(true);
 				}
 				
 				lock.lock();
@@ -151,18 +172,25 @@ private:
 
 		void SetVolume(float volume)
 		{
+			volume = std::clamp(volume, 0.f, 1.f);
 			for (auto& track : m_tracks)
 				MIX_SetTrackGain(track, volume);
 		}
 
-		void Play()
+		void Play(bool isLooping)
 		{
 			for (auto& track : m_tracks)
 			{
 				if (not MIX_TrackPlaying(track))
 				{
 					MIX_SetTrackAudio(track, m_audio);
-					MIX_PlayTrack(track, 0);
+					SDL_PropertiesID props{ SDL_CreateProperties() };
+					if (isLooping)
+					{
+						SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
+					}
+					MIX_PlayTrack(track, props);
+					SDL_DestroyProperties(props);
 					return;
 				}
 			}
@@ -170,14 +198,21 @@ private:
 			// No free tracks found so create a new one
 			MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
 			MIX_SetTrackAudio(newTrack, m_audio);
-			MIX_PlayTrack(newTrack, 0);
+			SDL_PropertiesID props{ SDL_CreateProperties() };
+			if (isLooping)
+			{
+				SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
+			}
+			MIX_PlayTrack(newTrack, props);
+			m_tracks.push_back(newTrack);
 		}
 
 		void Stop()
 		{
 			for (const auto& track : m_tracks)
 			{
-				MIX_StopTrack(track, 0);
+				if (MIX_TrackPlaying(track))
+					MIX_StopTrack(track, 0);
 			}
 		}
 
@@ -215,6 +250,11 @@ void dae::SDLSoundSystem::Stop(const std::string& soundId)
 	m_impl->Stop(soundId);
 }
 
+void dae::SDLSoundSystem::Loop(const std::string& soundId, const float volume)
+{
+	m_impl->Loop(soundId, volume);
+}
+
 void dae::SDLSoundSystem::RegisterSound(const std::string& id, const std::string& path)
 {
 	m_impl->RegisterSound(id, path);
@@ -231,6 +271,12 @@ void dae::LoggingSoundSystem::Play(const std::string& soundId, const float volum
 {
 	std::cout << "playing " << soundId << " at volume " << volume << "\n";
 	m_realSoundSys->Play(soundId, volume);
+}
+
+void dae::LoggingSoundSystem::Loop(const std::string& soundId, const float volume)
+{
+	std::cout << "looping " << soundId << " at volume " << volume << "\n";
+	m_realSoundSys->Loop(soundId, volume);
 }
 
 void dae::LoggingSoundSystem::Stop(const std::string& soundId)

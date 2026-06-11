@@ -50,6 +50,22 @@ void pacman::SoundManager::Notify(const dae::Event& event)
 	{
 		ss->Stop("start");
 	}
+	else if (event.id == "DIZZIED")
+	{
+		if (not m_isPlayingFrightened)
+		{
+			ss->Loop("frightened", volume);
+			m_isPlayingFrightened = true;
+		}
+	}
+	else if (event.id == "NOT_DIZZIED")
+	{
+		if (m_isPlayingFrightened)
+		{
+			ss->Stop("frightened");
+			m_isPlayingFrightened = false;
+		}
+	}
 }
 
 void pacman::SoundManager::RegisterSound()
@@ -62,4 +78,5 @@ void pacman::SoundManager::RegisterSound()
 	ss->RegisterSound("player_died", "Data/Sound/ms_death.wav");
 	ss->RegisterSound("ghost_died", "Data/Sound/ms_eat_ghost.wav");
 	ss->RegisterSound("start", "Data/Sound/ms_start.wav");
+	ss->RegisterSound("frightened", "Data/Sound/fright.wav");
 }
