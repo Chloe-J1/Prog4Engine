@@ -10,12 +10,12 @@ namespace pacman
 	public:
 		explicit FruitComponent(dae::GameObject* owner);
 
-		virtual void Start() override;
 
 		int GetValue() const;
 	private:
-		virtual void OnCollision(dae::GameObject* other) override;
-		virtual void Update(float elapsecSec) override;
+		void Start();
+		void OnCollision(dae::GameObject* other);
+		void Update(float elapsecSec);
 
 		const int m_windowWidth;
 		const int m_windowHeight;

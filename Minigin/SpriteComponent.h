@@ -9,7 +9,6 @@ namespace dae
 	public:
 		explicit SpriteComponent(GameObject* owner, int nrCols = 1, int nrRows = 1, float frameSec = 0, int row = 0);
 
-		virtual void Update(float elapsedSec) override;
 
 		float GetWidth() const;
 		float GetHeight() const;
@@ -30,5 +29,6 @@ namespace dae
 
 		SDL_FRect m_srcRect{};
 		RenderComponent* m_renderComp;
+		void Update(float elapsedSec);
 	};
 }

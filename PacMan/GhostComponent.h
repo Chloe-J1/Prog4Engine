@@ -22,16 +22,16 @@ namespace pacman
 		int GetDamage() const;
 		MovementBase* GetMoveStrategy();
 
-		void Start();
-		void Update(float elapsedSec);
-
-		void Notify(const dae::Event& event);
 		void OnCollision(dae::GameObject* other);
+		void Notify(const dae::Event& event);
 	private:
 		int m_damage;
 		std::unique_ptr<GhostState> m_ghostState;
 		std::unique_ptr<MovementBase> m_moveStrategy;
 		std::vector<dae::GameObject*> m_targets;
+
+		void Start();
+		void Update(float elapsedSec);
 
 		void RemoveTarget(dae::GameObject* target);
 	};

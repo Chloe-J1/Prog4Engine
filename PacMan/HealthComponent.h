@@ -21,7 +21,6 @@ namespace pacman
 		void OnCollision(dae::GameObject* other);
 		void Notify(const dae::Event& event);
 
-		void Update(float elapsedSec);
 	private:
 		const int m_initHealth;
 		int m_health;
@@ -32,6 +31,7 @@ namespace pacman
 		bool m_canTakeDamage;
 		dae::EventQueue& m_eventQueue{dae::EventQueue::GetInstance()};
 
+		void Update(float elapsedSec);
 		void HandleDamage(pacman::GhostComponent* ghost);
 	};
 }

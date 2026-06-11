@@ -18,10 +18,10 @@ namespace pacman
 		LetterSelectComponent& operator=(const LetterSelectComponent& other) = delete;
 		LetterSelectComponent& operator=(LetterSelectComponent&& other) = delete;
 
-		virtual void Start() override;
 		virtual void Notify(const dae::Event& event) override;
 		char GetLetter() const;
 	private:
+		void Start();
 		dae::TextComponent* m_textComp{};
 		dae::GameObject* m_upButton;
 		dae::GameObject* m_downButton;

@@ -20,7 +20,6 @@ namespace pacman
 		void Wander(float elapsedSec);
 		
 		void SetTargetObj(dae::GameObject* newTarget);
-		void Render() const;
 	private:
 		float m_moveSpeed{ 50.f };
 		dae::GameObject* m_targetObj{};
@@ -43,6 +42,7 @@ namespace pacman
 		std::vector<glm::vec2> m_path;
 		int m_pathIdx{ 0 };
 
+		void Render() const;
 		void FollowPath(float elapsedSec);
 		std::vector<glm::vec2> FindPath(const glm::vec2& startPos, const glm::vec2& destinationPos) const;
 		std::vector<glm::vec2> ReconstructPath(std::unordered_map<int, int>& parentMap, int startIdx, int destIdx) const;

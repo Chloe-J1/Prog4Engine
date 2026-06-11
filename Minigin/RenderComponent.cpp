@@ -1,6 +1,4 @@
 #include "RenderComponent.h"
-#include "ResourceManager.h"
-#include "Renderer.h"
 #include "GameObject.h"
 #include "Texture2D.h"
 #include <iostream>
@@ -9,7 +7,7 @@
 dae::RenderComponent::RenderComponent(GameObject* owner, const std::string& filepath):
 	Component(owner)
 {
-	m_texture = ResourceManager::GetInstance().LoadTexture(filepath);
+	m_texture = m_resourceManager.LoadTexture(filepath);
 	if (m_texture == nullptr)
 		std::cout << "Couldn't load " << filepath << "\n";
 
@@ -29,11 +27,9 @@ dae::RenderComponent::RenderComponent(GameObject* owner):
 
 void dae::RenderComponent::SetTexture(const std::string& filename)
 {
-	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
+	m_texture = m_resourceManager.LoadTexture(filename);
 	if (m_texture == nullptr)
 		std::cout << "Couldn't load " << filename << "\n";
-
-	
 }
 
 void dae::RenderComponent::SetTexture(std::shared_ptr<Texture2D> texture)
@@ -47,9 +43,9 @@ void dae::RenderComponent::Render() const
 	Component::Render();
 
 	if (m_useSrcRect)
-		Renderer::GetInstance().RenderTexture(*m_texture, m_srcRect, m_dstRect);
+		m_renderer.RenderTexture(*m_texture, m_srcRect, m_dstRect);
 	else
-		Renderer::GetInstance().RenderTexture(*m_texture, m_owner->GetWorldPosition().x, m_owner->GetWorldPosition().y);
+		m_renderer.RenderTexture(*m_texture, m_owner->GetWorldPosition().x, m_owner->GetWorldPosition().y);
 }
 
 void dae::RenderComponent::Update(float)

@@ -35,7 +35,7 @@ void pacman::TargetMoverComponent::MoveFrontTarget(float elapsedSec)
 
 bool pacman::TargetMoverComponent::MoveToCell(int, float elapsedSec)
 {
-	if (m_pathIdx >= m_path.size())
+	if (m_pathIdx >= (int)m_path.size())
 	{
 		m_path.clear();
 		m_pathIdx = 0;

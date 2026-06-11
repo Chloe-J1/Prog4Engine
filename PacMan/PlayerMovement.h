@@ -23,7 +23,6 @@ namespace pacman
 		
 
 		void ChangeDirection(const glm::vec2& direction);
-		void Update(float elapsedSec);
 	private:
 		const float m_speed;
 
@@ -43,6 +42,7 @@ namespace pacman
 		float m_playerWidth;
 		float m_playerHeight;
 
+		void Update(float elapsedSec);
 		void WarpTunnels();
 		glm::vec2 GetCenterPos() const;
 		void SnapToCell(int gridIdx, const glm::vec2& newDir);
