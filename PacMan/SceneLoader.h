@@ -32,14 +32,14 @@ namespace pacman
 		void MenuScene();
 		void NameSelectScene();
 	private:
+		const int m_wWidth;
+		const int m_wHeight;
 		std::unique_ptr<LevelLoader> m_levelLoader;
 		std::unique_ptr<HighscoreParser> m_highscoreParser;
 		std::vector<std::string> m_scores{};
 
 		const int m_player1CtrlIdx{ 0 };
 		const int m_player2CtrllIdx{ 1 };
-		const int m_wWidth;
-		const int m_wHeight;
 		
 		dae::InputManager& m_inputManager{ dae::InputManager::GetInstance() };
 		GamestateManager& m_gamestateManager{ pacman::GamestateManager::GetInstance() };

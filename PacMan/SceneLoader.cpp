@@ -22,12 +22,15 @@
 #include "LetterSelectComponent.h"
 #include "NameSelectComponent.h"
 #include "RespawnComponent.h"
+#include <memory>
+#include "HighscoreParser.h"
+#include <string>
 
 
 pacman::SceneLoader::SceneLoader():
-	m_levelLoader{std::make_unique<LevelLoader>()},
 	m_wWidth{ dae::WindowConfig::GetInstance().GetWidth() },
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
+	m_levelLoader{std::make_unique<LevelLoader>()},
 	m_highscoreParser{std::make_unique<HighscoreParser>()}
 {
 }
