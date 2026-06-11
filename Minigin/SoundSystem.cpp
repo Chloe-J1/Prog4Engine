@@ -75,33 +75,54 @@ private:
 	class Sound {
 	public:
 		Sound(const std::string& path, MIX_Mixer* mixer)
-			: m_mixer(mixer), m_filepath(path) {
+			: m_mixer(mixer), m_filepath(path) 
+		{
 		}
 
-		~Sound() {
-			MIX_StopTrack(m_track, 0);
-			MIX_DestroyTrack(m_track);
+		~Sound() 
+		{
+			for (const auto& track : m_tracks)
+			{
+				MIX_StopTrack(track, 0);
+				MIX_DestroyTrack(track);
+			}
 			MIX_DestroyAudio(m_audio);
 		}
 
 		bool IsLoaded() const { return m_audio != nullptr; }
 
-		void Load() {
+		void Load()
+		{
 			m_audio = MIX_LoadAudio(m_mixer, m_filepath.c_str(), false);
-			m_track = MIX_CreateTrack(m_mixer);
+			m_tracks.push_back(MIX_CreateTrack(m_mixer));
 		}
 
-		void SetVolume(float volume) {
-			if (m_track) MIX_SetTrackGain(m_track, volume);
+		void SetVolume(float volume)
+		{
+			for(auto& track : m_tracks)
+				MIX_SetTrackGain(track, volume);
 		}
 
-		void Play() {
-			MIX_SetTrackAudio(m_track, m_audio);
-			MIX_PlayTrack(m_track, 0);
+		void Play() 
+		{
+			for (auto& track : m_tracks)
+			{
+				if (not MIX_TrackPlaying(track))
+				{
+					MIX_SetTrackAudio(track, m_audio);
+					MIX_PlayTrack(track, 0);
+					return;
+				}
+			}
+
+			// No free tracks found so create a new one
+			MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
+			MIX_SetTrackAudio(newTrack, m_audio);
+			MIX_PlayTrack(newTrack, 0);
 		}
 		MIX_Mixer* m_mixer;
 		MIX_Audio* m_audio{};
-		MIX_Track* m_track{};
+		std::vector<MIX_Track*> m_tracks{};
 		std::string m_filepath;
 	};
 
