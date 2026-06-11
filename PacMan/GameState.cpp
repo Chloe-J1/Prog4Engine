@@ -72,6 +72,8 @@ void pacman::MainMenuState::OnExit()
 	m_inputManager.UnbindCommand(SDL_SCANCODE_DOWN, dae::TriggerEvent::PressedThisFrame);
 	m_inputManager.UnbindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, 0);
 	m_inputManager.UnbindCommand(dae::Input::DPad_Down, dae::TriggerEvent::PressedThisFrame, 1);
+
+	m_eventQueue.Invoke(dae::Event{ "START_GAME" });
 }
 
 pacman::PlayState::PlayState(int nrPacman):

@@ -1,11 +1,23 @@
 #include "SoundSystem.h"
+#include "SoundSystem.h"
+#include "SoundSystem.h"
 #include <iostream>
 #include <unordered_map>
 #include <queue>
 #include <thread>
 #include <mutex>
 #include <SDL3_mixer/SDL_mixer.h>
+#include <memory>
+// Null
+//***************
+void dae::NullSoundSystem::Play(const std::string&, const float)
+{}
 
+void dae::NullSoundSystem::Stop(const std::string&)
+{}
+
+void dae::NullSoundSystem::RegisterSound(const std::string&, const std::string&)
+{}
 
 // SDLSoundSystem
 //***************
@@ -19,13 +31,16 @@ public:
 	{
 	}
 
+	void Stop(const std::string& soundId)
+	{
+	}
+
 	void RegisterSound(const std::string&, const std::string&)
 	{
 	}
 private:
 
 };
-
 #else
 class dae::SDLSoundSystem::SoundSystemImpl final
 {
@@ -54,7 +69,14 @@ public:
 	void Play(const std::string& soundId, const float volume)
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
-		m_pendingRequests.push(SoundMessage{ soundId, volume });
+		m_pendingRequests.push(SoundMessage{ soundId, "Play", volume });
+		m_conditionVar.notify_one();
+	}
+
+	void Stop(const std::string& soundId)
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_pendingRequests.push(SoundMessage{ soundId, "Stop", 0});
 		m_conditionVar.notify_one();
 	}
 
@@ -76,16 +98,26 @@ public:
 			while (not m_pendingRequests.empty())
 			{
 				SoundMessage message = m_pendingRequests.front();
+				if (not m_soundMap.contains(message.id)) continue;
 
 				// Play sound
 				auto& sound = m_soundMap[message.id];
+
 				m_pendingRequests.pop();
 
 				lock.unlock();
-				if (not sound->IsLoaded())
-					sound->Load();
-				sound->SetVolume(message.volume);
-				sound->Play();
+				if (message.type == "Play")
+				{
+					if (not sound->IsLoaded())
+						sound->Load();
+					sound->SetVolume(message.volume);
+					sound->Play();
+				}
+				else if (message.type == "Stop")
+				{
+					sound->Stop();
+				}
+				
 				lock.lock();
 			}
 		}
@@ -140,6 +172,16 @@ private:
 			MIX_SetTrackAudio(newTrack, m_audio);
 			MIX_PlayTrack(newTrack, 0);
 		}
+
+		void Stop()
+		{
+			for (const auto& track : m_tracks)
+			{
+				MIX_StopTrack(track, 0);
+			}
+		}
+
+	private:
 		MIX_Mixer* m_mixer;
 		MIX_Audio* m_audio{};
 		std::vector<MIX_Track*> m_tracks{};
@@ -168,6 +210,11 @@ void dae::SDLSoundSystem::Play(const std::string& soundId, const float volume)
 	m_impl->Play(soundId, volume);
 }
 
+void dae::SDLSoundSystem::Stop(const std::string& soundId)
+{
+	m_impl->Stop(soundId);
+}
+
 void dae::SDLSoundSystem::RegisterSound(const std::string& id, const std::string& path)
 {
 	m_impl->RegisterSound(id, path);
@@ -182,8 +229,14 @@ dae::LoggingSoundSystem::LoggingSoundSystem(std::unique_ptr<ISoundSystem>&& soun
 
 void dae::LoggingSoundSystem::Play(const std::string& soundId, const float volume)
 {
-	std::cout << "playing " << soundId << " at volume " << volume << std::endl;
+	std::cout << "playing " << soundId << " at volume " << volume << "\n";
 	m_realSoundSys->Play(soundId, volume);
+}
+
+void dae::LoggingSoundSystem::Stop(const std::string& soundId)
+{
+	std::cout << "stopped " << soundId << "\n";
+	m_realSoundSys->Stop(soundId);
 }
 
 void dae::LoggingSoundSystem::RegisterSound(const std::string& id, const std::string& path)

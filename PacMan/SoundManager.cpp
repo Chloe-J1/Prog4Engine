@@ -46,6 +46,10 @@ void pacman::SoundManager::Notify(const dae::Event& event)
 	{
 		ss->Play("start", volume);
 	}
+	else if (event.id == "START_GAME")
+	{
+		ss->Stop("start");
+	}
 }
 
 void pacman::SoundManager::RegisterSound()

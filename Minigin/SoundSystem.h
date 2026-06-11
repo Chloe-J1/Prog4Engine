@@ -6,6 +6,14 @@ namespace dae
 {
 	struct SoundMessage
 	{
+		SoundMessage(const std::string& soundId, const std::string& _type, const float _volume) :
+			type{ _type },
+			id{ soundId },
+			volume{ _volume }
+		{
+		}
+
+		std::string type;
 		std::string id;
 		float volume;
 	};
@@ -16,6 +24,7 @@ namespace dae
 	public:
 		virtual ~ISoundSystem() = default;
 		virtual void Play(const std::string& soundId, const float volume) = 0;
+		virtual void Stop(const std::string& soundId) = 0;
 		virtual void RegisterSound(const std::string& id, const std::string& path) = 0;
 	};
 
@@ -23,8 +32,9 @@ namespace dae
 	class NullSoundSystem final : public ISoundSystem
 	{
 	public:
-		virtual void Play(const std::string&, const float) override {};
-		virtual void RegisterSound(const std::string&, const std::string&) override {};
+		void Play(const std::string& soundId, const float volume);
+		void Stop(const std::string& soundId);
+		void RegisterSound(const std::string& soundId, const std::string& path);
 	};
 
 	// SDL sound system
@@ -39,6 +49,7 @@ namespace dae
 		SDLSoundSystem& operator=(SDLSoundSystem&& other) = delete;
 
 		virtual void Play(const std::string& soundId, const float volume) override;
+		virtual void Stop(const std::string& soundId) override;
 		virtual void RegisterSound(const std::string& id, const std::string& path) override;
 	private:
 		class SoundSystemImpl;
@@ -58,6 +69,7 @@ namespace dae
 		LoggingSoundSystem& operator=(LoggingSoundSystem&& other) = delete;
 
 		virtual void Play(const std::string& soundId, const float volume) override;
+		virtual void Stop(const std::string& soundId) override;
 		virtual void RegisterSound(const std::string& id, const std::string& path) override;
 	};
 }
