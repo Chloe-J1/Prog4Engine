@@ -242,13 +242,10 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 
 
 	int bestIdx = -1;
-	auto predicate = [&](int neighborIdx) {
-		return glm::length(m_targetPos - m_graph.GetWorldPos(neighborIdx));
-		};
 
 	if (not isMovingAway)
 	{
-		auto chosenItr = std::ranges::min_element(m_neighbors, {}, predicate);
+		auto chosenItr = std::min_element(m_neighbors.begin(), m_neighbors.end());
 		if (chosenItr != m_neighbors.end())
 		{
 			bestIdx = *chosenItr;
@@ -256,7 +253,7 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 	}
 	else
 	{
-		auto chosenItr = std::ranges::max_element(m_neighbors, {}, predicate);
+		auto chosenItr = std::max_element(m_neighbors.begin(), m_neighbors.end());
 		if (chosenItr != m_neighbors.end())
 		{
 			bestIdx = *chosenItr;
