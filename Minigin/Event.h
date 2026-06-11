@@ -8,7 +8,7 @@ namespace dae
 	//************
 	struct EventArg
 	{
-		EventArg() = default;
+		explicit EventArg() = default;
 		virtual ~EventArg() = default;
 		EventArg(const EventArg& other) = delete;
 		EventArg(EventArg&& other) = delete;

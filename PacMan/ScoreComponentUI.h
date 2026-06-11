@@ -9,7 +9,7 @@ namespace pacman
 	class ScoreComponentUI final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		ScoreComponentUI(dae::GameObject* owner, dae::GameObject* pacman);
+		explicit ScoreComponentUI(dae::GameObject* owner, dae::GameObject* pacman);
 		~ScoreComponentUI();
 		ScoreComponentUI(const ScoreComponentUI& other) = delete;
 		ScoreComponentUI(ScoreComponentUI&& other) = delete;

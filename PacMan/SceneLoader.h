@@ -21,7 +21,7 @@ namespace pacman
 	class SceneLoader final : public dae::Singleton<SceneLoader>
 	{
 	public:
-		SceneLoader();
+		explicit SceneLoader();
 
 		// Scenes
 		void GameScene(const std::string& levelname);

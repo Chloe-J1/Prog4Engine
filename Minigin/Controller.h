@@ -9,7 +9,7 @@ namespace dae
 	{
 	public:
 			
-		Controller(int index);
+		explicit Controller(int index);
 		~Controller();
 		Controller(Controller&&) = delete;
 		Controller& operator=(Controller&&) = delete;

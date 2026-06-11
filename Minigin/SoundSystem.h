@@ -31,7 +31,7 @@ namespace dae
 	class SDLSoundSystem final : public ISoundSystem
 	{
 	public:
-		SDLSoundSystem();
+		explicit SDLSoundSystem();
 		~SDLSoundSystem();
 		SDLSoundSystem(const SDLSoundSystem& other) = delete;
 		SDLSoundSystem(SDLSoundSystem&& other) = delete;
@@ -50,7 +50,7 @@ namespace dae
 	{
 		std::unique_ptr<ISoundSystem> m_realSoundSys;
 	public:
-		LoggingSoundSystem(std::unique_ptr<ISoundSystem>&& soundSys);
+		explicit LoggingSoundSystem(std::unique_ptr<ISoundSystem>&& soundSys);
 		virtual ~LoggingSoundSystem() = default;
 		LoggingSoundSystem(const LoggingSoundSystem& other) = delete;
 		LoggingSoundSystem(LoggingSoundSystem&& other) = delete;

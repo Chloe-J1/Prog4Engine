@@ -11,14 +11,14 @@ namespace pacman
 	class LetterSelectComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		LetterSelectComponent(dae::GameObject* owner, dae::GameObject* upButton, dae::GameObject* downButton);
+		explicit LetterSelectComponent(dae::GameObject* owner, dae::GameObject* upButton, dae::GameObject* downButton);
 		~LetterSelectComponent();
 		LetterSelectComponent(const LetterSelectComponent& other) = delete;
 		LetterSelectComponent(LetterSelectComponent&& other) = delete;
 		LetterSelectComponent& operator=(const LetterSelectComponent& other) = delete;
 		LetterSelectComponent& operator=(LetterSelectComponent&& other) = delete;
 
-		void Start();
+		virtual void Start() override;
 		virtual void Notify(const dae::Event& event) override;
 		char GetLetter() const;
 	private:

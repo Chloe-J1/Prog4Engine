@@ -12,7 +12,7 @@ namespace pacman
 	class Move final : public dae::GameObjectCommand
 	{
 	public:
-		Move(dae::GameObject* gameObject, const glm::vec2& direction, pacman::PlayerMovement* moveComp);
+		explicit Move(dae::GameObject* gameObject, const glm::vec2& direction, pacman::PlayerMovement* moveComp);
 		virtual void Execute() override;
 		
 	private:
@@ -37,7 +37,7 @@ namespace pacman
 	class PressButton final : public dae::GameObjectCommand
 	{
 	public:
-		PressButton(dae::GameObject* gameObject);
+		explicit PressButton(dae::GameObject* gameObject);
 
 		virtual void Execute() override;
 	};

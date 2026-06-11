@@ -8,7 +8,7 @@ namespace pacman
 	class FruitComponent final : public dae::Component
 	{
 	public:
-		FruitComponent(dae::GameObject* owner);
+		explicit FruitComponent(dae::GameObject* owner);
 
 		virtual void Start() override;
 

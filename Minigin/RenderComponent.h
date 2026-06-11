@@ -23,8 +23,8 @@ namespace dae
 		void SetSrcRect(const SDL_FRect& srcRect);
 		void SetDstSize(float width, float height);
 
-		RenderComponent(GameObject* owner, const std::string& filepath);
-		RenderComponent(GameObject* owner);
+		explicit RenderComponent(GameObject* owner, const std::string& filepath);
+		explicit RenderComponent(GameObject* owner);
 	private:
 		std::shared_ptr<Texture2D> m_texture{};
 

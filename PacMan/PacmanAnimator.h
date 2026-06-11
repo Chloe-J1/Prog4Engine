@@ -10,7 +10,7 @@ namespace pacman
 	class PacmanAnimator final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		PacmanAnimator(dae::GameObject* owner);
+		explicit PacmanAnimator(dae::GameObject* owner);
 		~PacmanAnimator();
 		PacmanAnimator(const PacmanAnimator& other) = delete;
 		PacmanAnimator(PacmanAnimator&& other) = delete;

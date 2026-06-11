@@ -8,7 +8,7 @@ namespace pacman
 	class RespawnComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		RespawnComponent(dae::GameObject* owner, const glm::vec2& respawnPos);
+		explicit RespawnComponent(dae::GameObject* owner, const glm::vec2& respawnPos);
 		~RespawnComponent();
 		RespawnComponent(const RespawnComponent& other) = delete;
 		RespawnComponent(RespawnComponent&& other) = delete;

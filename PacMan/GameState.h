@@ -16,7 +16,7 @@ namespace pacman
 	class GameState
 	{
 	public:
-		GameState();
+		explicit GameState();
 		virtual ~GameState() = default;
 		GameState(const GameState& other) = delete;
 		GameState(GameState&& other) = delete;
@@ -56,7 +56,7 @@ namespace pacman
 	class PlayState : public GameState
 	{
 	public:
-		PlayState(int nrPacman);
+		explicit PlayState(int nrPacman);
 		virtual ~PlayState() = default;
 		PlayState(const PlayState& other) = delete;
 		PlayState(PlayState&& other) = delete;

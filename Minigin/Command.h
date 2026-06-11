@@ -7,7 +7,7 @@ namespace dae
 	class Command
 	{
 	public:
-		Command() = default;
+		explicit Command() = default;
 		virtual ~Command() = default;
 		Command(const Command& other) = delete;
 		Command(Command&& other) = delete;
@@ -21,7 +21,7 @@ namespace dae
 	class GameObjectCommand : public Command
 	{
 	public:
-		GameObjectCommand(GameObject* gameObject);
+		explicit GameObjectCommand(GameObject* gameObject);
 
 		virtual ~GameObjectCommand() = default;
 		GameObjectCommand(const GameObjectCommand& other) = delete;

@@ -3,9 +3,7 @@
 #include <string>
 #include "../Minigin/RenderComponent.h"
 #include "../Minigin/Hitbox.h"
-
 #include "Pellets.h"
-
 #include "Graph.h"
 #include "GamestateManager.h"
 #include <iostream>

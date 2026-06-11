@@ -11,8 +11,12 @@ namespace pacman
 	class NameSelectComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		NameSelectComponent(dae::GameObject* owner, dae::GameObject* button );
+		explicit NameSelectComponent(dae::GameObject* owner, dae::GameObject* button );
 		~NameSelectComponent();
+		NameSelectComponent(const NameSelectComponent& other) = delete;
+		NameSelectComponent(NameSelectComponent&& other) = delete;
+		NameSelectComponent& operator=(const NameSelectComponent& other) = delete;
+		NameSelectComponent& operator=(NameSelectComponent&& other) = delete;
 
 		void Notify(const dae::Event& event);
 		void AddLetterComp(LetterSelectComponent* letterComp);

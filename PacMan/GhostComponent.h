@@ -12,7 +12,7 @@ namespace pacman
 	class GhostComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy);
+		explicit GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy);
 		~GhostComponent();
 		GhostComponent(const GhostComponent& other) = delete;
 		GhostComponent(GhostComponent&& other) = delete;

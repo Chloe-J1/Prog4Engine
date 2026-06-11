@@ -12,7 +12,7 @@ namespace pacman
 	class FruitSpawner final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		FruitSpawner(dae::GameObject* owner, dae::Scene* scene);
+		explicit FruitSpawner(dae::GameObject* owner, dae::Scene* scene);
 		~FruitSpawner();
 		FruitSpawner(const FruitSpawner& other) = delete;
 		FruitSpawner(FruitSpawner&& other) = delete;

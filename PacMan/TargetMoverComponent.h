@@ -10,7 +10,7 @@ namespace pacman
 	class TargetMoverComponent final : public dae::Component
 	{
 	public:
-		TargetMoverComponent(dae::GameObject* owner);
+		explicit TargetMoverComponent(dae::GameObject* owner);
 		void MoveToTarget(float elapsedSec);
 		void MoveAwayTarget(float elapsedSec);
 		void MoveFrontTarget(float elapsedSec);

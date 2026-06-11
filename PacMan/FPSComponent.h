@@ -11,7 +11,7 @@ namespace pacman
     class FPSComponent final : public dae::Component
     {
     public:
-        FPSComponent(dae::GameObject* owner);
+        explicit FPSComponent(dae::GameObject* owner);
 
 
         void Update(float elapsedSec) override;

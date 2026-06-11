@@ -9,7 +9,7 @@ namespace pacman
 	class HealthComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		HealthComponent(dae::GameObject* owner, int health = 4);
+		explicit HealthComponent(dae::GameObject* owner, int health = 4);
 		~HealthComponent();
 		HealthComponent(const HealthComponent& other) = delete;
 		HealthComponent(HealthComponent&& other) = delete;

@@ -7,7 +7,7 @@ namespace pacman
 	class HealthComponentUI final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		HealthComponentUI(dae::GameObject* owner, dae::GameObject* pacman);
+		explicit HealthComponentUI(dae::GameObject* owner, dae::GameObject* pacman);
 		~HealthComponentUI();
 		HealthComponentUI(const HealthComponentUI& other) = delete;
 		HealthComponentUI(HealthComponentUI&& other) = delete;

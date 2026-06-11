@@ -10,7 +10,7 @@ namespace pacman
 	class ButtonComponent final : public dae::Component
 	{
 	public:
-		ButtonComponent(dae::GameObject* owner);
+		explicit ButtonComponent(dae::GameObject* owner);
 		~ButtonComponent();
 		ButtonComponent(const ButtonComponent& other) = delete;
 		ButtonComponent(ButtonComponent&& other) = delete;

@@ -8,7 +8,7 @@ namespace pacman
 	class SoundManager final : public dae::IEventHandler, public dae::Singleton<SoundManager>
 	{
 	public:
-		SoundManager();
+		explicit SoundManager();
 		~SoundManager();
 		SoundManager(const SoundManager& other) = delete;
 		SoundManager(SoundManager&& other) = delete;

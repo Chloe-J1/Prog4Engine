@@ -9,7 +9,7 @@ namespace pacman
 	class GamestateManager final : public dae::Singleton<GamestateManager>, public dae::IEventHandler
 	{
 	public:
-		GamestateManager();
+		explicit GamestateManager();
 		~GamestateManager();
 		GamestateManager(const GamestateManager& other) = delete;
 		GamestateManager(GamestateManager&& other) = delete;

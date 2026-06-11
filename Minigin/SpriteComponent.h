@@ -7,7 +7,7 @@ namespace dae
 	class SpriteComponent final : public Component
 	{
 	public:
-		SpriteComponent(GameObject* owner, int nrCols = 1, int nrRows = 1, float frameSec = 0, int row = 0);
+		explicit SpriteComponent(GameObject* owner, int nrCols = 1, int nrRows = 1, float frameSec = 0, int row = 0);
 
 		virtual void Update(float elapsedSec) override;
 

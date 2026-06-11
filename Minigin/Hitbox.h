@@ -6,7 +6,7 @@ namespace dae
 	class Hitbox final : public Component
 	{
 	public:
-		Hitbox(GameObject* gameObject, int width, int height);
+		explicit Hitbox(GameObject* gameObject, int width, int height);
 		~Hitbox();
 		Hitbox(const Hitbox& other) = delete;
 		Hitbox(Hitbox&& other) = delete;

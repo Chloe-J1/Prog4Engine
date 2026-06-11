@@ -84,7 +84,7 @@ namespace dae
 		void SetIsAlive(bool isAlive);
 		bool GetIsAlive();
 
-		GameObject();
+		explicit GameObject();
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;

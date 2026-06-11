@@ -22,7 +22,7 @@ namespace dae
 		bool GetIsEnabled() const;
 		void SetIsEnabled(bool isEnabled);
 
-		Component(GameObject* owner);
+		explicit Component(GameObject* owner);
 		virtual ~Component() = default;
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;

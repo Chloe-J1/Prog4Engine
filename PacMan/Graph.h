@@ -9,7 +9,7 @@ namespace pacman
 	class Graph final : public dae::Singleton<Graph>
 	{
 	public:
-		Graph();
+		explicit Graph();
 		int GetGridIdx(const glm::vec2& pos) const;
 		glm::vec2 GetWorldPos(int gridIdx) const;
 		const std::vector<int>& GetNeighbors(int gridIdx) const;

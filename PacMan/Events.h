@@ -8,7 +8,7 @@ namespace pacman
 		int score;
 		dae::GameObject* sender;
 
-		ScoreArg(int _score, dae::GameObject* _sender);
+		explicit ScoreArg(int _score, dae::GameObject* _sender);
 
 		virtual ~ScoreArg() = default;
 		ScoreArg(const ScoreArg& other) = delete;
@@ -22,7 +22,7 @@ namespace pacman
 		int health;
 		dae::GameObject* sender;
 
-		UpdateHealthArg(int _health, dae::GameObject* _sender);
+		explicit UpdateHealthArg(int _health, dae::GameObject* _sender);
 
 		virtual ~UpdateHealthArg() = default;
 		UpdateHealthArg(const UpdateHealthArg& other) = delete;
@@ -36,7 +36,7 @@ namespace pacman
 		glm::vec2 direction;
 		dae::GameObject* sender;
 
-		DirectionChangedArg(glm::vec2 _direction, dae::GameObject* _sender);
+		explicit DirectionChangedArg(glm::vec2 _direction, dae::GameObject* _sender);
 
 		virtual ~DirectionChangedArg() = default;
 		DirectionChangedArg(const DirectionChangedArg& other) = delete;
@@ -50,7 +50,7 @@ namespace pacman
 		dae::GameObject* ghost;
 		dae::GameObject* killer;
 
-		GhostDiedArg(dae::GameObject* _ghost, dae::GameObject* _killer);
+		explicit GhostDiedArg(dae::GameObject* _ghost, dae::GameObject* _killer);
 
 		virtual ~GhostDiedArg() = default;
 		GhostDiedArg(const GhostDiedArg& other) = delete;
@@ -63,7 +63,7 @@ namespace pacman
 	{
 		dae::GameObject* sender;
 
-		SenderArg(dae::GameObject* _sender);
+		explicit SenderArg(dae::GameObject* _sender);
 		virtual ~SenderArg() = default;
 		SenderArg(const SenderArg& other) = delete;
 		SenderArg(SenderArg&& other) = delete;

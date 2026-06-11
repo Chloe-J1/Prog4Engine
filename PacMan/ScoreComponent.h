@@ -8,7 +8,7 @@ namespace pacman
 	class ScoreComponent final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		ScoreComponent(dae::GameObject* owner, int controllerIdx);
+		explicit ScoreComponent(dae::GameObject* owner, int controllerIdx);
 		~ScoreComponent();
 		ScoreComponent(const ScoreComponent& other) = delete;
 		ScoreComponent(ScoreComponent&& other) = delete;
