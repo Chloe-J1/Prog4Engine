@@ -39,7 +39,7 @@ void pacman::LetterSelectComponent::Notify(const dae::Event& event)
 		}
 		else if (sender == m_upButton)
 		{
-			if (m_selectedLetterIdx >= m_possibleLetters.size() - 1) return;
+			if (m_selectedLetterIdx >= int(m_possibleLetters.size() - 1)) return;
 			++m_selectedLetterIdx;
 			m_textComp->SetText((std::string(1, m_possibleLetters[m_selectedLetterIdx])));
 		}
