@@ -4,7 +4,7 @@ Minigin is a very small project using [SDL3](https://www.libsdl.org/) and [glm](
 
 [![CMake](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/cmake.yml/badge.svg)](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/cmake.yml)
 [![Emscripten](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/emscripten.yml/badge.svg)](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/emscripten.yml)
-
+[![GitHub](https://img.shields.io/badge/GitHub-Prog4Engine-181717?logo=github)](https://github.com/Chloe-J1/Prog4Engine)
 # Goal
 
 Minigin can/may be used as a start project for the exam assignment in the course [Programming 4](https://youtu.be/j96Oh6vzhmg) at DAE. In that assignment students need to recreate a popular 80's arcade game with a game engine they need to program themselves. During the course we discuss several game programming patterns, using the book '[Game Programming Patterns](https://gameprogrammingpatterns.com/)' by [Robert Nystrom](https://github.com/munificent) as reading material. 
@@ -85,3 +85,11 @@ This project is build with github actions.
 
 ```<iframe style="position: absolute; top: 0px; left: 0px; width: 1024px; height: 576px;" src="https://<username>.github.io/<repository>/" loading="lazy"></iframe>```
 
+# Engine design choises
+Most of the architecture choises are inspired by Bob Nystrom's book *Game Programming Patterns*. The most important ones I decided to implement are the following.
+
+```Component``` The core structure of the engine relies on game objects to which you can attach components. The intent of this is as follows: Allow a single entity to span multiple domains without coupling the domains to each other. (Quote from Bob Nystrom's book *Game Programming Patterns*)<br>
+```State``` Complex behavior is split into separate states rather than handled in one place. The state controls the needed behavior at that moment and has the possibility to switch to a new state.<br>
+```Event queue``` A central event bus is used to send messages to the subscribed components, decoupling the sender from the receiver. Subscribers to the event queue can react to changes without direct dependency on the sender.<br>
+```Command``` The command pattern is used to bind certain actions to an input event. This separates the executed behavior from the button that triggers the behavior.
+```Service locator``` The sound system is implemented as a service, making it easy to swap between different sound systems without having to change code that uses the sound system.
