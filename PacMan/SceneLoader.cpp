@@ -40,7 +40,6 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 	dae::Scene& scene = dae::SceneManager::GetInstance().CreateScene();
 
 	m_levelLoader->InitLevel(scene, levelname);
-	m_levelLoader->JsonToBin("Data/Levels.json", levelname);
 
 	// Fruit Spawner
 	//*********
