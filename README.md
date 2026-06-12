@@ -85,3 +85,11 @@ This project is build with github actions.
 
 ```<iframe style="position: absolute; top: 0px; left: 0px; width: 1024px; height: 576px;" src="https://<username>.github.io/<repository>/" loading="lazy"></iframe>```
 
+# Engine design choises
+Most of the architecture choises are inspired by Bob Nystrom's book *Game Programming Patterns*. The most important ones I decided to implement are the following.
+
+```Component``` The core structure of the engine relies on game objects to which you can attach components. The intent of this is as follows: Allow a single entity to span multiple domains without coupling the domains to each other. (Quote from Bob Nystrom's book *Game Programming Patterns*)<br>
+```State``` Complex behavior is split into separate states rather than handled in one place. The state controls the needed behavior at that moment and has the possibility to switch to a new state.<br>
+```Event queue``` A central event bus is used to send messages to the subscribed components, decoupling the sender from the receiver. Subscribers to the event queue can react to changes without direct dependency on the sender.<br>
+```Command``` The command pattern is used to bind certain actions to an input event. This separates the executed behavior from the button that triggers the behavior.
+```Service locator``` The sound system is implemented as a service, making it easy to swap between different sound systems without having to change code that uses the sound system.
