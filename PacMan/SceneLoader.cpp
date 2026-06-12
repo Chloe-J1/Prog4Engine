@@ -41,16 +41,6 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 
 	m_levelLoader->InitLevel(scene, levelname);
 	m_levelLoader->JsonToBin("Data/Levels.json", levelname);
-	
-	// FPS
-	std::unique_ptr<dae::GameObject> fpsgo = std::make_unique<dae::GameObject>();
-	fpsgo->SetLocalPosition(20, 20);
-	fpsgo->AddComponent<dae::RenderComponent>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	fpsgo->AddComponent<dae::TextComponent>("FPS: ", font);
-	fpsgo->AddComponent<pacman::FPSComponent>();
-
-	scene.Add(std::move(fpsgo));
 
 	// Fruit Spawner
 	//*********

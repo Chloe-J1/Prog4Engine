@@ -45,7 +45,7 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 		}
 
 		dae::Event pickupEvent{ eventID };
-		pickupEvent.arg = std::make_unique<ScoreArg>(m_score, GetGameObject());
+		pickupEvent.arg = std::make_unique<ScoreArg>(m_score, pellet->GetValue(), GetGameObject());
 		m_eventQueue.Invoke(std::move(pickupEvent));
 
 		other->SetIsAlive(false);
@@ -55,7 +55,7 @@ void pacman::ScoreComponent::OnCollision(dae::GameObject* other)
 	{
 		m_score += fruit->GetValue();
 		dae::Event event{ "FRUIT_PICKUP" };
-		event.arg = std::make_unique<ScoreArg>(m_score, GetGameObject());
+		event.arg = std::make_unique<ScoreArg>(m_score, fruit->GetValue(), GetGameObject());
 		m_eventQueue.Invoke(std::move(event));
 	}
 }
@@ -69,9 +69,10 @@ void pacman::ScoreComponent::Notify(const dae::Event& event)
 		if (arg->killer == GetGameObject())
 		{
 			++m_nrGhostsEaten;
-			m_score += baseValue * m_nrGhostsEaten;
+			int addedValue{ baseValue * m_nrGhostsEaten };
+			m_score += addedValue;
 			dae::Event e{ "GHOST_VALUE_CALCULATED" };
-			e.arg = std::make_unique<ScoreArg>(m_score, GetGameObject());
+			e.arg = std::make_unique<ScoreArg>(m_score, addedValue, GetGameObject());
 			m_eventQueue.Invoke(std::move(e));
 		}
 	}

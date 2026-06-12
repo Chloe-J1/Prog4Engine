@@ -6,9 +6,10 @@ namespace pacman
 	struct ScoreArg final : dae::EventArg
 	{
 		int score;
+		int addedValue;
 		dae::GameObject* sender;
 
-		explicit ScoreArg(int _score, dae::GameObject* _sender);
+		explicit ScoreArg(int _score, int _addedValue, dae::GameObject* _sender);
 
 		virtual ~ScoreArg() = default;
 		ScoreArg(const ScoreArg& other) = delete;

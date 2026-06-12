@@ -1,7 +1,8 @@
 #include "Events.h"
 
-pacman::ScoreArg::ScoreArg(int _score, dae::GameObject* _sender):
+pacman::ScoreArg::ScoreArg(int _score, int _addedValue, dae::GameObject* _sender):
 	score{_score},
+	addedValue{_addedValue},
 	sender{_sender}
 {
 }
