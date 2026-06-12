@@ -25,6 +25,84 @@ void dae::NullSoundSystem::RegisterSound(const std::string&, const std::string&)
 // SDLSoundSystem
 //***************
 
+class Sound {
+public:
+	Sound(const std::string& path, MIX_Mixer* mixer)
+		: m_mixer(mixer), m_filepath(path)
+	{
+	}
+
+	~Sound()
+	{
+		for (const auto& track : m_tracks)
+		{
+			MIX_StopTrack(track, 0);
+			MIX_DestroyTrack(track);
+		}
+		MIX_DestroyAudio(m_audio);
+	}
+
+	bool IsLoaded() const { return m_audio != nullptr; }
+
+	void Load()
+	{
+		m_audio = MIX_LoadAudio(m_mixer, m_filepath.c_str(), false);
+		m_tracks.push_back(MIX_CreateTrack(m_mixer));
+	}
+
+	void SetVolume(float volume)
+	{
+		volume = std::clamp(volume, 0.f, 1.f);
+		for (auto& track : m_tracks)
+			MIX_SetTrackGain(track, volume);
+	}
+
+	void Play(bool isLooping)
+	{
+		for (auto& track : m_tracks)
+		{
+			if (not MIX_TrackPlaying(track))
+			{
+				MIX_SetTrackAudio(track, m_audio);
+				SDL_PropertiesID props{ SDL_CreateProperties() };
+				if (isLooping)
+				{
+					SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
+				}
+				MIX_PlayTrack(track, props);
+				SDL_DestroyProperties(props);
+				return;
+			}
+		}
+
+		// No free tracks found so create a new one
+		MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
+		MIX_SetTrackAudio(newTrack, m_audio);
+		SDL_PropertiesID props{ SDL_CreateProperties() };
+		if (isLooping)
+		{
+			SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
+		}
+		MIX_PlayTrack(newTrack, props);
+		m_tracks.push_back(newTrack);
+	}
+
+	void Stop()
+	{
+		for (const auto& track : m_tracks)
+		{
+			if (MIX_TrackPlaying(track))
+				MIX_StopTrack(track, 0);
+		}
+	}
+
+private:
+	MIX_Mixer* m_mixer;
+	MIX_Audio* m_audio{};
+	std::vector<MIX_Track*> m_tracks{};
+	std::string m_filepath;
+};
+
 // SDL
 #ifdef __EMSCRIPTEN__
 class dae::SDLSoundSystem::SoundSystemImpl final
@@ -112,12 +190,12 @@ public:
 			while (not m_pendingRequests.empty())
 			{
 				SoundMessage message = m_pendingRequests.front();
+				if (not m_soundMap.contains(message.id)) continue;
 
 				// Play sound
-				auto& sound = m_soundMap.at(message.id);
+				std::shared_ptr<Sound> sound = m_soundMap[message.id];
 
 				m_pendingRequests.pop();
-				if (not m_soundMap.contains(message.id)) continue;
 
 				lock.unlock();
 				if (message.type == "Play")
@@ -144,91 +222,12 @@ public:
 		}
 	}
 private:
-
-	class Sound {
-	public:
-		Sound(const std::string& path, MIX_Mixer* mixer)
-			: m_mixer(mixer), m_filepath(path)
-		{
-		}
-
-		~Sound()
-		{
-			for (const auto& track : m_tracks)
-			{
-				MIX_StopTrack(track, 0);
-				MIX_DestroyTrack(track);
-			}
-			MIX_DestroyAudio(m_audio);
-		}
-
-		bool IsLoaded() const { return m_audio != nullptr; }
-
-		void Load()
-		{
-			m_audio = MIX_LoadAudio(m_mixer, m_filepath.c_str(), false);
-			m_tracks.push_back(MIX_CreateTrack(m_mixer));
-		}
-
-		void SetVolume(float volume)
-		{
-			volume = std::clamp(volume, 0.f, 1.f);
-			for (auto& track : m_tracks)
-				MIX_SetTrackGain(track, volume);
-		}
-
-		void Play(bool isLooping)
-		{
-			for (auto& track : m_tracks)
-			{
-				if (not MIX_TrackPlaying(track))
-				{
-					MIX_SetTrackAudio(track, m_audio);
-					SDL_PropertiesID props{ SDL_CreateProperties() };
-					if (isLooping)
-					{
-						SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
-					}
-					MIX_PlayTrack(track, props);
-					SDL_DestroyProperties(props);
-					return;
-				}
-			}
-
-			// No free tracks found so create a new one
-			MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
-			MIX_SetTrackAudio(newTrack, m_audio);
-			SDL_PropertiesID props{ SDL_CreateProperties() };
-			if (isLooping)
-			{
-				SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
-			}
-			MIX_PlayTrack(newTrack, props);
-			m_tracks.push_back(newTrack);
-		}
-
-		void Stop()
-		{
-			for (const auto& track : m_tracks)
-			{
-				if (MIX_TrackPlaying(track))
-					MIX_StopTrack(track, 0);
-			}
-		}
-
-	private:
-		MIX_Mixer* m_mixer;
-		MIX_Audio* m_audio{};
-		std::vector<MIX_Track*> m_tracks{};
-		std::string m_filepath;
-	};
-
 	MIX_Mixer* m_mixer{};
 	std::jthread m_thread;
 	std::mutex m_mutex;
 	std::condition_variable m_conditionVar;
 	std::queue<SoundMessage> m_pendingRequests;
-	std::unordered_map<std::string, std::unique_ptr<Sound>> m_soundMap;
+	std::unordered_map<std::string, std::shared_ptr<Sound>> m_soundMap;
 };
 #endif
 
