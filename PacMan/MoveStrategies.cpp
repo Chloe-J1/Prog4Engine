@@ -14,7 +14,7 @@ void pacman::MovementBase::OnExit()
 {
 }
 
-void pacman::MovementBase::Init(TargetMoverComponent* moveComp) // TODO: pass through context
+void pacman::MovementBase::Init(TargetMoverComponent* moveComp)
 {
 	m_moveComp = moveComp;
 }

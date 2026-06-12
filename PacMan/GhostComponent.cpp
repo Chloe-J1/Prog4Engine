@@ -20,7 +20,8 @@ pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<M
 	}
 	m_ghostState->OnEnter(*this);
 	dae::EventQueue::GetInstance().AddEventHandler(this);
-	m_moveStrategy->Init(GetGameObject()->GetComponent<TargetMoverComponent>());
+	m_targetMoverComp = GetGameObject()->GetComponent<TargetMoverComponent>();
+	m_moveStrategy->Init(m_targetMoverComp);
 }
 
 void pacman::GhostComponent::Start()
@@ -73,7 +74,7 @@ void pacman::GhostComponent::Notify(const dae::Event& event)
 		if (m_targets.size() > 0)
 		{
 			int rndIndex{ int(rand() % m_targets.size()) };
-			GetGameObject()->GetComponent<pacman::TargetMoverComponent>()->SetTargetObj(m_targets[rndIndex]);
+			m_targetMoverComp->SetTargetObj(m_targets[rndIndex]);
 		}
 	}
 

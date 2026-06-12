@@ -29,6 +29,7 @@ namespace pacman
 		std::unique_ptr<GhostState> m_ghostState;
 		std::unique_ptr<MovementBase> m_moveStrategy;
 		std::vector<dae::GameObject*> m_targets;
+		TargetMoverComponent* m_targetMoverComp;
 
 		void Start();
 		void Update(float elapsedSec);

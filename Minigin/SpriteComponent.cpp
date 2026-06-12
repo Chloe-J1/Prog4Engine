@@ -44,7 +44,6 @@ void dae::SpriteComponent::Update(float elapsedSec)
 	m_srcRect.x = m_actFrame % m_cols * m_width;
 	m_srcRect.y = m_actFrame / m_cols * m_height + m_height * m_row;
 	m_renderComp->SetSrcRect(m_srcRect);
-	
 }
 
 float dae::SpriteComponent::GetWidth() const

@@ -47,7 +47,7 @@ bool pacman::TargetMoverComponent::MoveToCell(int, float elapsedSec)
 
 void pacman::TargetMoverComponent::CalcPath(int gridIdx)
 {
-	glm::vec2 centerPos = GetGameObject()->GetWorldPosition();
+	glm::vec2 centerPos = m_gameObject->GetWorldPosition();
 	
 	centerPos.x += m_spriteWidth / 2.f;
 	centerPos.y += m_spriteHeight / 2.f;
@@ -107,7 +107,7 @@ void pacman::TargetMoverComponent::Render() const
 	if (m_path.empty()) return;
 	for (const auto& pos : m_path)
 	{
-		
+		m_drawHelper.SetColor(0, 255, 0);
 		m_drawHelper.DrawRect(pos, (float)m_cellsize, (float)m_cellsize);
 	}
 #endif // _DEBUG
@@ -117,7 +117,7 @@ bool pacman::TargetMoverComponent::IsInNewCell()
 {
 	const float halfSpriteWidth{ m_spriteWidth / 2.f };
 	const float halfSpriteHeight{ m_spriteHeight / 2.f };
-	glm::vec2 centerPos{ GetGameObject()->GetWorldPosition() };
+	glm::vec2 centerPos{ m_gameObject->GetWorldPosition() };
 	centerPos.x += halfSpriteWidth;
 	centerPos.y += halfSpriteHeight;
 
@@ -136,15 +136,15 @@ void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 {
 	if (m_path.empty() || m_pathIdx >= (int)m_path.size()) return;
 
-	glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
+	glm::vec2 direction = m_path[m_pathIdx] - glm::vec2{ m_gameObject->GetWorldPosition() };
 	float distance = glm::length(direction);
 
 	const float threshold = 1.f;
 	if (distance <= threshold)
 	{
 		// Snap exact op waypoint
-		glm::vec2 correction = m_path[m_pathIdx] - glm::vec2{ GetGameObject()->GetWorldPosition() };
-		GetGameObject()->AddLocalPosition(correction);
+		glm::vec2 correction = m_path[m_pathIdx] - glm::vec2{ m_gameObject->GetWorldPosition() };
+		m_gameObject->AddLocalPosition(correction);
 
 		++m_pathIdx;
 
@@ -153,7 +153,7 @@ void pacman::TargetMoverComponent::FollowPath(float elapsedSec)
 	}
 	else
 	{
-		glm::vec2 currentPos = GetGameObject()->GetWorldPosition();
+		glm::vec2 currentPos = m_gameObject->GetWorldPosition();
 		glm::vec2 diff = m_path[m_pathIdx] - currentPos;
 
 		CalcNextDir(diff);

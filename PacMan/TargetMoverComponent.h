@@ -36,6 +36,7 @@ namespace pacman
 		int m_wHeight;
 		int m_nrCols;
 		int m_nrRows;
+		dae::GameObject* m_gameObject{ GetGameObject() };
 		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 
 		// BFS
