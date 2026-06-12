@@ -18,7 +18,7 @@ pacman::ScoreComponentUI::~ScoreComponentUI()
 
 void pacman::ScoreComponentUI::Notify(const dae::Event& event)
 {
-	if (event.id == "SCORE_CHANGED" || event.id == "POWER_PELLET_PICKUP" || event.id == "PELLET_PICKUP" || event.id == "FRUIT_PICKUP")
+	if (event.id == "GHOST_VALUE_CALCULATED" || event.id == "POWER_PELLET_PICKUP" || event.id == "PELLET_PICKUP" || event.id == "FRUIT_PICKUP")
 	{
 		auto* arg = static_cast<ScoreArg*>(event.arg.get());
 		if (arg->sender == m_pacman)

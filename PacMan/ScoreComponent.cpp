@@ -70,7 +70,7 @@ void pacman::ScoreComponent::Notify(const dae::Event& event)
 		{
 			++m_nrGhostsEaten;
 			m_score += baseValue * m_nrGhostsEaten;
-			dae::Event e{ "SCORE_CHANGED" };
+			dae::Event e{ "GHOST_VALUE_CALCULATED" };
 			e.arg = std::make_unique<ScoreArg>(m_score, GetGameObject());
 			m_eventQueue.Invoke(std::move(e));
 		}

@@ -23,6 +23,7 @@
 #include "NameSelectComponent.h"
 #include "RespawnComponent.h"
 #include "CountdownComponent.h"
+#include "IndicatorSpawnComponent.h"
 #include <memory>
 #include <string>
 
@@ -63,6 +64,10 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 	readyGo->AddComponent<dae::RenderComponent>("Ready.png");
 	readyGo->SetLocalPosition(glm::vec2{ 300.f,400.f });
 	scene.Add(std::move(readyGo));
+
+	std::unique_ptr<dae::GameObject> indicatorSpawner = std::make_unique<dae::GameObject>();
+	indicatorSpawner->AddComponent<pacman::IndicatorSpawnComponent>();
+	scene.Add(std::move(indicatorSpawner));
 }
 
 void pacman::SceneLoader::SingleplayerScene()

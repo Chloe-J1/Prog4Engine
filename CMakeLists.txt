@@ -170,7 +170,7 @@ add_library(${ENGINE_TARGET} STATIC
   Minigin/EventQueue.cpp 
   Minigin/Event.cpp
   Minigin/Command.cpp 
-  )
+  PacMan/AutoKill.cpp)
 target_compile_features(${ENGINE_TARGET} PUBLIC cxx_std_20)
 
 target_include_directories(${ENGINE_TARGET} PUBLIC
@@ -231,7 +231,9 @@ add_executable(${GAME_TARGET} ${TARGET_PARAM}
     PacMan/NameSelectComponent.cpp
     PacMan/HighscoreParser.cpp
     PacMan/RespawnComponent.cpp
-    PacMan/CountdownComponent.cpp)
+    PacMan/CountdownComponent.cpp
+    PacMan/IndicatorSpawnComponent.cpp 
+     "PacMan/AutoKill.h" "PacMan/AutoKill.cpp")
 
 target_compile_features(${GAME_TARGET} PUBLIC cxx_std_20)
 
