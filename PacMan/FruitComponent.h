@@ -20,7 +20,7 @@ namespace pacman
 		const int m_windowWidth;
 		const int m_windowHeight;
 		static int m_nrFruit;
-		const int m_value{ 300 };
+		const int m_value{ 100 };
 		const float m_spriteWidth;
 		TargetMoverComponent* m_moveComp{};
 	};

@@ -33,14 +33,26 @@ void pacman::LetterSelectComponent::Notify(const dae::Event& event)
 		dae::GameObject* sender{ arg->sender };
 		if (sender == m_downButton)
 		{
-			if (m_selectedLetterIdx <= 0) return;
-			--m_selectedLetterIdx;
+			if (m_selectedLetterIdx <= 0)
+			{
+				m_selectedLetterIdx = (int)m_possibleLetters.size() - 1;
+			}
+			else
+			{
+				--m_selectedLetterIdx;
+			}
 			m_textComp->SetText((std::string(1, m_possibleLetters[m_selectedLetterIdx])));
 		}
 		else if (sender == m_upButton)
 		{
-			if (m_selectedLetterIdx >= int(m_possibleLetters.size() - 1)) return;
-			++m_selectedLetterIdx;
+			if (m_selectedLetterIdx >= int(m_possibleLetters.size() - 1))
+			{
+				m_selectedLetterIdx = 0;
+			}
+			else
+			{
+				++m_selectedLetterIdx;
+			}
 			m_textComp->SetText((std::string(1, m_possibleLetters[m_selectedLetterIdx])));
 		}
 	}
