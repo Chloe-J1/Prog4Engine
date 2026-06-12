@@ -22,6 +22,7 @@ pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard
 	m_playerWidth = m_spriteComp->GetWidth();
 	m_playerHeight = m_spriteComp->GetHeight();
 	m_graph = &Graph::GetInstance();
+	m_eventQueue.AddEventHandler(this);
 
 	// Input bindings
 	if (usesController)
@@ -38,6 +39,8 @@ pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard
 		m_inputManager->BindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, -1), this)); // up
 		m_inputManager->BindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame, std::make_unique<pacman::Move>(GetGameObject(), glm::vec2(0, 1), this)); // down
 	}
+
+	this->SetIsEnabled(false);
 }
 
 pacman::PlayerMovement::~PlayerMovement()
@@ -57,6 +60,8 @@ pacman::PlayerMovement::~PlayerMovement()
 		m_inputManager->UnbindCommand(SDL_SCANCODE_W, dae::TriggerEvent::PressedThisFrame); // up
 		m_inputManager->UnbindCommand(SDL_SCANCODE_S, dae::TriggerEvent::PressedThisFrame); // down
 	}
+
+	m_eventQueue.RemoveEventHandler(this);
 }
 
 void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
@@ -70,6 +75,14 @@ void pacman::PlayerMovement::ChangeDirection(const glm::vec2& direction)
 		dae::Event e{ "DIRECTION_CHANGED" };
 		e.arg = std::make_unique<DirectionChangedArg>(m_currDirection, GetGameObject());
 		dae::EventQueue::GetInstance().Invoke(std::move(e));
+	}
+}
+
+void pacman::PlayerMovement::Notify(const dae::Event& event)
+{
+	if (event.id == "START")
+	{
+		this->SetIsEnabled(true);
 	}
 }
 

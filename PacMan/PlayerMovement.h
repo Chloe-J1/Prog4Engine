@@ -2,6 +2,8 @@
 #include "../Minigin/Component.h"
 #include <glm/glm.hpp>
 #include "../Minigin/InputManager.h"
+#include "../Minigin/IEventHandler.h"
+#include "../Minigin/EventQueue.h"
 
 namespace dae
 {
@@ -11,7 +13,7 @@ namespace dae
 namespace pacman
 {
 	class Graph;
-	class PlayerMovement final : public dae::Component
+	class PlayerMovement final : public dae::Component, public dae::IEventHandler
 	{
 	public:
 		explicit PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
@@ -23,6 +25,7 @@ namespace pacman
 		
 
 		void ChangeDirection(const glm::vec2& direction);
+		void Notify(const dae::Event& event);
 	private:
 		const float m_speed;
 
@@ -35,6 +38,7 @@ namespace pacman
 		Graph* m_graph;
 		dae::SpriteComponent* m_spriteComp;
 		dae::InputManager* m_inputManager;
+		dae::EventQueue& m_eventQueue{ dae::EventQueue::GetInstance() };
 
 		glm::vec2 m_oldPos{};
 		glm::vec2 m_currDirection{};

@@ -29,6 +29,13 @@ namespace pacman
 		virtual void OnExit(pacman::GhostComponent& ghost);
 	};
 
+	class NotReadyState final : public GhostState
+	{
+	public:
+		void OnEnter(GhostComponent& ghost);
+		std::unique_ptr<pacman::GhostState> Notify(pacman::GhostComponent& ghost, const dae::Event& event);
+	};
+
 	class FollowTargetState final : public GhostState
 	{
 	public:

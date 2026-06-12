@@ -11,7 +11,7 @@
 pacman::GhostComponent::GhostComponent(dae::GameObject* owner, std::unique_ptr<MovementBase> moveStrategy):
 	Component(owner),
 	m_damage{ 1 },
-	m_ghostState{std::make_unique<FollowTargetState>()},
+	m_ghostState{std::make_unique<NotReadyState>()},
 	m_moveStrategy{std::move(moveStrategy)}
 {
 	if (auto* strategy = dynamic_cast<NonAIMovement*>(m_moveStrategy.get()))

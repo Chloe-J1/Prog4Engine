@@ -22,6 +22,7 @@
 #include "LetterSelectComponent.h"
 #include "NameSelectComponent.h"
 #include "RespawnComponent.h"
+#include "CountdownComponent.h"
 #include <memory>
 #include <string>
 
@@ -55,6 +56,13 @@ void pacman::SceneLoader::GameScene(const std::string& levelname)
 	std::unique_ptr<dae::GameObject> fruitSpawnerGo = std::make_unique<dae::GameObject>();
 	fruitSpawnerGo->AddComponent<pacman::FruitSpawner>(&scene);
 	scene.Add(std::move(fruitSpawnerGo));
+
+	// Ready
+	std::unique_ptr<dae::GameObject> readyGo = std::make_unique<dae::GameObject>();
+	readyGo->AddComponent<CountdownComponent>();
+	readyGo->AddComponent<dae::RenderComponent>("Ready.png");
+	readyGo->SetLocalPosition(glm::vec2{ 300.f,400.f });
+	scene.Add(std::move(readyGo));
 }
 
 void pacman::SceneLoader::SingleplayerScene()

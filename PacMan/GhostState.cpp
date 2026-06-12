@@ -35,6 +35,18 @@ std::unique_ptr<pacman::GhostState> pacman::GhostState::OnCollision(pacman::Ghos
 void pacman::GhostState::OnExit(pacman::GhostComponent&)
 {
 }
+// NOT READY
+void pacman::NotReadyState::OnEnter(GhostComponent& ghost)
+{
+	ghost.GetGameObject()->GetComponent<dae::SpriteComponent>()->ChangeCurrentAnimation(0, 1);
+}
+
+std::unique_ptr<pacman::GhostState> pacman::NotReadyState::Notify(pacman::GhostComponent&, const dae::Event& event)
+{
+	if (event.id == "START")
+		return std::make_unique<FollowTargetState>();
+	return nullptr;
+}
 
 // FOLLOW TARGET
 void pacman::FollowTargetState::OnEnter(GhostComponent& ghost)
@@ -206,5 +218,3 @@ void pacman::DeathState::OnExit(GhostComponent& ghost)
 {
 	ghost.GetGameObject()->SetLocalPosition(m_respawnPos);
 }
-
-
