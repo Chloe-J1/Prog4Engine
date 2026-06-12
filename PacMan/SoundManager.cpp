@@ -66,6 +66,10 @@ void pacman::SoundManager::Notify(const dae::Event& event)
 			m_isPlayingFrightened = false;
 		}
 	}
+	else if (event.id == "STOP_FRIGHTENED_SFX")
+	{
+		ss->Stop("frightened");
+	}
 }
 
 void pacman::SoundManager::RegisterSound()

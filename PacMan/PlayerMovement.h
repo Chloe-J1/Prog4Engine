@@ -16,7 +16,7 @@ namespace pacman
 	class PlayerMovement final : public dae::Component, public dae::IEventHandler
 	{
 	public:
-		explicit PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
+		explicit PlayerMovement(dae::GameObject* owner, float speed, bool usesKeyboard, bool usesController, int ctrlIdx = 0);
 		~PlayerMovement();
 		PlayerMovement(const PlayerMovement& other) = delete;
 		PlayerMovement(PlayerMovement&& other) = delete;

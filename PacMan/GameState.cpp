@@ -130,6 +130,7 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(const dae::Event& e
 void pacman::PlayState::OnExit()
 {
 	m_inputManager.UnbindCommand(SDL_SCANCODE_F1, dae::TriggerEvent::PressedThisFrame);
+	dae::EventQueue::GetInstance().Invoke(dae::Event{ "STOP_FRIGHTENED_SFX" });
 }
 
 std::unique_ptr<pacman::GameState> pacman::PlayState::NextLevel()

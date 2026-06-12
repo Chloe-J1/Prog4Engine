@@ -146,10 +146,10 @@ void pacman::SceneLoader::CoopScene()
 	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
+	ghost = CreateGhost(glm::vec2{ 696,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
+	ghost = CreateGhost(glm::vec2{ 660,696 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
 	scene.Add(std::move(ghost));
 }
 
@@ -183,10 +183,10 @@ void pacman::SceneLoader::VersusScene()
 	ghost = CreateGhost(glm::vec2{ 217,121 }, "Ghost_pink.png", std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 720,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
+	ghost = CreateGhost(glm::vec2{ 696,121 }, "Ghost_blue.png", std::make_unique<CornerMovement>());
 	scene.Add(std::move(ghost));
 
-	ghost = CreateGhost(glm::vec2{ 672,672 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
+	ghost = CreateGhost(glm::vec2{ 660,696 }, "Ghost_yellow.png", std::make_unique<SueMovement>());
 	scene.Add(std::move(ghost));
 }
 
@@ -327,7 +327,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreatePacman(const glm::ve
 	constexpr int playerSize{ 16 };
 	go->AddComponent<dae::Hitbox>(playerSize, playerSize);
 	go->AddComponent<pacman::ScoreComponent>(ctrlIdx);
-	go->AddComponent<pacman::PlayerMovement>(usesKeyboard, usesController, ctrlIdx);
+	go->AddComponent<pacman::PlayerMovement>(100.f, usesKeyboard, usesController, ctrlIdx);
 	go->AddComponent<pacman::HealthComponent>();
 	go->AddComponent<pacman::RespawnComponent>(spawnPos);
 	go->SetLocalPosition(spawnPos.x, spawnPos.y);
@@ -378,7 +378,7 @@ std::unique_ptr<dae::GameObject> pacman::SceneLoader::CreateGhost(const glm::vec
 	ghost->AddComponent<pacman::TargetMoverComponent>();
 	if (dynamic_cast<NonAIMovement*>(moveStrategy.get())) // Ghost is controllable by a player
 	{
-		ghost->AddComponent<pacman::PlayerMovement>(false, true, 1);
+		ghost->AddComponent<pacman::PlayerMovement>(50.f, false, true, 1);
 	}
 	ghost->AddComponent<pacman::GhostComponent>(std::move(moveStrategy));
 	/*ghost->AddComponent<pacman::EatenComponent>();*/

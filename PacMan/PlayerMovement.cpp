@@ -8,9 +8,9 @@
 #include "../Minigin/EventQueue.h"
 #include "Events.h"
 
-pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, bool usesKeyboard, bool usesController, int ctrlIdx) :
+pacman::PlayerMovement::PlayerMovement(dae::GameObject* owner, float speed, bool usesKeyboard, bool usesController, int ctrlIdx) :
 	Component(owner),
-	m_speed{ 100.f },
+	m_speed{ speed },
 	m_wWidth{ dae::WindowConfig::GetInstance().GetWidth() },
 	m_wHeight{ dae::WindowConfig::GetInstance().GetHeight() },
 	m_usesKeyboard{ usesKeyboard },
