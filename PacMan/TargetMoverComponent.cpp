@@ -107,7 +107,7 @@ void pacman::TargetMoverComponent::Render() const
 	if (m_path.empty()) return;
 	for (const auto& pos : m_path)
 	{
-		m_drawHelper.SetColor(0, 255, 0, 1);
+		
 		m_drawHelper.DrawRect(pos, (float)m_cellsize, (float)m_cellsize);
 	}
 #endif // _DEBUG
@@ -242,10 +242,13 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 
 
 	int bestIdx = -1;
+	auto projection = [&](int neighborIdx) {
+		return glm::length(m_targetPos - m_graph.GetWorldPos(neighborIdx));
+		};
 
 	if (not isMovingAway)
 	{
-		auto chosenItr = std::min_element(m_neighbors.begin(), m_neighbors.end());
+		auto chosenItr = std::ranges::min_element(m_neighbors, {}, projection);
 		if (chosenItr != m_neighbors.end())
 		{
 			bestIdx = *chosenItr;
@@ -253,7 +256,7 @@ void pacman::TargetMoverComponent::ChangeDirection(bool isMovingAway)
 	}
 	else
 	{
-		auto chosenItr = std::max_element(m_neighbors.begin(), m_neighbors.end());
+		auto chosenItr = std::ranges::max_element(m_neighbors, {}, projection);
 		if (chosenItr != m_neighbors.end())
 		{
 			bestIdx = *chosenItr;
