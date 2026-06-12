@@ -4,7 +4,7 @@ Minigin is a very small project using [SDL3](https://www.libsdl.org/) and [glm](
 
 [![CMake](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/cmake.yml/badge.svg)](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/cmake.yml)
 [![Emscripten](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/emscripten.yml/badge.svg)](https://github.com/Chloe-J1/Prog4Engine/actions/workflows/emscripten.yml)
-
+[![GitHub](https://img.shields.io/badge/GitHub-Prog4Engine-181717?logo=github)](https://github.com/Chloe-J1/Prog4Engine)
 # Goal
 
 Minigin can/may be used as a start project for the exam assignment in the course [Programming 4](https://youtu.be/j96Oh6vzhmg) at DAE. In that assignment students need to recreate a popular 80's arcade game with a game engine they need to program themselves. During the course we discuss several game programming patterns, using the book '[Game Programming Patterns](https://gameprogrammingpatterns.com/)' by [Robert Nystrom](https://github.com/munificent) as reading material. 
