@@ -168,28 +168,26 @@ private:
 		{
 			if (not MIX_TrackPlaying(track))
 			{
-				MIX_SetTrackAudio(track, sound.audio);
-				SDL_PropertiesID props{ SDL_CreateProperties() };
-				if (isLooping)
-				{
-					SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
-				}
-				MIX_PlayTrack(track, props);
-				SDL_DestroyProperties(props);
+				InitTrack(track, sound.audio, isLooping);
 				return;
 			}
 		}
 			
 		// No free tracks found so create a new one
 		MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
-		MIX_SetTrackAudio(newTrack, sound.audio);
+		InitTrack(newTrack, sound.audio, isLooping);
+		sound.tracks.push_back(newTrack);
+	}
+
+	void InitTrack(MIX_Track* track, MIX_Audio* audio, bool isLooping)
+	{
+		MIX_SetTrackAudio(track, audio);
 		SDL_PropertiesID props{ SDL_CreateProperties() };
 		if (isLooping)
 		{
 			SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, 50);
 		}
-		MIX_PlayTrack(newTrack, props);
-		sound.tracks.push_back(newTrack);
+		MIX_PlayTrack(track, props);
 	}
 
 	void StopSound(const Sound& sound)
