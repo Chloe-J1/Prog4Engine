@@ -131,6 +131,7 @@ void pacman::PlayState::OnExit()
 {
 	m_inputManager.UnbindCommand(SDL_SCANCODE_F1, dae::TriggerEvent::PressedThisFrame);
 	dae::EventQueue::GetInstance().Invoke(dae::Event{ "STOP_FRIGHTENED_SFX" });
+	MenuManager::GetInstance().ResetSelected();
 }
 
 std::unique_ptr<pacman::GameState> pacman::PlayState::NextLevel()
