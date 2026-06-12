@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Events.h"
 #include "../Minigin/GameObject.h"
+#include <iostream>
 
 pacman::NameSelectComponent::NameSelectComponent(dae::GameObject* owner, dae::GameObject* button):
 	Component(owner),
@@ -47,7 +48,16 @@ void pacman::NameSelectComponent::SavePlayerName(const std::string& name)
 	std::filesystem::path filepath = std::filesystem::path(DATA_PATH) / "Scores.json";
 	std::ifstream iFile(filepath);
 
-	nlohmann::json data = nlohmann::json::parse(iFile);
+	nlohmann::json data;
+	try
+	{
+		data = nlohmann::json::parse(iFile);
+	}
+	catch (const nlohmann::json::parse_error& e)
+	{
+		std::cerr << "JSON parse error in " << filepath << ": " << e.what() << "\n";
+		return;
+	}
 
 	iFile.close();
 

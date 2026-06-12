@@ -8,6 +8,8 @@ namespace pacman
 	{
 	public:
 		const std::vector<std::string>& GetScores(const std::string& type);
+		void UpdateScore(int score, int controllerIdx);
+		void UpdateHighscores();
 		void ClearCurrentPlayers();
 		void ClearScores();
 	private:

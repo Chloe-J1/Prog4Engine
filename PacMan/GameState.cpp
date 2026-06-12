@@ -4,7 +4,7 @@
 #include "MenuManager.h"
 #include "Commands.h"
 #include "Events.h"
-#include <iostream>
+#include "HighscoreParser.h"
 
 pacman::GameState::GameState()
 {
@@ -100,24 +100,16 @@ std::unique_ptr<pacman::GameState> pacman::PlayState::Notify(const dae::Event& e
 		++m_nrEatenPellets;
 		if (m_nrEatenPellets >= m_totalNrPellets)
 		{
-			++m_levelIdx;
-			if (m_levelIdx >= 3)
-			{
-				return std::make_unique<pacman::EndState>();
-			}
-			else
-			{
-				SceneLoader::GetInstance().GameScene(m_levels[m_levelIdx]);
-				LoadScene();
-			}
-			m_nrEatenPellets = 0;
+			NextLevel();
 		}
 	}
 	else if (event.id == "PLAYER_DIED")
 	{
 		++m_nrDeaths;
 		if (m_nrDeaths >= m_nrPacman)
+		{
 			return std::make_unique<pacman::EndState>();
+		}
 	}
 	else if (event.id == "NEXT_LEVEL")
 	{
@@ -136,6 +128,7 @@ void pacman::PlayState::OnExit()
 
 std::unique_ptr<pacman::GameState> pacman::PlayState::NextLevel()
 {
+	dae::EventQueue::GetInstance().Invoke(dae::Event{ "STOP_FRIGHTENED_SFX" });
 	++m_levelIdx;
 	if (m_levelIdx > 2)
 	{

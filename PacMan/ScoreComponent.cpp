@@ -3,8 +3,7 @@
 #include "Pellets.h"
 #include "../Minigin/GameObject.h"
 #include "FruitComponent.h"
-#include <nlohmann/json.hpp>
-#include <fstream>
+#include "HighscoreParser.h"
 
 int pacman::ScoreComponent::m_nrGhostsEaten{ 0 };
 
@@ -18,8 +17,8 @@ pacman::ScoreComponent::ScoreComponent(dae::GameObject* owner, int controllerIdx
 pacman::ScoreComponent::~ScoreComponent()
 {
 	m_eventQueue.RemoveEventHandler(this);
-	SaveScore();
-	CheckForHighscore();
+	HighscoreParser::GetInstance().UpdateScore(m_score, m_controllerIdx);
+	HighscoreParser::GetInstance().UpdateHighscores();
 }
 
 int pacman::ScoreComponent::GetScore() const
@@ -75,50 +74,5 @@ void pacman::ScoreComponent::Notify(const dae::Event& event)
 			e.arg = std::make_unique<ScoreArg>(m_score, addedValue, GetGameObject());
 			m_eventQueue.Invoke(std::move(e));
 		}
-	}
-}
-
-void pacman::ScoreComponent::SaveScore()
-{
-	std::filesystem::path filepath = std::filesystem::path(DATA_PATH) / "Scores.json";
-	std::ifstream iFile(filepath);
-
-	nlohmann::json data = nlohmann::json::parse(iFile);
-	auto& currentPlayers = data["CurrentPlayers"];
-	int prevScore{ currentPlayers[m_controllerIdx]["score"] };
-	int newScore{ prevScore + m_score };
-	currentPlayers[m_controllerIdx]["score"] = newScore;
-	iFile.close();
-
-	std::ofstream oFile(filepath);
-	oFile << data.dump(4);
-	oFile.close();
-}
-
-void pacman::ScoreComponent::CheckForHighscore()
-{
-	const int m_maxNrHighscores{ 3 };
-	std::filesystem::path filepath = std::filesystem::path(DATA_PATH) / "Scores.json";
-	std::ifstream iFile(filepath);
-
-	nlohmann::json data = nlohmann::json::parse(iFile);
-	auto& highscores = data["Highscores"];
-	iFile.close();
-	if (highscores.size() < m_maxNrHighscores || m_score > highscores.back()["score"])
-	{
-		if(highscores.size() >= m_maxNrHighscores)
-			highscores.erase(m_maxNrHighscores - 1); // remove lowest value
-		std::string playerName = data["CurrentPlayers"][m_controllerIdx]["name"];
-		highscores.push_back({
-			{"name", playerName},
-			{"score", m_score}
-		});
-		std::sort(highscores.begin(), highscores.end(), [](auto val1, auto val2) {
-				return val1["score"] > val2["score"];
-			});
-
-		std::ofstream oFile(filepath);
-		oFile << data.dump(4);
-		oFile.close();
 	}
 }

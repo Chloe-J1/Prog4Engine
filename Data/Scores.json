@@ -1,26 +1,26 @@
 {
     "CurrentPlayers": [
         {
-            "name": "AAA",
-            "score": 0
+            "name": "EAA",
+            "score": 90
         },
         {
-            "name": "AAA",
+            "name": "EAA",
             "score": 0
         }
     ],
     "Highscores": [
         {
             "name": "AAA",
-            "score": 13560
+            "score": 990
         },
         {
-            "name": "AAA",
-            "score": 4500
+            "name": "EAA",
+            "score": 90
         },
         {
-            "name": "AAA",
-            "score": 4230
+            "name": "XAA",
+            "score": 30
         }
     ]
 }

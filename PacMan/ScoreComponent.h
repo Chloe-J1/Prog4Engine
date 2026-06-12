@@ -29,6 +29,6 @@ namespace pacman
 
 
 		void SaveScore();
-		void CheckForHighscore();
+		void UpdateScoreJson();
 	};
 }
