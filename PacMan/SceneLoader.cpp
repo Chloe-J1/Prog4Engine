@@ -116,7 +116,7 @@ void pacman::SceneLoader::CoopScene()
 
 	// Pacman
 	//**********
-	std::unique_ptr<dae::GameObject> pacman = CreatePacman(glm::vec2{ 700,700 }, "Pacman.png", false, true, m_player2CtrllIdx);
+	std::unique_ptr<dae::GameObject> pacman = CreatePacman(glm::vec2{ 696,696 }, "Pacman.png", false, true, m_player2CtrllIdx);
 	//UI
 	std::unique_ptr<dae::GameObject> UIpacman = std::make_unique<dae::GameObject>();
 	UIpacman->SetLocalPosition(634, 5);
